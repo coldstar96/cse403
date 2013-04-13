@@ -17,6 +17,7 @@ libs/
 
 # Editor specific configuration
 .settings/
+.metadata/
 
 # Local configuration file (sdk path, etc)
 local.properties
