@@ -1,0 +1,43 @@
+Short ZFR document describing the items below:
+
+Some documents describe processes the user or developer must perform.
+
+c) Source control and build process instruction
+	Build process: the set of tools and commands to compile and "build" the system.
+	Turn in a SET OF DIRECTIONS to:
+		a) Find the build system
+		b) Check out its files
+		c) Build them
+	The instructions should contain a COMPLETE set of commands to extract code from the GitHub repo, compile the code, and start it running.
+		Should be written in sufficient detail that an intelligent dev can follow them.
+		If the system requires login, provide this info.
+	Ideally, the system will have a single command that does a "one-step build," that checks out all source code from the repo, builds all necessary binaries, packages them,
+	and places them in known location. (git clone URL "name")
+	
+	The grader will log in to your GitHub ONCE A WEEK to:
+		Count the # of files and lines present in the system
+		Number of lines modified
+		Log the group's development process.
+	LACK OF SIGNIFICANT WEEKLY PROGRESS MIGHT HURT GRADE
+
+d) Data access instructions
+	Provide a set of instructions about where the data is sotred, and how to access it.
+	Set of directions that tells the grader how to find the data, and how to briefly perform a trivial access of this dat.
+		For example, if it is a DB, inform the grader how to connect and make a simple query against it.
+
+========================== ACTUAL DOCUMENT =========================
+
+Source control and build process instruction:
+	*** These instructions will assume that GitHub is configured on the current system. ***
+	
+	For Mac OS X / Linux:
+		1) Launch Terminal
+		2) cd in to the parent directory in which you want to place the project folder.
+		3) Run the command 'git clone https://github.com/coldstar96/cse403.git [NAME]'. Replace [NAME] with whatever you wish to call the project folder.
+
+	For Windows:
+		*** SOMEONE WITH A WINDOWS MACHINE DO THIS ***
+
+
+Data access instructions:
+	*** DO THIS ***
