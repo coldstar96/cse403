@@ -1,8 +1,24 @@
 package com.example.budgetmanager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 
+
+import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
@@ -102,7 +119,7 @@ public class MainActivity extends FragmentActivity {
             return null;
         }
     }
-
+    
     /**
      * A dummy fragment representing a section of the app, but that simply
      * displays dummy text.
@@ -117,14 +134,137 @@ public class MainActivity extends FragmentActivity {
         public DummySectionFragment() {
         }
 
+        
+        
+        public String test() {
+        	
+        	//System.out.println("kkkkkkk");
+        	//dummyTextView.setText("8");
+        	//JSONArray jArray;
+        	InputStream is = null;
+        	StringBuilder sb = null;
+        	String returned = "not null noob";
+        	
+        	try {
+        		String URL = "http://students.washington.edu/clinger/script.php";
+        		HttpClient httpclient = AndroidHttpClient.newInstance("Android");
+	        	HttpGet get = new HttpGet(URL);
+        		HttpResponse response = httpclient.execute(get);
+	        	HttpEntity entity = response.getEntity();
+	        	is = entity.getContent();
+        	} catch (ClientProtocolException e) {
+				//e.printStackTrace();
+			} catch (IOException e) {
+				//e.printStackTrace();
+			}
+			
+			
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				
+				String line="0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				returned=sb.toString();
+				
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        	
+        	return returned;
+        }
+        
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
             TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            //dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            //System.out.println("a");
+            String URL = "http://students.washington.edu/clinger/script.php";
+            //Test task = new Test();
+            new Test(dummyTextView).execute(URL);
+            //task.execute("students.washington.edu/clinger/script.php");
+            
+            //dummyTextView.setText(test());
+            
             return rootView;
         }
     }
 
+}
+
+class Test extends AsyncTask<String, String, String> {
+
+	private TextView a;
+	
+	Test(TextView a) {
+		this.a = a;
+	}
+	
+	
+	@Override
+	protected String doInBackground(String... urls) {
+		//System.out.println("kkkkkkk");
+    	//dummyTextView.setText("8");
+    	//JSONArray jArray;
+    	InputStream is = null;
+    	StringBuilder sb = null;
+    	String returned = "not null noob";
+    	
+    	try {
+    		String URL = "http://students.washington.edu/clinger/script.php";
+    		HttpClient httpclient = AndroidHttpClient.newInstance("Android");
+        	HttpGet get = new HttpGet(URL);
+    		HttpResponse response = httpclient.execute(get);
+        	HttpEntity entity = response.getEntity();
+        	is = entity.getContent();
+    	} catch (ClientProtocolException e) {
+			//e.printStackTrace();
+		} catch (IOException e) {
+			//e.printStackTrace();
+		}
+		
+		
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+			sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+			
+			String line="0";
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+			is.close();
+			returned=sb.toString();
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	return returned;
+	}
+	
+	@Override
+	protected void onPostExecute(String a) {
+		PopupWindow popup = new PopupWindow();
+		//popup.showAtLocation(mainLayout,Gravity.BOTTOM,10,10);
+		/*MainActivity.this.runOnUiThread(new Runnable() {
+			public void run() {
+				
+			}
+		});*/
+		
+		this.a.setText(a);
+	}
+	
 }
