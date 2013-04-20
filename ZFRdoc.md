@@ -13,7 +13,10 @@ For Linux (and probably \*BSD, Mac OS X, and other UNIXy environments, but don't
 ## Data Access
 
 ### HTTP
-You can access our current endpoint at [http://students.washington.edu/clinger/script.php].
+You can access our current endpoint at http://students.washington.edu/clinger/script.php.
+It currently just prints out the first row of a table as a JSON string.
+
 This is subject to change. For example, a move to Heroku will likely be happening in the near future.
+
 ### Direct Database Access
 Maybe for your birthday. Or if you ask nicely.
