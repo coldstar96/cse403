@@ -1,5 +1,6 @@
 ## Fetch and build instructions:
 For Linux (and probably Mac OS X):
+
 1. Launch an instance of an Android Emulator
 2. Launch Terminal
 3. cd in to the parent directory in which you want to place the project folder.
