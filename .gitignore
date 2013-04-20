@@ -13,7 +13,7 @@ bin/
 gen/
 
 # libraries
-libs/
+#libs/
 
 # Editor specific configuration
 .settings/
