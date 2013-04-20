@@ -13,10 +13,11 @@ For Linux (and probably \*BSD, Mac OS X, and other UNIXy environments, but don't
 ## Data Access
 
 ### HTTP
-You can access our current endpoint at http://students.washington.edu/clinger/script.php.
-It currently just prints out the first row of a table as a JSON string.
+You can access our current ZFR endpoint at ubudget.herokuapp.com/users.
+It currently just returns the rows of a table as a JSON string.
 
-This is subject to change. For example, a move to Heroku will likely be happening in the near future.
+This will be greatly expanded upon in the coming weeks and will offer more functionality.
 
 ### Direct Database Access
-Maybe for your birthday. Or if you ask nicely.
+Since giving you that information involves giving out passwords, we won't put that here.
+You can contact us privately if you really want this information.
