@@ -133,66 +133,16 @@ public class MainActivity extends FragmentActivity {
 
         public DummySectionFragment() {
         }
-
-        
-        
-        public String test() {
-        	
-        	//System.out.println("kkkkkkk");
-        	//dummyTextView.setText("8");
-        	//JSONArray jArray;
-        	InputStream is = null;
-        	StringBuilder sb = null;
-        	String returned = "not null noob";
-        	
-        	try {
-        		String URL = "http://students.washington.edu/clinger/script.php";
-        		HttpClient httpclient = AndroidHttpClient.newInstance("Android");
-	        	HttpGet get = new HttpGet(URL);
-        		HttpResponse response = httpclient.execute(get);
-	        	HttpEntity entity = response.getEntity();
-	        	is = entity.getContent();
-        	} catch (ClientProtocolException e) {
-				//e.printStackTrace();
-			} catch (IOException e) {
-				//e.printStackTrace();
-			}
-			
-			
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-				sb = new StringBuilder();
-				sb.append(reader.readLine() + "\n");
-				
-				String line="0";
-				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n");
-				}
-				is.close();
-				returned=sb.toString();
-				
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        	
-        	return returned;
-        }
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
             TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            //dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            //System.out.println("a");
-            String URL = "http://students.washington.edu/clinger/script.php";
-            //Test task = new Test();
-            new Test(dummyTextView).execute(URL);
-            //task.execute("students.washington.edu/clinger/script.php");
-            
-            //dummyTextView.setText(test());
+
+            String URL = getString(R.string.users_index);
+
+            new AsyncDownloader(dummyTextView).execute(URL);
             
             return rootView;
         }
@@ -200,26 +150,23 @@ public class MainActivity extends FragmentActivity {
 
 }
 
-class Test extends AsyncTask<String, String, String> {
+class AsyncDownloader extends AsyncTask<String, String, String> {
 
-	private TextView a;
+	private TextView textView;
 	
-	Test(TextView a) {
-		this.a = a;
+	AsyncDownloader(TextView a) {
+		this.textView = a;
 	}
 	
 	
 	@Override
 	protected String doInBackground(String... urls) {
-		//System.out.println("kkkkkkk");
-    	//dummyTextView.setText("8");
-    	//JSONArray jArray;
     	InputStream is = null;
     	StringBuilder sb = null;
-    	String returned = "not null noob";
+    	String returned = "";
     	
     	try {
-    		String URL = "http://students.washington.edu/clinger/script.php";
+    		String URL = urls[0];
     		HttpClient httpclient = AndroidHttpClient.newInstance("Android");
         	HttpGet get = new HttpGet(URL);
     		HttpResponse response = httpclient.execute(get);
@@ -237,7 +184,7 @@ class Test extends AsyncTask<String, String, String> {
 			sb = new StringBuilder();
 			sb.append(reader.readLine() + "\n");
 			
-			String line="0";
+			String line;
 			while ((line = reader.readLine()) != null) {
 				sb.append(line + "\n");
 			}
@@ -257,14 +204,8 @@ class Test extends AsyncTask<String, String, String> {
 	@Override
 	protected void onPostExecute(String a) {
 		PopupWindow popup = new PopupWindow();
-		//popup.showAtLocation(mainLayout,Gravity.BOTTOM,10,10);
-		/*MainActivity.this.runOnUiThread(new Runnable() {
-			public void run() {
-				
-			}
-		});*/
 		
-		this.a.setText(a);
+		this.textView.setText(a);
 	}
 	
 }
