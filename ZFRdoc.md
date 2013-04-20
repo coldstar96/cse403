@@ -10,6 +10,7 @@ For Linux (and probably \*BSD, Mac OS X, and other UNIXy environments, but don't
 6. `$ scripts/build-and-install.sh debug bin/MainActivity-debug.apk`
 7. The app should now be installed on the emulator. Go run it. Have fun.
 
+In addition, you can just build and run it from Eclipse.
 ## Data Access
 
 ### HTTP
