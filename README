@@ -1,1 +1,5 @@
 git clone https://github.com/coldstar96/cse403.git
+
+For the Rails API, check out https://github.com/brucec5/ubudget-api or clone:
+
+git clone https://github.com/brucec5/ubudget-api.git
