@@ -5,6 +5,8 @@ import com.example.budgetmanager.Budget;
 /**
  * Singleton class that facilitates connections to the HTTP API.
  *
+ * @author chris brucec5
+ *
  */
 public class ApiInterface {
 
