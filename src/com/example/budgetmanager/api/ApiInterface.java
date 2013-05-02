@@ -1,6 +1,9 @@
 package com.example.budgetmanager.api;
 
+import java.util.List;
+
 import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.Entry;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -20,6 +23,10 @@ public class ApiInterface {
 		return null;
 	}
 
+	private ApiInterface() {
+		// TODO: implement
+	}
+
 	/**
 	 * Creates a budget on the API server. Asynchronous.
 	 *
@@ -28,10 +35,8 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is a {@link Long} that represents
 	 * the ID of the Budget on the server.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void create(Budget b, ApiCallback callback) {
+	public void create(Budget b, ApiCallback<Long> callback) {
 		// TODO: implement
 	}
 
@@ -43,10 +48,8 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is a {@link Long} that represents the
 	 * ID of the Entry on the server.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void create(Entry e, ApiCallback callback) {
+	public void create(Entry e, ApiCallback<Long> callback) {
 		// TODO: implement
 	}
 
@@ -57,10 +60,8 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void update(Budget b, ApiCallback callback) {
+	public void update(Budget b, ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 
@@ -71,10 +72,8 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void update(Entry e, ApiCallback callback) {
+	public void update(Entry e, ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 
@@ -86,10 +85,8 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void remove(Budget b, ApiCallback callback) {
+	public void remove(Budget b, ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 
@@ -100,10 +97,8 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void remove(Entry e, ApiCallback callback) {
+	public void remove(Entry e, ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 
@@ -113,12 +108,10 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is a
-	 * {@link java.util.Collection}&lt;{@link Budget}&gt;
+	 * {@link java.util.List}&lt;{@link Budget}&gt;
 	 * containing all Budgets for the current user.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void fetchBudgets(ApiCallback callback) {
+	public void fetchBudgets(ApiCallback<List<Budget>> callback) {
 		// TODO: implement
 	}
 
@@ -129,12 +122,10 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is a
-	 * {@link java.util.Collection}&lt;{@link Entry}&gt;
+	 * {@link java.util.List}&lt;{@link Entry}&gt;
 	 * containing all Entries for the given Budget.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void fetchEntries(Budget b, ApiCallback callback) {
+	public void fetchEntries(Budget b, ApiCallback<List<Entry>> callback) {
 		// TODO: implement
 	}
 
@@ -146,10 +137,9 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void logIn(String email, String password, ApiCallback callback) {
+	public void logIn(String email, String password,
+			ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 
@@ -161,10 +151,9 @@ public class ApiInterface {
 	 * @param callback Callbacks to run on success or failure, or
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
-	 * For onFailure, the object passed is a {@link String} detailing what went
-	 * wrong.
 	 */
-	public void createUser(String email, String password, ApiCallback callback) {
+	public void createUser(String email, String password,
+			ApiCallback<Object> callback) {
 		// TODO: implement
 	}
 }

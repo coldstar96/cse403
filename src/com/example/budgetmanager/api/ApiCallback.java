@@ -6,21 +6,19 @@ package com.example.budgetmanager.api;
  * @author chris brucec5
  *
  */
-public interface ApiCallback {
+public interface ApiCallback<T> {
 
 	/**
 	 * Method to be run if the API request completed successfully.
 	 *
-	 * @param o Result from a successful API request. The API method that this
-	 * ApiCallback is passed to will define what type <code>o</code> is.
+	 * @param result the data returned from the API request.
 	 */
-	public void onSuccess(Object o);
+	public void onSuccess(T result);
 
 	/**
 	 * Method to be run if the API request completed unsuccessfully.
 	 *
-	 * @param o Result from an unsuccessful API request. The API method that
-	 * this ApiCallback is passed to will define what type <code>o</code> is.
+	 * @param errorMessage a String explaining why the API request failed.
 	 */
-	public void onFailure(Object o);
+	public void onFailure(String errorMessage);
 }
