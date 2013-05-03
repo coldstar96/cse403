@@ -2,8 +2,19 @@ package com.example.budgetmanager.api;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.util.Log;
+
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Entry;
+import com.example.budgetmanager.UBudgetApp;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -13,18 +24,32 @@ import com.example.budgetmanager.Entry;
  */
 public class ApiInterface {
 
+	// The singleton instance of ApiInterface.
+	private static ApiInterface instance;
+	private static String TAG = "ApiInterface";
+	
+	private AsyncHttpClient client;
 	/**
 	 * Singleton factory method to get the singleton instance.
 	 *
 	 * @return singleton ApiInterface instance
 	 */
 	public static ApiInterface getInstance() {
-		// TODO: implement
-		return null;
+		Log.d(TAG, "Getting instance of api interface");
+		if (instance == null) {
+			Log.d(TAG, "Creating new instance of api interface");
+			instance = new ApiInterface(UBudgetApp.getAppContext());
+		}
+		return instance;
 	}
 
-	private ApiInterface() {
-		// TODO: implement
+	private ApiInterface(Context context) {
+		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+		client = new AsyncHttpClient();
+		client.setCookieStore(cookieStore);
+		
+		// Need to specify that we want JSON back from the server.
+		client.addHeader("Accept", "application/json");
 	}
 
 	/**
@@ -140,7 +165,24 @@ public class ApiInterface {
 	 */
 	public void logIn(String email, String password,
 			ApiCallback<Object> callback) {
-		// TODO: implement
+		RequestParams params = new RequestParams();
+		params.put("username", email);
+		params.put("password", password);
+		Log.d(TAG, "logging in!");
+		client.post("https://ubudget.herokuapp.com/session", params, new JsonHttpResponseHandler() {
+			public void onSuccess(JSONObject obj) {
+				try {
+					Log.d(TAG, "User name: " + obj.getJSONObject("user").getString("username"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					Log.d(TAG, "Error: " + e.getMessage());
+				}
+			}
+			
+			public void onFailure(Throwable e, JSONObject obj) {
+				Log.d(TAG, "Failure: " + e.getMessage());
+			}
+		});
 	}
 
 	/**
@@ -152,8 +194,20 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void createUser(String email, String password,
+	public void createUser(final String email, final String password,
 			ApiCallback<Object> callback) {
-		// TODO: implement
+		RequestParams params = new RequestParams();
+		params.put("username", email);
+		params.put("password", password);
+		Log.d(TAG, "logging in!");
+		client.post("https://ubudget.herokuapp.com/users", params, new JsonHttpResponseHandler() {
+			public void onSuccess(JSONObject obj) {
+				Log.d(TAG, "User " + email + " created");
+			}
+			
+			public void onFailure(Throwable e, JSONObject obj) {
+				Log.d(TAG, "Failure: " + e.getMessage());
+			}
+		});
 	}
 }

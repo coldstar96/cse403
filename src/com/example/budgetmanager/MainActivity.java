@@ -16,6 +16,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 
+import com.example.budgetmanager.api.ApiInterface;
+
 
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
@@ -65,6 +67,7 @@ public class MainActivity extends FragmentActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        ApiInterface.getInstance().createUser("chris809", "test", null);
 
     }
 
@@ -142,7 +145,7 @@ public class MainActivity extends FragmentActivity {
 
             String URL = getString(R.string.users_index);
 
-            new AsyncDownloader(dummyTextView).execute(URL);
+            //new AsyncDownloader(dummyTextView).execute(URL);
             
             return rootView;
         }
