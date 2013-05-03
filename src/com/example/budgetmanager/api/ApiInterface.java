@@ -193,7 +193,6 @@ public class ApiInterface {
 				}
 			}
 
-			// TODO: factor out this and the createUser failure behavior
 			@Override
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
@@ -237,7 +236,6 @@ public class ApiInterface {
 				}
 			}
 
-			// TODO: factor out this and the logIn failure behavior
 			@Override
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
