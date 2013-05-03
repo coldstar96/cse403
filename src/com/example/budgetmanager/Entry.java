@@ -29,7 +29,7 @@ public class Entry implements Comparable<Entry> {
 	 * @param label String label associated with the Entry.
 	 */
 	public Entry(int amount, Budget budget, String label) {
-		this(amount, budget, notes, null);
+		this(amount, budget, label, null);
 	}
 	
 	/**
