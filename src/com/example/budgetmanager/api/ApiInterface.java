@@ -29,13 +29,14 @@ public class ApiInterface {
 
 	// The singleton instance of ApiInterface.
 	private static ApiInterface instance;
-	private static String TAG = "ApiInterface";
+	private static final String TAG = "ApiInterface";
 
 	private final String baseUrl;
 	private final String usersUrl;
 	private final String sessionUrl;
 
 	private final AsyncHttpClient client;
+
 	/**
 	 * Singleton factory method to get the singleton instance.
 	 *
