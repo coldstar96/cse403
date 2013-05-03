@@ -12,5 +12,6 @@
     <string name="title_activity_signin">SigninActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="remember_login_info">Remember me</string>
+    <string name="title_activity_add_entry">AddEntryActivity</string>
 
 </resources>
