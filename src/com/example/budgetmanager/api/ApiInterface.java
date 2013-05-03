@@ -36,7 +36,6 @@ public class ApiInterface {
 	private final String sessionUrl;
 
 	private final AsyncHttpClient client;
-	private final PersistentCookieStore cookieStore;
 	/**
 	 * Singleton factory method to get the singleton instance.
 	 *
@@ -57,7 +56,7 @@ public class ApiInterface {
 		usersUrl = baseUrl + r.getString(R.string.users);
 		sessionUrl = baseUrl + r.getString(R.string.session);
 
-		cookieStore = new PersistentCookieStore(context);
+		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
 		client.setCookieStore(cookieStore);
 
@@ -181,13 +180,13 @@ public class ApiInterface {
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
-		Log.d(TAG, "logging in!");
-		Log.d(TAG, "cookie count: " + cookieStore.getCookies().size());
+
+		Log.d(TAG, "logging in as " + email);
+
 		client.post(sessionUrl, params, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject obj) {
 				Log.d(TAG, "User " + email + " logged in");
-				Log.d(TAG, cookieStore.getCookies().get(0).getValue());
 				if (callback != null) {
 					callback.onSuccess(null);
 				}
@@ -199,7 +198,9 @@ public class ApiInterface {
 					try {
 						String nameErr = obj.getJSONArray("username").join(" ");
 						String passErr = obj.getJSONArray("password_digest").join(" ");
+
 						final String errMessage = nameErr + " " + passErr;
+
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
@@ -226,7 +227,8 @@ public class ApiInterface {
 		params.put("username", email);
 		params.put("password", password);
 
-		Log.d(TAG, "logging in as " + email);
+		Log.d(TAG, "Creating user " + email);
+
 		client.post(usersUrl, params, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject obj) {
@@ -244,7 +246,6 @@ public class ApiInterface {
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
-						// Probably some network problem, so show
 						Log.d(TAG, "JSON problems on user creation: " + e.getMessage());
 						callback.onFailure(e.getMessage());
 					}
