@@ -8,9 +8,72 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$DummySectionFragment" >
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+	<EditText
+		android:id="@+id/login_ID"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/section_label"
+		android:layout_marginTop="120dp"
+		android:layout_marginRight="20dp"
+		android:ems="10" />
+
+	<EditText
+		android:id="@+id/login_PW"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/login_ID"
+		android:layout_alignRight="@+id/login_ID"
+		android:layout_below="@+id/login_ID"
+		android:ems="10"
+		android:inputType="textPassword" />
+
+	<Button
+	    android:id="@+id/login_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/login_ID"
+	    android:layout_alignRight="@+id/login_ID"
+	    android:layout_below="@+id/login_PW"
+	    android:text="@string/loginButton" />
+
+	<EditText
+		android:id="@+id/signin_ID"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/login_ID"
+		android:layout_alignRight="@+id/login_ID"
+		android:layout_below="@+id/login_PW"
+		android:layout_marginTop="80dp"
+		android:ems="10" />
+
+	<EditText
+		android:id="@+id/signup_PW"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/login_ID"
+		android:layout_alignRight="@+id/signin_ID"
+		android:layout_below="@+id/signin_ID"
+		android:ems="10"
+		android:inputType="textPassword" />
+
+	<EditText
+		android:id="@+id/singin_CPW"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/login_ID"
+		android:layout_alignRight="@+id/signup_PW"
+		android:layout_below="@+id/signup_PW"
+		android:ems="10"
+		android:inputType="textPassword" />
+
+	<Button
+	    android:id="@+id/sign_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/login_ID"
+	    android:layout_alignRight="@+id/singin_CPW"
+	    android:layout_below="@+id/singin_CPW"
+	    android:text="@string/signupButton" />
 
 </RelativeLayout>

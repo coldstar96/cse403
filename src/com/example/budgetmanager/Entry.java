@@ -6,6 +6,7 @@ public class Entry implements Comparable<Entry> {
 	/**
 	 * The ID given to an Entry upon creation locally.
 	 */
+
 	public static final long NEW_ID = -1;
 
 	// The ID of this entry on the API server
