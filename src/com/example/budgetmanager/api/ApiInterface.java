@@ -6,12 +6,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Entry;
+import com.example.budgetmanager.R;
 import com.example.budgetmanager.UBudgetApp;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
@@ -27,8 +30,13 @@ public class ApiInterface {
 	// The singleton instance of ApiInterface.
 	private static ApiInterface instance;
 	private static String TAG = "ApiInterface";
-	
-	private AsyncHttpClient client;
+
+	private final String baseUrl;
+	private final String usersUrl;
+	private final String sessionUrl;
+
+	private final AsyncHttpClient client;
+	private final PersistentCookieStore cookieStore;
 	/**
 	 * Singleton factory method to get the singleton instance.
 	 *
@@ -44,10 +52,15 @@ public class ApiInterface {
 	}
 
 	private ApiInterface(Context context) {
-		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+		Resources r = context.getResources();
+		baseUrl = r.getString(R.string.base_url);
+		usersUrl = baseUrl + r.getString(R.string.users);
+		sessionUrl = baseUrl + r.getString(R.string.session);
+
+		cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
 		client.setCookieStore(cookieStore);
-		
+
 		// Need to specify that we want JSON back from the server.
 		client.addHeader("Accept", "application/json");
 	}
@@ -163,24 +176,38 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void logIn(String email, String password,
-			ApiCallback<Object> callback) {
+	public void logIn(final String email, final String password,
+			final ApiCallback<Object> callback) {
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
 		Log.d(TAG, "logging in!");
-		client.post("https://ubudget.herokuapp.com/session", params, new JsonHttpResponseHandler() {
+		Log.d(TAG, "cookie count: " + cookieStore.getCookies().size());
+		client.post(sessionUrl, params, new JsonHttpResponseHandler() {
+			@Override
 			public void onSuccess(JSONObject obj) {
-				try {
-					Log.d(TAG, "User name: " + obj.getJSONObject("user").getString("username"));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.d(TAG, "Error: " + e.getMessage());
+				Log.d(TAG, "User " + email + " logged in");
+				Log.d(TAG, cookieStore.getCookies().get(0).getValue());
+				if (callback != null) {
+					callback.onSuccess(null);
 				}
 			}
-			
+
+			// TODO: factor out this and the createUser failure behavior
+			@Override
 			public void onFailure(Throwable e, JSONObject obj) {
-				Log.d(TAG, "Failure: " + e.getMessage());
+				if (callback != null) {
+					try {
+						String nameErr = obj.getJSONArray("username").join(" ");
+						String passErr = obj.getJSONArray("password_digest").join(" ");
+						final String errMessage = nameErr + " " + passErr;
+						Log.d(TAG, "errors: " + errMessage);
+						callback.onFailure(errMessage);
+					} catch (JSONException ej) {
+						Log.d(TAG, "JSON problems on log in: " + e.getMessage());
+						callback.onFailure(e.getMessage());
+					}
+				}
 			}
 		});
 	}
@@ -195,18 +222,62 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
 	public void createUser(final String email, final String password,
-			ApiCallback<Object> callback) {
+			final ApiCallback<Object> callback) {
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
-		Log.d(TAG, "logging in!");
-		client.post("https://ubudget.herokuapp.com/users", params, new JsonHttpResponseHandler() {
+
+		Log.d(TAG, "logging in as " + email);
+		client.post(usersUrl, params, new JsonHttpResponseHandler() {
+			@Override
 			public void onSuccess(JSONObject obj) {
 				Log.d(TAG, "User " + email + " created");
+				if (callback != null) {
+					callback.onSuccess(null);
+				}
 			}
-			
+
+			// TODO: factor out this and the logIn failure behavior
+			@Override
 			public void onFailure(Throwable e, JSONObject obj) {
-				Log.d(TAG, "Failure: " + e.getMessage());
+				if (callback != null) {
+					try {
+						final String errMessage = obj.getJSONArray("username").join(" ");
+						Log.d(TAG, "errors: " + errMessage);
+						callback.onFailure(errMessage);
+					} catch (JSONException ej) {
+						// Probably some network problem, so show
+						Log.d(TAG, "JSON problems on user creation: " + e.getMessage());
+						callback.onFailure(e.getMessage());
+					}
+				}
+			}
+		});
+	}
+
+	/**
+	 * Checks whether or not a user is currently logged in.
+	 * 
+	 * @param callback Callbacks to run if a user is or isn't logged in.
+	 * If a user is logged in, it will call onSuccess with <code>null</code>
+	 * as its parameter.
+	 * If no user is logged in, it will call onFailure with <code>null</code>
+	 * as its parameter.
+	 */
+	public void checkLoginStatus(final ApiCallback<Object> callback) {
+		client.get(sessionUrl, new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response) {
+				if (callback != null) {
+					callback.onSuccess(null);
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e, String response) {
+				if (callback != null) {
+					callback.onFailure(null);
+				}
 			}
 		});
 	}
