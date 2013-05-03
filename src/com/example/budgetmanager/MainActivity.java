@@ -67,6 +67,8 @@ public class MainActivity extends FragmentActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
     }
+    
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,7 +207,7 @@ class AsyncDownloader extends AsyncTask<String, String, String> {
 	protected void onPostExecute(String a) {
 		PopupWindow popup = new PopupWindow();
 		
-		this.textView.setText(a);
+//		this.textView.setText(a);
 	}
 	
 }

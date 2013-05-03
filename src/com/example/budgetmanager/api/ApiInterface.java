@@ -1,5 +1,8 @@
 package com.example.budgetmanager.api;
 
+import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.Entry;
+
 public class ApiInterface {
 	public static ApiInterface getInstance() {
 		// TODO: implement
