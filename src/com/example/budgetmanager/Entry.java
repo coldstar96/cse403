@@ -3,59 +3,56 @@ package com.example.budgetmanager;
 import java.util.Date;
 
 public class Entry implements Comparable<Entry> {
-	private long entryId; // TODO: what to do with this?
+	/**
+	 * The ID given to an Entry upon creation locally.
+	 */
+	public static final long NEW_ID = -1;
 
-	private String label;	// optional label (needed?)
-	private int amount;		// in cents
-	private Budget budget;	// the Budget object this entry belongs to
-	// private String note;	// additional notes
+	// The ID of this entry on the API server
+	private long entryId;
+
+	// in cents
+	private int amount;
+
+	// the Budget object this entry belongs to
+	private Budget budget;
+
+	// additional notes
+	private String notes;
+
+	// The date that this entry's expenditure was on
 	private Date date;
-	
+
 	/**
-	 * Returns a new Entry containing amount and Budget information.
+	 * Constructs a new Entry containing id, amount, Budget, notes,
+	 * and Date information.
 	 * 
+	 * @param id The ID for this Entry in the API
 	 * @param amount The amount associated with the Entry in cents.
 	 * @param budget The Budget object that contains the Entry.
-	 */
-	public Entry(int amount, Budget budget) {
-		this(amount, budget, null, null);
-	}
-	
-	/**
-	 * Returns a new Entry containing amount, Budget, and label information.
-	 * 
-	 * @param amount The amount associated with the Entry in cents.
-	 * @param budget The Budget object that contains the Entry.
-	 * @param label String label associated with the Entry.
-	 */
-	public Entry(int amount, Budget budget, String label) {
-		this(amount, budget, label, null);
-	}
-	
-	/**
-	 * Returns a new Entry containing amount, Budget, and Date information.
-	 * 
-	 * @param amount The amount associated with the Entry in cents.
-	 * @param budget The Budget object that contains the Entry.
+	 * @param notes More detailed notes associated with the Entry.
 	 * @param date The Date associated with the Entry.
 	 */
-	public Entry(int amount, Budget budget, Date date) {
-		this(amount, budget, null, date);
-	}
-	
-	/**
-	 * Returns a new Entry containing amount, Budget, label, and Date information.
-	 * 
-	 * @param amount The amount associated with the Entry in cents.
-	 * @param budget The Budget object that contains the Entry.
-	 * @param label String label associated with the Entry.
-	 * @param date The Date associated with the Entry.
-	 */
-	public Entry(int amount, Budget budget, String label, Date date) {
+	public Entry(long id, int amount, Budget budget, String notes,
+			Date date) {
+		this.entryId = id;
 		this.amount = amount;
 		this.budget = budget;
-		this.label = label;
+		this.notes = notes;
 		this.date = date;
+	}
+	
+	/**
+	 * Constructs a new Entry containing amount, Budget, notes,
+	 * and Date information.
+	 * 
+	 * @param amount The amount associated with the Entry in cents.
+	 * @param budget The Budget object that contains the Entry.
+	 * @param notes More detailed notes associated with the Entry.
+	 * @param date The Date associated with the Entry.
+	 */
+	public Entry(int amount, Budget budget, String notes, Date date) {
+		this(NEW_ID, amount, budget, notes, date);
 	}
 
 	/**
@@ -68,23 +65,31 @@ public class Entry implements Comparable<Entry> {
 	/**
 	 * Retrieve the Budget object that holds the Entry.
 	 * 
-	 * @return Budget object that holds the Entry.
+	 * @return object that holds the Entry.
 	 */
 	public Budget getBudget() { return budget; }
 
 	/**
-	 * Retrieve the String label associated with the Entry.
+	 * Retrieve the name associated with the Entry.
 	 * 
-	 * @return String label associated with the Entry.
+	 * @return String name associated with the Entry.
 	 */
-	public String getLabel() { return label; }
+	public String getNotes() { return notes; }
+
+	/**
+	 * Retrieve the entryId of this Entry
+	 * 
+	 * @return Entry.NEW_ID if this Entry was created locally, or a nonnegative
+	 * id from the API if this entry was fetched from the API.
+	 */
+	public long getEntryId() { return entryId; }
 
 	/**
 	 * Retrieve the Date object associated with the Entry.
 	 * 
-	 * @return Date object associated with the Entry.
+	 * @return the date on which this Entry's expenditure was made on
 	 */
-	public Date getDate() { return date; }
+	public Date getDate() { return (Date) date.clone(); }
 
 	/**
 	 * Compares the other Entry to this Entry to see which precedes which.
