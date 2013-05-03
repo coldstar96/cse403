@@ -27,7 +27,7 @@
         </activity>
         
          <activity
-            android:name="com.example.budgetmanager.SigninActivity"
+            android:name="com.example.budgetmanager.RegisterActivity"
             android:label="@string/title_activity_signin" >
         </activity>
         
