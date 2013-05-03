@@ -13,16 +13,20 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:screenOrientation="landscape" >
+        android:screenOrientation="portrait" >
         <activity
-            android:name="com.example.budgetmanager.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:name="com.example.budgetmanager.AddEntryActivity"
+            android:label="@string/title_activity_add_entry" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.LoginActivity"
+            android:label="@string/loginButton"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name="com.example.budgetmanager.RegisterActivity"
@@ -31,15 +35,7 @@
         <activity
             android:name="com.example.budgetmanager.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.budgetmanager.AddEntryActivity"
-            android:label="@string/title_activity_add_entry" >
         </activity>
     </application>
 

@@ -14,4 +14,26 @@
     <string name="remember_login_info">Remember me</string>
     <string name="title_activity_add_entry">AddEntryActivity</string>
 
+        
+    <string-array name="country_arrays">
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+        <item>South Korea</item>
+        <item>Poop</item>
+        <item>Pee</item>
+        <item>Kobe</item>
+        <item>Ramsey</item>
+        <item>Lolol</item>
+        <item>TROLOLOL</item>
+        <item>8OO85</item>
+        
+    </string-array>
+    
+    
 </resources>

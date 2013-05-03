@@ -55,7 +55,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // setContentView(R.layout.activity_main);
+        setContentView(R.layout.add_activity_main);
 
 
         // Create the adapter that will return a fragment for each of the three
