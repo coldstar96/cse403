@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Budget {
 	public static enum Duration {
-		DAILY, WEEKLY, FORTNIGHTLY, MONTHLY, YEARLY, OTHER
+		DAY, WEEK, FORTNIGHT, MONTH, YEAR, OTHER
 	}
 	
 	public static final long NEW_ID = -1;
@@ -25,7 +25,7 @@ public class Budget {
 	private boolean recur;		// true for recurring budget
 
 	private Calendar startDate;
-	private Duration durationType;	// Duration type.
+	private Duration duration;	// Duration type.
 	private int otherDuration;		// Duration in days, for duration type OTHER.
 	
 	private List<Entry> entries;
@@ -53,19 +53,19 @@ public class Budget {
 	 * @param currentAmount The current amount spent in this <code>Budget</code>.
 	 * @param recur Whether this <code>Budget</code> recurs.
 	 * @param startTime The start time, in milliseconds, of this <code>Budget</code>.
-	 * @param durationType The type of duration in this <code>Budget</code>.
+	 * @param duration The type of duration in this <code>Budget</code>.
 	 * @param otherDuration The other duration length, in days, if 
 	 *                      <code>durationType</code> is <code>OTHER</code>.
 	 */
 	public Budget(String name, int amount, int currentAmount, boolean recur,
-			long startTime, String durationType, int otherDuration) {
+			long startTime, String duration, int otherDuration) {
 		this.name = name;
 		this.amount = amount;
 		this.currentAmount = currentAmount;
 		this.recur = recur;
 		this.startDate = Calendar.getInstance();
 		this.startDate.setTimeInMillis(startTime);
-		this.durationType = Duration.valueOf(durationType);
+		this.duration = Duration.valueOf(duration);
 		this.otherDuration = otherDuration;
 	}
 	
@@ -157,18 +157,18 @@ public class Budget {
 	public int getCurrentCycle() {
 		Calendar now = Calendar.getInstance();
 		
-		switch (durationType) {
-		case DAILY:
+		switch (duration) {
+		case DAY:
 			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (24*60*60*1000.0));
-		case WEEKLY:
+		case WEEK:
 			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (7*24*60*60*1000.0));
-		case FORTNIGHTLY:
+		case FORTNIGHT:
 			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (14*24*60*60*1000.0));
-		case MONTHLY:
+		case MONTH:
 			return 	((now.get(Calendar.YEAR) - startDate.get(Calendar.YEAR)) * 12) + 
 					(now.get(Calendar.MONTH) - startDate.get(Calendar.MONTH)) +
 					(now.get(Calendar.DAY_OF_MONTH) < startDate.get(Calendar.DAY_OF_MONTH) ? 0 : 1);
-		case YEARLY:
+		case YEAR:
 			int startYear = startDate.get(Calendar.YEAR);
 			int thisYear = now.get(Calendar.YEAR);
 			
@@ -213,14 +213,14 @@ public class Budget {
 			throw new IllegalArgumentException("Cannot get the cycle > 1 of non-recurring Budget.");
 		}
 		
-		switch (durationType) {
-		case DAILY:
+		switch (duration) {
+		case DAY:
 			return startDate.getTimeInMillis() + (cycle - 1) * (24*60*60*1000);
-		case WEEKLY:
+		case WEEK:
 			return startDate.getTimeInMillis() + (cycle - 1) * (7*24*60*60*1000);
-		case FORTNIGHTLY:
+		case FORTNIGHT:
 			return startDate.getTimeInMillis() + (cycle - 1) * (14*24*60*60*1000);
-		case MONTHLY:
+		case MONTH:
 			Calendar monthCycleStart = (Calendar) startDate.clone();
 			
 			monthCycleStart.add(Calendar.MONTH, cycle - 1);
@@ -232,7 +232,7 @@ public class Budget {
 			}
 			
 			return monthCycleStart.getTimeInMillis();
-		case YEARLY:
+		case YEAR:
 			Calendar yearCycleStart = (Calendar) startDate.clone();
 			
 			yearCycleStart.add(Calendar.YEAR, cycle - 1);
