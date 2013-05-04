@@ -13,6 +13,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="remember_login_info">Remember me</string>
     <string name="title_activity_add_entry">AddEntryActivity</string>
+    <string name="label_amount">Amount</string>
 
         
     <string-array name="country_arrays">

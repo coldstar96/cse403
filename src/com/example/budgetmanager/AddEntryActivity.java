@@ -15,17 +15,23 @@ public class AddEntryActivity extends Activity {
 	private String currentBudget = "china";
 	
 	@Override
+	/** Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // get rid of the title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        // inflate view
         setContentView(R.layout.add_activity_main);
         
+        // populate list items for the budget selector
         addItemsToBudgetSpinner();
     }
 
 	private void addItemsToBudgetSpinner() {
 		// TODO Auto-generated method stub
-		budgetSpinner = (Spinner) findViewById(R.id.budget_spinner);
+		budgetSpinner = (Spinner) findViewById(R.id.spinner_budget);
 		List<String> list = new ArrayList<String>();
 		list.add(currentBudget);
 		list.add("poop");
@@ -36,8 +42,8 @@ public class AddEntryActivity extends Activity {
 		list.add("booots");
 		list.add("boobies");
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				R.layout.spinner_layout, list);
+		dataAdapter.setDropDownViewResource(R.layout.spinner_entry_layout);
 		budgetSpinner.setAdapter(dataAdapter);
 		budgetSpinner.setOnItemSelectedListener(new OnBudgetSelectedListener());
 	}
