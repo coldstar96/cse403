@@ -20,5 +20,7 @@
     <string name="action_retry_log_in">Try again</string>
     <string name="dialog_fail_register">This email address already exists. Please try with different email address.</string>
     <string name="error_no_match_password">This password does not match the password above.</string>
+    <string name="dialog_fail_log_in_title">Failed logging in</string>
+    <string name="dialog_fail_register_title">Failed registering</string>
 
 </resources>
