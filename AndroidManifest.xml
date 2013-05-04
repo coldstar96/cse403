@@ -16,7 +16,7 @@
         android:screenOrientation="portrait"
         android:theme="@android:style/Theme.NoTitleBar">
         <activity
-            android:name="com.example.budgetmanager.LoginActivity"
+            android:name="LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.budgetmanager.RegisterActivity"
+            android:name="RegisterActivity"
             android:label="@string/title_activity_signin" >
         </activity>
     </application>
