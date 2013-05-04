@@ -17,7 +17,7 @@
         android:theme="@android:style/Theme.NoTitleBar">
         
         <activity
-            android:name="com.example.budgetmanager.AddEntryActivity"
+            android:name="AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +26,13 @@
         </activity>
         
         <activity
-            android:name="com.example.budgetmanager.LoginActivity"
-            android:label="@string/loginButton"
+            android:name="LoginActivity"
+            android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-
         </activity>
         
         <activity
-            android:name="com.example.budgetmanager.RegisterActivity"
+            android:name="RegisterActivity"
             android:label="@string/title_activity_signin" >
         </activity>
     </application>
