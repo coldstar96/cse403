@@ -80,8 +80,35 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is a {@link Long} that represents
 	 * the ID of the Budget on the server.
 	 */
-	public void create(Budget b, ApiCallback<Long> callback) {
-		// TODO: implement
+	public void create(final Budget b, final ApiCallback<Long> callback) {
+		RequestParams params = new RequestParams();
+		params.put("budget_name", b.getName());
+		params.put("amount", "" + b.getBudgetAmount());
+		params.put("recur", "" + b.doesRecur());
+		params.put("start_date", "" + b.startTimeMillis());
+		params.put("recurrence_duration", b.getDuration().toString());
+		params.put("other_duration", "" + b.getOtherDuration());
+
+		client.post(budgetsUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					long id = obj.getLong("id");
+					b.setId(id);
+					callback.onSuccess(id);
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send an ID
+					// But it's designed to always send an ID.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e) {
+				callback.onFailure(e.getMessage());
+			}
+		});
 	}
 
 	/**
