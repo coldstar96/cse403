@@ -7,26 +7,29 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 
 public class AddEntryActivity extends Activity {
     
 	private Spinner budgetSpinner;
+	private DatePicker datePicker;
 	private String currentBudget = "china";
-	
+
 	@Override
 	/** Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         // get rid of the title bar
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         
         // inflate view
         setContentView(R.layout.add_activity_main);
         
         // populate list items for the budget selector
         addItemsToBudgetSpinner();
+        datePicker = (DatePicker) findViewById(R.id.date_picker);
     }
 
 	private void addItemsToBudgetSpinner() {

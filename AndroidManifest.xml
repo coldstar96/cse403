@@ -15,6 +15,7 @@
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
         android:theme="@android:style/Theme.NoTitleBar">
+        
         <activity
             android:name="com.example.budgetmanager.AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
@@ -23,11 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.example.budgetmanager.LoginActivity"
             android:label="@string/loginButton"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+
         </activity>
+        
         <activity
             android:name="com.example.budgetmanager.RegisterActivity"
             android:label="@string/title_activity_signin" >
