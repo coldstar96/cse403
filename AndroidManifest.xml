@@ -13,7 +13,8 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:screenOrientation="portrait" >
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.NoTitleBar">
         <activity
             android:name="com.example.budgetmanager.LoginActivity"
             android:label="@string/title_activity_login"

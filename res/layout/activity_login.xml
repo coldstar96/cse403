@@ -11,10 +11,8 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="gone" 
-        >
+        android:visibility="gone" >
 
-        
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
@@ -36,18 +34,23 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        
-        
+        android:layout_height="match_parent"
+        android:background="@drawable/loginbackground" >
+
         <LinearLayout
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
-            
+
+            <FrameLayout
+                android:background="@drawable/loginbackground"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </FrameLayout>
+
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="80dp"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -80,7 +83,7 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/action_log_in" />
-            
+
             <Button
                 android:id="@+id/register_button"
                 android:layout_width="match_parent"
@@ -90,7 +93,6 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/action_register" />
-
         </LinearLayout>
     </ScrollView>
 
