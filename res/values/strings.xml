@@ -4,5 +4,7 @@
     <string name="app_name">uBudget</string>
     <string name="action_settings">Settings</string>   <string name="loginButton">Log in</string>
     <string name="title_activity_signin">SigninActivity</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_close">Close</string>
 
 </resources>
