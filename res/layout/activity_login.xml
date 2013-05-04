@@ -68,11 +68,11 @@
                 android:maxLines="1"
                 android:singleLine="true" />
 
-            <CheckBox
+<!--             <CheckBox
                 android:id="@+id/log_in_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/remember_login_info" />
+                android:text="@string/remember_login_info" /> -->
 
             <Button
                 android:id="@+id/log_in_button"
