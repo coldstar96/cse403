@@ -125,7 +125,7 @@ public class RegisterActivity extends Activity {
 
 		};
 		
-		findViewById(R.id.log_in_button).setOnClickListener(
+		findViewById(R.id.register_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {

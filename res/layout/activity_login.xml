@@ -11,7 +11,8 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="gone" 
+        >
 
         
         <ProgressBar
