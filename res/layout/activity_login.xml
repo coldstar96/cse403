@@ -43,7 +43,7 @@
 
             <FrameLayout
                 android:background="@drawable/ubudgettitle"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
             </FrameLayout>
 
@@ -67,12 +67,6 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-
-<!--             <CheckBox
-                android:id="@+id/log_in_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remember_login_info" /> -->
 
             <Button
                 android:id="@+id/log_in_button"
