@@ -35,16 +35,17 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/loginbackground" >
+        android:background="@drawable/ubudgetbackground" >
 
         <LinearLayout
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
 
             <FrameLayout
-                android:background="@drawable/loginbackground"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/ubudgettitle" >
             </FrameLayout>
 
             <EditText
@@ -67,12 +68,6 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-
-            <CheckBox
-                android:id="@+id/log_in_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remember_login_info" />
 
             <Button
                 android:id="@+id/log_in_button"
