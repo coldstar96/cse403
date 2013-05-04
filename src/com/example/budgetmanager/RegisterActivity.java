@@ -40,6 +40,7 @@ public class RegisterActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private String mPasswordCheck;
 
 	// UI references.
 	private EditText mEmailView;
@@ -166,10 +167,12 @@ public class RegisterActivity extends Activity {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
+		mPasswordCheckView.setError(null);
 
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
+		mPasswordCheck = mPasswordCheckView.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
@@ -182,6 +185,17 @@ public class RegisterActivity extends Activity {
 		} else if (mPassword.length() < 4) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
+			cancel = true;
+		}
+		
+		// Check for a password match.
+		if (TextUtils.isEmpty(mPasswordCheck)) {
+			mPasswordCheckView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			cancel = true;
+		} else if (!mPassword.equals(mPasswordCheck)) {
+			mPasswordCheckView.setError(getString(R.string.error_no_match_password));
+			focusView = mPasswordCheckView;
 			cancel = true;
 		}
 
