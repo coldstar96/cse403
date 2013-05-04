@@ -26,7 +26,7 @@ public class AddEntryActivity extends Activity {
 	private DatePicker mDateView;
 	private EditText mNotesView;
 
-	private String currentBudget = "china";
+	private String currentBudget = "Overall";
 
 	@Override
 	/** Called when the activity is first created. */
@@ -51,13 +51,11 @@ public class AddEntryActivity extends Activity {
 		// TODO: populate with real Budget objects once that is available.
 		List<String> list = new ArrayList<String>();
 		list.add(currentBudget);
-		list.add("poop");
-		list.add("bee");
-		list.add("lol");
-		list.add("gaga");
-		list.add("tooots");
-		list.add("booots");
-		list.add("boobies");
+		list.add("Food");
+		list.add("Clothes");
+		list.add("Transportation");
+		list.add("Drinks");
+		list.add("Groceries");
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				R.layout.spinner_layout, list);
 		dataAdapter.setDropDownViewResource(R.layout.spinner_entry_layout);
