@@ -16,6 +16,7 @@ public class Budget {
 	}
 	
 	public static final long NEW_ID = -1;
+	public static final long ONE_DAY = 24*60*60*1000;
 	
 	private long budgetId;
 	
@@ -74,26 +75,28 @@ public class Budget {
 	 * 
 	 * @param budgetId The ID of this <code>Budget</code>.
 	 */
-	public void setId(long budgetId) {
-		this.budgetId = budgetId;
-	}
+	public void setId(long budgetId) { this.budgetId = budgetId; }
 	
 	/**
 	 * Gets the <code>Budget</code> ID.
 	 * 
 	 * @return The <code>Budget</code> ID.
 	 */
-	public long getId() {
-		return budgetId;
-	}
+	public long getId() { return budgetId; }
 	
 	/**
-	 * Adds a new entry with the <code>amount</code>, <code>name</code>,
-	 * <code>note</code> and a specified <code>date</code> to this budget.
+	 * Adds a new <code>entry</code> to the <code>Budget</code>.
 	 * 
 	 * @param entry The entry to add.
+	 * @throws IllegalArgumentException if <code>entry</code> already
+	 *                                  exists in this budget.
 	 */
 	public void addEntry(Entry entry) {
+		if (entries.contains(entry)) {
+			throw new IllegalArgumentException("Tried to add entry to " +
+					"budget that already contained it.");
+		}
+		currentAmount += entry.getAmount();
 		entries.add(entry);
 	}
 	
@@ -105,6 +108,11 @@ public class Budget {
 	 * 									entry of this budget.
 	 */
 	public void removeEntry(Entry entry) {
+		if (!entries.contains(entry)) {
+			throw new IllegalArgumentException("Tried to remove entry from " +
+					"budget that did not contain it.");
+		}
+		currentAmount -= entry.getAmount();
 		entries.remove(entry);
 	}
 	
@@ -134,7 +142,7 @@ public class Budget {
 	 */
 	public int getCurrentAmount() {
 		// TODO: Need to check to see if the memorized amount is out-of date
-		//       i.e. new cycle or added/removed entries.
+		//       i.e. new cycle
 		return currentAmount;
 	}
 	
@@ -157,13 +165,14 @@ public class Budget {
 	public int getCurrentCycle() {
 		Calendar now = Calendar.getInstance();
 		
+		long timeDiffInMillis = now.getTimeInMillis() - startDate.getTimeInMillis();
 		switch (duration) {
 		case DAY:
-			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (24*60*60*1000.0));
+			return (int) Math.ceil(timeDiffInMillis / (double) ONE_DAY);
 		case WEEK:
-			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (7*24*60*60*1000.0));
+			return (int) Math.ceil(timeDiffInMillis / (double) 7 * ONE_DAY);
 		case FORTNIGHT:
-			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (14*24*60*60*1000.0));
+			return (int) Math.ceil(timeDiffInMillis / (double) 14 * ONE_DAY);
 		case MONTH:
 			return 	((now.get(Calendar.YEAR) - startDate.get(Calendar.YEAR)) * 12) + 
 					(now.get(Calendar.MONTH) - startDate.get(Calendar.MONTH)) +
@@ -177,12 +186,14 @@ public class Budget {
 				// day was after leap day.
 				if (startDate.get(Calendar.DAY_OF_YEAR) > 60 &&
 						!((thisYear % 4 == 0) && (thisYear % 100 != 0) || (thisYear % 400 == 0)))
-					return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR) < startDate.get(Calendar.DAY_OF_YEAR) + 1 ? 0 : 1);
+					return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR) 
+							< startDate.get(Calendar.DAY_OF_YEAR) + 1 ? 0 : 1);
 			}
 			
-			return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR) < startDate.get(Calendar.DAY_OF_YEAR) ? 0 : 1);
+			return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR) 
+					< startDate.get(Calendar.DAY_OF_YEAR) ? 0 : 1);
 		case OTHER:
-			return (int) Math.ceil((now.getTimeInMillis() - startDate.getTimeInMillis()) / (otherDuration*24*60*60*1000.0));
+			return (int) Math.ceil(timeDiffInMillis / (double) otherDuration * ONE_DAY);
 		}
 		
 		throw new IllegalStateException("Budget must have a duration type specified.");
@@ -215,11 +226,11 @@ public class Budget {
 		
 		switch (duration) {
 		case DAY:
-			return startDate.getTimeInMillis() + (cycle - 1) * (24*60*60*1000);
+			return startDate.getTimeInMillis() + (cycle - 1) * ONE_DAY;
 		case WEEK:
-			return startDate.getTimeInMillis() + (cycle - 1) * (7*24*60*60*1000);
+			return startDate.getTimeInMillis() + (cycle - 1) * 7 * ONE_DAY;
 		case FORTNIGHT:
-			return startDate.getTimeInMillis() + (cycle - 1) * (14*24*60*60*1000);
+			return startDate.getTimeInMillis() + (cycle - 1) * 14 * ONE_DAY;
 		case MONTH:
 			Calendar monthCycleStart = (Calendar) startDate.clone();
 			
@@ -245,7 +256,7 @@ public class Budget {
 			
 			return yearCycleStart.getTimeInMillis();
 		case OTHER:
-			return startDate.getTimeInMillis() + (cycle - 1) * (otherDuration*24*60*60*1000);
+			return startDate.getTimeInMillis() + (cycle - 1) * otherDuration * ONE_DAY;
 		}
 		
 		throw new IllegalStateException("Budget must have a duration type specified.");
