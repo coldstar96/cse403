@@ -113,10 +113,10 @@ public class LoginActivity extends Activity {
 	}
 	
 	public void moveToActivity(Class cls){
-		Intent activity = new Intent(this, cls);
-		activity.putExtra("email", mEmailView.getText().toString());
-		activity.putExtra("password", mPasswordView.getText().toString());
-		startActivity(activity);
+		Intent intent = new Intent(this, cls);
+		intent.putExtra("email", mEmailView.getText().toString());
+		intent.putExtra("password", mPasswordView.getText().toString());
+		startActivity(intent);
 	}
 
 	@Override
