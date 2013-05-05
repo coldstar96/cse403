@@ -20,8 +20,8 @@ public class LogoActivity extends Activity {
 					sleep(4000);	//sleep for 5 seconds
 				}catch(InterruptedException e){
 				}finally{
-					finish();
 					startActivity(new Intent(LogoActivity.this, LoginActivity.class));
+					finish();
 				}
 			}
 		};

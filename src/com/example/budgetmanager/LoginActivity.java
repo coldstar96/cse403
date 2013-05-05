@@ -47,7 +47,7 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
 	
-	private boolean loginProgress;
+	private boolean loginSuccessful;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +84,13 @@ public class LoginActivity extends Activity {
 			// Create popup dialog for retry/register
 			@Override
 			public void onFailure(String errorMessage) {
-				loginProgress = false;
+				loginSuccessful = false;
 			}
 			
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				loginProgress = true;;
+				loginSuccessful = true;;
 			}
 
 		};
@@ -180,7 +180,7 @@ public class LoginActivity extends Activity {
 			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
 			showProgress(false);
 			
-			if (loginProgress) {
+			if (loginSuccessful) {
 				moveToActivity(AddEntryActivity.class);
 			} else {
 				Toast.makeText(this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
