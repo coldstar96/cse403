@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Budget {
 	private Duration duration;	// Duration type.
 	private int otherDuration;		// Duration in days, for duration type OTHER.
 
-	private List<Entry> entries;
+	private List<Entry> entries = new ArrayList<Entry>();
 
 	/**
 	 * Create a new <code>Budget</code>.

@@ -102,6 +102,7 @@ public class LoginActivity extends Activity {
 
 						// Add these budgets to the application state
 						List<Budget> budgetList = app.getBudgetList();
+						budgetList.clear();
 						budgetList.addAll(result);
 
 						for (Budget b : budgetList) {
