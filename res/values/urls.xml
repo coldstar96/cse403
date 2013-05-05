@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="users_index">http://ubudget.herokuapp.com/users</string>    
+	<!-- Once the remnants of the ZFR are removed, we can remove the users_index string. -->
+	<string name="users_index">https://ubudget.herokuapp.com/users</string>
+	<string name="base_url">https://ubudget.herokuapp.com</string>
+	<string name="users">/users</string>
+	<string name="session">/session</string>
+	<string name="budgets">/budgets</string>
+	<string name="entries">/entries</string>
 </resources>

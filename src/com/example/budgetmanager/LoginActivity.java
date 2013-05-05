@@ -107,8 +107,8 @@ public class LoginActivity extends Activity {
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				//Intent addEntryActivity = new Intent(LoginActivity.this, AddEntryActivity.class);
-				//startActivity(addEntryActivity);
+				// Intent addEntryActivity = new Intent(LoginActivity.this, AddEntryActivity.class);
+				// startActivity(addEntryActivity);
 			}
 
 		};
