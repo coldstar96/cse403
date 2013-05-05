@@ -107,6 +107,11 @@ public class AddEntryActivity extends Activity {
 		} else {			
 			// create the Entry object to add to the Budget
 			final Entry newEntry = createEntry();
+			
+			if (newEntry == null) {
+				// do nothing until add Budget activity is up
+				return;
+			}
 
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
@@ -146,6 +151,11 @@ public class AddEntryActivity extends Activity {
 		
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
+		// temporary place holder until add Budget activity is up.
+		if (mBudgetView.getSelectedItemPosition() == budgetList.size()) {
+			Toast.makeText(this, "Add budget functionality doesn't exist yet.", Toast.LENGTH_LONG).show();
+			return null;
+		}
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		String notes = mNotesView.getText().toString();
