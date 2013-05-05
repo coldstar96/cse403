@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class Budget {
 		this.startDate.setTimeInMillis(startTime);
 		this.duration = Duration.valueOf(duration);
 		this.otherDuration = otherDuration;
+		this.entries = new ArrayList<Entry>();
 	}
 
 	/**

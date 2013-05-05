@@ -6,7 +6,6 @@ public class Entry implements Comparable<Entry> {
 	/**
 	 * The ID given to an Entry upon creation locally.
 	 */
-
 	public static final long NEW_ID = -1;
 
 	// The ID of this entry on the API server
@@ -19,7 +18,8 @@ public class Entry implements Comparable<Entry> {
 	private int amount;
 
 	// The date that this entry's expenditure was on
-	private Date date;
+	// Format: YYYY-MM-DD
+	private String date;
 
 	// additional notes
 	private String notes;
@@ -32,10 +32,10 @@ public class Entry implements Comparable<Entry> {
 	 * @param amount The amount associated with the Entry in cents.
 	 * @param budget The Budget object that contains the Entry.
 	 * @param notes More detailed notes associated with the Entry.
-	 * @param date The Date associated with the Entry.
+	 * @param date The date associated with the Entry.
 	 */
 	public Entry(long id, int amount, Budget budget, String notes,
-			Date date) {
+			String date) {
 		this.entryId = id;
 		this.amount = amount;
 		this.budget = budget;
@@ -50,9 +50,9 @@ public class Entry implements Comparable<Entry> {
 	 * @param amount The amount associated with the Entry in cents.
 	 * @param budget The Budget object that contains the Entry.
 	 * @param notes More detailed notes associated with the Entry.
-	 * @param date The Date associated with the Entry.
+	 * @param date The date associated with the Entry.
 	 */
-	public Entry(int amount, Budget budget, String notes, Date date) {
+	public Entry(int amount, Budget budget, String notes, String date) {
 		this(NEW_ID, amount, budget, notes, date);
 	}
 
@@ -91,13 +91,13 @@ public class Entry implements Comparable<Entry> {
 	 * @param id The ID of this entry as represented on the server
 	 */
 	public void setEntriId(long id) { this.entryId = id; }
-
-	/**
-	 * Retrieve the Date object associated with the Entry.
-	 *
-	 * @return the date on which this Entry's expenditure was made on
+	 
+  /*
+   * Retrieve the date string associated with the Entry.
+   *
+   * @return the date on which this Entry's expenditure was made on
 	 */
-	public Date getDate() { return (Date) date.clone(); }
+	public String getDate() { return date; }
 
 	/**
 	 * Compares the other Entry to this Entry to see which precedes which.
