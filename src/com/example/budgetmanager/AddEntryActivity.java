@@ -19,7 +19,8 @@ import android.widget.Toast;
  * Activity which allows users to add entries.
  */
 public class AddEntryActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.example.budgetmanager.MESSAGE";
+	final static String EXTRA_MESSAGE = "com.example.budgetmanager.MESSAGE";
+	final static int CENTS = 100;
 	
 	// views to extract information from
 	private Spinner mBudgetView;
@@ -87,10 +88,35 @@ public class AddEntryActivity extends Activity {
 //		String message = editText.getText().toString();
 //		intent.putExtra(EXTRA_MESSAGE, message);
 //		startActivity(intent);
-		Toast.makeText(this, "Added $" + mAmountView.getText().toString() + " to the " + mBudgetView.getSelectedItem().toString() + " budget "
-				+ "with the date of: " + (mDateView.getMonth() + 1) + "/" + mDateView.getDayOfMonth() + "/" + mDateView.getYear() + " with a note of: "
-				+ mNotesView.getText().toString()
-   				, Toast.LENGTH_LONG).show();
+		if (mAmountView.getText().toString().equals("")) {
+			Toast.makeText(this, "Please specify an amount.", 
+					Toast.LENGTH_LONG).show();
+		} else {
+			// create the Entry object to add to the Budget
+			Entry newEntry = createEntry();
+			Double doubleAmount = (double) newEntry.getAmount() / CENTS;
+			Toast.makeText(this, "Added $" + doubleAmount + " to the " + mBudgetView.getSelectedItem().toString() + " budget "
+					+ "with the date of: " + newEntry.getDate() + " with a note of: "
+					+ newEntry.getNotes()
+	   				, Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	private Entry createEntry() {
+		// extract the amount information
+		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
+		// amount will be stored in cents
+		int intAmount = (int) doubleAmount * CENTS;
+		
+		// TODO: fix this
+		Budget budget = null;
+
+		String notes = mNotesView.getText().toString();
+		
+		// format the string so that the server will parse the date correctly
+		String date = mDateView.getYear() + "-" + (mDateView.getMonth() + 1) + "-" + mDateView.getDayOfMonth();
+		
+		return new Entry(intAmount, budget, notes, date);
 	}
 	
 	/**
@@ -99,10 +125,13 @@ public class AddEntryActivity extends Activity {
 	 * @param view The current state of add Entry view.
 	 */
 	public void clearEntry(View view) {
-		//get current time
+		// set the spinner to the first item on the list
+		mBudgetView.setSelection(0);
+		
+		// get current time
 		Time now = new Time();
 		now.setToNow();
-		//update the DatePicker
+		// update the DatePicker
 		mDateView.updateDate(now.year, now.month, now.monthDay);
 		
 		// clear the EditText fields
