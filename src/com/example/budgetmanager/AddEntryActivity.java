@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
+
 /**
  * Activity which allows users to add entries.
  */
@@ -98,23 +101,35 @@ public class AddEntryActivity extends Activity {
 	 * @param view The current state of the add Entry view.
 	 */
 	public void addEntry(View view) {
-		// TODO: finish this once Budgets are available
-//		Intent intent = new Intent(this, DisplayMessageActivity.class);
-//		EditText editText = (EditText) findViewById(R.id.edit_message);
-//		String message = editText.getText().toString();
-//		intent.putExtra(EXTRA_MESSAGE, message);
-//		startActivity(intent);
 		if (mAmountView.getText().toString().equals("")) {
+			// amount is a required field
 			Toast.makeText(this, "Please specify an amount.", 
 					Toast.LENGTH_LONG).show();
 		} else {			
 			// create the Entry object to add to the Budget
-			Entry newEntry = createEntry();
-			Double doubleAmount = (double) newEntry.getAmount() / CENTS;
-			Toast.makeText(this, "Added $" + doubleAmount + " to the " + newEntry.getBudget().getName() + " budget "
-					+ "with the date of: " + newEntry.getDate() + " with a note of: "
-					+ newEntry.getNotes()
-	   				, Toast.LENGTH_LONG).show();
+			final Entry newEntry = createEntry();
+
+			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
+				@Override
+				public void onSuccess(Long result) {
+					// TODO Auto-generated method stub
+					Toast.makeText(AddEntryActivity.this, "Added $" 
+					+ ((double) newEntry.getAmount() / CENTS) + " to the " 
+							+ newEntry.getBudget().getName() + " budget "
+							+ "with the date of: " + newEntry.getDate() 
+							+ " with a note of: " + newEntry.getNotes()
+			   				, Toast.LENGTH_LONG).show();
+					
+					// clear the fields if the add was successful
+					AddEntryActivity.this.clearEntry();
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					// TODO Auto-generated method stub
+					Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+				}
+			});
 		}
 	}
 	
@@ -122,7 +137,7 @@ public class AddEntryActivity extends Activity {
 		// extract the amount information
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
 		// amount will be stored in cents
-		int intAmount = (int) doubleAmount * CENTS;
+		int intAmount = (int) (doubleAmount * CENTS);
 		
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
@@ -132,16 +147,14 @@ public class AddEntryActivity extends Activity {
 		
 		// format the string so that the server will parse the date correctly
 		String date = mDateView.getYear() + "-" + (mDateView.getMonth() + 1) + "-" + mDateView.getDayOfMonth();
-		
+		Log.d("createEntry", ""+intAmount);
 		return new Entry(intAmount, budget, notes, date);
 	}
 
 	/**
 	 * Resets the add Entry view.
-	 *
-	 * @param view The current state of add Entry view.
 	 */
-	public void clearEntry(View view) {
+	public void clearEntry() {
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);
 		
