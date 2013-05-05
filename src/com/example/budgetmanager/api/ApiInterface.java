@@ -1,8 +1,10 @@
 package com.example.budgetmanager.api;
 import com.example.budgetmanager.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +37,8 @@ public class ApiInterface {
 	private final String baseUrl;
 	private final String usersUrl;
 	private final String sessionUrl;
+	private final String budgetsUrl;
+	private final String entriesUrl;
 
 	private final AsyncHttpClient client;
 
@@ -57,6 +61,8 @@ public class ApiInterface {
 		baseUrl = r.getString(R.string.base_url);
 		usersUrl = baseUrl + r.getString(R.string.users);
 		sessionUrl = baseUrl + r.getString(R.string.session);
+		budgetsUrl = baseUrl + r.getString(R.string.budgets);
+		entriesUrl = baseUrl + r.getString(R.string.entries);
 
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
@@ -75,8 +81,35 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is a {@link Long} that represents
 	 * the ID of the Budget on the server.
 	 */
-	public void create(Budget b, ApiCallback<Long> callback) {
-		// TODO: implement
+	public void create(final Budget b, final ApiCallback<Long> callback) {
+		RequestParams params = new RequestParams();
+		params.put("budget_name", b.getName());
+		params.put("amount", "" + b.getBudgetAmount());
+		params.put("recur", "" + b.doesRecur());
+		params.put("start_date", "" + b.startTimeMillis());
+		params.put("recurrence_duration", b.getDuration().toString());
+		params.put("other_duration", "" + b.getOtherDuration());
+
+		client.post(budgetsUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					long id = obj.getLong("id");
+					b.setId(id);
+					callback.onSuccess(id);
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send an ID
+					// But it's designed to always send an ID.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e) {
+				callback.onFailure(e.getMessage());
+			}
+		});
 	}
 
 	/**
@@ -150,8 +183,49 @@ public class ApiInterface {
 	 * {@link java.util.List}&lt;{@link Budget}&gt;
 	 * containing all Budgets for the current user.
 	 */
-	public void fetchBudgets(ApiCallback<List<Budget>> callback) {
-		// TODO: implement
+	public void fetchBudgets(final ApiCallback<List<Budget>> callback) {
+		Log.d(TAG, "Fetching budgets");
+
+		client.get(budgetsUrl, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONArray budgetsJson) {
+				List<Budget> budgetList = new ArrayList<Budget>();
+
+				int budgetsLen = budgetsJson.length();
+
+				for (int i = 0; i < budgetsLen; ++i) {
+					try {
+						JSONObject budgetObject = budgetsJson.getJSONObject(i);
+
+						String budgetName = budgetObject.getString("budget_name");
+						String duration = budgetObject.getString("recurrence_duration");
+						int amount = budgetObject.getInt("amount");
+						int currentAmount = budgetObject.optInt("amount_so_far");
+						int otherDuration = budgetObject.optInt("other_duration");
+						boolean recur = budgetObject.optBoolean("recur");
+						long startDate = budgetObject.getLong("start_date");
+						long id = budgetObject.getLong("id");
+
+						Budget newBudget = new Budget(budgetName, amount,
+								currentAmount, recur, startDate,
+								duration, otherDuration);
+						newBudget.setId(id);
+
+						budgetList.add(newBudget);
+					} catch (JSONException e) {
+						Log.e(TAG, e.getMessage());
+					}
+				}
+
+				callback.onSuccess(budgetList);
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject obj) {
+				String status = obj.optString("status", "Service Error");
+				callback.onFailure(status);
+			}
+		});
 	}
 
 	/**
@@ -258,7 +332,7 @@ public class ApiInterface {
 
 	/**
 	 * Checks whether or not a user is currently logged in.
-	 * 
+	 *
 	 * @param callback Callbacks to run if a user is or isn't logged in.
 	 * If a user is logged in, it will call onSuccess with <code>null</code>
 	 * as its parameter.
