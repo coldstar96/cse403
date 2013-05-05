@@ -17,7 +17,7 @@ public class LogoActivity extends Activity {
 		Thread logoTimer = new Thread(){
 			public void run(){
 				try{
-					sleep(4000);	//sleep for 5 seconds
+					sleep(3500);	//sleep for 5 seconds
 				}catch(InterruptedException e){
 				}finally{
 					startActivity(new Intent(LogoActivity.this, LoginActivity.class));
