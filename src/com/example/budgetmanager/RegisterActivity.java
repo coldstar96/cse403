@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -130,13 +129,6 @@ public class RegisterActivity extends Activity {
 		startActivity(regActivity);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-	
 	public void onClick(View v) { 
 	    switch (v.getId()) { 
 	    case R.id.register_button:
