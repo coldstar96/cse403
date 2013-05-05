@@ -88,7 +88,11 @@ public class ApiInterface {
 	 * ID of the Entry on the server.
 	 */
 	public void create(Entry e, ApiCallback<Long> callback) {
-		// TODO: implement
+		RequestParams params = new RequestParams();
+		params.put("amount", "" + e.getAmount());
+		params.put("notes", e.getNotes());
+		params.put("expenditure_date", e.getDate().toString());
+		params.put("budget_id", "" + e.getBudget().getId());
 	}
 
 	/**
@@ -257,7 +261,7 @@ public class ApiInterface {
 
 	/**
 	 * Checks whether or not a user is currently logged in.
-	 * 
+	 *
 	 * @param callback Callbacks to run if a user is or isn't logged in.
 	 * If a user is logged in, it will call onSuccess with <code>null</code>
 	 * as its parameter.
