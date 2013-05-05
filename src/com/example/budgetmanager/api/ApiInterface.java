@@ -1,6 +1,4 @@
 package com.example.budgetmanager.api;
-import com.example.budgetmanager.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,8 +104,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e) {
-				callback.onFailure(e.getMessage());
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
 			}
 		});
 	}
@@ -121,8 +119,33 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is a {@link Long} that represents the
 	 * ID of the Entry on the server.
 	 */
-	public void create(Entry e, ApiCallback<Long> callback) {
-		// TODO: implement
+	public void create(final Entry e, final ApiCallback<Long> callback) {
+		RequestParams params = new RequestParams();
+		params.put("amount", "" + e.getAmount());
+		params.put("notes", e.getNotes());
+		params.put("expenditure_date", e.getDate().toString());
+		params.put("budget_id", "" + e.getBudget().getId());
+
+		client.post(entriesUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					long id = obj.getLong("id");
+					e.setEntriId(id);
+					callback.onSuccess(id);
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send an ID
+					// But it's designed to always send an ID.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t, JSONObject obj) {
+				callback.onFailure(t.getMessage());
+			}
+		});
 	}
 
 	/**
