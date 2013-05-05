@@ -49,7 +49,7 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,7 +104,7 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
-						
+
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
 						showProgress(false);
 						startActivity(addEntryIntent);
@@ -132,18 +132,14 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						moveToActivity(RegisterActivity.class);
+						Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
+						regActivity.putExtra("email", mEmailView.getText().toString());
+						regActivity.putExtra("password", mPasswordView.getText().toString());
+						startActivity(regActivity);
+						finish();
 					}
 				});
 
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public void moveToActivity(Class cls){
-		Intent regActivity = new Intent(this, cls);
-		regActivity.putExtra("email", mEmailView.getText().toString());
-		regActivity.putExtra("password", mPasswordView.getText().toString());
-		startActivity(regActivity);
 	}
 
 	@Override
@@ -189,7 +185,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
