@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <string name="title_activity_add_budget">AddBudgetActivity</string>
+	<string name="add_budget">Add Budget</string>
+	<string name="prompt_budget_name">Name</string>
+	<string name="prompt_budget_amount">Amount</string>
+	<string name="prompt_budget_start_date">Start Date</string>
+	<string-array name="duration_array">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Fortnightly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+        <item>Other</item>
+    </string-array>
+</resources>
