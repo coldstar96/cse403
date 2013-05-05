@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -12,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -38,6 +42,8 @@ public class LoginActivity extends Activity {
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private UserLoginTask mAuthTask = null;
+
+	private static final String TAG = "LoginActivity";
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -81,8 +87,6 @@ public class LoginActivity extends Activity {
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		callback = new ApiCallback<Object>(){
-			
-			
 			// Create popup dialog for retry/register
 			@Override
 			public void onFailure(String errorMessage) {
@@ -90,11 +94,13 @@ public class LoginActivity extends Activity {
 				builder.setMessage(R.string.dialog_fail_log_in/*errorMessage*/);
 				builder.setCancelable(true);
 				builder.setPositiveButton(R.string.action_retry_log_in, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
 				});
 				builder.setNegativeButton(R.string.action_register, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						moveToRegisterActivity();
 					}
@@ -103,12 +109,34 @@ public class LoginActivity extends Activity {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			
+
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				//Intent addEntryActivity = new Intent(LoginActivity.this, AddEntryActivity.class);
-				//startActivity(addEntryActivity);
+				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
+
+					@Override
+					public void onSuccess(List<Budget> result) {
+						UBudgetApp app = (UBudgetApp)getApplication();
+
+						// Add these budgets to the application state
+						List<Budget> budgetList = app.getBudgetList();
+						budgetList.addAll(result);
+
+						for (Budget b : budgetList) {
+							Log.d(TAG, b.getName());
+						}
+
+						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
+						startActivity(addEntryIntent);
+					}
+
+					@Override
+					public void onFailure(String errorMessage) {
+						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+					}
+
+				});
 			}
 
 		};
@@ -129,7 +157,7 @@ public class LoginActivity extends Activity {
 				});
 
 	}
-	
+
 	public void moveToRegisterActivity(){
 		Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
 		regActivity.putExtra("email", mEmailView.getText().toString());
