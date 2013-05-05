@@ -97,7 +97,7 @@ public class AddEntryActivity extends Activity {
 	/**
 	 * Adds a new <code>Entry</code> to the specified <code>Budget</code>.
 	 *
-	 * @param view The current state of the add Entry view.
+	 * @param view The reference to the add button.
 	 */
 	public void addEntry(View view) {
 		if (mAmountView.getText().toString().equals("")) {
@@ -111,7 +111,7 @@ public class AddEntryActivity extends Activity {
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
-					// TODO Auto-generated method stub
+					// for testing purposes
 					Toast.makeText(AddEntryActivity.this, "Added $" 
 					+ ((double) newEntry.getAmount() / CENTS) + " to the " 
 							+ newEntry.getBudget().getName() + " budget "
@@ -119,8 +119,10 @@ public class AddEntryActivity extends Activity {
 							+ " with a note of: " + newEntry.getNotes()
 			   				, Toast.LENGTH_LONG).show();
 					
-					// clear the fields if the add was successful
-					AddEntryActivity.this.clearEntry();
+					// clear the fields if the add was successful.
+					// passes a null since the method doesn't need
+					// a reference to a view object to work.
+					AddEntryActivity.this.clearEntry(null);
 					
 					// add the entry into the Budget object
 					newEntry.getBudget().addEntry(newEntry);
@@ -128,13 +130,14 @@ public class AddEntryActivity extends Activity {
 
 				@Override
 				public void onFailure(String errorMessage) {
-					// TODO Auto-generated method stub
+					// if the request fails, do nothing (the toast is for testing purposes)
 					Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
 				}
 			});
 		}
 	}
 	
+	// Helper method to create the new <code>Entry</code> object to be added.
 	private Entry createEntry() {
 		// extract the amount information
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
@@ -155,8 +158,10 @@ public class AddEntryActivity extends Activity {
 
 	/**
 	 * Resets the add Entry view.
+	 * 
+	 * @param view The reference to the clear button.
 	 */
-	public void clearEntry() {
+	public void clearEntry(View view) {
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);
 		
