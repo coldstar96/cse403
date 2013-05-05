@@ -23,7 +23,6 @@ import com.example.budgetmanager.api.ApiInterface;
  * Activity which allows users to add entries.
  */
 public class AddEntryActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.example.budgetmanager.MESSAGE";
 	public final static int CENTS = 100;
 
 	// tag for logging
