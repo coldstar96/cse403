@@ -46,8 +46,6 @@ public class RegisterActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	
-	private boolean registerSuccessfull;
-	
 	// API callback
 	private ApiCallback<Object> callback;
 
@@ -103,13 +101,17 @@ public class RegisterActivity extends Activity {
 			// Create popup dialog failure
 			@Override
 			public void onFailure(String errorMessage) {
-				registerSuccessfull = false;
+				showProgress(false);
+				Toast.makeText(RegisterActivity.this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
 			}
 			
 			// Move to add budget activity
 			@Override
 			public void onSuccess(Object result) {
-				registerSuccessfull = true;
+				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
+				showProgress(false);
+				startActivity(addEntryIntent);
+				finish();
 			}
 
 		};
@@ -211,13 +213,6 @@ public class RegisterActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			ApiInterface.getInstance().createUser(mEmail, mPassword, callback);
-			showProgress(false);
-			
-			if(registerSuccessfull){
-				//moveToActivity(AddBudgetctivity.class);
-			} else {
-				Toast.makeText(this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
-			}
 		}
 	}
 

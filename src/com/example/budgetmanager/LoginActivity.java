@@ -5,12 +5,10 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -52,8 +50,6 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
 	
-	private boolean loginSuccessful;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,6 +81,7 @@ public class LoginActivity extends Activity {
 
 		callback = new ApiCallback<Object>(){
 			// Create popup dialog for retry/register
+			@SuppressLint("ShowToast")
 			@Override
 			public void onFailure(String errorMessage) {
 				showProgress(false);
@@ -111,7 +108,7 @@ public class LoginActivity extends Activity {
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
 						showProgress(false);
 						startActivity(addEntryIntent);
-
+						finish();
 					}
 
 					@Override
@@ -135,17 +132,18 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						moveToActivity(AddEntryActivity.class);
+						moveToActivity(RegisterActivity.class);
 					}
 				});
 
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void moveToActivity(Class cls){
-		Intent intent = new Intent(this, cls);
-		intent.putExtra("email", mEmailView.getText().toString());
-		intent.putExtra("password", mPasswordView.getText().toString());
-		startActivity(intent);
+		Intent regActivity = new Intent(this, cls);
+		regActivity.putExtra("email", mEmailView.getText().toString());
+		regActivity.putExtra("password", mPasswordView.getText().toString());
+		startActivity(regActivity);
 	}
 
 	@Override
