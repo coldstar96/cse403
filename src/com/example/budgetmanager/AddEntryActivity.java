@@ -35,7 +35,7 @@ public class AddEntryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        // inflate view
+		// inflate view
 		setContentView(R.layout.activity_add_entry);
 
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
@@ -45,7 +45,7 @@ public class AddEntryActivity extends Activity {
 
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
-    }
+	}
 
 	// Populate the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
@@ -78,14 +78,14 @@ public class AddEntryActivity extends Activity {
 					Toast.makeText(parent.getContext(), "new budget!", Toast.LENGTH_LONG).show();
 				}
 
-            }
+			}
 
-            @Override
+			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-                // do nothing
-            }
+				// do nothing
+			}
 
-        });
+		});
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class AddEntryActivity extends Activity {
 		Toast.makeText(this, "Added $" + mAmountView.getText().toString() + " to the " + mBudgetView.getSelectedItem().toString() + " budget "
 				+ "with the date of: " + (mDateView.getMonth() + 1) + "/" + mDateView.getDayOfMonth() + "/" + mDateView.getYear() + " with a note of: "
 				+ mNotesView.getText().toString()
-   				, Toast.LENGTH_LONG).show();
+				, Toast.LENGTH_LONG).show();
 	}
 
 	/**
