@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
@@ -34,6 +36,7 @@ public class LoginActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
+	private static final String TAG = "LoginActivity";
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -47,9 +50,6 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
 	
-	// Login success
-	private boolean loginProgress;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,19 +80,43 @@ public class LoginActivity extends Activity {
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		callback = new ApiCallback<Object>(){
-			
-			
 			// Create popup dialog for retry/register
 			@SuppressLint("ShowToast")
 			@Override
 			public void onFailure(String errorMessage) {
-				loginProgress = false;
+				showProgress(false);
+				Toast.makeText(LoginActivity.this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
 			}
-			
+
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				loginProgress = true;
+				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
+
+					@Override
+					public void onSuccess(List<Budget> result) {
+						UBudgetApp app = (UBudgetApp)getApplication();
+
+						// Add these budgets to the application state
+						List<Budget> budgetList = app.getBudgetList();
+						budgetList.addAll(result);
+
+						for (Budget b : budgetList) {
+							Log.d(TAG, b.getName());
+						}
+						
+						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
+						showProgress(false);
+						startActivity(addEntryIntent);
+
+					}
+
+					@Override
+					public void onFailure(String errorMessage) {
+						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+					}
+
+				});
 			}
 
 		};
@@ -138,7 +162,6 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -182,12 +205,6 @@ public class LoginActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
-			showProgress(false);
-			if(loginProgress){
-				//moveToActivity(AddEntryACtivity.class);
-			} else {
-				Toast.makeText(LoginActivity.this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
-			}
 		}
 	}
 

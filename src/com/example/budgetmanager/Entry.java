@@ -12,17 +12,17 @@ public class Entry implements Comparable<Entry> {
 	// The ID of this entry on the API server
 	private long entryId;
 
+	// the Budget object this entry belongs to
+	private Budget budget;
+	
 	// in cents
 	private int amount;
 
-	// the Budget object this entry belongs to
-	private Budget budget;
-
-	// additional notes
-	private String notes;
-
 	// The date that this entry's expenditure was on
 	private Date date;
+	
+	// additional notes
+	private String notes;
 
 	/**
 	 * Constructs a new Entry containing id, amount, Budget, notes,

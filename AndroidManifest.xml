@@ -11,22 +11,37 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.example.budgetmanager.UBudgetApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
-            android:name="LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name="com.example.budgetmanager.AddEntryActivity"
+            android:label="@string/title_activity_add_entry" >
         </activity>
         <activity
-            android:name="RegisterActivity"
+            android:name="com.example.budgetmanager.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+<!--             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.RegisterActivity"
             android:label="@string/title_activity_signin" >
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.LogoActivity"
+            android:label="@string/title_activity_logo" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -5,7 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,8 +45,6 @@ public class RegisterActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	
-	private boolean registerProgress;
 	
 	// API callback
 	private ApiCallback<Object> callback;
@@ -94,18 +95,22 @@ public class RegisterActivity extends Activity {
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		
-		
 		callback = new ApiCallback<Object>(){
+			
+			
 			// Create popup dialog failure
 			@Override
 			public void onFailure(String errorMessage) {
-				registerProgress = false;
+				showProgress(false);
+				Toast.makeText(RegisterActivity.this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
 			}
 			
 			// Move to add budget activity
 			@Override
 			public void onSuccess(Object result) {
-				registerProgress = true;
+				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
+				showProgress(false);
+				startActivity(addEntryIntent);
 			}
 
 		};
@@ -117,6 +122,13 @@ public class RegisterActivity extends Activity {
 						registerAttempt();
 					}
 				});
+	}
+	
+	private void moveToActivity(Class cls){
+		Intent regActivity = new Intent(this, cls);
+		regActivity.putExtra("email", mEmailView.getText().toString());
+		regActivity.putExtra("password", mPasswordView.getText().toString());
+		startActivity(regActivity);
 	}
 
 	@Override
@@ -144,7 +156,6 @@ public class RegisterActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void registerAttempt() {
-
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -172,7 +183,7 @@ public class RegisterActivity extends Activity {
 		// Check for a password match.
 		if (TextUtils.isEmpty(mPasswordCheck)) {
 			mPasswordCheckView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordCheckView;
+			focusView = mPasswordView;
 			cancel = true;
 		} else if (!mPassword.equals(mPasswordCheck)) {
 			mPasswordCheckView.setError(getString(R.string.error_no_match_password));
@@ -201,14 +212,6 @@ public class RegisterActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			ApiInterface.getInstance().createUser(mEmail, mPassword, callback);
-			showProgress(false);
-			
-			if(registerProgress){
-				//moveToActivity(AddEntryACtivity.class);
-			} else {
-				Toast.makeText(RegisterActivity.this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
-			}
-			
 		}
 	}
 
