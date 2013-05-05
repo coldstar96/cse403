@@ -30,7 +30,7 @@ public class Budget {
 	private Duration duration;	// Duration type.
 	private int otherDuration;		// Duration in days, for duration type OTHER.
 
-	private List<Entry> entries = new ArrayList<Entry>();
+	private List<Entry> entries;
 
 	/**
 	 * Create a new <code>Budget</code>.
@@ -69,6 +69,7 @@ public class Budget {
 		this.startDate.setTimeInMillis(startTime);
 		this.duration = Duration.valueOf(duration);
 		this.otherDuration = otherDuration;
+		this.entries = new ArrayList<Entry>();
 	}
 
 	/**
