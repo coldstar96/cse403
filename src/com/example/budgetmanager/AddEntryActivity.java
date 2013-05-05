@@ -122,6 +122,9 @@ public class AddEntryActivity extends Activity {
 					
 					// clear the fields if the add was successful
 					AddEntryActivity.this.clearEntry();
+					
+					// add the entry into the Budget object
+					newEntry.getBudget().addEntry(newEntry);
 				}
 
 				@Override
