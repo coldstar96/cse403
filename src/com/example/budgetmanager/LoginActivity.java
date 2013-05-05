@@ -87,13 +87,13 @@ public class LoginActivity extends Activity {
 			// Create popup dialog for retry/register
 			@Override
 			public void onFailure(String errorMessage) {
-				loginSuccessful = false;
+				showProgress(false);
+				Toast.makeText(LoginActivity.this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
 			}
 
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				loginSuccessful = true;;
 				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
 
 					@Override
@@ -107,9 +107,11 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
-
+						
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
+						showProgress(false);
 						startActivity(addEntryIntent);
+
 					}
 
 					@Override
@@ -205,13 +207,6 @@ public class LoginActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
-			showProgress(false);
-			
-			if (loginSuccessful) {
-				moveToActivity(AddEntryActivity.class);
-			} else {
-				Toast.makeText(this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
-			}
 		}
 	}
 
