@@ -5,12 +5,10 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,8 +49,6 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
-	
-	private boolean loginSuccessful;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +81,7 @@ public class LoginActivity extends Activity {
 
 		callback = new ApiCallback<Object>(){
 			// Create popup dialog for retry/register
+			@SuppressLint("ShowToast")
 			@Override
 			public void onFailure(String errorMessage) {
 				showProgress(false);
@@ -107,11 +104,11 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
-						
+
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
 						showProgress(false);
 						startActivity(addEntryIntent);
-
+						finish();
 					}
 
 					@Override
@@ -135,17 +132,14 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						moveToActivity(AddEntryActivity.class);
+						Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
+						regActivity.putExtra("email", mEmailView.getText().toString());
+						regActivity.putExtra("password", mPasswordView.getText().toString());
+						startActivity(regActivity);
+						finish();
 					}
 				});
 
-	}
-	
-	public void moveToActivity(Class cls){
-		Intent intent = new Intent(this, cls);
-		intent.putExtra("email", mEmailView.getText().toString());
-		intent.putExtra("password", mPasswordView.getText().toString());
-		startActivity(intent);
 	}
 
 	@Override
@@ -191,7 +185,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
