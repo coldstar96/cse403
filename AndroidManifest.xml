@@ -14,13 +14,14 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.NoTitleBar">
+		android:theme="@android:style/Theme.NoTitleBar"
+		android:name="UBudgetApp" >
         
         <activity
             android:name="AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
         </activity>
-        
+
         <activity
             android:name="LoginActivity"
             android:label="@string/title_activity_login"
