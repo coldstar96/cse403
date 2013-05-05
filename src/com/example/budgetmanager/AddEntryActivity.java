@@ -26,6 +26,9 @@ public class AddEntryActivity extends Activity {
 	// tag for logging
 	private final static String TAG = "AddEntryActivity";
 
+	// shared data across the app
+	private UBudgetApp appData;
+	
 	// views to extract information from
 	private Spinner mBudgetView;
 	private EditText mAmountView;
@@ -39,6 +42,9 @@ public class AddEntryActivity extends Activity {
 
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
+		
+		// retrieve the application data
+		appData = (UBudgetApp)getApplication();
 
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
@@ -51,9 +57,6 @@ public class AddEntryActivity extends Activity {
 
 	// Populate the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
-		// TODO: populate with real Budget objects once that is available.
-
-		UBudgetApp appData = (UBudgetApp)getApplication();
 		final List<Budget> budgetList = appData.getBudgetList();
 		List<String> budgetNameList = new ArrayList<String>();
 
@@ -79,7 +82,6 @@ public class AddEntryActivity extends Activity {
 					// TODO: switch to add budget activity when ready.
 					Toast.makeText(parent.getContext(), "new budget!", Toast.LENGTH_LONG).show();
 				}
-
 			}
 
 			@Override
@@ -105,11 +107,11 @@ public class AddEntryActivity extends Activity {
 		if (mAmountView.getText().toString().equals("")) {
 			Toast.makeText(this, "Please specify an amount.", 
 					Toast.LENGTH_LONG).show();
-		} else {
+		} else {			
 			// create the Entry object to add to the Budget
 			Entry newEntry = createEntry();
 			Double doubleAmount = (double) newEntry.getAmount() / CENTS;
-			Toast.makeText(this, "Added $" + doubleAmount + " to the " + mBudgetView.getSelectedItem().toString() + " budget "
+			Toast.makeText(this, "Added $" + doubleAmount + " to the " + newEntry.getBudget().getName() + " budget "
 					+ "with the date of: " + newEntry.getDate() + " with a note of: "
 					+ newEntry.getNotes()
 	   				, Toast.LENGTH_LONG).show();
@@ -122,8 +124,9 @@ public class AddEntryActivity extends Activity {
 		// amount will be stored in cents
 		int intAmount = (int) doubleAmount * CENTS;
 		
-		// TODO: fix this
-		Budget budget = null;
+		// retrieve selected budget
+		final List<Budget> budgetList = appData.getBudgetList();
+		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		String notes = mNotesView.getText().toString();
 		
