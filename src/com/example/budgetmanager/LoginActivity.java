@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -34,11 +35,6 @@ public class LoginActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
-
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -50,6 +46,8 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
+	
+	private boolean loginProgress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,29 +84,13 @@ public class LoginActivity extends Activity {
 			// Create popup dialog for retry/register
 			@Override
 			public void onFailure(String errorMessage) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-				builder.setMessage(R.string.dialog_fail_log_in/*errorMessage*/);
-				builder.setCancelable(true);
-				builder.setPositiveButton(R.string.action_retry_log_in, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				builder.setNegativeButton(R.string.action_register, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						moveToRegisterActivity();
-					}
-				});
-
-				AlertDialog alert = builder.create();
-				alert.show();
+				loginProgress = false;
 			}
 			
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				// Intent addEntryActivity = new Intent(LoginActivity.this, AddEntryActivity.class);
-				// startActivity(addEntryActivity);
+				loginProgress = true;;
 			}
 
 		};
@@ -124,17 +106,17 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						moveToRegisterActivity();
+						moveToActivity(AddEntryActivity.class);
 					}
 				});
 
 	}
 	
-	public void moveToRegisterActivity(){
-		Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
-		regActivity.putExtra("email", mEmailView.getText().toString());
-		regActivity.putExtra("password", mPasswordView.getText().toString());
-		startActivity(regActivity);
+	public void moveToActivity(Class cls){
+		Intent activity = new Intent(this, cls);
+		activity.putExtra("email", mEmailView.getText().toString());
+		activity.putExtra("password", mPasswordView.getText().toString());
+		startActivity(activity);
 	}
 
 	@Override
@@ -153,10 +135,6 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
-
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -199,9 +177,14 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-
-			mAuthTask.execute();
+			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
+			showProgress(false);
+			
+			if (loginProgress) {
+				moveToActivity(AddEntryActivity.class);
+			} else {
+				Toast.makeText(this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
@@ -243,38 +226,6 @@ public class LoginActivity extends Activity {
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
-	}
-
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				finish();
-			} else {
-				mPasswordView
-				.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
 		}
 	}
 }
