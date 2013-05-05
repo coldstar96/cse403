@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -12,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +37,8 @@ public class LoginActivity extends Activity {
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
+
+	private static final String TAG = "LoginActivity";
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -79,18 +84,40 @@ public class LoginActivity extends Activity {
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		callback = new ApiCallback<Object>(){
-			
-			
 			// Create popup dialog for retry/register
 			@Override
 			public void onFailure(String errorMessage) {
 				loginSuccessful = false;
 			}
-			
+
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
 				loginSuccessful = true;;
+				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
+
+					@Override
+					public void onSuccess(List<Budget> result) {
+						UBudgetApp app = (UBudgetApp)getApplication();
+
+						// Add these budgets to the application state
+						List<Budget> budgetList = app.getBudgetList();
+						budgetList.addAll(result);
+
+						for (Budget b : budgetList) {
+							Log.d(TAG, b.getName());
+						}
+
+						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
+						startActivity(addEntryIntent);
+					}
+
+					@Override
+					public void onFailure(String errorMessage) {
+						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+					}
+
+				});
 			}
 
 		};

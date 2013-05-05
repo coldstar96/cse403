@@ -7,5 +7,6 @@
     <string name="label_notes">Notes</string>   
     <string name="hint_notes">Optional</string> 
     <string name="spinner_title">Select Budget</string>
+    <string name="new_budget">Create New Budget...</string>
     
 </resources>
