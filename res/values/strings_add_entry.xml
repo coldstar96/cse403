@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <!-- Strings related to login -->
+    <!-- Strings related to adding entries -->
     <string name="label_amount">Amount</string>
     <string name="label_date">Date</string>
     <string name="label_notes">Notes</string>   

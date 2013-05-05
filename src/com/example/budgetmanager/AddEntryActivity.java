@@ -21,36 +21,34 @@ import android.widget.Toast;
 public class AddEntryActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.budgetmanager.MESSAGE";
 	
+	// views to extract information from
 	private Spinner mBudgetView;
 	private EditText mAmountView;
 	private DatePicker mDateView;
 	private EditText mNotesView;
 
-	private String currentBudget = "Overall";
-
 	@Override
 	/** Called when the activity is first created. */
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
         
         // inflate view
-        setContentView(R.layout.activity_add_entry);
+		setContentView(R.layout.activity_add_entry);
         
-        mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
-        mAmountView = (EditText) findViewById(R.id.edit_amount);
-        mDateView = (DatePicker) findViewById(R.id.date_picker);
-        mNotesView = (EditText) findViewById(R.id.edit_notes);
+		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
+		mAmountView = (EditText) findViewById(R.id.edit_amount);
+		mDateView = (DatePicker) findViewById(R.id.date_picker);
+		mNotesView = (EditText) findViewById(R.id.edit_notes);
         
-        // populate list items for the budget selector
-        addItemsToBudgetSpinner();
-		
+		// populate list items for the budget selector
+		addItemsToBudgetSpinner();
     }
 
 	// Populate the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
 		// TODO: populate with real Budget objects once that is available.
 		List<String> list = new ArrayList<String>();
-		list.add(currentBudget);
+		list.add("Overall");
 		list.add("Food");
 		list.add("Clothes");
 		list.add("Transportation");
