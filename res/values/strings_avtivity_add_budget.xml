@@ -5,6 +5,9 @@
 	<string name="prompt_budget_name">Name</string>
 	<string name="prompt_budget_amount">Amount</string>
 	<string name="prompt_budget_start_date">Start Date</string>
+	<string name="budget_duration">Duration</string>
+	<string name="budget_recur">Recur</string>
+	<string name="budget_done">Done</string>
 	<string-array name="duration_array">
         <item>Day</item>
         <item>Week</item>
