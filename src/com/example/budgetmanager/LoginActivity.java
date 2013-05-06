@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -47,7 +48,7 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,6 +92,7 @@ public class LoginActivity extends Activity {
 
 		callback = new ApiCallback<Object>(){
 			// Create popup dialog for retry/register
+			@SuppressLint("ShowToast")
 			@Override
 			public void onFailure(String errorMessage) {
 				showProgress(false);
@@ -114,7 +116,7 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
-						
+
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
 						showProgress(false);
 						startActivity(addEntryIntent);
@@ -184,7 +186,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
