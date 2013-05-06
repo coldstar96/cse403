@@ -9,7 +9,7 @@ import java.util.List;
  * in a specific budget and stores the information related to
  * budget amounts and time restrictions.
  *
- * @author uBudget
+ * @author Graham grahamb5
  */
 public class Budget {
 	public static enum Duration {

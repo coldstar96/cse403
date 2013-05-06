@@ -5,16 +5,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 
+/**
+ *
+ * @author Chi Ho coldstar96
+ *
+ */
 public class LogoActivity extends Activity {
 	boolean sleep;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
-		
+
 		sleep = true;
-		
+
 		Thread logoTimer = new Thread(){
+			@Override
 			public void run(){
 				try{
 					sleep(3500);	//sleep for 5 seconds

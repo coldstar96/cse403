@@ -22,6 +22,8 @@ import com.example.budgetmanager.api.ApiInterface;
 
 /**
  * Activity which allows users to add entries.
+ *
+ * @author Ji jiwpark90
  */
 public class AddEntryActivity extends Activity {
 	public final static int CENTS = 100;
@@ -31,7 +33,7 @@ public class AddEntryActivity extends Activity {
 
 	// shared data across the app
 	private UBudgetApp appData;
-	
+
 	// views to extract information from
 	private Spinner mBudgetView;
 	private EditText mAmountView;
@@ -45,7 +47,7 @@ public class AddEntryActivity extends Activity {
 
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
-		
+
 		// retrieve the application data
 		appData = (UBudgetApp)getApplication();
 
@@ -60,7 +62,7 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
@@ -109,12 +111,12 @@ public class AddEntryActivity extends Activity {
 	public void addEntry(View view) {
 		if (mAmountView.getText().toString().equals("")) {
 			// amount is a required field
-			Toast.makeText(this, "Please specify an amount.", 
+			Toast.makeText(this, "Please specify an amount.",
 					Toast.LENGTH_LONG).show();
-		} else {			
+		} else {
 			// create the Entry object to add to the Budget
 			final Entry newEntry = createEntry();
-			
+
 			if (newEntry == null) {
 				// do nothing until add Budget activity is up
 				return;
@@ -124,18 +126,18 @@ public class AddEntryActivity extends Activity {
 				@Override
 				public void onSuccess(Long result) {
 					// for testing purposes
-					Toast.makeText(AddEntryActivity.this, "Added $" 
-					+ ((double) newEntry.getAmount() / CENTS) + " to the " 
+					Toast.makeText(AddEntryActivity.this, "Added $"
+					+ ((double) newEntry.getAmount() / CENTS) + " to the "
 							+ newEntry.getBudget().getName() + " budget "
-							+ "with the date of: " + newEntry.getDate() 
+							+ "with the date of: " + newEntry.getDate()
 							+ " with a note of: " + newEntry.getNotes()
 			   				, Toast.LENGTH_LONG).show();
-					
+
 					// clear the fields if the add was successful.
 					// passes a null since the method doesn't need
 					// a reference to a view object to work.
 					AddEntryActivity.this.clearEntry(null);
-					
+
 					// add the entry into the Budget object
 					newEntry.getBudget().addEntry(newEntry);
 				}
@@ -148,15 +150,15 @@ public class AddEntryActivity extends Activity {
 			});
 		}
 	}
-	
+
 	// Helper method to create the new <code>Entry</code> object to be added.
 	private Entry createEntry() {
 		// extract the amount information
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
-		
+
 		// amount will be stored in cents
 		int intAmount = (int) (doubleAmount * CENTS);
-		
+
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
 		// temporary place holder until add Budget activity is up.
@@ -167,7 +169,7 @@ public class AddEntryActivity extends Activity {
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		String notes = mNotesView.getText().toString();
-		
+
 		// format the string so that the server will parse the date correctly
 		String date = mDateView.getYear() + "-" + (mDateView.getMonth() + 1) + "-" + mDateView.getDayOfMonth();
 		Log.d("createEntry", ""+intAmount);
@@ -176,13 +178,13 @@ public class AddEntryActivity extends Activity {
 
 	/**
 	 * Resets the add Entry view.
-	 * 
+	 *
 	 * @param view The reference to the clear button.
 	 */
 	public void clearEntry(View view) {
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);
-		
+
 		// get current time
 		Time now = new Time();
 		now.setToNow();
