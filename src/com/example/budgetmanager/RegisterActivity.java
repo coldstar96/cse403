@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -32,11 +33,6 @@ public class RegisterActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserRegisterTask mAuthTask = null;
-
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -49,6 +45,8 @@ public class RegisterActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
+	private boolean registerSuccessfull;
 	
 	// API callback
 	private ApiCallback<Object> callback;
@@ -105,23 +103,13 @@ public class RegisterActivity extends Activity {
 			// Create popup dialog failure
 			@Override
 			public void onFailure(String errorMessage) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-				builder.setMessage(R.string.dialog_fail_register)
-				       .setCancelable(false)
-				       .setPositiveButton(R.string.action_close, new DialogInterface.OnClickListener() {
-				           public void onClick(DialogInterface dialog, int id) {
-				                dialog.cancel();
-				           }
-				       });
-				AlertDialog alert = builder.create();
-				alert.show();
+				registerSuccessfull = false;
 			}
 			
 			// Move to add budget activity
 			@Override
 			public void onSuccess(Object result) {
-				//Intent addBudgetActivity = new Intent(RegisterActivity.this, AddBudgetActivity.class);
-				//startActivity(addEntryActivity);
+				registerSuccessfull = true;
 			}
 
 		};
@@ -135,13 +123,6 @@ public class RegisterActivity extends Activity {
 				});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-	
 	public void onClick(View v) { 
 	    switch (v.getId()) { 
 	    case R.id.register_button:
@@ -160,10 +141,6 @@ public class RegisterActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void registerAttempt() {
-		if (mAuthTask != null) {
-			return;
-		}
-
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -219,8 +196,14 @@ public class RegisterActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserRegisterTask();
-			mAuthTask.execute((Void) null);
+			ApiInterface.getInstance().createUser(mEmail, mPassword, callback);
+			showProgress(false);
+			
+			if(registerSuccessfull){
+				//moveToActivity(AddBudgetctivity.class);
+			} else {
+				Toast.makeText(this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
@@ -262,42 +245,6 @@ public class RegisterActivity extends Activity {
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
-	}
-
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	@SuppressLint("NewApi")
-	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			ApiInterface.getInstance().createUser(mEmail, mPassword, callback);
-
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				finish();
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
 		}
 	}
 }
