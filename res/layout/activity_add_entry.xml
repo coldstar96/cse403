@@ -13,9 +13,9 @@
             android:id="@+id/spinner_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_gray"
-            android:padding="10dp"
+            android:background="@android:drawable/btn_dropdown"
             android:prompt="@string/spinner_title"
+            android:spinnerMode="dropdown"
             android:textSize="20sp" />
 
         <TextView
