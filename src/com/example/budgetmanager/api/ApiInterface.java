@@ -24,7 +24,7 @@ import com.loopj.android.http.RequestParams;
 /**
  * Singleton class that facilitates connections to the HTTP API.
  *
- * @author chris brucec5
+ * @author Chris brucec5
  *
  */
 public class ApiInterface {

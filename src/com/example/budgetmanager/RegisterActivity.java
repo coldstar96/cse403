@@ -22,6 +22,8 @@ import com.example.budgetmanager.api.ApiInterface;
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
+ *
+ * @author Chi Ho coldstar96
  */
 public class RegisterActivity extends Activity {
 	/**

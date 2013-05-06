@@ -16,8 +16,8 @@ import android.widget.CheckBox;
 
 /**
  *
- * @author andrew theclinger
- * @author joseph josephs2
+ * @author Andrew theclinger
+ * @author Joseph josephs2
  *
  */
 public class AddBudgetActivity extends Activity {
