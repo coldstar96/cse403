@@ -1,95 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:background="@drawable/ubudgetbackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
-	
-	    <Spinner
-	        android:id="@+id/spinner_budget"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@color/dark_gray"
-	        android:textSize="20sp"
-	        android:padding="10dp"
-	        android:prompt="@string/spinner_title" />
-	
-	    <TextView 
-	        android:textSize="15sp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_amount"
-	        android:layout_margin="10dp" />
-	
-	    <EditText android:id="@+id/edit_amount"
-	        android:background="#FFFFFF"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	    	android:inputType="numberDecimal"
-	        android:imeOptions="actionSend|flagNoEnterAction"
-	        android:maxLines="1"
-	        android:maxLength="50"
-	        android:layout_margin="10dp"
-	        android:padding="5dp" />
-	
-	    <TextView 
-	        android:textSize="15sp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_date"
-	        android:layout_margin="10dp" />
-	
-	    <DatePicker
-	        android:id="@+id/date_picker"
-	        android:scaleX=".8"
-	        android:scaleY=".8"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center" />
-	
-	    <TextView 
-	        android:textSize="15sp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_notes"
-	        android:layout_margin="5dp" />
-	
-	    <EditText android:id="@+id/edit_notes"
-	        android:background="#FFFFFF"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:hint="@string/hint_notes"
-	        android:layout_margin="10dp"
-	        android:padding="10dp" />
-	    
-	    <LinearLayout
-	    	android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:orientation="horizontal"
-	    	android:gravity="bottom" >
-	
-	        <Button
-	            android:id="@+id/add_entry_button"
-	            style="?android:attr/borderlessButtonStyle"
-	            android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="@string/action_add"
-	           	android:onClick="addEntry" />
-	    	
-	        <Button
-	            android:id="@+id/clear_entry_button"
-	            style="?android:attr/borderlessButtonStyle"
-	            android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="@string/action_clear" 
-	            android:onClick="clearEntry" />
-	    	
-	    </LinearLayout>
-	</LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Spinner
+            android:id="@+id/spinner_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_gray"
+            android:padding="10dp"
+            android:prompt="@string/spinner_title"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/label_amount"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:inputType="numberDecimal"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/label_date"
+            android:textSize="15sp" />
+
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleX=".8"
+            android:scaleY=".8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/label_notes"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="@string/hint_notes"
+            android:padding="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/add_entry_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="addEntry"
+                android:text="@string/action_add" />
+
+            <Button
+                android:id="@+id/clear_entry_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="clearEntry"
+                android:text="@string/action_clear" />
+        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>
-

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -37,8 +38,8 @@ public class AddEntryActivity extends Activity {
 	private DatePicker mDateView;
 	private EditText mNotesView;
 
-	@Override
 	/** Called when the activity is first created. */
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -52,7 +53,14 @@ public class AddEntryActivity extends Activity {
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
 		mDateView = (DatePicker) findViewById(R.id.date_picker);
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
+	}
 
+
+	/** Called whenever the activity is brought back to the foregroud */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
@@ -81,8 +89,7 @@ public class AddEntryActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
 				if (pos == budgetList.size()) {
-					// TODO: switch to add budget activity when ready.
-					Toast.makeText(parent.getContext(), "new budget!", Toast.LENGTH_LONG).show();
+					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
 				}
 			}
 
@@ -107,6 +114,11 @@ public class AddEntryActivity extends Activity {
 		} else {			
 			// create the Entry object to add to the Budget
 			final Entry newEntry = createEntry();
+			
+			if (newEntry == null) {
+				// do nothing until add Budget activity is up
+				return;
+			}
 
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
@@ -141,11 +153,17 @@ public class AddEntryActivity extends Activity {
 	private Entry createEntry() {
 		// extract the amount information
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
+		
 		// amount will be stored in cents
 		int intAmount = (int) (doubleAmount * CENTS);
 		
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
+		// temporary place holder until add Budget activity is up.
+		if (mBudgetView.getSelectedItemPosition() == budgetList.size()) {
+			Toast.makeText(this, "Add budget functionality doesn't exist yet.", Toast.LENGTH_LONG).show();
+			return null;
+		}
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		String notes = mNotesView.getText().toString();

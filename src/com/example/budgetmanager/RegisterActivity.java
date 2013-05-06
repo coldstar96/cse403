@@ -128,7 +128,6 @@ public class RegisterActivity extends Activity {
 			startActivity(k);
 			//finish();
 			break;
-
 		}
 	}
 

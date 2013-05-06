@@ -52,6 +52,18 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+//		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>(){
+//			@Override
+//			public void onSuccess(Object result) {
+//				startActivity(new Intent(LoginActivity.this, AddEntryActivity.class));
+//				finish();
+//			}
+//
+//			@Override
+//			public void onFailure(String errorMessage) {
+//			}
+//		});
 
 		setContentView(R.layout.activity_login);
 
@@ -132,11 +144,10 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
-						regActivity.putExtra("email", mEmailView.getText().toString());
-						regActivity.putExtra("password", mPasswordView.getText().toString());
-						startActivity(regActivity);
-						finish();
+						Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+						intent.putExtra("email", mEmailView.getText().toString());
+						intent.putExtra("password", mPasswordView.getText().toString());
+						startActivity(intent);
 					}
 				});
 
