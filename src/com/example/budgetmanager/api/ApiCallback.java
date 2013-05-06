@@ -3,7 +3,7 @@ package com.example.budgetmanager.api;
 /**
  * Interface used to pass callbacks to the ApiInterface.
  *
- * @author chris brucec5
+ * @author Chris brucec5
  *
  */
 public interface ApiCallback<T> {

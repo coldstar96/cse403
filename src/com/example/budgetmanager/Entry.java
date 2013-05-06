@@ -1,7 +1,10 @@
 package com.example.budgetmanager;
 
-import java.util.Date;
-
+/**
+ *
+ * @author Ji jiwpark90
+ *
+ */
 public class Entry implements Comparable<Entry> {
 	/**
 	 * The ID given to an Entry upon creation locally.
@@ -91,7 +94,7 @@ public class Entry implements Comparable<Entry> {
 	 * @param id The ID of this entry as represented on the server
 	 */
 	public void setEntriId(long id) { this.entryId = id; }
-	 
+
   /*
    * Retrieve the date string associated with the Entry.
    *

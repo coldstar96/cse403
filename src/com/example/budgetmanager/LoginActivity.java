@@ -27,6 +27,8 @@ import com.example.budgetmanager.api.ApiInterface;
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
+ *
+ * @author Chi Ho coldstar96
  */
 public class LoginActivity extends Activity {
 
@@ -52,7 +54,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 //		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>(){
 //			@Override
 //			public void onSuccess(Object result) {

@@ -8,7 +8,7 @@ import android.content.Context;
 
 /**
  * Provides a way to access certain top level application state.
- * @author chris brucec5
+ * @author Chris brucec5
  *
  */
 public class UBudgetApp extends Application {
