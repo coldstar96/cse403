@@ -155,7 +155,7 @@ public class AddEntryActivity extends Activity {
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
-		
+	
 		String notes = mNotesView.getText().toString();
 		
 		// format the string so that the server will parse the date correctly
