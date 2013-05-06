@@ -1,8 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ubudgetbackground"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -10,17 +13,16 @@
     tools:context=".AddBudgetActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/add_budget_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:text="@string/add_budget" />
 
     <EditText
         android:id="@+id/budget_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
         android:layout_marginTop="18dp"
         android:ems="10"
         android:hint="@string/prompt_budget_name"
@@ -30,43 +32,49 @@
 
     <EditText
         android:id="@+id/budget_amount"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/budget_name"
-        android:layout_below="@+id/budget_name"
         android:ems="10"
         android:hint="@string/prompt_budget_amount"
         android:inputType="numberDecimal" />
 
+    <TextView
+        android:id="@+id/add_budget_start_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="@string/prompt_budget_start_date" />
+
     <DatePicker
         android:id="@+id/budget_date"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/budget_amount"
-        android:layout_below="@+id/budget_amount" />
+        android:layout_gravity="left"
+        android:text="@string/budget_duration" />
 
     <Spinner
         android:id="@+id/budget_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/budget_date"
-        android:layout_below="@+id/budget_date" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <CheckBox
         android:id="@+id/budget_recur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/budget_duration"
-        android:layout_below="@+id/budget_duration"
-        android:text="Recur" />
+        android:layout_gravity="left"
+        android:text="@string/budget_recur"
+        android:textColor="@color/dark_gray" />
 
     <Button
         android:id="@+id/budget_button"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/budget_recur"
-        android:layout_below="@+id/budget_recur"
-        android:text="Done" />
+        android:text="@string/budget_done" />
 
-</RelativeLayout>
+</LinearLayout>
