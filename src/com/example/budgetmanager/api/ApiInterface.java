@@ -1,5 +1,6 @@
 package com.example.budgetmanager.api;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -81,10 +82,20 @@ public class ApiInterface {
 	 */
 	public void create(final Budget b, final ApiCallback<Long> callback) {
 		RequestParams params = new RequestParams();
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(b.startTimeMillis());
+
+		int year = cal.get(Calendar.YEAR);
+		Log.d(TAG, "Year: " + year);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int day = cal.get(Calendar.DATE);
+		String startDate = "" + year + "-" + month + "-" + day;
+
 		params.put("budget_name", b.getName());
 		params.put("amount", "" + b.getBudgetAmount());
 		params.put("recur", "" + b.doesRecur());
-		params.put("start_date", "" + b.startTimeMillis());
+		params.put("start_date", startDate);
 		params.put("recurrence_duration", b.getDuration().toString());
 		params.put("other_duration", "" + b.getOtherDuration());
 

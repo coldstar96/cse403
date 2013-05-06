@@ -1,15 +1,11 @@
 package com.example.budgetmanager;
 
 import java.util.Calendar;
-import java.util.Date;
-
-import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -18,15 +14,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.CheckBox;
 
+/**
+ *
+ * @author andrew theclinger
+ * @author joseph josephs2
+ *
+ */
 public class AddBudgetActivity extends Activity {
 
-	
+
 	private EditText mBudgetName;
-	private EditText mBudgetAmmount; 
+	private EditText mBudgetAmmount;
 	private DatePicker mBudgetDate;
 	private Spinner mBudgetDuration;
 	private CheckBox mRecurring;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetAmmount = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDate = (DatePicker) findViewById(R.id.budget_date);
 		mRecurring = (CheckBox) findViewById(R.id.budget_recur);
-		
+
 		// Sets up the duration dropdown
 		mBudgetDuration = (Spinner) findViewById(R.id.budget_duration);
 		// Create an ArrayAdapter using the string array and a default spinner layout
@@ -68,7 +70,7 @@ public class AddBudgetActivity extends Activity {
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-				
+
 				// add the entry into the Budget object
 				//newEntry.getBudget().addEntry(newEntry);
 				UBudgetApp app = (UBudgetApp) getApplication();
@@ -89,12 +91,14 @@ public class AddBudgetActivity extends Activity {
 		int amount =  (int) Math.round(Double.parseDouble(mBudgetAmmount.getText().toString()) * 100);
 		int currentAmount = 0;
 		boolean recur = mRecurring.isChecked();
-		long startTime = (new Date(mBudgetDate.getYear(), mBudgetDate.getMonth(),
-				mBudgetDate.getDayOfMonth())).getTime() ;
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(mBudgetDate.getYear(), mBudgetDate.getMonth(), mBudgetDate.getDayOfMonth());
+
 		String duration = mBudgetDuration.getSelectedItem().toString().toUpperCase();
 		int otherDuration = 0;
-		
+
 		return new Budget(name, amount, currentAmount, recur,
-				startTime, duration, otherDuration);
+				cal.getTimeInMillis(), duration, otherDuration);
 	}
 }
