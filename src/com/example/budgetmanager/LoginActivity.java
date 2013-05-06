@@ -146,7 +146,6 @@ public class LoginActivity extends Activity {
 						intent.putExtra("email", mEmailView.getText().toString());
 						intent.putExtra("password", mPasswordView.getText().toString());
 						startActivity(intent);
-						finish();
 					}
 				});
 
