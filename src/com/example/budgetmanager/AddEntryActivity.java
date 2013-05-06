@@ -38,8 +38,8 @@ public class AddEntryActivity extends Activity {
 	private DatePicker mDateView;
 	private EditText mNotesView;
 
-	@Override
 	/** Called when the activity is first created. */
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -55,8 +55,9 @@ public class AddEntryActivity extends Activity {
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
 	}
 
-	@Override
+
 	/** Called whenever the activity is brought back to the foregroud */
+	@Override
 	protected void onResume() {
 		super.onResume();
 		
