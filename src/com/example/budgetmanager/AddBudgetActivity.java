@@ -57,9 +57,6 @@ public class AddBudgetActivity extends Activity {
 						attemptAddBudget();
 					}
 				});
-
-		// Spinner duration = (Spinner) findViewById(R.id.budget_duration);
-		// duration.setOnItemSelectedListener(this);
 	}
 
 
@@ -70,9 +67,7 @@ public class AddBudgetActivity extends Activity {
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-
 				// add the entry into the Budget object
-				//newEntry.getBudget().addEntry(newEntry);
 				UBudgetApp app = (UBudgetApp) getApplication();
 				app.getBudgetList().add(0, newBudget);
 				finish();
