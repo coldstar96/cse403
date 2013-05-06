@@ -5,15 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -45,7 +41,7 @@ public class RegisterActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	
+
 	// API callback
 	private ApiCallback<Object> callback;
 
@@ -64,57 +60,58 @@ public class RegisterActivity extends Activity {
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView.setText(getIntent().getExtras().getString("password"));
 		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							registerAttempt();
-							return true;
-						}
-						return false;
-					}
-				});
-		
+		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id,
+					KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					registerAttempt();
+					return true;
+				}
+				return false;
+			}
+		});
+
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
 		mPasswordCheckView.setText(getIntent().getExtras().getString("password2"));
 		mPasswordCheckView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							registerAttempt();
-							return true;
-						}
-						return false;
-					}
-				});
-				
+		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id,
+					KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					registerAttempt();
+					return true;
+				}
+				return false;
+			}
+		});
+
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-		
+
 		callback = new ApiCallback<Object>(){
-			
-			
+
+
 			// Create popup dialog failure
 			@Override
 			public void onFailure(String errorMessage) {
 				showProgress(false);
 				Toast.makeText(RegisterActivity.this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
 			}
-			
+
 			// Move to add budget activity
 			@Override
 			public void onSuccess(Object result) {
 				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
 				showProgress(false);
 				startActivity(addEntryIntent);
+				finish();
 			}
 
 		};
-		
+
 		findViewById(R.id.register_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -123,30 +120,16 @@ public class RegisterActivity extends Activity {
 					}
 				});
 	}
-	
-	private void moveToActivity(Class cls){
-		Intent regActivity = new Intent(this, cls);
-		regActivity.putExtra("email", mEmailView.getText().toString());
-		regActivity.putExtra("password", mPasswordView.getText().toString());
-		startActivity(regActivity);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-	
-	public void onClick(View v) { 
-	    switch (v.getId()) { 
-	    case R.id.register_button:
-	        Intent k = new Intent(this, RegisterActivity.class);
-	        startActivity(k);
-	        //finish();
-	        break;
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.register_button:
+			Intent k = new Intent(this, RegisterActivity.class);
+			startActivity(k);
+			//finish();
+			break;
 
-	    }
+		}
 	}
 
 
@@ -179,7 +162,7 @@ public class RegisterActivity extends Activity {
 			focusView = mPasswordView;
 			cancel = true;
 		}
-		
+
 		// Check for a password match.
 		if (TextUtils.isEmpty(mPasswordCheck)) {
 			mPasswordCheckView.setError(getString(R.string.error_field_required));
@@ -196,7 +179,7 @@ public class RegisterActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -229,25 +212,25 @@ public class RegisterActivity extends Activity {
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
+			.alpha(show ? 1 : 0)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginStatusView.setVisibility(show ? View.VISIBLE
+							: View.GONE);
+				}
+			});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
+			.alpha(show ? 0 : 1)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginFormView.setVisibility(show ? View.GONE
+							: View.VISIBLE);
+				}
+			});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.

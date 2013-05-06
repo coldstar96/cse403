@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -49,7 +48,7 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ApiCallback<Object> callback;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,16 +98,17 @@ public class LoginActivity extends Activity {
 
 						// Add these budgets to the application state
 						List<Budget> budgetList = app.getBudgetList();
+						budgetList.clear();
 						budgetList.addAll(result);
 
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
-						
+
 						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
 						showProgress(false);
 						startActivity(addEntryIntent);
-
+						finish();
 					}
 
 					@Override
@@ -132,29 +132,15 @@ public class LoginActivity extends Activity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						moveToActivity(RegisterActivity.class);
+						Intent regActivity = new Intent(LoginActivity.this, RegisterActivity.class);
+						regActivity.putExtra("email", mEmailView.getText().toString());
+						regActivity.putExtra("password", mPasswordView.getText().toString());
+						startActivity(regActivity);
+						finish();
 					}
 				});
 
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public void moveToActivity(Class cls){
-		Intent regActivity = new Intent(this, cls);
-		regActivity.putExtra("email", mEmailView.getText().toString());
-		regActivity.putExtra("password", mPasswordView.getText().toString());
-		startActivity(regActivity);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-
-
-
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
@@ -189,7 +175,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
