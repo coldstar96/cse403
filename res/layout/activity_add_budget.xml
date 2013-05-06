@@ -39,7 +39,7 @@
         android:inputType="numberDecimal" />
 
     <DatePicker
-        android:id="@+id/datePicker1"
+        android:id="@+id/budget_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/budget_amount"
@@ -49,8 +49,8 @@
         android:id="@+id/budget_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/datePicker1"
-        android:layout_below="@+id/datePicker1" />
+        android:layout_alignLeft="@+id/budget_date"
+        android:layout_below="@+id/budget_date" />
 
     <CheckBox
         android:id="@+id/budget_recur"

@@ -6,11 +6,11 @@
 	<string name="prompt_budget_amount">Amount</string>
 	<string name="prompt_budget_start_date">Start Date</string>
 	<string-array name="duration_array">
-        <item>Daily</item>
-        <item>Weekly</item>
-        <item>Fortnightly</item>
-        <item>Monthly</item>
-        <item>Yearly</item>
-        <item>Other</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Fortnight</item>
+        <item>Month</item>
+        <item>Year</item>
+        <!-- <item>Other</item> -->
     </string-array>
 </resources>
