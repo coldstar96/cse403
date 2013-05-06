@@ -89,9 +89,7 @@ public class AddEntryActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
 				if (pos == budgetList.size()) {
-					// TODO: switch to add budget activity when ready.
 					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
-					Toast.makeText(parent.getContext(), "new budget!", Toast.LENGTH_LONG).show();
 				}
 			}
 
@@ -150,13 +148,14 @@ public class AddEntryActivity extends Activity {
 	private Entry createEntry() {
 		// extract the amount information
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
+		
 		// amount will be stored in cents
 		int intAmount = (int) (doubleAmount * CENTS);
 		
 		// retrieve selected budget
 		final List<Budget> budgetList = appData.getBudgetList();
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
-
+		
 		String notes = mNotesView.getText().toString();
 		
 		// format the string so that the server will parse the date correctly
