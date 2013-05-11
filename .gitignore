@@ -28,3 +28,6 @@ local.properties
 
 # Misc other files to hide
 *.swp
+
+# Unit test log file
+unit_tests_log.txt
