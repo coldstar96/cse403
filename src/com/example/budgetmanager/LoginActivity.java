@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,12 +34,17 @@ import com.example.budgetmanager.api.ApiInterface;
  */
 public class LoginActivity extends Activity {
 
+	private static final String TAG = "LoginActivity";
+
 	/**
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	private static final String TAG = "LoginActivity";
+	// Values for local storage
+	public static final String PREFS_EMAIL = "email";
+	public static final String PREFS_PASS = "password";
+	//	private SharedPreferences pref = getPreferences(MODE_PRIVATE);
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -54,18 +61,6 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-//		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>(){
-//			@Override
-//			public void onSuccess(Object result) {
-//				startActivity(new Intent(LoginActivity.this, AddEntryActivity.class));
-//				finish();
-//			}
-//
-//			@Override
-//			public void onFailure(String errorMessage) {
-//			}
-//		});
 
 		setContentView(R.layout.activity_login);
 
@@ -88,6 +83,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 
+
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -108,6 +104,9 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onSuccess(List<Budget> result) {
+
+						Log.d(TAG, "Success on login callback");
+
 						UBudgetApp app = (UBudgetApp)getApplication();
 
 						// Add these budgets to the application state
@@ -118,15 +117,22 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
+						SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
-						Intent addEntryIntent = new Intent(LoginActivity.this, AddEntryActivity.class);
+						editor.putString(PREFS_EMAIL, mEmail);
+						editor.putString(PREFS_PASS, mPassword);
+						editor.commit();
+
+						Intent intent = new Intent(LoginActivity.this, LogsActivity.class);
 						showProgress(false);
-						startActivity(addEntryIntent);
+						startActivity(intent);
 						finish();
 					}
 
 					@Override
 					public void onFailure(String errorMessage) {
+						Log.d(TAG, "fail on log in callback");
+
 						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
 					}
 
@@ -153,6 +159,26 @@ public class LoginActivity extends Activity {
 					}
 				});
 
+		SharedPreferences pref = getPreferences(MODE_PRIVATE);
+
+		mEmail = pref.getString(PREFS_EMAIL, "");
+		mEmailView.setText(mEmail);
+
+		mPassword = pref.getString(PREFS_PASS, "");
+		mPasswordView.setText(mPassword);
+
+
+		Log.d(TAG, "email: "+mEmail);
+		Log.d(TAG, "pass: "+mPassword);
+
+
+		if(mEmail.length()!=0){
+			Log.d(TAG, "logging in with remember email and password");
+			attemptLogin();
+		}
+
+
+
 	}
 
 	/**
@@ -161,6 +187,8 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
+		Log.d(TAG, "attempt login");
+
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -202,7 +230,10 @@ public class LoginActivity extends Activity {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+
 			showProgress(true);
+			Log.d(TAG, "calling ApiInterface for login");
+
 			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
 		}
 	}
@@ -212,6 +243,9 @@ public class LoginActivity extends Activity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
+		getWindow().setSoftInputMode(
+			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		Log.d(TAG, "Showing in progress, should hide virtual keyboard");
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.

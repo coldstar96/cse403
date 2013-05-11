@@ -140,6 +140,10 @@ public class AddEntryActivity extends Activity {
 
 					// add the entry into the Budget object
 					newEntry.getBudget().addEntry(newEntry);
+					
+					Intent intent = new Intent(AddEntryActivity.this, LogsActivity.class);
+					finish();
+					startActivity(intent);
 				}
 
 				@Override

@@ -68,7 +68,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-
+            
             <Button
                 android:id="@+id/log_in_button"
                 android:layout_width="match_parent"

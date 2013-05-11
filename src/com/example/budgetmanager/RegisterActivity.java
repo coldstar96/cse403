@@ -6,11 +6,13 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +32,10 @@ public class RegisterActivity extends Activity {
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
+	
+	// Values for local storage
+	public static final String PREFS_EMAIL = "email";
+	public static final String PREFS_PASS = "password";
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -107,6 +113,13 @@ public class RegisterActivity extends Activity {
 			@Override
 			public void onSuccess(Object result) {
 				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
+				
+				SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+
+				editor.putString(PREFS_EMAIL, mEmail);
+				editor.putString(PREFS_PASS, mPassword);
+				editor.commit();
+				
 				showProgress(false);
 				startActivity(addEntryIntent);
 				finish();
@@ -204,6 +217,8 @@ public class RegisterActivity extends Activity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
+		getWindow().setSoftInputMode(
+			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
