@@ -1,80 +1,86 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ubudgetbackground"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".AddBudgetActivity" >
+    android:background="@drawable/ubudgetbackground" >
 
-    <TextView
-        android:id="@+id/add_budget_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/add_budget" />
-
-    <EditText
-        android:id="@+id/budget_name"
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:ems="10"
-        android:hint="@string/prompt_budget_name"
-        android:maxLines="1"
-        android:singleLine="true" >
-    </EditText>
+        android:background="@drawable/ubudgetbackground"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".AddBudgetActivity" >
 
-    <EditText
-        android:id="@+id/budget_amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/prompt_budget_amount"
-        android:inputType="numberDecimal" />
+        <TextView
+            android:id="@+id/add_budget_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/add_budget" />
 
-    <TextView
-        android:id="@+id/add_budget_start_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/prompt_budget_start_date" />
+        <EditText
+            android:id="@+id/budget_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:ems="10"
+            android:hint="@string/prompt_budget_name"
+            android:maxLines="1"
+            android:singleLine="true" >
+        </EditText>
 
-    <DatePicker
-        android:id="@+id/budget_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/budget_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/prompt_budget_amount"
+            android:inputType="numberDecimal" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/budget_duration" />
+        <TextView
+            android:id="@+id/add_budget_start_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/prompt_budget_start_date" />
 
-    <Spinner
-        android:id="@+id/budget_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <DatePicker
+            android:id="@+id/budget_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <CheckBox
-        android:id="@+id/budget_recur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/budget_recur"
-        android:textColor="@color/dark_gray" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/budget_duration" />
 
-    <Button
-        android:id="@+id/budget_button"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/budget_done" />
+        <Spinner
+            android:id="@+id/budget_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/budget_recur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/budget_recur"
+            android:textColor="@color/dark_gray" />
+
+        <Button
+            android:id="@+id/budget_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/budget_done" />
+    </LinearLayout>
+</ScrollView>
