@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_add_entry">Add an entry</string>
+    <string name="action_add_budget">Add budget</string>
+    <string name="dialog_add_budget_first">You need to create a budget before you add an entry</string>
+    
+</resources>

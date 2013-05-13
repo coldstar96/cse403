@@ -50,7 +50,14 @@ public class AddBudgetActivity extends Activity {
 		mBudgetDuration.setAdapter(adapter);
 
 		// Submit button activity
-		findViewById(R.id.budget_button).setOnClickListener(
+		findViewById(R.id.create_budget_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						attemptAddBudget();
+					}
+				});
+		findViewById(R.id.clear_budget_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
