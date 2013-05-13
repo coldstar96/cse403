@@ -117,6 +117,7 @@ public class LoginActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName());
 						}
+						
 						SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
 						editor.putString(PREFS_EMAIL, mEmail);
@@ -158,27 +159,27 @@ public class LoginActivity extends Activity {
 						startActivity(intent);
 					}
 				});
-
-		SharedPreferences pref = getPreferences(MODE_PRIVATE);
-
-		mEmail = pref.getString(PREFS_EMAIL, "");
-		mEmailView.setText(mEmail);
-
-		mPassword = pref.getString(PREFS_PASS, "");
-		mPasswordView.setText(mPassword);
-
-
-		Log.d(TAG, "email: "+mEmail);
-		Log.d(TAG, "pass: "+mPassword);
-
-
-		if(mEmail.length()!=0){
-			Log.d(TAG, "logging in with remember email and password");
-			attemptLogin();
-		}
-
-
-
+		
+		
+		// getting locally saved email and pass
+//
+//		SharedPreferences pref = getPreferences(MODE_PRIVATE);
+//
+//		mEmail = pref.getString(PREFS_EMAIL, "");
+//		mEmailView.setText(mEmail);
+//
+//		mPassword = pref.getString(PREFS_PASS, "");
+//		mPasswordView.setText(mPassword);
+//
+//
+//		Log.d(TAG, "email: "+mEmail);
+//		Log.d(TAG, "pass: "+mPassword);
+//
+//
+//		if(mEmail.length()!=0){
+//			Log.d(TAG, "logging in with remember email and password");
+//			attemptLogin();
+//		}
 	}
 
 	/**
