@@ -237,7 +237,8 @@ public class ApiInterface {
 						int currentAmount = budgetObject.optInt("amount_so_far");
 						int otherDuration = budgetObject.optInt("other_duration");
 						boolean recur = budgetObject.optBoolean("recur");
-						long startDate = budgetObject.getLong("start_date");
+						long startDate = dateToMilliseconds(
+								budgetObject.getString("start_date"));
 						long id = budgetObject.getLong("id");
 
 						Budget newBudget = new Budget(budgetName, amount,
@@ -389,5 +390,23 @@ public class ApiInterface {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Temporary method to convert a string date (yyyy-MM-dd)
+	 *
+	 * TODO: Will be removed upon switching to Joda-Time
+	 *
+	 * @param date The date-formatted string
+	 * @return The number of milliseconds from that day since the epoch
+	 */
+	private long dateToMilliseconds(String date) {
+		String[] dateParts = date.split("-");
+		int year = Integer.parseInt(dateParts[0]);
+		int month = Integer.parseInt(dateParts[1]);
+		int day = Integer.parseInt(dateParts[2]);
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month, day);
+		return cal.getTimeInMillis();
 	}
 }
