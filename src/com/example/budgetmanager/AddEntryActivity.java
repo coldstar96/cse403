@@ -109,7 +109,7 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the add button.
 	 */
 	public void addEntry(View view) {
-		
+		// checks whether the amount is empty
 		if (mAmountView.getText().toString().isEmpty()) {
 			mAmountView.setError(getString(R.string.error_invalid_amount));
 			mAmountView.requestFocus();
@@ -142,10 +142,9 @@ public class AddEntryActivity extends Activity {
 
 				// add the entry into the Budget object
 				newEntry.getBudget().addEntry(newEntry);
-
-				Intent intent = new Intent(AddEntryActivity.this, LogsActivity.class);
+				
+				// goto logs screen
 				finish();
-				startActivity(intent);
 			}
 
 			@Override

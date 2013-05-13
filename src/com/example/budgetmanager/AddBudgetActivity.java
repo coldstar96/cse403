@@ -71,18 +71,22 @@ public class AddBudgetActivity extends Activity {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
+		
+		// checks whether amount is not empty
 		if (mBudgetAmount.getText().toString().isEmpty()) {
 			mBudgetAmount.setError(getString(R.string.error_invalid_amount));
 			focusView = mBudgetAmount;
 			cancel = true;
 		}
 		
+		// checks whether name is not emtpy
 		if (mBudgetName.getText().toString().isEmpty()) {
 			mBudgetName.setError(getString(R.string.error_invalid_budget_name));
 			focusView = mBudgetName;
 			cancel = true;
 		}
 		
+		// cancel adding budget with invalid input
 		if (cancel) {
 			focusView.requestFocus();
 			return;
