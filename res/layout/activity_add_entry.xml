@@ -71,6 +71,10 @@
                 android:layout_margin="10dp"
                 android:hint="@string/hint_notes"
                 android:padding="10dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -81,20 +85,20 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/clear_entry_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:onClick="clearEntry"
+            android:text="@string/action_clear" />
+
+        <Button
             android:id="@+id/add_entry_button"
-            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="addEntry"
             android:text="@string/action_add" />
-
-        <Button
-            android:id="@+id/clear_entry_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="clearEntry"
-            android:text="@string/action_clear" />
     </LinearLayout>
 
 </RelativeLayout>
