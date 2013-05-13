@@ -17,4 +17,7 @@
         <!-- <item>Other</item> -->
     </string-array>
 	<string name="action_create_budget">Create</string>
+	<string name="error_invalid_amount">Please specify amount</string>
+	<string name="error_invalid_budget_name">Please specify name</string>
+	<string name="error_name_already_exists">Budget name already in use</string>
 </resources>

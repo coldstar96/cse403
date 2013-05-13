@@ -24,7 +24,7 @@ public class AddBudgetActivity extends Activity {
 
 
 	private EditText mBudgetName;
-	private EditText mBudgetAmmount;
+	private EditText mBudgetAmount;
 	private DatePicker mBudgetDate;
 	private Spinner mBudgetDuration;
 	private CheckBox mRecurring;
@@ -35,7 +35,7 @@ public class AddBudgetActivity extends Activity {
 		setContentView(R.layout.activity_add_budget);
 
 		mBudgetName = (EditText) findViewById(R.id.budget_name);
-		mBudgetAmmount = (EditText) findViewById(R.id.budget_amount);
+		mBudgetAmount = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDate = (DatePicker) findViewById(R.id.budget_date);
 		mRecurring = (CheckBox) findViewById(R.id.budget_recur);
 
@@ -68,7 +68,29 @@ public class AddBudgetActivity extends Activity {
 
 
 	public void attemptAddBudget(){
+		// check input validity
+		boolean cancel = false;
+		View focusView = null;
+		if (mBudgetAmount.getText().toString().isEmpty()) {
+			mBudgetAmount.setError(getString(R.string.error_invalid_amount));
+			focusView = mBudgetAmount;
+			cancel = true;
+		}
+		
+		if (mBudgetName.getText().toString().isEmpty()) {
+			mBudgetName.setError(getString(R.string.error_invalid_budget_name));
+			focusView = mBudgetName;
+			cancel = true;
+		}
+		
+		if (cancel) {
+			focusView.requestFocus();
+			return;
+		}
+		
+		
 		// create the Entry object to add to the Budget
+
 		final Budget newBudget = createBudget();
 
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
@@ -90,7 +112,7 @@ public class AddBudgetActivity extends Activity {
 
 	private Budget createBudget() {
 		String name = mBudgetName.getText().toString();
-		int amount =  (int) Math.round(Double.parseDouble(mBudgetAmmount.getText().toString()) * 100);
+		int amount =  (int) Math.round(Double.parseDouble(mBudgetAmount.getText().toString()) * 100);
 		int currentAmount = 0;
 		boolean recur = mRecurring.isChecked();
 
