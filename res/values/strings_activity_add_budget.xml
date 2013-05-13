@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <string name="title_activity_add_budget">AddBudgetActivity</string>
+	<string name="add_budget">Add Budget</string>
+	<string name="prompt_budget_name">Name</string>
+	<string name="prompt_budget_amount">Amount</string>
+	<string name="prompt_budget_start_date">Start Date</string>
+	<string name="budget_duration">Duration</string>
+	<string name="budget_recur">Recur</string>
+	<string name="action_clear_budget">Clear</string>
+	<string-array name="duration_array">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Fortnight</item>
+        <item>Month</item>
+        <item>Year</item>
+        <!-- <item>Other</item> -->
+    </string-array>
+	<string name="action_create_budget">Create</string>
+</resources>
