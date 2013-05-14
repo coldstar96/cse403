@@ -77,7 +77,6 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -133,7 +132,6 @@ public class LoginActivity extends Activity {
 
 				});
 			}
-
 		};
 
 		findViewById(R.id.log_in_button).setOnClickListener(
