@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -10,12 +11,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class LogsActivity extends FragmentActivity {
@@ -56,7 +55,10 @@ public class LogsActivity extends FragmentActivity {
 					@SuppressLint("ShowToast")
 					@Override
 					public void onClick(View view) {
-						if(((UBudgetApp) getApplication()).getBudgetList().isEmpty()){
+						// if there is no created budget, notify user that they need
+						// to create budget before they add an entry
+						List<Budget> budgets = ((UBudgetApp) getApplication()).getBudgetList();
+						if(budgets.isEmpty()){
 							Toast.makeText(LogsActivity.this, R.string.dialog_add_budget_first, Toast.LENGTH_LONG).show();
 						}else{
 							Intent intent = new Intent(LogsActivity.this, AddEntryActivity.class);
@@ -108,7 +110,7 @@ public class LogsActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
+			// Show 2 total pages.
 			return 2;
 		}
 

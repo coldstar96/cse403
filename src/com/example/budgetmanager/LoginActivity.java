@@ -36,11 +36,6 @@ public class LoginActivity extends Activity {
 
 	private static final String TAG = "LoginActivity";
 
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
 	// Values for local storage
 	public static final String PREFS_EMAIL = "email";
 	public static final String PREFS_PASS = "password";
@@ -65,7 +60,6 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
@@ -82,7 +76,6 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 		});
-
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
@@ -139,7 +132,6 @@ public class LoginActivity extends Activity {
 
 				});
 			}
-
 		};
 
 		findViewById(R.id.log_in_button).setOnClickListener(
@@ -159,27 +151,6 @@ public class LoginActivity extends Activity {
 						startActivity(intent);
 					}
 				});
-		
-		
-		// getting locally saved email and pass
-//
-//		SharedPreferences pref = getPreferences(MODE_PRIVATE);
-//
-//		mEmail = pref.getString(PREFS_EMAIL, "");
-//		mEmailView.setText(mEmail);
-//
-//		mPassword = pref.getString(PREFS_PASS, "");
-//		mPasswordView.setText(mPassword);
-//
-//
-//		Log.d(TAG, "email: "+mEmail);
-//		Log.d(TAG, "pass: "+mPassword);
-//
-//
-//		if(mEmail.length()!=0){
-//			Log.d(TAG, "logging in with remember email and password");
-//			attemptLogin();
-//		}
 	}
 
 	/**
