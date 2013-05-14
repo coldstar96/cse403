@@ -109,6 +109,8 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the add button.
 	 */
 	public void addEntry(View view) {
+		mAmountView.setError(null);		
+		
 		// checks whether the amount is empty
 		if (mAmountView.getText().toString().isEmpty()) {
 			mAmountView.setError(getString(R.string.error_invalid_amount));
@@ -186,6 +188,8 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the clear button.
 	 */
 	public void clearEntry(View view) {
+		mAmountView.setError(null);		
+
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);
 

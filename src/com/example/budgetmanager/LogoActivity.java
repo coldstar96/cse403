@@ -33,7 +33,6 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				procrastinate(true);
 				startActivity(new Intent(LogoActivity.this, LogsActivity.class));
 				finish();
 			}
@@ -41,7 +40,6 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				Log.d(TAG, "check login in on ApiInteface is failure");
-				procrastinate(false);
 				startActivity(new Intent(LogoActivity.this, LoginActivity.class));
 				finish();
 			}			
@@ -49,55 +47,6 @@ public class LogoActivity extends Activity {
 
 		ApiInterface.getInstance().checkLoginStatus(callback);
 
-	}
-
-	private void procrastinate(boolean oldUser){
-		if(oldUser){
-			ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
-				@Override
-				public void onSuccess(List<Budget> result) {
-
-					Log.d(TAG, "Success on login callback");
-
-					UBudgetApp app = (UBudgetApp)getApplication();
-
-					// Add these budgets to the application state
-					List<Budget> budgetList = app.getBudgetList();
-					budgetList.clear();
-					budgetList.addAll(result);
-
-					for (Budget b : budgetList) {
-						Log.d(TAG, b.getName());
-					}
-				}
-
-				@Override
-				public void onFailure(String errorMessage) {
-					Log.d(TAG, "fail on log in callback");
-					Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
-				}
-
-			});
-		}
-		timer = System.currentTimeMillis() - timer;
-		if(timer < 3500){
-			Thread logoTimer = new Thread(){
-				@Override
-				public void run(){
-					try{
-						sleep(3500 - timer);	//sleep for 3.5 seconds
-					}catch(InterruptedException e){
-						e.printStackTrace();
-					}
-				}
-			};
-			logoTimer.start();
-			try {
-				logoTimer.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override

@@ -72,6 +72,8 @@ public class AddBudgetActivity extends Activity {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
+		mBudgetAmountView.setError(null);
+		mBudgetNameView.setError(null);
 		
 		// checks whether amount is not empty
 		if (mBudgetAmountView.getText().toString().isEmpty()) {
@@ -137,6 +139,9 @@ public class AddBudgetActivity extends Activity {
 	 * @param view The reference to the clear button.
 	 */
 	public void clearEntry(View view) {
+		mBudgetAmountView.setError(null);
+		mBudgetNameView.setError(null);
+		
 		// clear the EditText fields
 		mBudgetAmountView.setText("");
 		mBudgetNameView.setText("");
