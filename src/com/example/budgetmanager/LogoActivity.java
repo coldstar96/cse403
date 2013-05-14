@@ -22,8 +22,6 @@ public class LogoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
 
-		timer = System.currentTimeMillis();
-
 		ApiCallback<Object> callback = new ApiCallback<Object>(){
 
 			@Override
