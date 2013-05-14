@@ -11,11 +11,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
 
 public class LogsActivity extends FragmentActivity {
 
@@ -77,6 +81,66 @@ public class LogsActivity extends FragmentActivity {
 					}
 				});
 		
+		fetchBudgets();
+		//fetchEntries();
+	}
+	
+	public void fetchBudgets(){
+		// fetch budgets
+		ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
+			@Override
+			public void onSuccess(List<Budget> result) {
+
+				Log.d(TAG, "Success on login callback");
+
+				UBudgetApp app = (UBudgetApp)getApplication();
+
+				// Add these budgets to the application state
+				List<Budget> budgetList = app.getBudgetList();
+				budgetList.clear();
+				budgetList.addAll(result);
+
+				for (Budget b : budgetList) {
+					Log.d(TAG, b.getName());
+				}
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				Log.d(TAG, "fail on log in callback");
+				Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+			}
+
+		});
+	}
+	
+	public void fetchEntries(Budget b){
+		// fetch budgets
+		ApiInterface.getInstance().fetchEntries(b, new ApiCallback<List<Entry>>() {
+			@Override
+			public void onSuccess(List<Entry> result) {
+
+				Log.d(TAG, "Success on login callback");
+
+				UBudgetApp app = (UBudgetApp)getApplication();
+
+				// Add these budgets to the application state
+				List<Entry> entryList = app.getEntryList();
+				entryList.clear();
+				entryList.addAll(result);
+
+				for (Entry e : entryList) {
+					Log.d(TAG, e.toString());
+				}
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				Log.d(TAG, "fail on log in callback");
+				Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+			}
+
+		});
 	}
 
 	@Override
