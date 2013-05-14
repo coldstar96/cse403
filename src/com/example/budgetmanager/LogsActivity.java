@@ -91,7 +91,7 @@ public class LogsActivity extends FragmentActivity {
 			@Override
 			public void onSuccess(List<Budget> result) {
 
-				Log.d(TAG, "Success on login callback");
+				Log.d(TAG, "Success on fetchBudgets callback");
 
 				UBudgetApp app = (UBudgetApp)getApplication();
 
@@ -120,7 +120,7 @@ public class LogsActivity extends FragmentActivity {
 			@Override
 			public void onSuccess(List<Entry> result) {
 
-				Log.d(TAG, "Success on login callback");
+				Log.d(TAG, "Success on fetchEntries callback");
 
 				UBudgetApp app = (UBudgetApp)getApplication();
 
