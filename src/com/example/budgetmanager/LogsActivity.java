@@ -16,6 +16,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
@@ -37,6 +41,7 @@ public class LogsActivity extends FragmentActivity {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	ListView entryListView;
 	
 	private static final String TAG = "LogsAtivity";
 
@@ -81,8 +86,24 @@ public class LogsActivity extends FragmentActivity {
 					}
 				});
 		
+		// fetch data from server
 		fetchBudgets();
 		//fetchEntries();
+		
+		// setup listview of entries
+		ArrayAdapter<Entry> adapter = new ArrayAdapter<Entry>(this, R.layout.list_entry_layout, 
+				((UBudgetApp)getApplication()).getEntryList());
+		
+		entryListView = (ListView) findViewById(R.id.entries);
+		entryListView.setAdapter(adapter);
+		
+		entryListView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
+				//pop up dialog to delete or edit stuff like that
+			}
+		});
+
 	}
 	
 	public void fetchBudgets(){
