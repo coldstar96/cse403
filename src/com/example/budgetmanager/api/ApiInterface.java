@@ -1,8 +1,9 @@
 package com.example.budgetmanager.api;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import android.content.res.Resources;
 import android.util.Log;
 
 import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.R;
 import com.example.budgetmanager.UBudgetApp;
@@ -83,21 +85,13 @@ public class ApiInterface {
 	public void create(final Budget b, final ApiCallback<Long> callback) {
 		RequestParams params = new RequestParams();
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(b.startTimeMillis());
-
-		int year = cal.get(Calendar.YEAR);
-		Log.d(TAG, "Year: " + year);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DATE);
-		String startDate = "" + year + "-" + month + "-" + day;
+		String startDate = b.getStartDate().toString("yyyy-MM-dd");
 
 		params.put("budget_name", b.getName());
 		params.put("amount", "" + b.getBudgetAmount());
-		params.put("recur", "" + b.doesRecur());
+		params.put("recur", "" + b.isRecurring());
 		params.put("start_date", startDate);
 		params.put("recurrence_duration", b.getDuration().toString());
-		params.put("other_duration", "" + b.getOtherDuration());
 
 		client.post(budgetsUrl, params, new JsonHttpResponseHandler() {
 			@Override
@@ -234,15 +228,13 @@ public class ApiInterface {
 						String budgetName = budgetObject.getString("budget_name");
 						String duration = budgetObject.getString("recurrence_duration");
 						int amount = budgetObject.getInt("amount");
-						int currentAmount = budgetObject.optInt("amount_so_far");
-						int otherDuration = budgetObject.optInt("other_duration");
 						boolean recur = budgetObject.optBoolean("recur");
-						long startDate = budgetObject.getLong("start_date");
+						LocalDate startDate = LocalDate.parse(budgetObject.getString("start_date"),
+								DateTimeFormat.forPattern("yyyy-MM-dd"));
 						long id = budgetObject.getLong("id");
 
 						Budget newBudget = new Budget(budgetName, amount,
-								currentAmount, recur, startDate,
-								duration, otherDuration);
+								recur, startDate, Duration.valueOf(duration));
 						newBudget.setId(id);
 
 						budgetList.add(newBudget);

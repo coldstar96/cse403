@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
-import java.util.Calendar;
+import org.joda.time.LocalDate;
+
+import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
@@ -84,16 +86,14 @@ public class AddBudgetActivity extends Activity {
 	private Budget createBudget() {
 		String name = mBudgetName.getText().toString();
 		int amount =  (int) Math.round(Double.parseDouble(mBudgetAmmount.getText().toString()) * 100);
-		int currentAmount = 0;
 		boolean recur = mRecurring.isChecked();
 
-		Calendar cal = Calendar.getInstance();
-		cal.set(mBudgetDate.getYear(), mBudgetDate.getMonth(), mBudgetDate.getDayOfMonth());
+		LocalDate startDate = new LocalDate(mBudgetDate.getYear(),
+				mBudgetDate.getMonth() + 1, mBudgetDate.getDayOfMonth());
 
 		String duration = mBudgetDuration.getSelectedItem().toString().toUpperCase();
-		int otherDuration = 0;
 
-		return new Budget(name, amount, currentAmount, recur,
-				cal.getTimeInMillis(), duration, otherDuration);
+		return new Budget(name, amount, recur,
+				startDate, Duration.valueOf(duration));
 	}
 }
