@@ -10,6 +10,7 @@ import com.example.budgetmanager.api.ApiInterface;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -26,19 +27,19 @@ import android.widget.CheckBox;
  */
 public class AddBudgetActivity extends Activity {
 	// Text field for entering the Budget name
-	private EditText mBudgetName;
+	private EditText mBudgetNameView;
 
 	// Number field for entering the Budget amount
-	private EditText mBudgetAmmount;
+	private EditText mBudgetAmountView;
 
 	// Enables the user to pick the start date of the Budget
-	private DatePicker mBudgetDate;
+	private DatePicker mBudgetDateView;
 
 	// Enable the user to pick a number of different durations for the Budget
-	private Spinner mBudgetDuration;
+	private Spinner mBudgetDurationView;
 
 	// Whether or not this Budget should recur after one cycle
-	private CheckBox mRecurring;
+	private CheckBox mRecurringView;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -48,27 +49,34 @@ public class AddBudgetActivity extends Activity {
 		// inflate view
 		setContentView(R.layout.activity_add_budget);
 
-		mBudgetName = (EditText) findViewById(R.id.budget_name);
-		mBudgetAmmount = (EditText) findViewById(R.id.budget_amount);
-		mBudgetDate = (DatePicker) findViewById(R.id.budget_date);
-		mRecurring = (CheckBox) findViewById(R.id.budget_recur);
+		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
+		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
+		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
+		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
 
 		// Sets up the duration dropdown
-		mBudgetDuration = (Spinner) findViewById(R.id.budget_duration);
+		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
 		// Create an ArrayAdapter using the string array and a default spinner layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		        R.array.duration_array, android.R.layout.simple_spinner_item);
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-		mBudgetDuration.setAdapter(adapter);
+		mBudgetDurationView.setAdapter(adapter);
 
 		// Submit button activity
-		findViewById(R.id.budget_button).setOnClickListener(
+		findViewById(R.id.create_budget_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						attemptAddBudget();
+					}
+				});
+		findViewById(R.id.clear_budget_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						AddBudgetActivity.this.clearEntry(null);
 					}
 				});
 	}
@@ -81,6 +89,32 @@ public class AddBudgetActivity extends Activity {
 	 * If it fails, toast the error.
 	 */
 	public void attemptAddBudget(){
+		// check input validity
+		boolean cancel = false;
+		View focusView = null;
+		mBudgetAmountView.setError(null);
+		mBudgetNameView.setError(null);
+
+		// checks whether amount is not empty
+		if (mBudgetAmountView.getText().toString().isEmpty()) {
+			mBudgetAmountView.setError(getString(R.string.error_invalid_amount));
+			focusView = mBudgetAmountView;
+			cancel = true;
+		}
+
+		// checks whether name is not emtpy
+		if (mBudgetNameView.getText().toString().isEmpty()) {
+			mBudgetNameView.setError(getString(R.string.error_invalid_budget_name));
+			focusView = mBudgetNameView;
+			cancel = true;
+		}
+
+		// cancel adding budget with invalid input
+		if (cancel) {
+			focusView.requestFocus();
+			return;
+		}
+
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
@@ -109,24 +143,46 @@ public class AddBudgetActivity extends Activity {
 	 * @return a <code>Budget</code> with values specified by the input fields.
 	 */
 	private Budget createBudget() {
-		String name = mBudgetName.getText().toString();
+		String name = mBudgetNameView.getText().toString();
 
 		// Multiply by 100 in order to convert the amount to cents for storage
-		String amountText = mBudgetAmmount.getText().toString();
+		String amountText = mBudgetAmountView.getText().toString();
 		int amount =  (int) Math.round(Double.parseDouble(amountText) * 100);
-		boolean recur = mRecurring.isChecked();
+		boolean recur = mRecurringView.isChecked();
 
-		LocalDate startDate = new LocalDate(mBudgetDate.getYear(),
-				mBudgetDate.getMonth() + 1, mBudgetDate.getDayOfMonth());
+		LocalDate startDate = new LocalDate(mBudgetDateView.getYear(),
+				mBudgetDateView.getMonth() + 1, mBudgetDateView.getDayOfMonth());
 
 		// Convert the selected entry in the duration spinner into a string
 		// that can be converted into a Duration enum member.
 		// Also, explicitly use the default locale to avoid warnings.
-		String duration = mBudgetDuration.getSelectedItem()
+		String duration = mBudgetDurationView.getSelectedItem()
 				.toString()
 				.toUpperCase(Locale.getDefault());
 
 		return new Budget(name, amount, recur,
 				startDate, Duration.valueOf(duration));
+	}
+
+	/**
+	 * Resets the add budget view.
+	 *
+	 * @param view The reference to the clear button.
+	 */
+	public void clearEntry(View view) {
+		mBudgetAmountView.setError(null);
+		mBudgetNameView.setError(null);
+
+		// clear the EditText fields
+		mBudgetAmountView.setText("");
+		mBudgetNameView.setText("");
+
+		// get current time
+		Time now = new Time();
+		now.setToNow();
+		// update the DatePicker
+		mBudgetDateView.updateDate(now.year, now.month, now.monthDay);
+
+		mRecurringView.setChecked(false);
 	}
 }

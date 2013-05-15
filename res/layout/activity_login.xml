@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginActivity" >
+    tools:context=".LoginActivity"
+    android:background="@drawable/ubudgetbackground" >
 
     <!-- Login progress -->
 
@@ -68,7 +69,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
-
+            
             <Button
                 android:id="@+id/log_in_button"
                 android:layout_width="match_parent"

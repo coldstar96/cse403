@@ -42,6 +42,10 @@
             android:name="com.example.budgetmanager.AddBudgetActivity"
             android:label="@string/title_activity_add_budget" >
         </activity>
+        <activity
+            android:name="com.example.budgetmanager.LogsActivity"
+            android:label="@string/title_activity_logs" >
+        </activity>
     </application>
 
 </manifest>

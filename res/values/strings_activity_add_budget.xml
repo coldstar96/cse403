@@ -7,7 +7,7 @@
 	<string name="prompt_budget_start_date">Start Date</string>
 	<string name="budget_duration">Duration</string>
 	<string name="budget_recur">Recur</string>
-	<string name="budget_done">Done</string>
+	<string name="action_clear_budget">Clear</string>
 	<string-array name="duration_array">
         <item>Day</item>
         <item>Week</item>
@@ -16,4 +16,8 @@
         <item>Year</item>
         <!-- <item>Other</item> -->
     </string-array>
+	<string name="action_create_budget">Create</string>
+	<string name="error_invalid_amount">Please specify amount</string>
+	<string name="error_invalid_budget_name">Please specify name</string>
+	<string name="error_name_already_exists">Budget name already in use</string>
 </resources>

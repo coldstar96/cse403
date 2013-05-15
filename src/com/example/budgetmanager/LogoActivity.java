@@ -1,9 +1,17 @@
 package com.example.budgetmanager;
 
-import android.os.Bundle;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
+
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
 
 /**
  *
@@ -11,27 +19,34 @@ import android.view.Menu;
  *
  */
 public class LogoActivity extends Activity {
-	boolean sleep;
+	public static final String TAG = "LogoActivity";
+	long timer;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
 
-		sleep = true;
+		timer = System.currentTimeMillis();
 
-		Thread logoTimer = new Thread(){
+		ApiCallback<Object> callback = new ApiCallback<Object>(){
+
 			@Override
-			public void run(){
-				try{
-					sleep(3500);	//sleep for 5 seconds
-				}catch(InterruptedException e){
-				}finally{
-					startActivity(new Intent(LogoActivity.this, LoginActivity.class));
-					finish();
-				}
+			public void onSuccess(Object result) {
+				Log.d(TAG, "check login in on ApiInteface is success");
+				startActivity(new Intent(LogoActivity.this, LogsActivity.class));
+				finish();
 			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				Log.d(TAG, "check login in on ApiInteface is failure");
+				startActivity(new Intent(LogoActivity.this, LoginActivity.class));
+				finish();
+			}			
 		};
-		logoTimer.start();	// start the logoTimer
+
+		ApiInterface.getInstance().checkLoginStatus(callback);
+
 	}
 
 	@Override
