@@ -58,7 +58,7 @@ public class AddEntryActivity extends Activity {
 	}
 
 
-	/** Called whenever the activity is brought back to the foregroud */
+	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
