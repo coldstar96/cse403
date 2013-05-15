@@ -21,6 +21,7 @@ public class UBudgetApp extends Application {
 		super.onCreate();
 		UBudgetApp.context = getApplicationContext();
 		budgetList = new ArrayList<Budget>();
+		entryList = new ArrayList<Entry>();
 	}
 
 	public List<Budget> getBudgetList() {
