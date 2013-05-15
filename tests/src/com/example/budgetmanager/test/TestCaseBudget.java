@@ -26,6 +26,18 @@ public class TestCaseBudget extends AndroidTestCase {
 		return new Budget("Test Budget", 500, true, date, d);
 	}
 
+	/**
+	 * Runs the startDate tests with the given parameters.
+	 *
+	 * @param dur The {@link com.example.budgetmanager.Budget.Duration} that
+	 * this test is to operate over
+	 * @param initialStartDate The start date of the very first cycle
+	 * @param startDate The expected start date of the <code>cycle</code>th
+	 * cycle
+	 * @param cycle Which cycle <code>startDate</code> is being tested on,
+	 * where <code>0</code> is the cycle starting on
+	 * <code>initialStartDate</code>
+	 */
 	private void runStartDateTest(Duration dur, LocalDate initialStartDate,
 			LocalDate startDate, int cycle) {
 		Budget budget = new Budget("test", 1000, true,
@@ -34,6 +46,18 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(startDate, budget.getStartDate(cycle));
 	}
 
+	/**
+	 * Runs the endDate tests with the given parameters.
+	 *
+	 * @param dur The {@link com.example.budgetmanager.Budget.Duration} that
+	 * this test is to operate over
+	 * @param startDate The start date of the very first cycle
+	 * @param startDate The expected end date of the <code>cycle</code>th
+	 * cycle
+	 * @param cycle Which cycle <code>startDate</code> is being tested on,
+	 * where <code>0</code> is the cycle starting on
+	 * <code>startDate</code>
+	 */
 	private void runEndDateTest(Duration dur, LocalDate startDate,
 			LocalDate endDate, int cycle) {
 		Budget budget = new Budget("test", 1000, true,
