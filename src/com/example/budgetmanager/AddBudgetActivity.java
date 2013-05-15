@@ -1,5 +1,7 @@
 package com.example.budgetmanager;
 
+import java.util.Locale;
+
 import org.joda.time.LocalDate;
 
 import com.example.budgetmanager.Budget.Duration;
@@ -23,12 +25,19 @@ import android.widget.CheckBox;
  *
  */
 public class AddBudgetActivity extends Activity {
-
-
+	// Text field for entering the Budget name
 	private EditText mBudgetName;
+
+	// Number field for entering the Budget amount
 	private EditText mBudgetAmmount;
+
+	// Enables the user to pick the start date of the Budget
 	private DatePicker mBudgetDate;
+
+	// Enable the user to pick a number of different durations for the Budget
 	private Spinner mBudgetDuration;
+
+	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurring;
 
 	@Override
@@ -61,7 +70,13 @@ public class AddBudgetActivity extends Activity {
 				});
 	}
 
-
+	/**
+	 * Attempts to push the Budget created by the user to the API
+	 *
+	 * If it succeeds, this activity is finished.
+	 *
+	 * If it fails, toast the error.
+	 */
 	public void attemptAddBudget(){
 		// create the Entry object to add to the Budget
 		final Budget newBudget = createBudget();
@@ -77,21 +92,35 @@ public class AddBudgetActivity extends Activity {
 
 			@Override
 			public void onFailure(String errorMessage) {
-				// if the request fails, do nothing (the toast is for testing purposes)
-				Toast.makeText(AddBudgetActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+				// if the request fails, do nothing
+				// (the toast is for testing and debug purposes)
+				Toast.makeText(AddBudgetActivity.this, errorMessage,
+						Toast.LENGTH_LONG).show();
 			}
 		});
 	}
 
+	/**
+	 * Creates a Budget based on the contents of the input fields
+	 * @return a Budget with values specified by the input fields
+	 */
 	private Budget createBudget() {
 		String name = mBudgetName.getText().toString();
-		int amount =  (int) Math.round(Double.parseDouble(mBudgetAmmount.getText().toString()) * 100);
+
+		// Multiply by 100 in order to convert the amount to cents for storage
+		String amountText = mBudgetAmmount.getText().toString();
+		int amount =  (int) Math.round(Double.parseDouble(amountText) * 100);
 		boolean recur = mRecurring.isChecked();
 
 		LocalDate startDate = new LocalDate(mBudgetDate.getYear(),
 				mBudgetDate.getMonth() + 1, mBudgetDate.getDayOfMonth());
 
-		String duration = mBudgetDuration.getSelectedItem().toString().toUpperCase();
+		// Convert the selected entry in the duration spinner into a string
+		// that can be converted into a Duration enum member.
+		// Also, explicitly use the default locale to avoid warnings.
+		String duration = mBudgetDuration.getSelectedItem()
+				.toString()
+				.toUpperCase(Locale.getDefault());
 
 		return new Budget(name, amount, recur,
 				startDate, Duration.valueOf(duration));

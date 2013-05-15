@@ -15,6 +15,11 @@ import org.joda.time.Period;
  * @author Graham grahamb5
  */
 public class Budget {
+	/**
+	 * The possible types durations that can be chosen for a budget
+	 * @author Graham grahamb5
+	 *
+	 */
 	public static enum Duration {
 		DAY, WEEK, FORTNIGHT, MONTH, YEAR
 	}
@@ -24,20 +29,30 @@ public class Budget {
 	private long budgetId;
 
 	private String name;
-	private int amount; 		// Amount allocated for the budget, in cents
-	private boolean recur;		// true for recurring budget
 
+	// Amount allocated for the budget, in cents
+	private int amount;
+
+	// true for recurring Budget
+	private boolean recur;
+
+	// The start date of the first cycle
 	private LocalDate startDate;
-	private Duration duration;	// Duration type.
+
+	// Duration type for this Budget
+	private Duration duration;
+
+	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
 
+	// List of entries associated with this Budget
 	private List<Entry> entries;
 
 	/**
 	 * Create a new <code>Budget</code>.
 	 *
 	 * @param name The name of the <code>Budget</code>.
-	 * @param amount The total amount in cents allowed in this <code>Budget</code>.
+	 * @param amount The amount in cents allowed in this <code>Budget</code>.
 	 * @param recur Whether this <code>Budget</code> recurs.
 	 * @param startDate The start date of this <code>Budget</code>.
 	 * @param duration The type of duration in this <code>Budget</code>.
@@ -127,6 +142,10 @@ public class Budget {
 		entries.remove(entry);
 	}
 
+	/**
+	 * Get the list of entries associated with this Budget
+	 * @return the (unmodifiable) list of entries in this Budget
+	 */
 	public List<Entry> getEntries() {
 		return Collections.unmodifiableList(entries);
 	}
@@ -209,7 +228,7 @@ public class Budget {
 	 */
 	public LocalDate getStartDate(int cycle) {
 		if (cycle < 0) {
-			throw new IllegalArgumentException("Cycle was nonpositive: " + cycle);
+			throw new IllegalArgumentException("Cycle was negative: " + cycle);
 		}
 		return startDate.withPeriodAdded(budgetDuration, cycle);
 	}
