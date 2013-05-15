@@ -109,46 +109,52 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the add button.
 	 */
 	public void addEntry(View view) {
-		if (mAmountView.getText().toString().equals("")) {
-			// amount is a required field
-			Toast.makeText(this, "Please specify an amount.",
-					Toast.LENGTH_LONG).show();
-		} else {
-			// create the Entry object to add to the Budget
-			final Entry newEntry = createEntry();
+		mAmountView.setError(null);		
+		
+		// checks whether the amount is empty
+		if (mAmountView.getText().toString().isEmpty()) {
+			mAmountView.setError(getString(R.string.error_invalid_amount));
+			mAmountView.requestFocus();
+			return;
+		}
 
-			if (newEntry == null) {
-				// do nothing until add Budget activity is up
-				return;
+		// create the Entry object to add to the Budget
+		final Entry newEntry = createEntry();
+
+		if (newEntry == null) {
+			// do nothing until add Budget activity is up
+			return;
+		}
+
+		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
+			@Override
+			public void onSuccess(Long result) {
+				// for testing purposes
+				Toast.makeText(AddEntryActivity.this, "Added $"
+						+ ((double) newEntry.getAmount() / CENTS) + " to the "
+						+ newEntry.getBudget().getName() + " budget "
+						+ "with the date of: " + newEntry.getDate()
+						+ " with a note of: " + newEntry.getNotes()
+						, Toast.LENGTH_LONG).show();
+
+				// clear the fields if the add was successful.
+				// passes a null since the method doesn't need
+				// a reference to a view object to work.
+				AddEntryActivity.this.clearEntry(null);
+
+				// add the entry into the Budget object
+				newEntry.getBudget().addEntry(newEntry);
+				
+				// goto logs screen
+				finish();
 			}
 
-			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
-				@Override
-				public void onSuccess(Long result) {
-					// for testing purposes
-					Toast.makeText(AddEntryActivity.this, "Added $"
-					+ ((double) newEntry.getAmount() / CENTS) + " to the "
-							+ newEntry.getBudget().getName() + " budget "
-							+ "with the date of: " + newEntry.getDate()
-							+ " with a note of: " + newEntry.getNotes()
-			   				, Toast.LENGTH_LONG).show();
-
-					// clear the fields if the add was successful.
-					// passes a null since the method doesn't need
-					// a reference to a view object to work.
-					AddEntryActivity.this.clearEntry(null);
-
-					// add the entry into the Budget object
-					newEntry.getBudget().addEntry(newEntry);
-				}
-
-				@Override
-				public void onFailure(String errorMessage) {
-					// if the request fails, do nothing (the toast is for testing purposes)
-					Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
-				}
-			});
-		}
+			@Override
+			public void onFailure(String errorMessage) {
+				// if the request fails, do nothing (the toast is for testing purposes)
+				Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	// Helper method to create the new <code>Entry</code> object to be added.
@@ -182,6 +188,8 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the clear button.
 	 */
 	public void clearEntry(View view) {
+		mAmountView.setError(null);		
+
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);
 

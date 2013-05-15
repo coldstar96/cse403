@@ -1,96 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/ubudgetbackground"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/ubudgetbackground" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <Spinner
-            android:id="@+id/spinner_budget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:prompt="@string/spinner_title"
-            android:spinnerMode="dropdown"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/label_amount"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/edit_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:imeOptions="actionSend|flagNoEnterAction"
-            android:inputType="numberDecimal"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:padding="5dp"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/label_date"
-            android:textSize="15sp" />
-
-        <DatePicker
-            android:id="@+id/date_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleX=".8"
-            android:scaleY=".8" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/label_notes"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/edit_notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="@string/hint_notes"
-            android:padding="10dp" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/ubudgetbackground" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/add_entry_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/spinner_budget"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addEntry"
-                android:text="@string/action_add" />
+                android:background="@android:drawable/btn_dropdown"
+                android:prompt="@string/spinner_title"
+                android:spinnerMode="dropdown"
+                android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/clear_entry_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clearEntry"
-                android:text="@string/action_clear" />
+                android:layout_margin="10dp"
+                android:text="@string/label_amount"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/edit_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:imeOptions="actionSend|flagNoEnterAction"
+                android:inputType="numberDecimal"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/label_date"
+                android:textSize="15sp" />
+
+            <DatePicker
+                android:id="@+id/date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleX=".8"
+                android:scaleY=".8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/label_notes"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/edit_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/hint_notes"
+                android:padding="10dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
         </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/clear_entry_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:onClick="clearEntry"
+            android:text="@string/action_clear" />
+
+        <Button
+            android:id="@+id/add_entry_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="addEntry"
+            android:text="@string/action_add" />
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
