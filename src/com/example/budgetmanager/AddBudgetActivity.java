@@ -40,9 +40,12 @@ public class AddBudgetActivity extends Activity {
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurring;
 
+	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// inflate view
 		setContentView(R.layout.activity_add_budget);
 
 		mBudgetName = (EditText) findViewById(R.id.budget_name);
@@ -71,20 +74,20 @@ public class AddBudgetActivity extends Activity {
 	}
 
 	/**
-	 * Attempts to push the Budget created by the user to the API
+	 * Attempts to push the <code>Budget</code> created by the user to the API.
 	 *
 	 * If it succeeds, this activity is finished.
 	 *
 	 * If it fails, toast the error.
 	 */
 	public void attemptAddBudget(){
-		// create the Entry object to add to the Budget
+		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-				// add the entry into the Budget object
+				// add the Budget object into the list Budgets
 				UBudgetApp app = (UBudgetApp) getApplication();
 				app.getBudgetList().add(0, newBudget);
 				finish();
@@ -101,8 +104,9 @@ public class AddBudgetActivity extends Activity {
 	}
 
 	/**
-	 * Creates a Budget based on the contents of the input fields
-	 * @return a Budget with values specified by the input fields
+	 * Creates a <code>Budget</code> based on the contents of the input fields.
+	 * 
+	 * @return a <code>Budget</code> with values specified by the input fields.
 	 */
 	private Budget createBudget() {
 		String name = mBudgetName.getText().toString();
