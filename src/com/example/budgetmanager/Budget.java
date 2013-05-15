@@ -1,8 +1,11 @@
 package com.example.budgetmanager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 /**
  * This is the budget object. It keeps track of all the entries
@@ -12,64 +15,76 @@ import java.util.List;
  * @author Graham grahamb5
  */
 public class Budget {
+	/**
+	 * The possible types durations that can be chosen for a budget
+	 * @author Graham grahamb5
+	 *
+	 */
 	public static enum Duration {
-		DAY, WEEK, FORTNIGHT, MONTH, YEAR, OTHER
+		DAY, WEEK, FORTNIGHT, MONTH, YEAR
 	}
 
 	public static final long NEW_ID = -1;
-	public static final long ONE_DAY = 24*60*60*1000;
 
 	private long budgetId;
 
 	private String name;
-	private int amount; 		// Amount allocated for the budget, in cents
-	private int currentAmount;	// Memorized amount spent so far, in cents
-	private boolean recur;		// true for recurring budget
 
-	private Calendar startDate;
-	private Duration duration;	// Duration type.
-	private int otherDuration;		// Duration in days, for duration type OTHER.
+	// Amount allocated for the budget, in cents
+	private int amount;
 
+	// true for recurring Budget
+	private boolean recur;
+
+	// The start date of the first cycle
+	private LocalDate startDate;
+
+	// Duration type for this Budget
+	private Duration duration;
+
+	// Actual period of the budget (length of one cycle)
+	private Period budgetDuration;
+
+	// List of entries associated with this Budget
 	private List<Entry> entries;
 
 	/**
 	 * Create a new <code>Budget</code>.
 	 *
 	 * @param name The name of the <code>Budget</code>.
-	 * @param amount The total amount in cents allowed in this <code>Budget</code>.
-	 * @param currentAmount The current amount spent in this <code>Budget</code>.
+	 * @param amount The amount in cents allowed in this <code>Budget</code>.
 	 * @param recur Whether this <code>Budget</code> recurs.
-	 * @param startTime The start time, in milliseconds, of this <code>Budget</code>.
-	 * @param durationType The type of duration in this <code>Budget</code>.
-	 */
-	public Budget(String name, int amount, int currentAmount, boolean recur,
-			long startTime, String durationType) {
-		this(name, amount, currentAmount, recur, startTime, durationType, 0);
-	}
-
-	/**
-	 * Create a new <code>Budget</code>.
-	 *
-	 * @param name The name of the <code>Budget</code>.
-	 * @param amount The total amount in cents allowed in this <code>Budget</code>.
-	 * @param currentAmount The current amount spent in this <code>Budget</code>.
-	 * @param recur Whether this <code>Budget</code> recurs.
-	 * @param startTime The start time, in milliseconds, of this <code>Budget</code>.
+	 * @param startDate The start date of this <code>Budget</code>.
 	 * @param duration The type of duration in this <code>Budget</code>.
-	 * @param otherDuration The other duration length, in days, if
-	 *                      <code>durationType</code> is <code>OTHER</code>.
 	 */
-	public Budget(String name, int amount, int currentAmount, boolean recur,
-			long startTime, String duration, int otherDuration) {
+	public Budget(String name, int amount, boolean recur,
+			LocalDate startDate, Duration duration) {
 		this.name = name;
 		this.amount = amount;
-		this.currentAmount = currentAmount;
 		this.recur = recur;
-		this.startDate = Calendar.getInstance();
-		this.startDate.setTimeInMillis(startTime);
-		this.duration = Duration.valueOf(duration);
-		this.otherDuration = otherDuration;
+		this.startDate = startDate;
+		this.duration = duration;
 		this.entries = new ArrayList<Entry>();
+		this.budgetId = NEW_ID;
+
+		// Set up a period based on the requested duration type
+		switch(this.duration) {
+		case DAY:
+			this.budgetDuration = Period.days(1);
+			break;
+		case WEEK:
+			this.budgetDuration = Period.weeks(1);
+			break;
+		case FORTNIGHT:
+			this.budgetDuration = Period.weeks(2);
+			break;
+		case MONTH:
+			this.budgetDuration = Period.months(1);
+			break;
+		case YEAR:
+			this.budgetDuration = Period.years(1);
+			break;
+		}
 	}
 
 	/**
@@ -77,28 +92,35 @@ public class Budget {
 	 *
 	 * @param budgetId The ID of this <code>Budget</code>.
 	 */
-	public void setId(long budgetId) { this.budgetId = budgetId; }
+	public void setId(long budgetId) {
+		this.budgetId = budgetId;
+	}
 
 	/**
 	 * Gets the <code>Budget</code> ID.
 	 *
 	 * @return The <code>Budget</code> ID.
 	 */
-	public long getId() { return budgetId; }
+	public long getId() {
+		return budgetId;
+	}
 
 	/**
 	 * Adds a new <code>entry</code> to the <code>Budget</code>.
 	 *
 	 * @param entry The entry to add.
 	 * @throws IllegalArgumentException if <code>entry</code> already
-	 *                                  exists in this budget.
+	 * exists in this budget, or if <code>entry</code> is
+	 * <code>null</code>
 	 */
 	public void addEntry(Entry entry) {
+		if (entry == null) {
+			throw new IllegalArgumentException("Tried to add a null Entry");
+		}
 		if (entries.contains(entry)) {
 			throw new IllegalArgumentException("Tried to add entry to " +
 					"budget that already contained it.");
 		}
-		currentAmount += entry.getAmount();
 		entries.add(entry);
 	}
 
@@ -110,12 +132,22 @@ public class Budget {
 	 * 									entry of this budget.
 	 */
 	public void removeEntry(Entry entry) {
+		if (entry == null) {
+			throw new IllegalArgumentException("Tried to remove a null Entry");
+		}
 		if (!entries.contains(entry)) {
 			throw new IllegalArgumentException("Tried to remove entry from " +
 					"budget that did not contain it.");
 		}
-		currentAmount -= entry.getAmount();
 		entries.remove(entry);
+	}
+
+	/**
+	 * Get the list of entries associated with this Budget
+	 * @return the (unmodifiable) list of entries in this Budget
+	 */
+	public List<Entry> getEntries() {
+		return Collections.unmodifiableList(entries);
 	}
 
 	/**
@@ -123,7 +155,9 @@ public class Budget {
 	 *
 	 * @return The name of this <code>Budget</code>.
 	 */
-	public String getName() { return name; }
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * Gets and returns the user-specified total budget amount of this
@@ -132,20 +166,8 @@ public class Budget {
 	 *
 	 * @return The amount of money allowed in this budget, in cents.
 	 */
-	public int getBudgetAmount() { return amount; }
-
-	/**
-	 * Gets and returns the current memorized total the user has spent
-	 * in this <code>Budget</code> for the current cycle. This number
-	 * is in cents.
-	 *
-	 * @return The amount of money spent on this <code>Budget</code>
-	 *         this cycle, in cents.
-	 */
-	public int getCurrentAmount() {
-		// TODO: Need to check to see if the memorized amount is out-of date
-		//       i.e. new cycle
-		return currentAmount;
+	public int getBudgetAmount() {
+		return amount;
 	}
 
 	/**
@@ -155,64 +177,37 @@ public class Budget {
 	 *
 	 * @return Whether this <code>Budget</code> recurs or not.
 	 */
-	public boolean doesRecur() { return recur; }
+	public boolean isRecurring() {
+		return recur;
+	}
 
 	/**
 	 * Returns the duration type of this budget
 	 * @return the duration of this budget
 	 */
-	public Duration getDuration() { return duration; }
-
-	/**
-	 * Returns the otherDuration, which is used if this budget's
-	 * Duration is set to Duration.OTHER.
-	 * @return the duration of this Budget in days, or 0 if
-	 * getDuration() doesn't return Duration.OTHER.
-	 */
-	public int getOtherDuration() { return otherDuration; }
+	public Duration getDuration() {
+		return duration;
+	}
 
 	/**
 	 * Calculates the current cycle count of this <code>Budget</code>.
 	 *
-	 * @return The current cycle count.
-	 * @throws IllegalStateException if the <code>Duration</code> type is
-	 *         not set appropriately.
+	 * @return The current cycle count, where the first cycle is 0, or -1 if
+	 * it is currently before the start of the budget.
 	 */
 	public int getCurrentCycle() {
-		Calendar now = Calendar.getInstance();
-
-		long timeDiffInMillis = now.getTimeInMillis() - startDate.getTimeInMillis();
-		switch (duration) {
-		case DAY:
-			return (int) Math.ceil(timeDiffInMillis / (double) ONE_DAY);
-		case WEEK:
-			return (int) Math.ceil(timeDiffInMillis / (double) 7 * ONE_DAY);
-		case FORTNIGHT:
-			return (int) Math.ceil(timeDiffInMillis / (double) 14 * ONE_DAY);
-		case MONTH:
-			return 	((now.get(Calendar.YEAR) - startDate.get(Calendar.YEAR)) * 12) +
-					(now.get(Calendar.MONTH) - startDate.get(Calendar.MONTH)) +
-					(now.get(Calendar.DAY_OF_MONTH) < startDate.get(Calendar.DAY_OF_MONTH) ? 0 : 1);
-		case YEAR:
-			int startYear = startDate.get(Calendar.YEAR);
-			int thisYear = now.get(Calendar.YEAR);
-
-			if ((startYear % 4 == 0) && (startYear % 100 != 0) || (startYear % 400 == 0)) {
-				// Is leap year. Now check to see if it is not currently leap year AND if the start
-				// day was after leap day.
-				if (startDate.get(Calendar.DAY_OF_YEAR) > 60 &&
-						!((thisYear % 4 == 0) && (thisYear % 100 != 0) || (thisYear % 400 == 0)))
-					return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR)
-							< startDate.get(Calendar.DAY_OF_YEAR) + 1 ? 0 : 1);
+		LocalDate now = LocalDate.now();
+		if (startDate.isAfter(now)) {
+			return -1;
+		} else {
+			int cycle = 0;
+			LocalDate startOfPeriod = startDate;
+			while (startOfPeriod.isBefore(now)) {
+				++cycle;
+				startOfPeriod = startOfPeriod.plus(budgetDuration);
 			}
-
-			return thisYear - startYear + (now.get(Calendar.DAY_OF_YEAR)
-					< startDate.get(Calendar.DAY_OF_YEAR) ? 0 : 1);
-		case OTHER:
-			return (int) Math.ceil(timeDiffInMillis / (double) otherDuration * ONE_DAY);
+			return cycle;
 		}
-
-		throw new IllegalStateException("Budget must have a duration type specified.");
 	}
 
 	/**
@@ -222,83 +217,43 @@ public class Budget {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isActive() {
-		return recur || getCurrentCycle() == 1;
+		return recur || getCurrentCycle() == 0;
 	}
 
 	/**
-	 * Returns the start time, in milliseconds, of the given
-	 * <code>cycle</code>. This time is on the start day at midnight.
-	 *
-	 * @param cycle The cycle to calculate the start time of.
-	 * @return The start time, in milliseconds, of the <code>cycle</code>.
-	 * @throws IllegalArgumentException If the cycle is inappropriate.
-	 * @throws IllegalStateException if the <code>Duration</code> type is
-	 *         not set appropriately.
+	 * Gets the start date of the given cycle
+	 * @param cycle the cycle number to get the start date from.
+	 * @return The start date of the cycle
+	 * @throws IllealArgumentException If the cycle is negative
 	 */
-	public long startTimeMillis(int cycle) {
-		if (!recur && cycle > 1) {
-			throw new IllegalArgumentException("Cannot get the cycle > 1 of non-recurring Budget.");
+	public LocalDate getStartDate(int cycle) {
+		if (cycle < 0) {
+			throw new IllegalArgumentException("Cycle was negative: " + cycle);
 		}
-
-		switch (duration) {
-		case DAY:
-			return startDate.getTimeInMillis() + (cycle - 1) * ONE_DAY;
-		case WEEK:
-			return startDate.getTimeInMillis() + (cycle - 1) * 7 * ONE_DAY;
-		case FORTNIGHT:
-			return startDate.getTimeInMillis() + (cycle - 1) * 14 * ONE_DAY;
-		case MONTH:
-			Calendar monthCycleStart = (Calendar) startDate.clone();
-
-			monthCycleStart.add(Calendar.MONTH, cycle - 1);
-
-			if (monthCycleStart.get(Calendar.DAY_OF_MONTH) < startDate.get(Calendar.DAY_OF_MONTH)) {
-				// The start date was truncated by varying month lengths. We want the start date to
-				// be on or after the matching day in a given month, not before.
-				monthCycleStart.add(Calendar.DAY_OF_YEAR, 1);
-			}
-
-			return monthCycleStart.getTimeInMillis();
-		case YEAR:
-			Calendar yearCycleStart = (Calendar) startDate.clone();
-
-			yearCycleStart.add(Calendar.YEAR, cycle - 1);
-
-			if (yearCycleStart.get(Calendar.DAY_OF_MONTH) < startDate.get(Calendar.DAY_OF_MONTH)) {
-				// The start date was truncated by leap day. We want the start date to
-				// be on or after the matching day in a given month, not before.
-				yearCycleStart.add(Calendar.DAY_OF_YEAR, 1);
-			}
-
-			return yearCycleStart.getTimeInMillis();
-		case OTHER:
-			return startDate.getTimeInMillis() + (cycle - 1) * otherDuration * ONE_DAY;
-		}
-
-		throw new IllegalStateException("Budget must have a duration type specified.");
+		return startDate.withPeriodAdded(budgetDuration, cycle);
 	}
 
 	/**
-	 * Returns the start time, in milliseconds, of this budget.
-	 * @return the start time, in milliseconds, of this budget.
+	 * Returns the absolute start date of this budget, on its first iteration.
+	 * @return the start date of this budget
 	 */
-	public long startTimeMillis() {
-		return startDate.getTimeInMillis();
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 
 	/**
-	 * Returns the start time, in milliseconds, of the given
-	 * <code>cycle</code>. This time is a millisecond before
-	 * the start time of the next cycle.
+	 * Returns the end date of the given cycle.
 	 *
 	 * @param cycle The cycle to calculate the end time of.
 	 * @return The end time, in milliseconds, of the <code>cycle</code>.
-	 * @throws IllegalArgumentException If the cycle is inappropriate.
-	 * @throws IllegalStateException if the <code>Duration</code> type is
-	 *         not set appropriately.
+	 * @throws IllegalArgumentException If the cycle is negative
 	 */
-	public long endTimeMillis(int cycle) {
-		return startTimeMillis(cycle + 1) - 1;
+	public LocalDate getEndDate(int cycle) {
+		if (cycle < 0) {
+			throw new IllegalArgumentException("Cycle was negative: " + cycle);
+		}
+		return startDate.withPeriodAdded(budgetDuration,
+				cycle + 1).minusDays(1);
 	}
 
 }
