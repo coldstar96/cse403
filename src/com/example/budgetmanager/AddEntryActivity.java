@@ -34,10 +34,16 @@ public class AddEntryActivity extends Activity {
 	// shared data across the app
 	private UBudgetApp appData;
 
-	// views to extract information from
+	// List of Budgets to choose from
 	private Spinner mBudgetView;
+	
+	// Number field for entering the Entry amount
 	private EditText mAmountView;
+	
+	// Enables the user to pick the start date of the Budget
 	private DatePicker mDateView;
+	
+	// Text field for entering notes for the Entry
 	private EditText mNotesView;
 
 	/** Called when the activity is first created. */
@@ -57,8 +63,7 @@ public class AddEntryActivity extends Activity {
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
 	}
 
-
-	/** Called whenever the activity is brought back to the foregroud */
+	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -67,21 +72,27 @@ public class AddEntryActivity extends Activity {
 		addItemsToBudgetSpinner();
 	}
 
-	// Populate the spinner with the current list of Budgets.
+	// Populates the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
+		// get the actual Budget objects
 		final List<Budget> budgetList = appData.getBudgetList();
+		// list for the String names for each Budget object
 		List<String> budgetNameList = new ArrayList<String>();
-
+		
+		// build the list of Budget names
 		for (Budget b : budgetList) {
 			Log.d(TAG, b.getName());
 			budgetNameList.add(b.getName());
 		}
 
+		// last entry of the list of Budget is for adding a new Budget
 		budgetNameList.add(getResources().getString(R.string.new_budget));
-
+		// create an ArrayAdapter using the names of the Budgets
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				R.layout.spinner_layout, budgetNameList);
+		// specify the layout to use when the list of choices appears
 		dataAdapter.setDropDownViewResource(R.layout.spinner_entry_layout);
+		// apply the adapter to the spinner
 		mBudgetView.setAdapter(dataAdapter);
 
 		// set the spinner to display selection upon selecting an item
