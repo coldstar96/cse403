@@ -129,6 +129,9 @@ public class AddEntryActivity extends Activity {
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
+				UBudgetApp app = (UBudgetApp) getApplication();
+				app.getEntryList().add(0, newEntry);
+				
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "
