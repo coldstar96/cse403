@@ -38,6 +38,7 @@ public class ApiInterface {
 	private final String sessionUrl;
 	private final String budgetsUrl;
 	private final String entriesUrl;
+	private final String budgetsAndEntriesUrl;
 
 	private final AsyncHttpClient client;
 
@@ -62,6 +63,7 @@ public class ApiInterface {
 		sessionUrl = baseUrl + r.getString(R.string.session);
 		budgetsUrl = baseUrl + r.getString(R.string.budgets);
 		entriesUrl = baseUrl + r.getString(R.string.entries);
+		budgetsAndEntriesUrl = baseUrl + r.getString(R.string.budgets_and_entries);
 
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
@@ -142,7 +144,7 @@ public class ApiInterface {
 			public void onSuccess(JSONObject obj) {
 				try {
 					long id = obj.getLong("id");
-					e.setEntriId(id);
+					e.setEntryId(id);
 					callback.onSuccess(id);
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send an ID
@@ -273,8 +275,116 @@ public class ApiInterface {
 	 * {@link java.util.List}&lt;{@link Entry}&gt;
 	 * containing all Entries for the given Budget.
 	 */
-	public void fetchEntries(Budget b, ApiCallback<List<Entry>> callback) {
-		// TODO: implement
+	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
+		Log.d(TAG, "Fetching entries for budget # " + b.getId());
+		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
+		client.get(requestUrl, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONArray entriesJson) {
+				List<Entry> entriesList = new ArrayList<Entry>();
+
+				int entriesLen = entriesJson.length();
+
+				for (int i = 0; i < entriesLen; ++i) {
+					try {
+						JSONObject entriesObject = entriesJson.getJSONObject(i);
+						
+						long id = entriesObject.getLong("id");
+						int amount = entriesObject.getInt("amount");
+						String date = entriesObject.getString("expenditure_date");
+						String notes = entriesObject.getString("notes");
+
+						Entry newEntry = new Entry(id, amount, b, notes, date);
+
+						b.addEntry(newEntry);
+					} catch (JSONException e) {
+						Log.e(TAG, e.getMessage());
+					}
+				}
+
+				callback.onSuccess(entriesList);
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject obj) {
+				String status = obj.optString("status", "Service Error");
+				callback.onFailure(status);
+			}
+		});
+	}
+	
+	/**
+	 * Fetches a collection of Budgets and Entries owned by the current user.
+	 *
+	 * @param callback Callbacks to run on success or failure, or
+	 * <code>null</code> for no callbacks.
+	 * For onSuccess, the object passed is a
+	 * {@link java.util.List}&lt;{@link Budget}&gt;
+	 * containing all Budgets for the current user, each
+	 * containing all of its Entries.
+	 */
+	public void fetchBudgetsAndEntries(final ApiCallback<List<Budget>> callback) {
+		Log.d(TAG, "Fetching all budgets and entries");
+
+		client.get(budgetsAndEntriesUrl, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONArray budgetsJson) {
+				List<Budget> budgetList = new ArrayList<Budget>();
+
+				int budgetsLen = budgetsJson.length();
+
+				for (int i = 0; i < budgetsLen; ++i) {
+					try {
+						JSONObject budgetObject = budgetsJson.getJSONObject(i);
+
+						String budgetName = budgetObject.getString("budget_name");
+						String duration = budgetObject.getString("recurrence_duration");
+						int amount = budgetObject.getInt("amount");
+						int currentAmount = budgetObject.optInt("amount_so_far");
+						int otherDuration = budgetObject.optInt("other_duration");
+						boolean recur = budgetObject.optBoolean("recur");
+						long startDate = dateToMilliseconds(
+								budgetObject.getString("start_date"));
+						long id = budgetObject.getLong("id");
+						
+
+						Budget newBudget = new Budget(budgetName, amount,
+								currentAmount, recur, startDate,
+								duration, otherDuration);
+						newBudget.setId(id);
+						
+						JSONArray entriesJson = budgetObject.getJSONArray("entries");
+						int entriesLen = entriesJson.length();
+						
+						for (int j = 0; j < entriesLen; j++) {
+							JSONObject entriesObject = entriesJson.getJSONObject(i);
+							
+							long entryId = entriesObject.getLong("id");
+							int entryAmount = entriesObject.getInt("amount");
+							String entryDate = entriesObject.getString("expenditure_date");
+							String entryNotes = entriesObject.getString("notes");
+
+							Entry newEntry = new Entry(entryId, entryAmount, 
+									newBudget, entryNotes, entryDate);
+
+							newBudget.addEntry(newEntry);
+						}
+
+						budgetList.add(newBudget);
+					} catch (JSONException e) {
+						Log.e(TAG, e.getMessage());
+					}
+				}
+
+				callback.onSuccess(budgetList);
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject obj) {
+				String status = obj.optString("status", "Service Error");
+				callback.onFailure(status);
+			}
+		});
 	}
 
 	/**
