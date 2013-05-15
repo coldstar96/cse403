@@ -27,7 +27,7 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				startActivity(new Intent(LogoActivity.this, LogsActivity.class));
+				startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
 				finish();
 			}
 
