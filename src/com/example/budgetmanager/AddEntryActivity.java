@@ -10,6 +10,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -80,6 +81,21 @@ public class AddEntryActivity extends Activity {
 
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
+	}
+	
+	/** Called when an item in the options menu have been selected. */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+		if (item.getItemId() == R.id.settings) {
+			Toast.makeText(AddEntryActivity.this, "Successfully handled Settings selection"
+					, Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(AddEntryActivity.this, "Failed to handle Settings selection"
+					, Toast.LENGTH_LONG).show();
+		}
+		
+		return true;
 	}
 
 	// Populates the spinner with the current list of Budgets.
