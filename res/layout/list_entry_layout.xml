@@ -8,32 +8,34 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="date"
             android:textColor="@color/dark_gray"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/item_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="budget name"
             android:textColor="@color/dark_gray"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/item_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="note"
             android:textColor="@color/dark_gray"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <TextView
@@ -41,10 +43,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Amount"
+        android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:maxLines="1"
+        android:text="Amount"
         android:textColor="@color/dark_gray"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
 </RelativeLayout>

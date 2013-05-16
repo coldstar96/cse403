@@ -177,7 +177,7 @@ class EntryAdapter extends ArrayAdapter<Entry>{
 		holder.date.setText(entry.getDate());
 		holder.note.setText(entry.getNotes());
 		holder.budget.setText(entry.getBudget().getName());
-		holder.amount.setText("" + entry.getAmount());
+		holder.amount.setText(Utilities.amountToDollars(entry.getAmount()));
 
 		return row;
 	}

@@ -4,9 +4,19 @@
     android:layout_height="fill_parent"
     android:background="@drawable/ubudgetbackground" >
 
+    <LinearLayout
+        android:id="@+id/add_entry_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/addentryheader" >
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/add_entry_header"
         android:background="@drawable/ubudgetbackground" >
 
         <LinearLayout

@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/ubudgetbackground" >
 
+    <LinearLayout
+        android:id="@+id/add_budget_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/addbudgetheader" >
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/add_budget_header"
         android:background="@drawable/ubudgetbackground" >
 
         <LinearLayout
@@ -84,7 +94,6 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="40dp" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -92,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_below="@+id/LinearLayout1"
         android:orientation="horizontal" >
 
         <Button
