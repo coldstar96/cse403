@@ -33,7 +33,7 @@ public class LogsActivity extends FragmentActivity {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
+
 	private static final String TAG = "LogsAtivity";
 
 	@Override
@@ -49,7 +49,7 @@ public class LogsActivity extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
+
 		findViewById(R.id.add_entry_button).setOnClickListener(
 				new View.OnClickListener() {
 					@SuppressLint("ShowToast")
@@ -66,7 +66,7 @@ public class LogsActivity extends FragmentActivity {
 						}
 					}
 				});
-		
+
 
 		findViewById(R.id.add_budget_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class LogsActivity extends FragmentActivity {
 						startActivity(intent);
 					}
 				});
-		
+
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class LogsActivity extends FragmentActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_entry_logs,
 					container, false);
-			
+
 			return rootView;
 		}
 	}
