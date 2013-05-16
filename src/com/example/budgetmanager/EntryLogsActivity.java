@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,9 +49,19 @@ public class EntryLogsActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
-				Toast.makeText(EntryLogsActivity.this, "not implemented yet", Toast.LENGTH_LONG).show();
+				Toast.makeText(EntryLogsActivity.this, "click not implemented yet", Toast.LENGTH_LONG).show();
 			}
 		});
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				Toast.makeText(EntryLogsActivity.this, "Long click not implemented yet", Toast.LENGTH_LONG).show();
+				return false;
+			}
+		});
+
 		
 		findViewById(R.id.add_entry_button).setOnClickListener(
 				new View.OnClickListener() {
