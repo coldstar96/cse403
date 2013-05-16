@@ -17,7 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/add_entry_header"
-        android:background="@drawable/ubudgetbackground" >
+        android:background="@drawable/shadowbackground" >
 
         <LinearLayout
             android:layout_width="match_parent"
