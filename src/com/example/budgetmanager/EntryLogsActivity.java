@@ -165,6 +165,7 @@ class EntryAdapter extends ArrayAdapter<Entry>{
 			holder = new EntryHolder();
 			holder.date = (TextView)row.findViewById(R.id.item_date);
 			holder.note = (TextView)row.findViewById(R.id.item_note);
+			holder.budget = (TextView)row.findViewById(R.id.item_budget);
 			holder.amount = (TextView)row.findViewById(R.id.item_amount);
 
 			row.setTag(holder);
@@ -175,6 +176,7 @@ class EntryAdapter extends ArrayAdapter<Entry>{
 		Entry entry = data.get(position);
 		holder.date.setText(entry.getDate());
 		holder.note.setText(entry.getNotes());
+		holder.budget.setText(entry.getBudget().getName());
 		holder.amount.setText("" + entry.getAmount());
 
 		return row;
@@ -184,5 +186,6 @@ class EntryAdapter extends ArrayAdapter<Entry>{
 		TextView note;
 		TextView date;
 		TextView amount;
+		TextView budget;
 	}
 }
