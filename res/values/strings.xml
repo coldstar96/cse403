@@ -17,5 +17,6 @@
     <string name="title_section2">Summary</string>
     <string name="checkbox_remember_me">Remember me</string>
     <string name="title_activity_entry_logs">EntryLogsActivity</string>
+    <string name="error_network_connection">Check network connection and try again.</string>
 
 </resources>
