@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -61,6 +63,14 @@ public class AddEntryActivity extends Activity {
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
 		mDateView = (DatePicker) findViewById(R.id.date_picker);
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
+	}
+	
+	/** Called when the activity is first created to specify option menu. */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.options_menu, menu);
+	    return true;
 	}
 
 	/** Called whenever the activity is brought back to the foreground */
