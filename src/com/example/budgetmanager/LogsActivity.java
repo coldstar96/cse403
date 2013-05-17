@@ -3,9 +3,13 @@ package com.example.budgetmanager;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.budgetmanager.preference.PreferencesFragment;
+import com.example.budgetmanager.preference.SettingsActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -81,32 +85,62 @@ public class LogsActivity extends FragmentActivity {
 		
 	}
 	
-	/** Called when the activity is first created to specify option menu. */
+//	/** Called when the activity is first created to specify option menu. */
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//	    MenuInflater inflater = getMenuInflater();
+//	    // Inflate the menu; this adds items to the action bar if it is present.
+//	    inflater.inflate(R.menu.options_menu_item_settings, menu);
+//	    inflater.inflate(R.menu.options_menu_item_signout, menu);
+//	    return true;
+//	}
+//	
+//	/** Called when an item in the options menu have been selected. */
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//	    // Handle item selection
+//		if (item.getItemId() == R.id.settings) {
+//			Toast.makeText(LogsActivity.this, "Successfully handled Settings selection"
+//					, Toast.LENGTH_LONG).show();
+//			return true;
+//		} else if (item.getItemId() == R.id.signout) {
+//			Toast.makeText(LogsActivity.this, "Successfully handled Sign out selection"
+//					, Toast.LENGTH_LONG).show();
+//			return true;
+//		} else {
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    // Inflate the menu; this adds items to the action bar if it is present.
-	    inflater.inflate(R.menu.options_menu_item_settings, menu);
-	    inflater.inflate(R.menu.options_menu_item_signout, menu);
+	    MenuItem buttonSettings = menu.add(R.string.title_settings); // This is a hardcoded string. When you get around to it, switch it to a localized String resource.
+	    buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER); // This forces it to go in the overflow menu, which is preferred.
+	    buttonSettings.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+	        public boolean onMenuItemClick(MenuItem item) {
+	        	Intent settingsIntent = new Intent(LogsActivity.this, SettingsActivity.class); // Change YourActivity to.. well, your activity. Change Preferences to the name of your Settings activity.
+	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesFragment.class.getName());
+	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
+	            LogsActivity.this.startActivity(settingsIntent);
+	            
+	            return false; // I honestly don't know why this should return false, but every example I've seen has it do so. So I'd leave it in.
+	        }
+	    });
+	    
+	    MenuItem buttonSignout = menu.add(R.string.title_signout); // This is a hardcoded string. When you get around to it, switch it to a localized String resource.
+	    buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER); // This forces it to go in the overflow menu, which is preferred.
+	    buttonSignout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+	        public boolean onMenuItemClick(MenuItem item) {
+	        	Toast.makeText(LogsActivity.this, "Successfully handled Sign out selection"
+						, Toast.LENGTH_LONG).show();
+	            return false; // I honestly don't know why this should return false, but every example I've seen has it do so. So I'd leave it in.
+	        }
+	    });
 	    return true;
 	}
-	
-	/** Called when an item in the options menu have been selected. */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-		if (item.getItemId() == R.id.settings) {
-			Toast.makeText(LogsActivity.this, "Successfully handled Settings selection"
-					, Toast.LENGTH_LONG).show();
-			return true;
-		} else if (item.getItemId() == R.id.signout) {
-			Toast.makeText(LogsActivity.this, "Successfully handled Sign out selection"
-					, Toast.LENGTH_LONG).show();
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
-	}
+
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

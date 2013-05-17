@@ -2,14 +2,42 @@
 <resources>
 
     <!-- Strings related to Settings -->
-    <string name="label_settings">Settings</string>
+    <string name="message_settings">This is a temporary string for settings activity</string>
 
     <!-- Summary Strings -->
-    <string name="summary_settings_starting_activity">Starting screen setting summary test</string>
-    <string name="summary_settings_themes">Themes setting summary test</string>
+    <string name="summary_settings_starting_screen">Starting screen setting summary test</string>
+    <string name="summary_settings_app_theme">Themes setting summary test</string>
 
     <!-- Title Strings -->
-    <string name="title_settings_starting_activity">Choose a starting screen test</string>
-    <string name="title_settings_themes">Choose a theme test</string>
+    <string name="title_settings_starting_screen">Starting Screen</string>
+    <string name="title_settings_app_theme">Theme</string>
     
+    <!-- Default Values -->
+    <string name="pref_starting_screen_default">Log</string>
+    <string name="pref_app_theme_default">Light</string>
+    
+    <!-- Array entries for starting screens -->
+    <string-array name="pref_starting_screen_entrees">
+        <item>Log</item>
+        <item>Summary</item>
+        <item>Add Entry</item>
+        <item>Add Budget</item>
+    </string-array>
+    <string-array name="pref_starting_screen_entree_values">
+        <item>Log</item>
+        <item>Summary</item>
+        <item>Add Entry</item>
+        <item>Add Budget</item>
+    </string-array>
+    
+    <!-- Array entries for themes -->
+    <string-array name="pref_app_theme_entrees">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_app_theme_entree_values">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
 </resources>
