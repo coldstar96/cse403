@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/entry_logs_header"
-        android:paddingBottom="40dp"
+        android:paddingBottom="55dp"
         android:background="@drawable/shadowbackground" >
     </ListView>
 
