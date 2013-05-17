@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -39,6 +40,7 @@ public class AddEntryActivity extends Activity {
 	private EditText mAmountView;
 	private DatePicker mDateView;
 	private EditText mNotesView;
+	private Button addButtonView;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,6 +57,7 @@ public class AddEntryActivity extends Activity {
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
 		mDateView = (DatePicker) findViewById(R.id.date_picker);
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
+		addButtonView = (Button) findViewById(R.id.add_entry_button);
 	}
 
 
@@ -132,7 +135,8 @@ public class AddEntryActivity extends Activity {
 			// do nothing until add Budget activity is up
 			return;
 		}
-
+		addButtonView.setClickable(false);
+		
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
@@ -163,6 +167,7 @@ public class AddEntryActivity extends Activity {
 			public void onFailure(String errorMessage) {
 				// if the request fails, do nothing (the toast is for testing purposes)
 				Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+				addButtonView.setClickable(true);
 			}
 		});
 	}

@@ -4,20 +4,21 @@ import java.util.Locale;
 
 import org.joda.time.LocalDate;
 
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
 
 /**
  *
@@ -40,6 +41,9 @@ public class AddBudgetActivity extends Activity {
 
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurringView;
+	
+	// Create button
+	private Button createButtonView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
+		createButtonView = (Button) findViewById(R.id.create_budget_button);
 
 		// Sets up the duration dropdown
 		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
@@ -100,10 +105,9 @@ public class AddBudgetActivity extends Activity {
 		}
 		
 		// checks whether the amount is non-zero
-		if (Double.parseDouble(mBudgetAmountView.getText().toString()) == 0.0) {
+		if (!cancel&& Double.parseDouble(mBudgetAmountView.getText().toString()) == 0.0) {
 			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
 			mBudgetAmountView.requestFocus();
-			return;
 		}
 
 		// checks whether name is not emtpy
@@ -123,6 +127,9 @@ public class AddBudgetActivity extends Activity {
 		// create the Entry object to add to the Budget
 
 		final Budget newBudget = createBudget();
+		
+		// disable button while calling api
+		createButtonView.setClickable(false);
 
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
@@ -139,6 +146,7 @@ public class AddBudgetActivity extends Activity {
 				// (the toast is for testing and debug purposes)
 				Toast.makeText(AddBudgetActivity.this, errorMessage,
 						Toast.LENGTH_LONG).show();
+				createButtonView.setClickable(true);
 			}
 		});
 	}

@@ -40,7 +40,7 @@ public class LogoActivity extends Activity {
 				Log.d(TAG, "check login in on ApiInteface is failure");
 				startActivity(new Intent(LogoActivity.this, LoginActivity.class));
 				finish();
-			}			
+			}
 		};
 
 		ApiInterface.getInstance().checkLoginStatus(callback);
