@@ -54,7 +54,6 @@ public class AddEntryActivity extends Activity {
 	// Text field for entering notes for the Entry
 	private EditText mNotesView;
 
-	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -23,19 +23,9 @@
         <item>Add Entry</item>
         <item>Add Budget</item>
     </string-array>
-    <string-array name="pref_starting_screen_entree_values">
-        <item>Log</item>
-        <item>Summary</item>
-        <item>Add Entry</item>
-        <item>Add Budget</item>
-    </string-array>
     
     <!-- Array entries for themes -->
     <string-array name="pref_app_theme_entrees">
-        <item>Light</item>
-        <item>Dark</item>
-    </string-array>
-    <string-array name="pref_app_theme_entree_values">
         <item>Light</item>
         <item>Dark</item>
     </string-array>

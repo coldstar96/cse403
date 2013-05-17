@@ -6,7 +6,7 @@
         android:summary="@string/summary_settings_starting_screen"
         android:dialogTitle="@string/title_settings_starting_screen"
         android:entries="@array/pref_starting_screen_entrees"
-        android:entryValues="@array/pref_starting_screen_entree_values"
+        android:entryValues="@array/pref_starting_screen_entrees"
         android:defaultValue="@string/pref_starting_screen_default" />
     
 	<ListPreference
@@ -15,6 +15,6 @@
         android:summary="@string/summary_settings_app_theme"
         android:dialogTitle="@string/title_settings_app_theme"
         android:entries="@array/pref_app_theme_entrees"
-        android:entryValues="@array/pref_app_theme_entree_values"
+        android:entryValues="@array/pref_app_theme_entrees"
         android:defaultValue="@string/pref_app_theme_default" />
 </PreferenceScreen>

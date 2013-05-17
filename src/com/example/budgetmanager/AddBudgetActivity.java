@@ -48,7 +48,6 @@ public class AddBudgetActivity extends Activity {
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurringView;
 
-	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
