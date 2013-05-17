@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/add_budget_header"
-        android:background="@drawable/shadowbackground" >
+        android:background="@drawable/shadowbackground"
+        android:paddingBottom="40dp" >
 
         <LinearLayout
             android:id="@+id/LinearLayout1"
