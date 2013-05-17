@@ -121,6 +121,8 @@ public class RegisterActivity extends Activity {
 				editor.putString(PREFS_PASS, mPassword);
 				editor.commit();
 				
+				setResult(2);
+				
 				showProgress(false);
 				startActivity(intent);
 				finish();

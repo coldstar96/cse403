@@ -139,10 +139,20 @@ public class LoginActivity extends Activity {
 						Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 						intent.putExtra("email", mEmailView.getText().toString());
 						intent.putExtra("password", mPasswordView.getText().toString());
-						startActivity(intent);
+						startActivityForResult(intent, 1);
+						
 					}
 				});
 	}
+	
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	// TODO Auto-generated method stub
+	super.onActivityResult(requestCode, resultCode, data);
+	if(requestCode == 1 && resultCode == 2)
+	{
+	    finish();
+	}}
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
