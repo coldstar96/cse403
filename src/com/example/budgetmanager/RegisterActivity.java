@@ -134,9 +134,9 @@ public class RegisterActivity extends Activity {
 				});
 
 		// focuses to empty edit view
-		if (mEmail.isEmpty()) {
+		if (mEmail != null && mEmail.isEmpty()) {
 			mEmailView.requestFocus();
-		} else if(mPassword.isEmpty()) {
+		} else if(mPassword != null && mPassword.isEmpty()) {
 			mPasswordView.requestFocus();
 		} else {
 			mPasswordCheckView.requestFocus();
