@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name="com.example.budgetmanager.AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
