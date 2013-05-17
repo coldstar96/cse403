@@ -108,6 +108,7 @@ public class AddBudgetActivity extends Activity {
 		if (!cancel&& Double.parseDouble(mBudgetAmountView.getText().toString()) == 0.0) {
 			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
 			mBudgetAmountView.requestFocus();
+			cancel = true;
 		}
 
 		// checks whether name is not emtpy
