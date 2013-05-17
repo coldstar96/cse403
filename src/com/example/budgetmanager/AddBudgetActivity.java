@@ -16,7 +16,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.format.Time;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -117,28 +116,29 @@ public class AddBudgetActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuItem buttonSettings = menu.add(R.string.title_settings); // This is a hardcoded string. When you get around to it, switch it to a localized String resource.
-	    buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER); // This forces it to go in the overflow menu, which is preferred.
+	    MenuItem buttonSettings = menu.add(R.string.title_settings);
+	    // this forces it to go in the overflow menu, which is preferred.
+	    buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 	    buttonSettings.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
+	    	/** Take the users to the Settings activity upon clicking the button. */
 	        public boolean onMenuItemClick(MenuItem item) {
-	            Intent settingsIntent = new Intent(AddBudgetActivity.this, SettingsActivity.class); // Change YourActivity to.. well, your activity. Change Preferences to the name of your Settings activity.
+	        	Intent settingsIntent = new Intent(AddBudgetActivity.this, SettingsActivity.class);
 	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesFragment.class.getName());
-	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
 	            AddBudgetActivity.this.startActivity(settingsIntent);
 	            
-	            return false; // I honestly don't know why this should return false, but every example I've seen has it do so. So I'd leave it in.
+	            return false;
 	        }
 	    });
 	    
-	    MenuItem buttonSignout = menu.add(R.string.title_signout); // This is a hardcoded string. When you get around to it, switch it to a localized String resource.
-	    buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER); // This forces it to go in the overflow menu, which is preferred.
+	    MenuItem buttonSignout = menu.add(R.string.title_signout);
+	    buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 	    buttonSignout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
+	    	/** Sign out the user upon clicking the button. */
 	        public boolean onMenuItemClick(MenuItem item) {
 	        	Toast.makeText(AddBudgetActivity.this, "Successfully handled Sign out selection"
 						, Toast.LENGTH_LONG).show();
-	            return false; // I honestly don't know why this should return false, but every example I've seen has it do so. So I'd leave it in.
+	            return false;
 	        }
 	    });
 	    return true;
