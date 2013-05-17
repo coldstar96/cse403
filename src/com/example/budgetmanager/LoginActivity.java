@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -93,43 +92,35 @@ public class LoginActivity extends Activity {
 			// Move to add entry activity
 			@Override
 			public void onSuccess(Object result) {
-				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
-
+				ApiInterface.getInstance().fetchBudgetsAndEntries(new ApiCallback<List<Budget>>(){
 					@Override
 					public void onSuccess(List<Budget> result) {
-
-						Log.d(TAG, "Success on login callback");
-
 						UBudgetApp app = (UBudgetApp)getApplication();
 
 						// Add these budgets to the application state
 						List<Budget> budgetList = app.getBudgetList();
 						budgetList.clear();
 						budgetList.addAll(result);
+						
+						// Add entries to the application state
+						List<Entry> entryList = app.getEntryList();
+						entryList.clear();
 
 						for (Budget b : budgetList) {
-							Log.d(TAG, b.getName());
+							Log.d(TAG, b.getName() + " budget fetched");
+							entryList.addAll(b.getEntries());
 						}
-						
-						SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-
-						editor.putString(PREFS_EMAIL, mEmail);
-						editor.putString(PREFS_PASS, mPassword);
-						editor.commit();
-
-						Intent intent = new Intent(LoginActivity.this, EntryLogsActivity.class);
-						showProgress(false);
-						startActivity(intent);
+						Log.d(TAG, "fetch data on ApiInteface is success");
+						startActivity(new Intent(LoginActivity.this, EntryLogsActivity.class));
 						finish();
 					}
-
+					
 					@Override
 					public void onFailure(String errorMessage) {
-						Log.d(TAG, "fail on log in callback");
-
-						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
+						Log.d(TAG, "fetch data on ApiInteface is failure");
+						startActivity(new Intent(LoginActivity.this, EntryLogsActivity.class));
+						finish();
 					}
-
 				});
 			}
 		};

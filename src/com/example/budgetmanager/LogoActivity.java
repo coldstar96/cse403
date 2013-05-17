@@ -1,5 +1,7 @@
 package com.example.budgetmanager;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +23,43 @@ public class LogoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
 
-		ApiCallback<Object> callback = new ApiCallback<Object>(){
-
+		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>(){
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
-				finish();
+				ApiInterface.getInstance().fetchBudgetsAndEntries(new ApiCallback<List<Budget>>(){
+					@Override
+					public void onSuccess(List<Budget> result) {
+						UBudgetApp app = (UBudgetApp)getApplication();
+
+						// Add these budgets to the application state
+						List<Budget> budgetList = app.getBudgetList();
+						budgetList.clear();
+						budgetList.addAll(result);
+						
+						// Add entries to the application state
+						List<Entry> entryList = app.getEntryList();
+						entryList.clear();
+
+						for (Budget b : budgetList) {
+							Log.d(TAG, b.getName() + " budget fetched");
+							entryList.addAll(b.getEntries());
+							for(Entry e: b.getEntries()){
+								Log.d(TAG, e.getAmount() + " entry fetched");
+							}
+						}
+						Log.d(TAG, "fetch data on ApiInteface is success");
+						startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
+						finish();
+					}
+					
+					@Override
+					public void onFailure(String errorMessage) {
+						Log.d(TAG, "fetch data on ApiInteface is failure");
+						startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
+						finish();
+					}
+				});
 			}
 
 			@Override
@@ -36,9 +68,7 @@ public class LogoActivity extends Activity {
 				startActivity(new Intent(LogoActivity.this, LoginActivity.class));
 				finish();
 			}
-		};
-
-		ApiInterface.getInstance().checkLoginStatus(callback);
+		});
 
 	}
 
