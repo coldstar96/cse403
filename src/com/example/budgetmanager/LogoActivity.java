@@ -1,14 +1,10 @@
 package com.example.budgetmanager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -39,7 +35,7 @@ public class LogoActivity extends Activity {
 				Log.d(TAG, "check login in on ApiInteface is failure");
 				startActivity(new Intent(LogoActivity.this, LoginActivity.class));
 				finish();
-			}			
+			}
 		};
 
 		ApiInterface.getInstance().checkLoginStatus(callback);
