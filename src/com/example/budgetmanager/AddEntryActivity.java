@@ -119,7 +119,7 @@ public class AddEntryActivity extends Activity {
 		}
 		
 		// checks whether the amount is non-zero
-		if (Integer.parseInt(mAmountView.getText().toString()) == 0) {
+		if (Double.parseDouble(mAmountView.getText().toString()) == 0.0) {
 			mAmountView.setError(getString(R.string.error_zero_amount));
 			mAmountView.requestFocus();
 			return;

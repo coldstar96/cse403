@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>    
     <string name="title_activity_add_budget">AddBudgetActivity</string>
-	<string name="add_budget">Add Budget</string>
+	<string name="budget_name">Budget name</string>
 	<string name="prompt_budget_name">Name</string>
 	<string name="prompt_budget_amount">Amount</string>
 	<string name="prompt_budget_start_date">Start Date</string>
