@@ -117,6 +117,13 @@ public class AddEntryActivity extends Activity {
 			mAmountView.requestFocus();
 			return;
 		}
+		
+		// checks whether the amount is non-zero
+		if (Integer.parseInt(mAmountView.getText().toString()) == 0) {
+			mAmountView.setError(getString(R.string.error_zero_amount));
+			mAmountView.requestFocus();
+			return;
+		}
 
 		// create the Entry object to add to the Budget
 		final Entry newEntry = createEntry();

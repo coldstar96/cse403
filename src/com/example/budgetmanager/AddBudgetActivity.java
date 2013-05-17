@@ -98,6 +98,13 @@ public class AddBudgetActivity extends Activity {
 			focusView = mBudgetAmountView;
 			cancel = true;
 		}
+		
+		// checks whether the amount is non-zero
+		if (Integer.parseInt(mBudgetAmountView.getText().toString()) == 0) {
+			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
+			mBudgetAmountView.requestFocus();
+			return;
+		}
 
 		// checks whether name is not emtpy
 		if (mBudgetNameView.getText().toString().isEmpty()) {
