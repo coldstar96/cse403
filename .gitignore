@@ -29,5 +29,9 @@ local.properties
 # Misc other files to hide
 *.swp
 
+# Remove those damnable .DS_Store files
+# that Macs think should be thrown everywhere
+.DS_Store
+
 # Unit test log file
 unit_tests_log.txt
