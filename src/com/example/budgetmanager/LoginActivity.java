@@ -120,7 +120,7 @@ public class LoginActivity extends Activity {
 						editor.putString(PREFS_PASS, mPassword);
 						editor.commit();
 
-						Intent intent = new Intent(LoginActivity.this, LogsActivity.class);
+						Intent intent = new Intent(LoginActivity.this, EntryLogsActivity.class);
 						showProgress(false);
 						startActivity(intent);
 						finish();

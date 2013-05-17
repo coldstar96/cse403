@@ -46,10 +46,14 @@
             android:name="com.example.budgetmanager.LogsActivity"
             android:label="@string/title_activity_logs" >
         </activity>
+				<activity>
+            android:name="com.example.budgetmanager.EntryLogsActivity"
+            android:label="@string/title_activity_entry_logs" >
+        </activity>
         <activity
             android:name="com.example.budgetmanager.preference.SettingsActivity"
             android:label="@string/title_activity_settings" >
-        </activity>
+				</activity>
     </application>
 
 </manifest>

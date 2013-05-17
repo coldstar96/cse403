@@ -3,6 +3,8 @@ package com.example.budgetmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -182,8 +184,8 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the add button.
 	 */
 	public void addEntry(View view) {
-		mAmountView.setError(null);		
-		
+		mAmountView.setError(null);
+
 		// checks whether the amount is empty
 		if (mAmountView.getText().toString().isEmpty()) {
 			mAmountView.setError(getString(R.string.error_invalid_amount));
@@ -202,6 +204,9 @@ public class AddEntryActivity extends Activity {
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
+				UBudgetApp app = (UBudgetApp) getApplication();
+				app.getEntryList().add(0, newEntry);
+				
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "
@@ -217,7 +222,7 @@ public class AddEntryActivity extends Activity {
 
 				// add the entry into the Budget object
 				newEntry.getBudget().addEntry(newEntry);
-				
+
 				// goto logs screen
 				finish();
 			}
@@ -232,26 +237,23 @@ public class AddEntryActivity extends Activity {
 
 	// Helper method to create the new <code>Entry</code> object to be added.
 	private Entry createEntry() {
-		// extract the amount information
+		// extract the amount information from its text field
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
 
 		// amount will be stored in cents
 		int intAmount = (int) (doubleAmount * CENTS);
-
-		// retrieve selected budget
-		final List<Budget> budgetList = appData.getBudgetList();
-		// temporary place holder until add Budget activity is up.
-		if (mBudgetView.getSelectedItemPosition() == budgetList.size()) {
-			Toast.makeText(this, "Add budget functionality doesn't exist yet.", Toast.LENGTH_LONG).show();
-			return null;
-		}
-		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
+		Log.d("TAG", "createEntry: amount = " + intAmount);
 
 		String notes = mNotesView.getText().toString();
 
-		// format the string so that the server will parse the date correctly
-		String date = mDateView.getYear() + "-" + (mDateView.getMonth() + 1) + "-" + mDateView.getDayOfMonth();
-		Log.d("createEntry", ""+intAmount);
+		// retrieve selected budget
+		final List<Budget> budgetList = appData.getBudgetList();
+		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
+
+		// Need to add 1 to the month because the DatePicker
+		// has zero-based months.
+		LocalDate date = new LocalDate(mDateView.getYear(),
+				mDateView.getMonth() + 1, mDateView.getDayOfMonth());
 		return new Entry(intAmount, budget, notes, date);
 	}
 
@@ -261,7 +263,7 @@ public class AddEntryActivity extends Activity {
 	 * @param view The reference to the clear button.
 	 */
 	public void clearEntry(View view) {
-		mAmountView.setError(null);		
+		mAmountView.setError(null);
 
 		// set the spinner to the first item on the list
 		mBudgetView.setSelection(0);

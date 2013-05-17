@@ -7,4 +7,5 @@
 	<string name="session">/session</string>
 	<string name="budgets">/budgets</string>
 	<string name="entries">/entries</string>
+	<string name="budgets_and_entries">/budgets/with_entries</string>
 </resources>
