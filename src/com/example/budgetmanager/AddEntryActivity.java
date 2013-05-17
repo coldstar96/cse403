@@ -90,12 +90,11 @@ public class AddEntryActivity extends Activity {
 		if (item.getItemId() == R.id.settings) {
 			Toast.makeText(AddEntryActivity.this, "Successfully handled Settings selection"
 					, Toast.LENGTH_LONG).show();
+			
+			return true;
 		} else {
-			Toast.makeText(AddEntryActivity.this, "Failed to handle Settings selection"
-					, Toast.LENGTH_LONG).show();
+			return super.onOptionsItemSelected(item);
 		}
-		
-		return true;
 	}
 
 	// Populates the spinner with the current list of Budgets.

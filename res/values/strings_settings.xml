@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings related to Settings -->
+    <string name="label_settings">Settings</string>
+
+    <!-- Summary Strings -->
+    <string name="summary_settings_starting_activity">Starting screen setting summary test</string>
+    <string name="summary_settings_themes">Themes setting summary test</string>
+
+    <!-- Title Strings -->
+    <string name="title_settings_starting_activity">Choose a starting screen test</string>
+    <string name="title_settings_themes">Choose a theme test</string>
+	<string name="title_settings">Settings</string>
+    
+</resources>
