@@ -1,5 +1,7 @@
 package com.example.budgetmanager;
 
+import org.joda.time.LocalDate;
+
 /**
  *
  * @author Ji jiwpark90
@@ -21,8 +23,7 @@ public class Entry implements Comparable<Entry> {
 	private int amount;
 
 	// The date that this entry's expenditure was on
-	// Format: YYYY-MM-DD
-	private String date;
+	private LocalDate date;
 
 	// additional notes
 	private String notes;
@@ -35,10 +36,10 @@ public class Entry implements Comparable<Entry> {
 	 * @param amount The amount associated with the Entry in cents.
 	 * @param budget The Budget object that contains the Entry.
 	 * @param notes More detailed notes associated with the Entry.
-	 * @param date The date associated with the Entry.
+	 * @param date The expenditure date associated with the Entry.
 	 */
 	public Entry(long id, int amount, Budget budget, String notes,
-			String date) {
+			LocalDate date) {
 		this.entryId = id;
 		this.amount = amount;
 		this.budget = budget;
@@ -55,7 +56,7 @@ public class Entry implements Comparable<Entry> {
 	 * @param notes More detailed notes associated with the Entry.
 	 * @param date The date associated with the Entry.
 	 */
-	public Entry(int amount, Budget budget, String notes, String date) {
+	public Entry(int amount, Budget budget, String notes, LocalDate date) {
 		this(NEW_ID, amount, budget, notes, date);
 	}
 
@@ -64,21 +65,27 @@ public class Entry implements Comparable<Entry> {
 	 *
 	 * @return amount (in cents) of the Entry.
 	 */
-	public int getAmount() { return amount; }
+	public int getAmount() {
+		return amount;
+	}
 
 	/**
 	 * Retrieve the Budget object that holds the Entry.
 	 *
 	 * @return object that holds the Entry.
 	 */
-	public Budget getBudget() { return budget; }
+	public Budget getBudget() {
+		return budget;
+	}
 
 	/**
 	 * Retrieve the name associated with the Entry.
 	 *
 	 * @return String name associated with the Entry.
 	 */
-	public String getNotes() { return notes; }
+	public String getNotes() {
+		return notes;
+	}
 
 	/**
 	 * Retrieve the entryId of this Entry
@@ -86,21 +93,27 @@ public class Entry implements Comparable<Entry> {
 	 * @return Entry.NEW_ID if this Entry was created locally, or a nonnegative
 	 * id from the API if this entry was fetched from the API.
 	 */
-	public long getEntryId() { return entryId; }
+	public long getEntryId() {
+		return entryId;
+	}
 
 	/**
 	 * Sets the entryId of this Entry
 	 *
 	 * @param id The ID of this entry as represented on the server
 	 */
-	public void setEntryId(long id) { this.entryId = id; }
+	public void setEntryId(long id) {
+		this.entryId = id;
+	}
 
   /*
-   * Retrieve the date string associated with the Entry.
+   * Retrieve the date associated with the Entry.
    *
    * @return the date on which this Entry's expenditure was made on
 	 */
-	public String getDate() { return date; }
+	public LocalDate getDate() {
+		return date;
+	}
 
 	/**
 	 * Compares the other Entry to this Entry to see which precedes which.
@@ -112,5 +125,7 @@ public class Entry implements Comparable<Entry> {
 	 * 		   <code>i > 0</code> if this Entry comes after the other Entry.
 	 */
 	@Override
-	public int compareTo(Entry other) { return this.amount - other.amount; }
+	public int compareTo(Entry other) {
+		return this.amount - other.amount;
+	}
 }
