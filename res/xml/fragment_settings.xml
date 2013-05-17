@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
-        android:key="pref_starting_activity"
+        android:key="pref_starting_screen"
         android:title="@string/title_settings_starting_screen"
         android:summary="@string/summary_settings_starting_screen"
         android:dialogTitle="@string/title_settings_starting_screen"

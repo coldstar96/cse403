@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.PreferencesFragment;
+import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
 
 /**
@@ -83,7 +83,7 @@ public class AddEntryActivity extends Activity {
 	    	/** Take the users to the Settings activity upon clicking the button. */
 	        public boolean onMenuItemClick(MenuItem item) {
 	        	Intent settingsIntent = new Intent(AddEntryActivity.this, SettingsActivity.class);
-	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesFragment.class.getName());
+	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
 	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
 	            AddEntryActivity.this.startActivity(settingsIntent);
 	            
@@ -112,23 +112,6 @@ public class AddEntryActivity extends Activity {
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
-	
-//	/** Called when an item in the options menu have been selected. */
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//	    // Handle item selection
-//		if (item.getItemId() == R.id.settings) {
-//			Toast.makeText(AddEntryActivity.this, "Successfully handled Settings selection"
-//					, Toast.LENGTH_LONG).show();
-//			return true;
-//		} else if (item.getItemId() == R.id.signout) {
-//			Toast.makeText(AddEntryActivity.this, "Successfully handled Sign out selection"
-//					, Toast.LENGTH_LONG).show();
-//			return true;
-//		} else {
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
 
 	// Populates the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {

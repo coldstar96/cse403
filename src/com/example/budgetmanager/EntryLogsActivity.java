@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.PreferencesFragment;
+import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
 
 public class EntryLogsActivity extends Activity {
@@ -113,7 +113,7 @@ public class EntryLogsActivity extends Activity {
 	    	/** Take the users to the Settings activity upon clicking the button. */
 	        public boolean onMenuItemClick(MenuItem item) {
 	        	Intent settingsIntent = new Intent(EntryLogsActivity.this, SettingsActivity.class);
-	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, PreferencesFragment.class.getName());
+	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
 	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
 	            EntryLogsActivity.this.startActivity(settingsIntent);
 	            
