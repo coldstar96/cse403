@@ -20,7 +20,6 @@ import com.example.budgetmanager.api.ApiInterface;
  */
 public class LogoActivity extends Activity {
 	public static final String TAG = "LogoActivity";
-	long timer;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
