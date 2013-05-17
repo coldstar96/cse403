@@ -13,8 +13,10 @@ import android.content.Context;
  */
 public class UBudgetApp extends Application {
 	private static Context context;
-	private List<Budget> budgetList;
-	private List<Entry> entryList;
+	public List<Budget> budgetList;
+	public List<Entry> entryList;
+	public String email;
+	public String password;
 
 	@Override
 	public void onCreate() {
@@ -23,15 +25,7 @@ public class UBudgetApp extends Application {
 		budgetList = new ArrayList<Budget>();
 		entryList = new ArrayList<Entry>();
 	}
-
-	public List<Budget> getBudgetList() {
-		return budgetList;
-	}
 	
-	public List<Entry> getEntryList() {
-		return entryList;
-	}
-
 	/**
 	 * Provides a static way for classes to access the main application
 	 * Context.

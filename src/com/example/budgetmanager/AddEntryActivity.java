@@ -74,7 +74,7 @@ public class AddEntryActivity extends Activity {
 
 	// Populate the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
-		final List<Budget> budgetList = appData.getBudgetList();
+		final List<Budget> budgetList = appData.budgetList;
 		List<String> budgetNameList = new ArrayList<String>();
 
 		for (Budget b : budgetList) {
@@ -143,7 +143,7 @@ public class AddEntryActivity extends Activity {
 			@Override
 			public void onSuccess(Long result) {
 				UBudgetApp app = (UBudgetApp) getApplication();
-				app.getEntryList().add(0, newEntry);
+				app.entryList.add(0, newEntry);
 				
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
@@ -186,7 +186,7 @@ public class AddEntryActivity extends Activity {
 		String notes = mNotesView.getText().toString();
 
 		// retrieve selected budget
-		final List<Budget> budgetList = appData.getBudgetList();
+		final List<Budget> budgetList = appData.budgetList;
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		// Need to add 1 to the month because the DatePicker

@@ -138,7 +138,7 @@ public class AddBudgetActivity extends Activity {
 			public void onSuccess(Long result) {
 				// add the entry into the Budget object
 				UBudgetApp app = (UBudgetApp) getApplication();
-				app.getBudgetList().add(0, newBudget);
+				app.budgetList.add(0, newBudget);
 				finish();
 			}
 

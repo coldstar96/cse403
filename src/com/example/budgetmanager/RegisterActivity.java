@@ -61,11 +61,11 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 
 		// Set up the login form.
-		mEmail = getIntent().getExtras().getString(PREFS_EMAIL);
+		mEmail = getIntent().getExtras().getString("email");
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
-		mPassword = getIntent().getExtras().getString(PREFS_PASS);
+		mPassword = getIntent().getExtras().getString("password");
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView.setText(mPassword);
 		mPasswordView
@@ -120,6 +120,10 @@ public class RegisterActivity extends Activity {
 				editor.putString(PREFS_EMAIL, mEmail);
 				editor.putString(PREFS_PASS, mPassword);
 				editor.commit();
+				
+				UBudgetApp app = (UBudgetApp)getApplication();
+				app.email = mEmail;
+				app.password = mPassword;
 				
 				setResult(2);
 				

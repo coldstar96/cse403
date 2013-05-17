@@ -33,12 +33,12 @@ public class LogoActivity extends Activity {
 						UBudgetApp app = (UBudgetApp)getApplication();
 
 						// Add these budgets to the application state
-						List<Budget> budgetList = app.getBudgetList();
+						List<Budget> budgetList = app.budgetList;
 						budgetList.clear();
 						budgetList.addAll(result);
 						
 						// Add entries to the application state
-						List<Entry> entryList = app.getEntryList();
+						List<Entry> entryList = app.entryList;
 						entryList.clear();
 
 						for (Budget b : budgetList) {

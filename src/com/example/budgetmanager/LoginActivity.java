@@ -38,7 +38,6 @@ public class LoginActivity extends Activity {
 	// Values for local storage
 	public static final String PREFS_EMAIL = "email";
 	public static final String PREFS_PASS = "password";
-	//	private SharedPreferences pref = getPreferences(MODE_PRIVATE);
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -89,7 +88,7 @@ public class LoginActivity extends Activity {
 				Toast.makeText(LoginActivity.this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
 			}
 
-			// Move to add entry activity
+			// Move to entry logs activity
 			@Override
 			public void onSuccess(Object result) {
 				ApiInterface.getInstance().fetchBudgetsAndEntries(new ApiCallback<List<Budget>>(){
@@ -98,12 +97,12 @@ public class LoginActivity extends Activity {
 						UBudgetApp app = (UBudgetApp)getApplication();
 
 						// Add these budgets to the application state
-						List<Budget> budgetList = app.getBudgetList();
+						List<Budget> budgetList = app.budgetList;
 						budgetList.clear();
 						budgetList.addAll(result);
 						
 						// Add entries to the application state
-						List<Entry> entryList = app.getEntryList();
+						List<Entry> entryList = app.entryList;
 						entryList.clear();
 
 						for (Budget b : budgetList) {
@@ -111,6 +110,10 @@ public class LoginActivity extends Activity {
 							entryList.addAll(b.getEntries());
 						}
 						Log.d(TAG, "fetch data on ApiInteface is success");
+						
+						app.email = mEmail;
+						app.password = mPassword;
+						
 						startActivity(new Intent(LoginActivity.this, EntryLogsActivity.class));
 						finish();
 					}

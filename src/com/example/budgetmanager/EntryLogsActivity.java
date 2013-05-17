@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +18,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-
 public class EntryLogsActivity extends Activity {
 	public final String TAG = "EntrylogsActivity";
 
 	ListView listView;
+	TextView userEmailView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_entry_logs);
 
 		UBudgetApp app = (UBudgetApp)getApplication();
-		EntryAdapter adapter = new EntryAdapter(this, R.layout.list_entry_layout, app.getEntryList());
+		EntryAdapter adapter = new EntryAdapter(this, R.layout.list_entry_layout, app.entryList);
 
 		listView = (ListView) findViewById(R.id.entry_list);
 
@@ -53,8 +51,10 @@ public class EntryLogsActivity extends Activity {
 				return false;
 			}
 		});
-
 		
+		userEmailView = (TextView) findViewById(R.id.text_user_email);
+		userEmailView.setText(app.email);
+
 		findViewById(R.id.add_entry_button).setOnClickListener(
 				new View.OnClickListener() {
 					@SuppressLint("ShowToast")
@@ -62,7 +62,7 @@ public class EntryLogsActivity extends Activity {
 					public void onClick(View view) {
 						// if there is no created budget, notify user that they need
 						// to create budget before they add an entry
-						List<Budget> budgets = ((UBudgetApp) getApplication()).getBudgetList();
+						List<Budget> budgets = ((UBudgetApp) getApplication()).budgetList;
 						if(budgets.isEmpty()){
 							Toast.makeText(EntryLogsActivity.this, R.string.dialog_add_budget_first, Toast.LENGTH_LONG).show();
 						}else{
