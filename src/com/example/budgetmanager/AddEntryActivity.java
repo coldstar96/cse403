@@ -71,7 +71,8 @@ public class AddEntryActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    // Inflate the menu; this adds items to the action bar if it is present.
-	    inflater.inflate(R.menu.options_menu, menu);
+	    inflater.inflate(R.menu.options_menu_item_settings, menu);
+	    inflater.inflate(R.menu.options_menu_item_signout, menu);
 	    return true;
 	}
 
@@ -91,7 +92,10 @@ public class AddEntryActivity extends Activity {
 		if (item.getItemId() == R.id.settings) {
 			Toast.makeText(AddEntryActivity.this, "Successfully handled Settings selection"
 					, Toast.LENGTH_LONG).show();
-			
+			return true;
+		} else if (item.getItemId() == R.id.signout) {
+			Toast.makeText(AddEntryActivity.this, "Successfully handled Sign out selection"
+					, Toast.LENGTH_LONG).show();
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);

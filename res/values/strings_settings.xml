@@ -11,6 +11,5 @@
     <!-- Title Strings -->
     <string name="title_settings_starting_activity">Choose a starting screen test</string>
     <string name="title_settings_themes">Choose a theme test</string>
-	<string name="title_settings">Settings</string>
     
 </resources>
