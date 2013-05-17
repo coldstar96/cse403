@@ -223,6 +223,8 @@ public class ApiInterface {
 
 				int budgetsLen = budgetsJson.length();
 
+				// Iterate through the JSON array and create new
+				// budgets for each index.
 				for (int i = 0; i < budgetsLen; ++i) {
 					try {
 						JSONObject budgetObject = budgetsJson.getJSONObject(i);
@@ -269,13 +271,14 @@ public class ApiInterface {
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
 		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
+		
 		client.get(requestUrl, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray entriesJson) {
-				List<Entry> entriesList = new ArrayList<Entry>();
-
 				int entriesLen = entriesJson.length();
 
+				// Iterate through the JSON array and create new
+				// entries for each index.
 				for (int i = 0; i < entriesLen; ++i) {
 					try {
 						JSONObject entriesObject = entriesJson.getJSONObject(i);
@@ -293,7 +296,7 @@ public class ApiInterface {
 					}
 				}
 
-				callback.onSuccess(entriesList);
+				callback.onSuccess(b.getEntries());
 			}
 
 			@Override
@@ -324,6 +327,8 @@ public class ApiInterface {
 
 				int budgetsLen = budgetsJson.length();
 
+				// Iterate through the JSON array and create new
+				// budgets for each index.
 				for (int i = 0; i < budgetsLen; ++i) {
 					try {
 						JSONObject budgetObject = budgetsJson.getJSONObject(i);
@@ -331,22 +336,21 @@ public class ApiInterface {
 						String budgetName = budgetObject.getString("budget_name");
 						String duration = budgetObject.getString("recurrence_duration");
 						int amount = budgetObject.getInt("amount");
-						int currentAmount = budgetObject.optInt("amount_so_far");
-						int otherDuration = budgetObject.optInt("other_duration");
 						boolean recur = budgetObject.optBoolean("recur");
-						long startDate = dateToMilliseconds(
-								budgetObject.getString("start_date"));
+						LocalDate startDate = LocalDate.parse(budgetObject.getString("start_date"),
+								DateTimeFormat.forPattern("yyyy-MM-dd"));
 						long id = budgetObject.getLong("id");
 						
 
 						Budget newBudget = new Budget(budgetName, amount,
-								currentAmount, recur, startDate,
-								duration, otherDuration);
+								recur, startDate, Duration.valueOf(duration));
 						newBudget.setId(id);
 						
 						JSONArray entriesJson = budgetObject.getJSONArray("entries");
 						int entriesLen = entriesJson.length();
 						
+						// Iterate through the JSON array and create new
+						// entries for each index.
 						for (int j = 0; j < entriesLen; j++) {
 							JSONObject entriesObject = entriesJson.getJSONObject(i);
 							
