@@ -61,12 +61,13 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		mEmail = getIntent().getExtras().getString(PREFS_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(getIntent().getExtras().getString("email"));
+		mEmailView.setText(mEmail);
 
+		mPassword = getIntent().getExtras().getString(PREFS_PASS);
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView.setText(getIntent().getExtras().getString("password"));
+		mPasswordView.setText(mPassword);
 		mPasswordView
 		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -80,8 +81,9 @@ public class RegisterActivity extends Activity {
 			}
 		});
 
+		mPasswordCheck = "";
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
-		mPasswordCheckView.setText(getIntent().getExtras().getString("password2"));
+		mPasswordCheckView.setText(mPasswordCheck);
 		mPasswordCheckView
 		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -134,9 +136,9 @@ public class RegisterActivity extends Activity {
 				});
 
 		// focuses to empty edit view
-		if (mEmail != null && mEmail.isEmpty()) {
+		if (mEmail.isEmpty()) {
 			mEmailView.requestFocus();
-		} else if(mPassword != null && mPassword.isEmpty()) {
+		} else if(mPassword.isEmpty()) {
 			mPasswordView.requestFocus();
 		} else {
 			mPasswordCheckView.requestFocus();
