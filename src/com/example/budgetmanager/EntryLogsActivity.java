@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,9 +35,15 @@ public class EntryLogsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// inflate view
 		setContentView(R.layout.activity_entry_logs);
 
+		// retrieve the application data
 		UBudgetApp app = (UBudgetApp)getApplication();
+		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 		
 		// fetch data from server
 		fetchBudgets();

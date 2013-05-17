@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -63,22 +64,15 @@ public class AddEntryActivity extends Activity {
 
 		// retrieve the application data
 		appData = (UBudgetApp)getApplication();
+		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
 		mDateView = (DatePicker) findViewById(R.id.date_picker);
 		mNotesView = (EditText) findViewById(R.id.edit_notes);
 	}
-	
-//	/** Called when the activity is first created to specify option menu. */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//	    MenuInflater inflater = getMenuInflater();
-//	    // Inflate the menu; this adds items to the action bar if it is present.
-//	    inflater.inflate(R.menu.options_menu_item_settings, menu);
-//	    inflater.inflate(R.menu.options_menu_item_signout, menu);
-//	    return true;
-//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

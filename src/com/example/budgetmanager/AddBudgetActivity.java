@@ -12,6 +12,7 @@ import com.example.budgetmanager.preference.SettingsActivity;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.format.Time;
@@ -54,6 +55,9 @@ public class AddBudgetActivity extends Activity {
 		
 		// inflate view
 		setContentView(R.layout.activity_add_budget);
+		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
 		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
@@ -86,33 +90,6 @@ public class AddBudgetActivity extends Activity {
 					}
 				});
 	}
-	
-//	/** Called when the activity is first created to specify option menu. */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//	    MenuInflater inflater = getMenuInflater();
-//	    // Inflate the menu; this adds items to the action bar if it is present.
-//	    inflater.inflate(R.menu.options_menu_item_settings, menu);
-//	    inflater.inflate(R.menu.options_menu_item_signout, menu);
-//	    return true;
-//	}
-//	
-//	/** Called when an item in the options menu have been selected. */
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//	    // Handle item selection
-//		if (item.getItemId() == R.id.settings) {
-//			Toast.makeText(AddBudgetActivity.this, "Successfully handled Settings selection"
-//					, Toast.LENGTH_LONG).show();
-//			return true;
-//		} else if (item.getItemId() == R.id.signout) {
-//			Toast.makeText(AddBudgetActivity.this, "Successfully handled Sign out selection"
-//					, Toast.LENGTH_LONG).show();
-//			return true;
-//		} else {
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
