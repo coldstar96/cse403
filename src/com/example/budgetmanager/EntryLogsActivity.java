@@ -185,7 +185,7 @@ class EntryAdapter extends ArrayAdapter<Entry>{
 		}
 
 		Entry entry = data.get(position);
-		holder.date.setText(entry.getDate());
+		holder.date.setText(entry.getDate().toString());
 		holder.note.setText(entry.getNotes());
 		holder.budget.setText(entry.getBudget().getName());
 		holder.amount.setText(Utilities.amountToDollars(entry.getAmount()));

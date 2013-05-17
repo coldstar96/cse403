@@ -66,6 +66,18 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(endDate, budget.getEndDate(cycle));
 	}
 
+	/**
+	 * Provides a shorter way to make a Local Date than
+	 * <code>new LocalDate(y, m, d)</code>
+	 * @param year
+	 * @param month
+	 * @param dayOfMonth
+	 * @return
+	 */
+	private LocalDate date(int year, int month, int dayOfMonth) {
+		return new LocalDate(year, month, dayOfMonth);
+	}
+
 	@SmallTest
 	public void test_addEntry_nullEntry_throwsIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -80,7 +92,7 @@ public class TestCaseBudget extends AndroidTestCase {
 	@SmallTest
 	public void test_addEntry_duplicateEntry_throwsIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
-		Entry entry = new Entry(100, budget, "", "2013-05-05");
+		Entry entry = new Entry(100, budget, "", date(2013, 05, 05));
 		budget.addEntry(entry);
 		try {
 			budget.addEntry(entry);
@@ -93,7 +105,7 @@ public class TestCaseBudget extends AndroidTestCase {
 	@SmallTest
 	public void test_addEntry_newEntry_shouldHaveTheEntry() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
-		Entry entry = new Entry(100, budget, "", "2013-05-05");
+		Entry entry = new Entry(100, budget, "", date(2013, 05, 05));
 		budget.addEntry(entry);
 		List<Entry> entries = budget.getEntries();
 		assertEquals(1, entries.size());
@@ -126,8 +138,8 @@ public class TestCaseBudget extends AndroidTestCase {
 	@SmallTest
 	public void test_removeEntry_existingEntry_shouldNotHaveTheEntry() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
-		Entry entry1 = new Entry(100, budget, "entry1", "2013-05-05");
-		Entry entry2 = new Entry(1000, budget, "entry2", "2013-05-06");
+		Entry entry1 = new Entry(100, budget, "entry1", date(2013, 05, 05));
+		Entry entry2 = new Entry(1000, budget, "entry2", date(2013, 05, 06));
 		budget.addEntry(entry1);
 		budget.addEntry(entry2);
 		budget.removeEntry(entry1);

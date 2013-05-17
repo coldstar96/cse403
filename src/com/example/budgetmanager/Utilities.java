@@ -10,7 +10,7 @@ public class Utilities {
 	 */
 	public static String amountToDollars(int n){
 		String s = "$ " + (n / 100) + ".";
-		if (((n % 100) / 10) == 0) {
+		if ((n % 100) < 10) {
 			s += "0";
 		}
 		s += (n % 100);
