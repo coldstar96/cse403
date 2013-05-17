@@ -70,6 +70,7 @@ public class AddEntryActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
+	    // Inflate the menu; this adds items to the action bar if it is present.
 	    inflater.inflate(R.menu.options_menu, menu);
 	    return true;
 	}

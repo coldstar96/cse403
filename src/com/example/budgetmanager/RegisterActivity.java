@@ -11,6 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -134,6 +137,29 @@ public class RegisterActivity extends Activity {
 						registerAttempt();
 					}
 				});
+	}
+	
+	/** Called when the activity is first created to specify option menu. */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    // Inflate the menu; this adds items to the action bar if it is present.
+	    inflater.inflate(R.menu.options_menu, menu);
+	    return true;
+	}
+	
+	/** Called when an item in the options menu have been selected. */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+		if (item.getItemId() == R.id.settings) {
+			Toast.makeText(RegisterActivity.this, "Successfully handled Settings selection"
+					, Toast.LENGTH_LONG).show();
+			
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void onClick(View v) {

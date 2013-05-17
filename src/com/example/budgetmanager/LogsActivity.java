@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -78,12 +80,28 @@ public class LogsActivity extends FragmentActivity {
 				});
 		
 	}
-
+	
+	/** Called when the activity is first created to specify option menu. */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.logs, menu);
-		return true;
+	    MenuInflater inflater = getMenuInflater();
+	    // Inflate the menu; this adds items to the action bar if it is present.
+	    inflater.inflate(R.menu.options_menu, menu);
+	    return true;
+	}
+	
+	/** Called when an item in the options menu have been selected. */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+		if (item.getItemId() == R.id.settings) {
+			Toast.makeText(LogsActivity.this, "Successfully handled Settings selection"
+					, Toast.LENGTH_LONG).show();
+			
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**

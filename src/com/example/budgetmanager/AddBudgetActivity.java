@@ -11,6 +11,9 @@ import com.example.budgetmanager.api.ApiInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.text.format.Time;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -79,6 +82,29 @@ public class AddBudgetActivity extends Activity {
 						AddBudgetActivity.this.clearEntry(null);
 					}
 				});
+	}
+	
+	/** Called when the activity is first created to specify option menu. */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    // Inflate the menu; this adds items to the action bar if it is present.
+	    inflater.inflate(R.menu.options_menu, menu);
+	    return true;
+	}
+	
+	/** Called when an item in the options menu have been selected. */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+		if (item.getItemId() == R.id.settings) {
+			Toast.makeText(AddBudgetActivity.this, "Successfully handled Settings selection"
+					, Toast.LENGTH_LONG).show();
+			
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**
