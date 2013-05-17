@@ -93,7 +93,7 @@ public class Entry implements Comparable<Entry> {
 	 *
 	 * @param id The ID of this entry as represented on the server
 	 */
-	public void setEntriId(long id) { this.entryId = id; }
+	public void setEntryId(long id) { this.entryId = id; }
 
   /*
    * Retrieve the date string associated with the Entry.
