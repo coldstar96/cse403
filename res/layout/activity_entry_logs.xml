@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ubudgetbackground"
+    tools:context=".EntryLogsActivity" >
+
+    <LinearLayout
+        android:id="@+id/entry_logs_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/entrylogsheader" >
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/entry_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/entry_logs_header"
+        android:paddingBottom="40dp"
+        android:background="@drawable/shadowbackground" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/add_budget_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="@string/action_add_budget" />
+
+        <Button
+            android:id="@+id/add_entry_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/action_add_entry" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,10 +1,10 @@
 package com.example.budgetmanager;
 
-import java.util.List;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,20 +20,17 @@ import com.example.budgetmanager.api.ApiInterface;
  */
 public class LogoActivity extends Activity {
 	public static final String TAG = "LogoActivity";
-	long timer;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
-
-		timer = System.currentTimeMillis();
 
 		ApiCallback<Object> callback = new ApiCallback<Object>(){
 
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				startActivity(new Intent(LogoActivity.this, LogsActivity.class));
+				startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
 				finish();
 			}
 
@@ -55,5 +52,4 @@ public class LogoActivity extends Activity {
 		getMenuInflater().inflate(R.menu.logo, menu);
 		return true;
 	}
-
 }

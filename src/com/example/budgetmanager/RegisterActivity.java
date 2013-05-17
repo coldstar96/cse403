@@ -112,7 +112,7 @@ public class RegisterActivity extends Activity {
 			// Move to add budget activity
 			@Override
 			public void onSuccess(Object result) {
-				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
+				Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
 				
 				SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
@@ -121,7 +121,7 @@ public class RegisterActivity extends Activity {
 				editor.commit();
 				
 				showProgress(false);
-				startActivity(addEntryIntent);
+				startActivity(intent);
 				finish();
 			}
 

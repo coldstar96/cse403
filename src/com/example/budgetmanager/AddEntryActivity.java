@@ -58,7 +58,7 @@ public class AddEntryActivity extends Activity {
 	}
 
 
-	/** Called whenever the activity is brought back to the foregroud */
+	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -129,6 +129,9 @@ public class AddEntryActivity extends Activity {
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
+				UBudgetApp app = (UBudgetApp) getApplication();
+				app.getEntryList().add(0, newEntry);
+				
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "
