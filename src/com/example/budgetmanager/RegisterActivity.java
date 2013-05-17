@@ -101,7 +101,6 @@ public class RegisterActivity extends Activity {
 
 		callback = new ApiCallback<Object>(){
 
-
 			// Create popup dialog failure
 			@Override
 			public void onFailure(String errorMessage) {
@@ -124,7 +123,6 @@ public class RegisterActivity extends Activity {
 				startActivity(intent);
 				finish();
 			}
-
 		};
 
 		findViewById(R.id.register_button).setOnClickListener(
@@ -134,6 +132,15 @@ public class RegisterActivity extends Activity {
 						registerAttempt();
 					}
 				});
+
+		// focuses to empty edit view
+		if (mEmail.isEmpty()) {
+			mEmailView.requestFocus();
+		} else if(mPassword.isEmpty()) {
+			mPasswordView.requestFocus();
+		} else {
+			mPasswordCheckView.requestFocus();
+		}
 	}
 
 	public void onClick(View v) {
