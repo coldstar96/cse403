@@ -21,23 +21,35 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 	/**
 	 * Sets the next response to a handler.
 	 * 
-	 * @param jsonString The string to create the JSON object from.
-	 * @return true if the string parsed correctly, false otherwise.
+	 * @param obj The JSONObject or JSONArray to set the next response to.
+	 * @throws IllegalArgumentException if the passed object is not JSONObject or JSONArray
 	 */
 	public void setNextResponse(Object obj) {
 		if (object = obj instanceof JSONObject)
 			jsonObject = (JSONObject) obj;
-		else
+		else if (obj instanceof JSONArray)
 			jsonArray = (JSONArray) obj;
+		else
+			throw new IllegalArgumentException("Must be JSONObject or JSONArray.");
 	}
 	
+	/**
+	 * Calls the specified handler with the last set JSON response.
+	 * 
+	 * @param handler The handler to forward the JSON response to.
+	 */
 	private void callHandler(AsyncHttpResponseHandler handler) {
 		assert handler instanceof JsonHttpResponseHandler;
-		if (object)
+		if (object) {
+			assert jsonObject != null;
 			((JsonHttpResponseHandler) handler).onSuccess(jsonObject);
-		else
+		} else {
+			assert jsonArray != null;
 			((JsonHttpResponseHandler) handler).onSuccess(jsonArray);
+		}
 	}
+	
+	// Overwrite AsyncHttpClient methods to use our forwarding method.
 	
 	@Override
 	public void post(String arg, RequestParams params, AsyncHttpResponseHandler handler) {
