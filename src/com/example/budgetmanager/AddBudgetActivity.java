@@ -29,9 +29,11 @@ import com.example.budgetmanager.api.ApiInterface;
 public class AddBudgetActivity extends Activity {
 	// Text field for entering the Budget name
 	private EditText mBudgetNameView;
+	private String mBudgetName;
 
 	// Number field for entering the Budget amount
 	private EditText mBudgetAmountView;
+	private String mBudgetAmount;
 
 	// Enables the user to pick the start date of the Budget
 	private DatePicker mBudgetDateView;
@@ -96,16 +98,21 @@ public class AddBudgetActivity extends Activity {
 		View focusView = null;
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
+		
+		mBudgetAmount = mBudgetAmountView.getText().toString();
+		mBudgetName = mBudgetNameView.getText().toString();
 
 		// checks whether amount is not empty
-		if (mBudgetAmountView.getText().toString().isEmpty()) {
+		if (mBudgetAmount.isEmpty()) {
 			mBudgetAmountView.setError(getString(R.string.error_invalid_amount));
 			focusView = mBudgetAmountView;
 			cancel = true;
 		}
 		
+		double amount = Double.parseDouble(mBudgetAmountView.getText().toString());
+		
 		// checks whether the amount is non-zero
-		if (!cancel&& Double.parseDouble(mBudgetAmountView.getText().toString()) == 0.0) {
+		if (!cancel && amount == 0.0) {
 			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
 			mBudgetAmountView.requestFocus();
 			focusView = mBudgetAmountView;
@@ -113,7 +120,7 @@ public class AddBudgetActivity extends Activity {
 		}
 
 		// checks whether name is not emtpy
-		if (mBudgetNameView.getText().toString().isEmpty()) {
+		if (mBudgetName.isEmpty()) {
 			mBudgetNameView.setError(getString(R.string.error_invalid_budget_name));
 			focusView = mBudgetNameView;
 			cancel = true;
@@ -138,7 +145,7 @@ public class AddBudgetActivity extends Activity {
 			public void onSuccess(Long result) {
 				// add the entry into the Budget object
 				UBudgetApp app = (UBudgetApp) getApplication();
-				app.budgetList.add(0, newBudget);
+				app.getBudgetList().add(0, newBudget);
 				finish();
 			}
 

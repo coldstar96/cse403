@@ -97,12 +97,12 @@ public class LoginActivity extends Activity {
 						UBudgetApp app = (UBudgetApp)getApplication();
 
 						// Add these budgets to the application state
-						List<Budget> budgetList = app.budgetList;
+						List<Budget> budgetList = app.getBudgetList();
 						budgetList.clear();
 						budgetList.addAll(result);
-						
+
 						// Add entries to the application state
-						List<Entry> entryList = app.entryList;
+						List<Entry> entryList = app.getEntryList();
 						entryList.clear();
 
 						for (Budget b : budgetList) {
@@ -110,14 +110,13 @@ public class LoginActivity extends Activity {
 							entryList.addAll(b.getEntries());
 						}
 						Log.d(TAG, "fetch data on ApiInteface is success");
-						
-						app.email = mEmail;
-						app.password = mPassword;
-						
+
+						app.setEmail(mEmail);
+
 						startActivity(new Intent(LoginActivity.this, EntryLogsActivity.class));
 						finish();
 					}
-					
+
 					@Override
 					public void onFailure(String errorMessage) {
 						Log.d(TAG, "fetch data on ApiInteface is failure");
@@ -143,19 +142,18 @@ public class LoginActivity extends Activity {
 						intent.putExtra("email", mEmailView.getText().toString());
 						intent.putExtra("password", mPasswordView.getText().toString());
 						startActivityForResult(intent, 1);
-						
+
 					}
 				});
 	}
-	
+
 	@Override 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	// TODO Auto-generated method stub
-	super.onActivityResult(requestCode, resultCode, data);
-	if(requestCode == 1 && resultCode == 2)
-	{
-	    finish();
-	}}
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 1 && resultCode == 2) {
+			finish();
+		}
+	}
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
@@ -220,7 +218,7 @@ public class LoginActivity extends Activity {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
 		getWindow().setSoftInputMode(
-			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		Log.d(TAG, "Showing in progress, should hide virtual keyboard");
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in

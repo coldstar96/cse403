@@ -122,8 +122,7 @@ public class RegisterActivity extends Activity {
 				editor.commit();
 				
 				UBudgetApp app = (UBudgetApp)getApplication();
-				app.email = mEmail;
-				app.password = mPassword;
+				app.setEmail(mEmail);
 				
 				setResult(2);
 				

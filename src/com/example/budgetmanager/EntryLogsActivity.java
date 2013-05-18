@@ -30,7 +30,7 @@ public class EntryLogsActivity extends Activity {
 		setContentView(R.layout.activity_entry_logs);
 
 		UBudgetApp app = (UBudgetApp)getApplication();
-		EntryAdapter adapter = new EntryAdapter(this, R.layout.list_entry_layout, app.entryList);
+		EntryAdapter adapter = new EntryAdapter(this, R.layout.list_entry_layout, app.getEntryList());
 
 		listView = (ListView) findViewById(R.id.entry_list);
 
@@ -53,7 +53,7 @@ public class EntryLogsActivity extends Activity {
 		});
 		
 		userEmailView = (TextView) findViewById(R.id.text_user_email);
-		userEmailView.setText(app.email);
+		userEmailView.setText(app.getEmail());
 
 		findViewById(R.id.add_entry_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -62,7 +62,7 @@ public class EntryLogsActivity extends Activity {
 					public void onClick(View view) {
 						// if there is no created budget, notify user that they need
 						// to create budget before they add an entry
-						List<Budget> budgets = ((UBudgetApp) getApplication()).budgetList;
+						List<Budget> budgets = ((UBudgetApp) getApplication()).getBudgetList();
 						if(budgets.isEmpty()){
 							Toast.makeText(EntryLogsActivity.this, R.string.dialog_add_budget_first, Toast.LENGTH_LONG).show();
 						}else{
