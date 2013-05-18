@@ -1,13 +1,14 @@
 package com.example.budgetmanager;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 /**
  *
  * @author Ji jiwpark90
  *
  */
-public class Entry implements Comparable<Entry> {
+public class Entry {
 	/**
 	 * The ID given to an Entry upon creation locally.
 	 */
@@ -24,6 +25,10 @@ public class Entry implements Comparable<Entry> {
 
 	// The date that this entry's expenditure was on
 	private LocalDate date;
+
+	// Creation and update times as reported by the server (for sorting)
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	// additional notes
 	private String notes;
@@ -106,26 +111,30 @@ public class Entry implements Comparable<Entry> {
 		this.entryId = id;
 	}
 
-  /*
-   * Retrieve the date associated with the Entry.
-   *
-   * @return the date on which this Entry's expenditure was made on
+	/**
+	 * Retrieve the date associated with the Entry.
+	 *
+	 * @return the date on which this Entry's expenditure was made on
 	 */
 	public LocalDate getDate() {
 		return date;
 	}
 
 	/**
-	 * Compares the other Entry to this Entry to see which precedes which.
-	 * An Entry with the lower amount value comes first.
+	 * Set the creation time as supplied by the server
 	 *
-	 * @param other The other Entry
-	 * @return <code>i < 0</code> if this Entry comes before the other Entry,
-	 * 		   <code>i == 0</code> if identical Entries,
-	 * 		   <code>i > 0</code> if this Entry comes after the other Entry.
+	 * @param createdAt when this Entry was created on the server
 	 */
-	@Override
-	public int compareTo(Entry other) {
-		return this.amount - other.amount;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	/**
+	 * Set the update time as supplied by the server
+	 *
+	 * @param updatedAt when this Entry was updated on the server
+	 */
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

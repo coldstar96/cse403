@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,7 @@ public class ApiInterface {
 	private final String budgetsAndEntriesUrl;
 
 	private final String DATE_FORMAT;
+	private final String DATETIME_FORMAT;
 
 	private final AsyncHttpClient client;
 
@@ -70,6 +72,7 @@ public class ApiInterface {
 		budgetsAndEntriesUrl = baseUrl + r.getString(R.string.budgets_and_entries);
 
 		DATE_FORMAT = r.getString(R.string.api_date_format);
+		DATETIME_FORMAT = r.getString(R.string.api_datetime_format);
 
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
@@ -142,7 +145,13 @@ public class ApiInterface {
 			public void onSuccess(JSONObject obj) {
 				try {
 					long id = obj.getLong("id");
+					LocalDateTime createdAt = LocalDateTime.parse(obj.getString("created_at"),
+							DateTimeFormat.forPattern(DATETIME_FORMAT));
+					LocalDateTime updatedAt = LocalDateTime.parse(obj.getString("updated_at"),
+							DateTimeFormat.forPattern(DATETIME_FORMAT));
 					e.setEntryId(id);
+					e.setCreatedAt(createdAt);
+					e.setUpdatedAt(updatedAt);
 					callback.onSuccess(id);
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send an ID
@@ -292,9 +301,17 @@ public class ApiInterface {
 						LocalDate date = LocalDate.parse(
 									entriesObject.getString("expenditure_date"),
 									DateTimeFormat.forPattern(DATE_FORMAT));
+						LocalDateTime createdAt = LocalDateTime.parse(
+								entriesObject.getString("created_at"),
+								DateTimeFormat.forPattern(DATETIME_FORMAT));
+						LocalDateTime updatedAt = LocalDateTime.parse(
+								entriesObject.getString("updated_at"),
+								DateTimeFormat.forPattern(DATETIME_FORMAT));
 						String notes = entriesObject.getString("notes");
 
 						Entry newEntry = new Entry(id, amount, b, notes, date);
+						newEntry.setCreatedAt(createdAt);
+						newEntry.setUpdatedAt(updatedAt);
 
 						b.addEntry(newEntry);
 					} catch (JSONException e) {
@@ -365,10 +382,18 @@ public class ApiInterface {
 							LocalDate entryDate = LocalDate.parse(
 									entriesObject.getString("expenditure_date"),
 									DateTimeFormat.forPattern(DATE_FORMAT));
+							LocalDateTime createdAt = LocalDateTime.parse(
+									entriesObject.getString("created_at"),
+									DateTimeFormat.forPattern(DATETIME_FORMAT));
+							LocalDateTime updatedAt = LocalDateTime.parse(
+									entriesObject.getString("updated_at"),
+									DateTimeFormat.forPattern(DATETIME_FORMAT));
 							String entryNotes = entriesObject.getString("notes");
 
 							Entry newEntry = new Entry(entryId, entryAmount,
 									newBudget, entryNotes, entryDate);
+							newEntry.setCreatedAt(createdAt);
+							newEntry.setUpdatedAt(updatedAt);
 
 							newBudget.addEntry(newEntry);
 						}
