@@ -244,6 +244,7 @@ public class ApiInterface {
 						budgetList.add(newBudget);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
 					}
 				}
 
@@ -293,6 +294,7 @@ public class ApiInterface {
 						b.addEntry(newEntry);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
 					}
 				}
 
@@ -368,6 +370,7 @@ public class ApiInterface {
 						budgetList.add(newBudget);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
 					}
 				}
 
