@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,9 +52,6 @@ public class RegisterActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
-	// API callback
-	private ApiCallback<Object> callback;
-
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +60,13 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		mEmail = getIntent().getExtras().getString("email");
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(getIntent().getExtras().getString("email"));
+		mEmailView.setText(mEmail);
 
+		mPassword = getIntent().getExtras().getString("password");
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView.setText(getIntent().getExtras().getString("password"));
+		mPasswordView.setText(mPassword);
 		mPasswordView
 		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -80,8 +80,9 @@ public class RegisterActivity extends Activity {
 			}
 		});
 
+		mPasswordCheck = "";
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
-		mPasswordCheckView.setText(getIntent().getExtras().getString("password2"));
+		mPasswordCheckView.setText(mPasswordCheck);
 		mPasswordCheckView
 		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -99,34 +100,6 @@ public class RegisterActivity extends Activity {
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-		callback = new ApiCallback<Object>(){
-
-
-			// Create popup dialog failure
-			@Override
-			public void onFailure(String errorMessage) {
-				showProgress(false);
-				Toast.makeText(RegisterActivity.this, R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
-			}
-
-			// Move to add budget activity
-			@Override
-			public void onSuccess(Object result) {
-				Intent addEntryIntent = new Intent(RegisterActivity.this, AddEntryActivity.class);
-				
-				SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-
-				editor.putString(PREFS_EMAIL, mEmail);
-				editor.putString(PREFS_PASS, mPassword);
-				editor.commit();
-				
-				showProgress(false);
-				startActivity(addEntryIntent);
-				finish();
-			}
-
-		};
-
 		findViewById(R.id.register_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -134,18 +107,16 @@ public class RegisterActivity extends Activity {
 						registerAttempt();
 					}
 				});
-	}
 
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.register_button:
-			Intent k = new Intent(this, RegisterActivity.class);
-			startActivity(k);
-			//finish();
-			break;
+		// focuses to empty edit view
+		if (mEmail.isEmpty()) {
+			mEmailView.requestFocus();
+		} else if(mPassword.isEmpty()) {
+			mPasswordView.requestFocus();
+		} else {
+			mPasswordCheckView.requestFocus();
 		}
 	}
-
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
@@ -207,8 +178,39 @@ public class RegisterActivity extends Activity {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			getWindow().setSoftInputMode(
+				      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			showProgress(true);
-			ApiInterface.getInstance().createUser(mEmail, mPassword, callback);
+			ApiInterface.getInstance().createUser(mEmail, mPassword, new ApiCallback<Object>(){
+				// Create popup dialog failure
+				@Override
+				public void onFailure(String errorMessage) {
+					showProgress(false);
+					Toast.makeText(RegisterActivity.this, 
+							R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
+				}
+
+				// Move to add budget activity
+				@Override
+				public void onSuccess(Object result) {
+					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
+					
+					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+
+					editor.putString(PREFS_EMAIL, mEmail);
+					editor.putString(PREFS_PASS, mPassword);
+					editor.commit();
+					
+					UBudgetApp app = (UBudgetApp)getApplication();
+					app.setEmail(mEmail);
+					
+					setResult(2);
+					
+					showProgress(false);
+					startActivity(intent);
+					finish();
+				}
+			});
 		}
 	}
 
@@ -217,11 +219,12 @@ public class RegisterActivity extends Activity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
-		getWindow().setSoftInputMode(
-			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
+		InputMethodManager imm = (InputMethodManager)getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);

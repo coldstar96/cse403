@@ -42,6 +42,8 @@ public class ApiInterface {
 	private final String entriesUrl;
 	private final String budgetsAndEntriesUrl;
 
+	private final String DATE_FORMAT;
+
 	private final AsyncHttpClient client;
 
 	/**
@@ -67,6 +69,8 @@ public class ApiInterface {
 		entriesUrl = baseUrl + r.getString(R.string.entries);
 		budgetsAndEntriesUrl = baseUrl + r.getString(R.string.budgets_and_entries);
 
+		DATE_FORMAT = r.getString(R.string.api_date_format);
+
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
 		client.setCookieStore(cookieStore);
@@ -87,7 +91,7 @@ public class ApiInterface {
 	public void create(final Budget b, final ApiCallback<Long> callback) {
 		RequestParams params = new RequestParams();
 
-		String startDate = b.getStartDate().toString("yyyy-MM-dd");
+		String startDate = b.getStartDate().toString(DATE_FORMAT);
 
 		params.put("budget_name", b.getName());
 		params.put("amount", "" + b.getBudgetAmount());
@@ -130,7 +134,7 @@ public class ApiInterface {
 		RequestParams params = new RequestParams();
 		params.put("amount", "" + e.getAmount());
 		params.put("notes", e.getNotes());
-		params.put("expenditure_date", e.getDate().toString());
+		params.put("expenditure_date", e.getDate().toString(DATE_FORMAT));
 		params.put("budget_id", "" + e.getBudget().getId());
 
 		client.post(entriesUrl, params, new JsonHttpResponseHandler() {
@@ -234,7 +238,7 @@ public class ApiInterface {
 						int amount = budgetObject.getInt("amount");
 						boolean recur = budgetObject.optBoolean("recur");
 						LocalDate startDate = LocalDate.parse(budgetObject.getString("start_date"),
-								DateTimeFormat.forPattern("yyyy-MM-dd"));
+								DateTimeFormat.forPattern(DATE_FORMAT));
 						long id = budgetObject.getLong("id");
 
 						Budget newBudget = new Budget(budgetName, amount,
@@ -272,7 +276,7 @@ public class ApiInterface {
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
 		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
-		
+
 		client.get(requestUrl, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray entriesJson) {
@@ -283,10 +287,12 @@ public class ApiInterface {
 				for (int i = 0; i < entriesLen; ++i) {
 					try {
 						JSONObject entriesObject = entriesJson.getJSONObject(i);
-						
+
 						long id = entriesObject.getLong("id");
 						int amount = entriesObject.getInt("amount");
-						String date = entriesObject.getString("expenditure_date");
+						LocalDate date = LocalDate.parse(
+									entriesObject.getString("expenditure_date"),
+									DateTimeFormat.forPattern(DATE_FORMAT));
 						String notes = entriesObject.getString("notes");
 
 						Entry newEntry = new Entry(id, amount, b, notes, date);
@@ -308,7 +314,7 @@ public class ApiInterface {
 			}
 		});
 	}
-	
+
 	/**
 	 * Fetches a collection of Budgets and Entries owned by the current user.
 	 *
@@ -340,28 +346,30 @@ public class ApiInterface {
 						int amount = budgetObject.getInt("amount");
 						boolean recur = budgetObject.optBoolean("recur");
 						LocalDate startDate = LocalDate.parse(budgetObject.getString("start_date"),
-								DateTimeFormat.forPattern("yyyy-MM-dd"));
+								DateTimeFormat.forPattern(DATE_FORMAT));
 						long id = budgetObject.getLong("id");
-						
+
 
 						Budget newBudget = new Budget(budgetName, amount,
 								recur, startDate, Duration.valueOf(duration));
 						newBudget.setId(id);
-						
+
 						JSONArray entriesJson = budgetObject.getJSONArray("entries");
 						int entriesLen = entriesJson.length();
-						
+
 						// Iterate through the JSON array and create new
 						// entries for each index.
 						for (int j = 0; j < entriesLen; j++) {
-							JSONObject entriesObject = entriesJson.getJSONObject(i);
-							
+							JSONObject entriesObject = entriesJson.getJSONObject(j);
+
 							long entryId = entriesObject.getLong("id");
 							int entryAmount = entriesObject.getInt("amount");
-							String entryDate = entriesObject.getString("expenditure_date");
+							LocalDate entryDate = LocalDate.parse(
+									entriesObject.getString("expenditure_date"),
+									DateTimeFormat.forPattern(DATE_FORMAT));
 							String entryNotes = entriesObject.getString("notes");
 
-							Entry newEntry = new Entry(entryId, entryAmount, 
+							Entry newEntry = new Entry(entryId, entryAmount,
 									newBudget, entryNotes, entryDate);
 
 							newBudget.addEntry(newEntry);

@@ -4,17 +4,27 @@
     android:layout_height="match_parent"
     android:background="@drawable/ubudgetbackground" >
 
+    <LinearLayout
+        android:id="@+id/add_budget_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/addbudgetheader" >
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ubudgetbackground" >
+        android:layout_below="@+id/add_budget_header"
+        android:background="@drawable/shadowbackground"
+        android:paddingBottom="40dp" >
 
         <LinearLayout
             android:id="@+id/LinearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ubudgetbackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="@dimen/activity_vertical_margin"
@@ -28,13 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="@string/add_budget" />
+                android:layout_margin="10dp"
+                android:text="@string/budget_name" />
 
             <EditText
                 android:id="@+id/budget_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_margin="10dp"
                 android:ems="10"
                 android:hint="@string/prompt_budget_name"
                 android:maxLines="1"
@@ -45,6 +56,7 @@
                 android:id="@+id/budget_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:ems="10"
                 android:hint="@string/prompt_budget_amount"
                 android:inputType="numberDecimal" />
@@ -54,18 +66,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:layout_margin="10dp"
                 android:text="@string/prompt_budget_start_date" />
 
             <DatePicker
                 android:id="@+id/budget_date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:layout_margin="10dp"
                 android:text="@string/budget_duration" />
 
             <Spinner
@@ -78,13 +93,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:layout_margin="10dp"
                 android:text="@string/budget_recur"
                 android:textColor="@color/dark_gray" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -92,6 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_below="@+id/LinearLayout1"
         android:orientation="horizontal" >
 
         <Button
