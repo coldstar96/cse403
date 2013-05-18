@@ -22,10 +22,10 @@ public class TestCaseEntryBudgetComparator extends TestCase {
 		EntryLogAdapter.EntryBudgetComparator comp =
 				new EntryLogAdapter.EntryBudgetComparator();
 
-		String msg = "Entry with " + lessBudget.getName() +
-				" should come after " + moreBudget.getName() +
+		String msg = "Entry with " + moreBudget.getName() +
+				" should come after " + lessBudget.getName() +
 				" in ordering by budget name";
-		assertTrue(msg, comp.compare(more, less) < 0);
+		assertTrue(msg, comp.compare(less, more) < 0);
 	}
 
 	@SmallTest
@@ -56,9 +56,9 @@ public class TestCaseEntryBudgetComparator extends TestCase {
 		EntryLogAdapter.EntryBudgetComparator comp =
 				new EntryLogAdapter.EntryBudgetComparator();
 
-		String msg = "Entry with " + moreBudget.getName() +
-				" should come before " + lessBudget.getName() +
+		String msg = "Entry with " + lessBudget.getName() +
+				" should come before " + moreBudget.getName() +
 				" in ordering by budget name";
-		assertTrue(msg, comp.compare(less, more) > 0);
+		assertTrue(msg, comp.compare(more, less) > 0);
 	}
 }
