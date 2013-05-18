@@ -22,6 +22,10 @@ import android.widget.ArrayAdapter;
  */
 public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
+	public EntryLogAdapter(Context context, int layoutResourceId) {
+		super(context, layoutResourceId);
+	}
+
 	/**
 	 * Constructs a new EntryLog
 	 * @param context the current Context
@@ -30,7 +34,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 */
 	public EntryLogAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
-		super(context, layoutResourceId);
+		this(context, layoutResourceId);
 	}
 
 	/**
@@ -40,7 +44,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 * @param budget Budget from which entries are to be grabbed
 	 */
 	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
-		super(context, layoutResourceId);
+		this(context, layoutResourceId);
 	}
 
 	/**
@@ -62,6 +66,15 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 */
 	public List<Entry> getEntryList() {
 		return null;
+	}
+
+	/**
+	 * Clears this EntryLogAdapter of all Entries such that it
+	 * no longer holds any Entries.
+	 */
+	@Override
+	public void clear() {
+
 	}
 
 	/**

@@ -16,6 +16,16 @@ import android.test.suitebuilder.annotation.SmallTest;
 public class TestCaseEntryLogAdapter extends AndroidTestCase {
 
 	@SmallTest
+	public void test_noBudgetConstructor_shouldBeEmpty() {
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout);
+
+		List<Entry> logEntryList = log.getEntryList();
+
+		assertTrue(logEntryList.isEmpty());
+	}
+
+	@SmallTest
 	public void test_singleBudgetConstructor_hasEntries_shouldListEntries() {
 		Budget budgets = Factory.budgetFactory(0, 2);
 
@@ -151,5 +161,33 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 
 		// Should have a total of 6 entries
 		assertEquals(6, logEntryList.size());
+	}
+
+	@SmallTest
+	public void test_clear_wasEmpty_shouldBeEmpty() {
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout);
+
+		log.clear();
+
+		List<Entry> logEntryList = log.getEntryList();
+
+		// Should have no entries after clearing
+		assertTrue(logEntryList.isEmpty());
+	}
+
+	@SmallTest
+	public void test_clear_wasNotEmpty_shouldBeEmpty() {
+		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
+
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
+
+		log.clear();
+
+		List<Entry> logEntryList = log.getEntryList();
+
+		// Should have no entries after clearing
+		assertTrue(logEntryList.isEmpty());
 	}
 }
