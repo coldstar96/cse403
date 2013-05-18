@@ -249,6 +249,7 @@ public class ApiInterface {
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
 						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 
@@ -301,6 +302,7 @@ public class ApiInterface {
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
 						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 
@@ -379,6 +381,7 @@ public class ApiInterface {
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
 						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 

@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -211,7 +210,6 @@ public class TestApiInterface extends AndroidTestCase {
 		testClient.setNextResponse(jsonBudgets);
 		
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
-
 			@Override
 			public void onSuccess(List<Budget> result) {
 				fail("Shouldn't succeed, results are invalid.");
@@ -221,7 +219,6 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				assertNotNull(errorMessage);
 			}
-			
 		});
 	}
 	
@@ -257,7 +254,7 @@ public class TestApiInterface extends AndroidTestCase {
 					Entry e = result.get(i);
 					assertEquals(START_ID + i, e.getEntryId());
 					assertEquals(1000 * (i + 1), e.getAmount());
-					assertEquals(LocalTime.parse("2013-11-" + (14 + i), 
+					assertEquals(LocalDate.parse("2013-11-" + (14 + i), 
 							DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 					assertEquals("Note " + i, e.getNotes());
 				}
@@ -365,7 +362,7 @@ public class TestApiInterface extends AndroidTestCase {
 						Entry e = entries.get(j);
 						assertEquals(START_ID + j, e.getEntryId());
 						assertEquals(1000 * (j + 1), e.getAmount());
-						assertEquals(LocalTime.parse("2013-11-" + (14 + j), 
+						assertEquals(LocalDate.parse("2013-11-" + (14 + j), 
 								DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 						assertEquals("Note " + j, e.getNotes());
 					}
