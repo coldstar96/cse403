@@ -81,7 +81,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/hint_notes"
-                android:padding="10dp" />
+                android:maxLines="1"
+                android:padding="10dp"
+                android:singleLine="true" />
         </LinearLayout>
     </ScrollView>
 
