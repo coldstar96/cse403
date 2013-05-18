@@ -161,6 +161,8 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
+		testClient.setNextResponse(jsonBudgets);
+		
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 
 			@Override
@@ -206,6 +208,8 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
+		testClient.setNextResponse(jsonBudgets);
+		
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 
 			@Override
@@ -241,6 +245,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("notes", "Note " + i)
 			);
 		}
+		
+		testClient.setNextResponse(jsonEntries);
 		
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 
@@ -285,6 +291,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("notes", "Note " + i)
 			);
 		}
+		
+		testClient.setNextResponse(jsonEntries);
 		
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 
@@ -333,6 +341,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("entries", jsonEntries)
 			);
 		}
+		
+		testClient.setNextResponse(jsonBudgets);
 		
 		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
@@ -391,6 +401,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("entries", new JSONArray())
 			);
 		}
+		
+		testClient.setNextResponse(jsonBudgets);
 		
 		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
