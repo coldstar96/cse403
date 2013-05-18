@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +39,9 @@ public class TestApiInterface extends AndroidTestCase {
 		} catch (Exception e) { }
 	}
 	
+	/**
+	 * Tests the creation of a budget from the server response data.
+	 */
 	@SmallTest
 	public void test_create_budget() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
@@ -59,6 +63,9 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the failure of creation of a budget from the server response data.
+	 */
 	@SmallTest
 	public void test_create_budget_no_id() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
@@ -78,10 +85,14 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the creation of an entry from the server response data.
+	 */
 	@SmallTest
 	public void test_create_entry() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
-		final Entry e = new Entry(100, b, "notes", "2013-05-16");
+		final Entry e = new Entry(100, b, "notes", 
+				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		final long NEW_ID = 100;
 		testClient.setNextResponse(new JSONObject()
 				.put("id", NEW_ID)
@@ -100,10 +111,14 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the failure of creation of an entry from the server response data.
+	 */
 	@SmallTest
 	public void test_create_entry_no_id() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
-		final Entry e = new Entry(100, b, "notes", "2013-05-16");
+		final Entry e = new Entry(100, b, "notes", 
+				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish")
 		);
@@ -120,6 +135,10 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the fetching of a user's budgets from the server response data.
+	 */
+	@SmallTest
 	public void test_fetch_budgets() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
@@ -161,6 +180,10 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the failure of fetching of a user's budgets from the server response data.
+	 */
+	@SmallTest
 	public void test_fetch_budgets_invalid_response() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
@@ -192,15 +215,20 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the fetching of a user's specified budget's entries
+	 * from the server response data.
+	 */
+	@SmallTest
 	public void test_fetch_entries() throws JSONException {
 		final int NUM_ENTRIES = 10;
 		final long START_ID = 1;
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		b.setId(100);
 		
-		JSONArray jsonBudgets = new JSONArray();
+		JSONArray jsonEntries = new JSONArray();
 		for (int i = 0; i < NUM_ENTRIES; i++) {
-			jsonBudgets.put(new JSONObject()
+			jsonEntries.put(new JSONObject()
 					.put("id", START_ID + i)
 					.put("amount", 1000 * (i + 1))
 					.put("expenditure_date", "2013-11-" + (14 + i))
@@ -217,7 +245,8 @@ public class TestApiInterface extends AndroidTestCase {
 					Entry e = result.get(i);
 					assertEquals(START_ID + i, e.getEntryId());
 					assertEquals(1000 * (i + 1), e.getAmount());
-					assertEquals("2013-11-" + (14 + i), e.getDate());
+					assertEquals(LocalTime.parse("2013-11-" + (14 + i), 
+							DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 					assertEquals("Note " + i, e.getNotes());
 				}
 			}
@@ -230,7 +259,117 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the failure of fetching of a user's specified budget's entries
+	 * from the server response data.
+	 */
+	@SmallTest
 	public void test_fetch_entries_invalid_response() throws JSONException {
+		final int NUM_BUDGETS = 10;
+		final long START_ID = 1;
+		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
+		b.setId(100);
+		
+		JSONArray jsonEntries = new JSONArray();
+		for (int i = 0; i < NUM_BUDGETS; i++) {
+			jsonEntries.put(new JSONObject()
+					.put("id", START_ID + i)
+					.put("amount", 1000 * (i + 1))
+					.put("date", "2013-11-" + (14 + i)) // INVALID, should be expenditure_date
+					.put("notes", "Note " + i)
+			);
+		}
+		
+		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
+
+			@Override
+			public void onSuccess(List<Entry> result) {
+				fail("Shouldn't succeed, results are invalid.");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertNotNull(errorMessage);
+			}
+			
+		});
+	}
+	
+	/**
+	 * Tests the fetching of a user's specified budget's, including entries,
+	 * from the server response data.
+	 */
+	@SmallTest
+	public void test_fetch_budgets_entries() throws JSONException {
+		final int NUM_BUDGETS_ENTRIES = 10;
+		
+		final long START_ID = 1;
+		
+		JSONArray jsonBudgets = new JSONArray();
+		for (int i = 0; i < NUM_BUDGETS_ENTRIES; i++) {
+			JSONArray jsonEntries = new JSONArray();
+			for (int j = 0; j < NUM_BUDGETS_ENTRIES; j++) {
+				jsonEntries.put(new JSONObject()
+						.put("id", START_ID + j)
+						.put("amount", 1000 * (j + 1))
+						.put("expenditure_date", "2013-11-" + (14 + j))
+						.put("notes", "Note " + j)
+				);
+			}
+			
+			jsonBudgets.put(new JSONObject()
+					.put("budget_name", "Budget " + i)
+					.put("recurrence_duration", Duration.DAY.toString())
+					.put("amount", 1000 * (i + 1))
+					.put("recur", true)
+					.put("start_date", "1991-11-" + (14 + i))
+					.put("id", START_ID + i)
+					.put("entries", jsonEntries)
+			);
+		}
+		
+		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
+
+			@Override
+			public void onSuccess(List<Budget> result) {
+				assertEquals(NUM_BUDGETS_ENTRIES, result.size());
+				for (int i = 0; i < NUM_BUDGETS_ENTRIES; i++) {
+					Budget b = result.get(i);
+					assertEquals("Budget " + i, b.getName());
+					assertEquals(Duration.DAY, b.getDuration());
+					assertEquals(1000 * (i + 1), b.getBudgetAmount());
+					assertTrue(b.isRecurring());
+					assertEquals(LocalDate.parse("1991-11-" + (14 + i), 
+							DateTimeFormat.forPattern("yyyy-MM-dd")), b.getStartDate());
+					assertEquals(START_ID + i, b.getId());
+					
+					List<Entry> entries = b.getEntries();
+					assertEquals(NUM_BUDGETS_ENTRIES, result.size());
+					for (int j = 0; j < NUM_BUDGETS_ENTRIES; j++) {
+						Entry e = entries.get(j);
+						assertEquals(START_ID + j, e.getEntryId());
+						assertEquals(1000 * (j + 1), e.getAmount());
+						assertEquals(LocalTime.parse("2013-11-" + (14 + j), 
+								DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
+						assertEquals("Note " + j, e.getNotes());
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				fail("Shouldn't fail, results are valid.");
+			}
+			
+		});
+	}
+	
+	/**
+	 * Tests the failure of fetching of a user's specified budget's, including entries,
+	 * from the server response data.
+	 */
+	@SmallTest
+	public void test_fetch_budgets_entries_invalid_response() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
 		
@@ -243,10 +382,11 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("recur", true)
 					.put("start_date", "1991-11-" + (14 + i))
 					.put("id", START_ID + i)
+					.put("entries", new JSONArray())
 			);
 		}
 		
-		api.fetchBudgets(new ApiCallback<List<Budget>>() {
+		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
 			@Override
 			public void onSuccess(List<Budget> result) {
@@ -260,40 +400,6 @@ public class TestApiInterface extends AndroidTestCase {
 			
 		});
 	}
-	
-//	@SmallTest
-//	public void test_update_budget()throws JSONException {
-//		final long ID = 100;
-//		final String NAME = "A";
-//		final int AMOUNT = 1000;
-//		final boolean RECUR = false;
-//		final LocalDate START = LocalDate.now();
-//		final Duration DURATION = Duration.WEEK;
-//		
-//		final Budget b = new Budget(NAME, AMOUNT, RECUR, START, DURATION);
-//		b.setId(ID);
-//		
-//		testClient.setNextResponse(new JSONObject()
-//				.put("id", ID)
-//				.put("budget_name", NAME)
-//				.put("amount", AMOUNT)
-//				.put("recur", NEW_RECURS)
-//				.put("start_date", NEW_START.toString("yyyy-MM-dd"))
-//				.put("recurrence_duration", NEW_DURATION.toString())
-//		);
-//		
-//		api.update(b, new ApiCallback<Object>() {
-//			@Override
-//			public void onSuccess(Object result) {
-//				assertTrue(true);
-//			}
-//
-//			@Override
-//			public void onFailure(String errorMessage) {
-//				fail("Should not fail, all input parameters were valid.");
-//			}
-//		});
-//	}
 	
 	/**
      * Use reflection to change value of any instance field.
