@@ -18,6 +18,12 @@ import com.example.budgetmanager.api.ApiInterface;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
+/**
+ * This is a whitebox test of the ApiInterface. It tests the internals
+ * of network response callbacks using a special HTTP client.
+ * 
+ * @author Graham grahamb5
+ */
 public class TestApiInterface extends AndroidTestCase {
 	private ApiInterface api;
 	private TestAsyncHttpClient testClient;
@@ -30,7 +36,8 @@ public class TestApiInterface extends AndroidTestCase {
 	 */
 	protected void setUp() {
 		try {
-			// Need to set the context for the test.
+			// Need to set the context for the test, or we'll get a
+			// NullPointerException.
 			setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
 		} catch (Exception e) { }
 		
