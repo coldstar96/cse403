@@ -1,5 +1,11 @@
 package com.example.budgetmanager;
 
+/**
+ * Miscellaneous methods that we use in routine
+ *
+ * @author Chi Ho coldstar96
+ *
+ */
 
 public class Utilities {
 	
