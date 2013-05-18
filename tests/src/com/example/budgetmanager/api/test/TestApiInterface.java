@@ -30,8 +30,14 @@ public class TestApiInterface extends AndroidTestCase {
 	 * server.
 	 */
 	protected void setUp() {
+		try {
+			// Need to set the context for the test.
+			setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
+		} catch (Exception e) { }
+		
 		api = ApiInterface.getInstance();
 		testClient = new TestAsyncHttpClient();
+		
 		try {
 			// API's client field is private. Lets use
 			// reflection to change it to our test client.
@@ -416,5 +422,28 @@ public class TestApiInterface extends AndroidTestCase {
         field.setAccessible(true);
         // Sets the field to the new value for this instance
         field.set(classInstance, newValue);
+    }
+    
+    /**
+     * Use reflection to change value of any static field.
+     * @param className The complete name of the class (ex. java.lang.String)
+     * @param fieldName The name of a static field in the class
+     * @param newValue The value you want the field to be set to.
+     * @throws SecurityException .
+     * @throws NoSuchFieldException .
+     * @throws ClassNotFoundException .
+     * @throws IllegalArgumentException .
+     * @throws IllegalAccessException .
+     */
+    public static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
+            ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+        // Get the private String field
+        final Field field = Class.forName(className).getDeclaredField(fieldName);
+        // Allow modification on the field
+        field.setAccessible(true);
+        // Get
+        final Object oldValue = field.get(Class.forName(className));
+        // Sets the field to the new value
+        field.set(oldValue, newValue);
     }
 }
