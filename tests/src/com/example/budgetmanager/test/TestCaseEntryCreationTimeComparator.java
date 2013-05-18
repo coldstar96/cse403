@@ -21,8 +21,8 @@ public class TestCaseEntryCreationTimeComparator extends TestCase {
 		EntryLogAdapter.EntryCreationTimeComparator comp =
 				new EntryLogAdapter.EntryCreationTimeComparator();
 
-		String msg = "Entry " + earlier.toString() +
-				" should come after " + later.toString() +
+		String msg = "Entry " + earlier.getCreatedAt().toString() +
+				" should come after " + later.getCreatedAt().toString() +
 				" in ordering by creation time";
 		assertTrue(msg, comp.compare(later, earlier) < 0);
 	}
@@ -37,8 +37,8 @@ public class TestCaseEntryCreationTimeComparator extends TestCase {
 		EntryLogAdapter.EntryCreationTimeComparator comp =
 				new EntryLogAdapter.EntryCreationTimeComparator();
 
-		String msg = "Entry " + earlier.toString() +
-				" should come equally " + later.toString() +
+		String msg = "Entry " + earlier.getCreatedAt().toString() +
+				" should come equally " + later.getCreatedAt().toString() +
 				" in ordering by creation time";
 		assertEquals(msg, 0, comp.compare(later, earlier));
 	}
@@ -53,8 +53,8 @@ public class TestCaseEntryCreationTimeComparator extends TestCase {
 		EntryLogAdapter.EntryCreationTimeComparator comp =
 				new EntryLogAdapter.EntryCreationTimeComparator();
 
-		String msg = "Entry " + later.toString() +
-				" should come before " + earlier.toString() +
+		String msg = "Entry " + later.getCreatedAt().toString() +
+				" should come before " + earlier.getCreatedAt().toString() +
 				" in ordering by creation time";
 		assertTrue(msg, comp.compare(earlier, later) > 0);
 	}

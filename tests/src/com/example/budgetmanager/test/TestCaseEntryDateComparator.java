@@ -22,8 +22,8 @@ public class TestCaseEntryDateComparator extends TestCase {
 		EntryLogAdapter.EntryDateComparator comp =
 				new EntryLogAdapter.EntryDateComparator();
 
-		String msg = "Entry " + earlier.toString() +
-				" should come after " + later.toString() +
+		String msg = "Entry " + earlier.getDate().toString() +
+				" should come after " + later.getDate().toString() +
 				" in ordering by date";
 		assertTrue(msg, comp.compare(later, earlier) < 0);
 	}
@@ -38,8 +38,8 @@ public class TestCaseEntryDateComparator extends TestCase {
 		EntryLogAdapter.EntryDateComparator comp =
 				new EntryLogAdapter.EntryDateComparator();
 
-		String msg = "Entry " + rhsEntry.toString() +
-				" should come equally " + lhsEntry.toString() +
+		String msg = "Entry " + rhsEntry.getDate().toString() +
+				" should come equally " + lhsEntry.getDate().toString() +
 				" in ordering by date";
 		assertEquals(msg, 0, comp.compare(lhsEntry, rhsEntry));
 	}
@@ -54,8 +54,8 @@ public class TestCaseEntryDateComparator extends TestCase {
 		EntryLogAdapter.EntryDateComparator comp =
 				new EntryLogAdapter.EntryDateComparator();
 
-		String msg = "Entry " + later.toString() +
-				" should come before " + earlier.toString() +
+		String msg = "Entry " + later.getDate().toString() +
+				" should come before " + earlier.getDate().toString() +
 				" in ordering by date";
 		assertTrue(msg, comp.compare(earlier, later) > 0);
 	}

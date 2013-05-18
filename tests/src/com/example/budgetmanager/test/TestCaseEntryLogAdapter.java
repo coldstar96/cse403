@@ -19,7 +19,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_singleBudgetConstructor_hasEntries_shouldListEntries() {
 		Budget budgets = Factory.budgetFactory(0, 2);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -31,7 +32,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_singleBudgetConstructor_hasNoEntries_shouldListNoEntries() {
 		Budget budgets = Factory.budgetFactory(0, 0);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -43,7 +45,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_listBudgetConstructor_hasEntries_shouldListAllEntries() {
 		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -55,7 +58,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_listBudgetConstructor_hasNoEntries_shouldListNoEntries() {
 		List<Budget> budgets = Factory.budgetListFactory(0, 0, 0);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -67,7 +71,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_listBudgetConstructor_hasMixedEntries_shouldListAllEntries() {
 		List<Budget> budgets = Factory.budgetListFactory(1, 0, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -79,7 +84,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_listBudgetConstructor_emptyList_shouldListNoEntries() {
 		List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		List<Entry> logEntryList = log.getEntryList();
 
@@ -91,7 +97,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_addEntriesFromBudget_hasEntriesNoPriorBudgets_shouldListAllEntries() {
 		List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		log.addEntriesFromBudget(Factory.budgetFactory(0, 3));
 
@@ -105,7 +112,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_addEntriesFromBudget_hasEntriesPriorBudgets_shouldListAllEntries() {
 		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		log.addEntriesFromBudget(Factory.budgetFactory(0, 4));
 
@@ -119,7 +127,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_addEntriesFromBudget_hasNoEntriesNoPriorBudgets_shouldListNoEntries() {
 		List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
 
@@ -133,7 +142,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	public void test_addEntriesFromBudget_hasNoEntriesPriorBudgets_shouldListAllEntries() {
 		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(), 0, budgets);
+		EntryLogAdapter log = new EntryLogAdapter(getContext(),
+				R.layout.entry_log_adapter_test_layout, budgets);
 
 		log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
 

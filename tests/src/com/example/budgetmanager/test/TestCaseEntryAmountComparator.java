@@ -22,8 +22,8 @@ public class TestCaseEntryAmountComparator extends TestCase {
 		EntryLogAdapter.EntryAmountComparator comp =
 				new EntryLogAdapter.EntryAmountComparator();
 
-		String msg = "Entry " + less.toString() +
-				" should come after " + more.toString() +
+		String msg = "Entry with " + less.getAmount() +
+				" should come after " + more.getAmount() +
 				" in ordering by amount";
 		assertTrue(msg, comp.compare(more, less) < 0);
 	}
@@ -32,16 +32,16 @@ public class TestCaseEntryAmountComparator extends TestCase {
 	public void test_compare_same_shouldBeZero() {
 		Budget budget = Factory.budgetFactory(1, 0);
 
-		Entry less = Factory.entryFactory(1, budget);
-		Entry more = Factory.entryFactory(2, budget);
+		Entry rhsEntry = Factory.entryFactory(1, budget);
+		Entry lhsEntry = Factory.entryFactory(1, budget);
 
 		EntryLogAdapter.EntryAmountComparator comp =
 				new EntryLogAdapter.EntryAmountComparator();
 
-		String msg = "Entry " + less.toString() +
-				" should come equally " + more.toString() +
+		String msg = "Entry " + rhsEntry.getAmount() +
+				" should come equally " + lhsEntry.getAmount() +
 				" in ordering by amount";
-		assertTrue(msg, comp.compare(more, less) < 0);
+		assertEquals(msg, 0, comp.compare(lhsEntry, rhsEntry));
 	}
 
 	@SmallTest
@@ -54,8 +54,8 @@ public class TestCaseEntryAmountComparator extends TestCase {
 		EntryLogAdapter.EntryAmountComparator comp =
 				new EntryLogAdapter.EntryAmountComparator();
 
-		String msg = "Entry " + more.toString() +
-				" should come before " + less.toString() +
+		String msg = "Entry " + more.getAmount() +
+				" should come before " + less.getAmount() +
 				" in ordering by amount";
 		assertTrue(msg, comp.compare(less, more) > 0);
 	}

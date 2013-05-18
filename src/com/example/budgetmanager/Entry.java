@@ -50,6 +50,8 @@ public class Entry {
 		this.budget = budget;
 		this.notes = notes;
 		this.date = date;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 
 	/**
@@ -136,5 +138,17 @@ public class Entry {
 	 */
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	/**
+	 * Get the time at which this class was created
+	 * @return
+	 */
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 }

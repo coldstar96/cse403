@@ -21,8 +21,8 @@ public class TestCaseEntryUpdateTimeComparator extends TestCase {
 		EntryLogAdapter.EntryUpdateTimeComparator comp =
 				new EntryLogAdapter.EntryUpdateTimeComparator();
 
-		String msg = "Entry " + earlier.toString() +
-				" should come after " + later.toString() +
+		String msg = "Entry " + earlier.getUpdatedAt().toString() +
+				" should come after " + later.getUpdatedAt().toString() +
 				" in ordering by update time";
 		assertTrue(msg, comp.compare(later, earlier) < 0);
 	}
@@ -37,8 +37,8 @@ public class TestCaseEntryUpdateTimeComparator extends TestCase {
 		EntryLogAdapter.EntryUpdateTimeComparator comp =
 				new EntryLogAdapter.EntryUpdateTimeComparator();
 
-		String msg = "Entry " + earlier.toString() +
-				" should come equally " + later.toString() +
+		String msg = "Entry " + earlier.getUpdatedAt().toString() +
+				" should come equally " + later.getUpdatedAt().toString() +
 				" in ordering by update time";
 		assertEquals(msg, 0, comp.compare(later, earlier));
 	}
@@ -53,8 +53,8 @@ public class TestCaseEntryUpdateTimeComparator extends TestCase {
 		EntryLogAdapter.EntryUpdateTimeComparator comp =
 				new EntryLogAdapter.EntryUpdateTimeComparator();
 
-		String msg = "Entry " + later.toString() +
-				" should come before " + earlier.toString() +
+		String msg = "Entry " + later.getUpdatedAt().toString() +
+				" should come before " + earlier.getUpdatedAt().toString() +
 				" in ordering by update time";
 		assertTrue(msg, comp.compare(earlier, later) > 0);
 	}
