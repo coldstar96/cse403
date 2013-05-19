@@ -22,5 +22,6 @@
 
     <!-- Date format used when sending dates to/from the server -->
     <string name="api_date_format">yyyy-MM-dd</string>
+    <string name="api_datetime_format">yyyy-MM-dd HH:mm:ss</string>
 
 </resources>
