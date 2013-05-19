@@ -116,7 +116,7 @@
 
     <target name="checkstyle" >
 
-        <checkstyle config="sun_checks_eclipse.xml" >
+        <checkstyle config="ubudget_checks.xml" >
 
             <fileset
                 dir="src"
