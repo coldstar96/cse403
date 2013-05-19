@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +56,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the creation of a budget from the server response data.
 	 */
 	@SmallTest
-	public void test_create_budget() throws JSONException {
+	public void test_create_newBudget_shouldSetId() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final long BUDGET_ID = 100;
 		testClient.setNextResponse(new JSONObject()
@@ -79,7 +80,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the failure of creation of a budget from the server response data.
 	 */
 	@SmallTest
-	public void test_create_budget_no_id() throws JSONException {
+	public void test_create_newBudget_responseHasNoId_shouldReturnFailure() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish")
@@ -101,13 +102,15 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the creation of an entry from the server response data.
 	 */
 	@SmallTest
-	public void test_create_entry() throws JSONException {
+	public void test_create_newEntry_shouldSetId() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final Entry e = new Entry(100, b, "notes", 
 				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		final long ENTRY_ID = 100;
 		testClient.setNextResponse(new JSONObject()
 				.put("id", ENTRY_ID)
+				.put("created_at", "2013-11-14 01:00:00")
+				.put("updated_at", "2013-11-14 01:30:00")
 		);
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(e, new ApiCallback<Long>() {
@@ -127,10 +130,10 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the failure of creation of an entry from the server response data.
 	 */
 	@SmallTest
-	public void test_create_entry_no_id() throws JSONException {
+	public void test_create_newEntry_responseHasMissingFields_shouldFail() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final Entry e = new Entry(100, b, "notes", 
-				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
+				LocalDate.parse("2013-11-14", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish")
 		);
@@ -151,7 +154,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the fetching of a user's budgets from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_budgets() throws JSONException {
+	public void test_fetchBudgets_allValid_shouldSucceed() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
 		
@@ -198,7 +201,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * Tests the failure of fetching of a user's budgets from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_budgets_invalid_response() throws JSONException {
+	public void test_fetchBudgets_invalidResponse_shouldFail() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
 		
@@ -234,9 +237,10 @@ public class TestApiInterface extends AndroidTestCase {
 	 * from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_entries() throws JSONException {
+	public void test_fetchEntries_allValid_shouldSucceed() throws JSONException {
 		final int NUM_ENTRIES = 10;
 		final long START_ID = 1;
+		final String CREATED_UPDATED = "2013-11-14 01:00:00";
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		b.setId(100);
 		
@@ -247,6 +251,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("amount", 1000 * (i + 1))
 					.put("expenditure_date", "2013-11-" + (14 + i))
 					.put("notes", "Note " + i)
+					.put("created_at", CREATED_UPDATED)
+					.put("updated_at", CREATED_UPDATED)
 			);
 		}
 		
@@ -264,6 +270,10 @@ public class TestApiInterface extends AndroidTestCase {
 					assertEquals(LocalDate.parse("2013-11-" + (14 + i), 
 							DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 					assertEquals("Note " + i, e.getNotes());
+					assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+							DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getCreatedAt());
+					assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+							DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getUpdatedAt());
 				}
 			}
 
@@ -280,7 +290,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_entries_invalid_response() throws JSONException {
+	public void test_fetchEntries_invalidResponse_shouldFail() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
@@ -318,9 +328,9 @@ public class TestApiInterface extends AndroidTestCase {
 	 * from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_budgets_entries() throws JSONException {
+	public void test_fetchBudgetsAndEntries_allValid_shouldSucceed() throws JSONException {
 		final int NUM_BUDGETS_ENTRIES = 10;
-		
+		final String CREATED_UPDATED = "2013-11-14 01:00:00";
 		final long START_ID = 1;
 		
 		JSONArray jsonBudgets = new JSONArray();
@@ -343,6 +353,8 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("start_date", "1991-11-" + (14 + i))
 					.put("id", START_ID + i)
 					.put("entries", jsonEntries)
+					.put("created_at", CREATED_UPDATED)
+					.put("updated_at", CREATED_UPDATED)
 			);
 		}
 		
@@ -372,6 +384,10 @@ public class TestApiInterface extends AndroidTestCase {
 						assertEquals(LocalDate.parse("2013-11-" + (14 + j), 
 								DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 						assertEquals("Note " + j, e.getNotes());
+						assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+								DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getCreatedAt());
+						assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+								DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getUpdatedAt());
 					}
 				}
 			}
@@ -389,7 +405,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * from the server response data.
 	 */
 	@SmallTest
-	public void test_fetch_budgets_entries_invalid_response() throws JSONException {
+	public void test_fetchBudgetsAndEntries_invalidResponse_shouldFail() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
 		
@@ -451,7 +467,7 @@ public class TestApiInterface extends AndroidTestCase {
      * @throws IllegalArgumentException .
      * @throws IllegalAccessException .
      */
-    public static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
+    private static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
             ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         // Get the private String field
         final Field field = Class.forName(className).getDeclaredField(fieldName);
