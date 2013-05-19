@@ -57,15 +57,15 @@ public class TestApiInterface extends AndroidTestCase {
 	@SmallTest
 	public void test_create_budget() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
-		final long NEW_ID = 100;
+		final long BUDGET_ID = 100;
 		testClient.setNextResponse(new JSONObject()
-				.put("id", NEW_ID)
+				.put("id", BUDGET_ID)
 		);
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(b, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-				assertEquals(NEW_ID, b.getId());
+				assertEquals(BUDGET_ID, b.getId());
 			}
 
 			@Override
@@ -105,15 +105,15 @@ public class TestApiInterface extends AndroidTestCase {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final Entry e = new Entry(100, b, "notes", 
 				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
-		final long NEW_ID = 100;
+		final long ENTRY_ID = 100;
 		testClient.setNextResponse(new JSONObject()
-				.put("id", NEW_ID)
+				.put("id", ENTRY_ID)
 		);
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(e, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-				assertEquals(NEW_ID, e.getEntryId());
+				assertEquals(ENTRY_ID, e.getEntryId());
 			}
 
 			@Override
