@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/entrylogsheader" >
+        android:background="@drawable/entrylogsheader"
+        android:orientation="vertical" >
+
     </LinearLayout>
 
     <TextView
@@ -23,11 +25,20 @@
         android:layout_below="@+id/entry_logs_header"
         android:text="email@example.com" />
 
+    <Spinner
+        android:id="@+id/spinner_logs_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/entry_logs_header"
+        android:entries="@array/sort_types"
+        android:prompt="@string/logs_sort_prompt" />
+
     <ListView
         android:id="@+id/entry_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/text_user_email"
+        android:layout_below="@+id/spinner_logs_sort"
         android:background="@drawable/shadowbackground"
         android:paddingBottom="55dp" >
     </ListView>
@@ -43,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:onClick="onAddBudgetClicked"
             android:text="@string/action_add_budget" />
 
         <Button
@@ -50,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="onAddEntryClicked"
             android:text="@string/action_add_entry" />
     </LinearLayout>
 
