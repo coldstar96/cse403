@@ -129,7 +129,7 @@ public class EntryLogsActivity extends Activity {
 		}
 	}
 
-	public void sortBySortSpinnerIndex(int position) {
+	private void sortBySortSpinnerIndex(int position) {
 		Comparator<Entry> comp;
 
 		switch(position) {
