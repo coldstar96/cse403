@@ -12,13 +12,13 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_email_already_exists">This email address is already in use</string>
     <string name="prompt_verify_password">Verify Password</string>
     <string name="action_register">Register</string>
     <string name="action_log_in">Log in</string>
     <string name="remember_login_info">Remember me</string>
     <string name="dialog_fail_log_in">Invalid email/password combination.</string>
     <string name="action_retry_log_in">Try again</string>
-    <string name="dialog_fail_register">This email address already exists. Please try with different email address.</string>
     <string name="error_no_match_password">This password does not match the password above.</string>
     <string name="dialog_fail_log_in_title">Failed logging in</string>
     <string name="dialog_fail_register_title">Failed registering</string>
