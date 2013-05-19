@@ -73,7 +73,7 @@
     <!--
         Import per project custom build rules if present at the root of the project.
         This is the place to put custom intermediary targets such as:
-            -pre-build
+           -pre-build
             -pre-compile
             -post-compile (This is typically used for code obfuscation.
                            Compiled code location: ${out.classes.absolute.dir}
@@ -109,7 +109,23 @@
     <!-- version-tag: 1 -->
 
     <import file="${sdk.dir}/tools/ant/build.xml" />
+    
+    <target name="unittests" depends="debug,install" >
+        <property name="unittestlog.file" value="unit_tests_log.txt" />
+        <record name="${unittestlog.file}" action="start" />
+        <antcall target="test" />
+        <record name="${unittestlog.file}" action="stop" />
+        <loadfile property="tests.output" srcFile="${unittestlog.file}" />
+        <echo>Checking for failures</echo>
+        <fail message="Unit tests failed!">
+            <condition>
+                <contains string="${tests.output}" substring="FAILURES" />
+            </condition>
+        </fail>
+        <echo>Unit tests passed!</echo>
+    </target>
 
+    
     <taskdef
         classpath="${basedir}/libs/checkstyle-5.6-all.jar"
         resource="checkstyletask.properties" />
