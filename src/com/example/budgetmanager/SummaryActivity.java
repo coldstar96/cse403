@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-// TODO skeleton
 public class SummaryActivity extends Activity {
 	
 	@Override
