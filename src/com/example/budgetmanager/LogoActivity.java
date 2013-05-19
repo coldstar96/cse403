@@ -28,7 +28,7 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				
+
 				// fetch budgets and entries
 				ApiInterface.getInstance().fetchBudgetsAndEntries(
 						new ApiCallback<List<Budget>>(){
@@ -40,7 +40,7 @@ public class LogoActivity extends Activity {
 						List<Budget> budgetList = app.getBudgetList();
 						budgetList.clear();
 						budgetList.addAll(result);
-						
+
 						// Add entries to the application state
 						List<Entry> entryList = app.getEntryList();
 						entryList.clear();
@@ -53,15 +53,15 @@ public class LogoActivity extends Activity {
 							}
 						}
 						Log.d(TAG, "fetch data on ApiInteface is success");
-						startActivity(new Intent(LogoActivity.this, 
+						startActivity(new Intent(LogoActivity.this,
 								EntryLogsActivity.class));
 						finish();
 					}
-					
+
 					@Override
 					public void onFailure(String errorMessage) {
 						Log.d(TAG, "fetch data on ApiInteface is failure");
-						startActivity(new Intent(LogoActivity.this, 
+						startActivity(new Intent(LogoActivity.this,
 								EntryLogsActivity.class));
 						finish();
 					}
@@ -71,11 +71,10 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				Log.d(TAG, "check login in on ApiInteface is failure");
-				startActivity(new Intent(LogoActivity.this, 
+				startActivity(new Intent(LogoActivity.this,
 						LoginActivity.class));
 				finish();
 			}
 		});
-
 	}
 }

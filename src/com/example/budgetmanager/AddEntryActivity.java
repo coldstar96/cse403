@@ -53,7 +53,7 @@ public class AddEntryActivity extends Activity {
 		setContentView(R.layout.activity_add_entry);
 
 		// retrieve the application data
-		appData = (UBudgetApp)getApplication();
+		appData = (UBudgetApp) getApplication();
 
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mAmountView = (EditText) findViewById(R.id.edit_amount);
@@ -62,12 +62,10 @@ public class AddEntryActivity extends Activity {
 		addButtonView = (Button) findViewById(R.id.add_entry_button);
 	}
 
-
 	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
@@ -91,7 +89,6 @@ public class AddEntryActivity extends Activity {
 
 		// set the spinner to display selection upon selecting an item
 		mBudgetView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
@@ -104,7 +101,6 @@ public class AddEntryActivity extends Activity {
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// do nothing
 			}
-
 		});
 	}
 
@@ -122,7 +118,7 @@ public class AddEntryActivity extends Activity {
 			mAmountView.requestFocus();
 			return;
 		}
-		
+
 		// checks whether the amount is non-zero
 		if (Double.parseDouble(mAmountView.getText().toString()) == 0.0) {
 			mAmountView.setError(getString(R.string.error_zero_amount));
@@ -138,13 +134,13 @@ public class AddEntryActivity extends Activity {
 			return;
 		}
 		addButtonView.setClickable(false);
-		
+
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
 				UBudgetApp app = (UBudgetApp) getApplication();
 				app.getEntryList().add(0, newEntry);
-				
+
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "

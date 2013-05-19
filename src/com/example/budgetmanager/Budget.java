@@ -26,8 +26,10 @@ public class Budget {
 
 	public static final long NEW_ID = -1;
 
+	// ID that identifies the budget
 	private long budgetId;
 
+	// Name of the budget
 	private String name;
 
 	// Amount allocated for the budget, in cents
@@ -84,6 +86,8 @@ public class Budget {
 		case YEAR:
 			this.budgetDuration = Period.years(1);
 			break;
+		default:
+			throw new IllegalArgumentException("Invaid duration argument");
 		}
 	}
 
@@ -255,5 +259,4 @@ public class Budget {
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
 	}
-
 }

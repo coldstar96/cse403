@@ -8,7 +8,7 @@ package com.example.budgetmanager;
  */
 
 public class Utilities {
-	
+
 	/**
 	 * 
 	 * @param n amount in cents

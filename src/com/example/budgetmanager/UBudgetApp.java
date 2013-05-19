@@ -24,23 +24,23 @@ public class UBudgetApp extends Application {
 		budgetList = new ArrayList<Budget>();
 		entryList = new ArrayList<Entry>();
 	}
-	
+
 	public List<Budget> getBudgetList(){
 		return budgetList;
 	}
-	
+
 	public List<Entry> getEntryList(){
 		return entryList;
 	}
-	
+
 	public void setEmail(String e){
 		email = e;
 	}
-	
+
 	public String getEmail(){
 		return email;
 	}
-	
+
 	/**
 	 * Provides a static way for classes to access the main application
 	 * Context.

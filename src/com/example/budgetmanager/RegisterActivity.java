@@ -34,7 +34,7 @@ public class RegisterActivity extends Activity {
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-	
+
 	// Values for local storage
 	public static final String PREFS_EMAIL = "email";
 	public static final String PREFS_PASS = "password";
@@ -186,7 +186,7 @@ public class RegisterActivity extends Activity {
 				@Override
 				public void onFailure(String errorMessage) {
 					showProgress(false);
-					Toast.makeText(RegisterActivity.this, 
+					Toast.makeText(RegisterActivity.this,
 							R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
 				}
 
@@ -194,18 +194,18 @@ public class RegisterActivity extends Activity {
 				@Override
 				public void onSuccess(Object result) {
 					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
-					
+
 					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
 					editor.putString(PREFS_EMAIL, mEmail);
 					editor.putString(PREFS_PASS, mPassword);
 					editor.commit();
-					
+
 					UBudgetApp app = (UBudgetApp)getApplication();
 					app.setEmail(mEmail);
-					
+
 					setResult(2);
-					
+
 					showProgress(false);
 					startActivity(intent);
 					finish();

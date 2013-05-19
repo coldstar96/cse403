@@ -1,6 +1,5 @@
 package com.example.budgetmanager;
 
-
 import java.util.List;
 
 import android.animation.Animator;
@@ -58,7 +57,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		app = (UBudgetApp)getApplication();
+		app = (UBudgetApp) getApplication();
 
 		setContentView(R.layout.activity_login);
 
@@ -100,9 +99,9 @@ public class LoginActivity extends Activity {
 					public void onClick(View view) {
 						Intent intent = new Intent(LoginActivity.this,
 								RegisterActivity.class);
-						intent.putExtra("email", 
+						intent.putExtra("email",
 								mEmailView.getText().toString());
-						intent.putExtra("password", 
+						intent.putExtra("password",
 								mPasswordView.getText().toString());
 						startActivityForResult(intent, 1);
 
@@ -110,8 +109,8 @@ public class LoginActivity extends Activity {
 				});
 	}
 
-	@Override 
-	protected void onActivityResult(int requestCode, int resultCode, 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
 			Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		// finish activity if result is from Entrylogs Activity
@@ -155,7 +154,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".") || 
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") ||
 				mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
@@ -179,7 +178,7 @@ public class LoginActivity extends Activity {
 				@Override
 				public void onFailure(String errorMessage) {
 					showProgress(false);
-					Toast.makeText(LoginActivity.this, 
+					Toast.makeText(LoginActivity.this,
 							R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
 				}
 
@@ -206,7 +205,7 @@ public class LoginActivity extends Activity {
 
 									app.setEmail(mEmail);
 
-									startActivity(new Intent(LoginActivity.this, 
+									startActivity(new Intent(LoginActivity.this,
 											EntryLogsActivity.class));
 									finish();
 								}
@@ -214,7 +213,7 @@ public class LoginActivity extends Activity {
 								@Override
 								public void onFailure(String errorMessage) {
 									Log.d(TAG, "fetch data on ApiInteface is failure");
-									startActivity(new Intent(LoginActivity.this, 
+									startActivity(new Intent(LoginActivity.this,
 											EntryLogsActivity.class));
 									finish();
 								}

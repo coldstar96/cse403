@@ -27,6 +27,8 @@ import com.example.budgetmanager.api.ApiInterface;
  *
  */
 public class AddBudgetActivity extends Activity {
+	private final int DOLLAR_IN_CENTS = 100;
+
 	// Text field for entering the Budget name
 	private EditText mBudgetNameView;
 	private String mBudgetName;
@@ -43,7 +45,7 @@ public class AddBudgetActivity extends Activity {
 
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurringView;
-	
+
 	// Create button
 	private Button createButtonView;
 
@@ -92,13 +94,13 @@ public class AddBudgetActivity extends Activity {
 	 *
 	 * If it fails, toast the error.
 	 */
-	public void attemptAddBudget(){
+	public void attemptAddBudget() {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
-		
+
 		mBudgetAmount = mBudgetAmountView.getText().toString();
 		mBudgetName = mBudgetNameView.getText().toString();
 
@@ -108,9 +110,9 @@ public class AddBudgetActivity extends Activity {
 			focusView = mBudgetAmountView;
 			cancel = true;
 		}
-		
+
 		double amount = Double.parseDouble(mBudgetAmountView.getText().toString());
-		
+
 		// checks whether the amount is non-zero
 		if (!cancel && amount == 0.0) {
 			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
@@ -132,11 +134,10 @@ public class AddBudgetActivity extends Activity {
 			return;
 		}
 
-
 		// create the Entry object to add to the Budget
 
 		final Budget newBudget = createBudget();
-		
+
 		// disable button while calling api
 		createButtonView.setClickable(false);
 
@@ -169,7 +170,7 @@ public class AddBudgetActivity extends Activity {
 
 		// Multiply by 100 in order to convert the amount to cents for storage
 		String amountText = mBudgetAmountView.getText().toString();
-		int amount =  (int) Math.round(Double.parseDouble(amountText) * 100);
+		int amount =  (int) Math.round(Double.parseDouble(amountText) * DOLLAR_IN_CENTS);
 		boolean recur = mRecurringView.isChecked();
 
 		LocalDate startDate = new LocalDate(mBudgetDateView.getYear(),
