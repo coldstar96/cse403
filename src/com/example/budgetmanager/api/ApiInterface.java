@@ -358,7 +358,7 @@ public class ApiInterface {
 						// Iterate through the JSON array and create new
 						// entries for each index.
 						for (int j = 0; j < entriesLen; j++) {
-							JSONObject entriesObject = entriesJson.getJSONObject(i);
+							JSONObject entriesObject = entriesJson.getJSONObject(j);
 
 							long entryId = entriesObject.getLong("id");
 							int entryAmount = entriesObject.getInt("amount");

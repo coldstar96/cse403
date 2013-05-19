@@ -22,8 +22,6 @@ public class SettingsFragment extends PreferenceFragment
 	/** Strings associated with the starting screen options */
 	public static final String STARTING_SCREEN_LOG = "Log";
 	public static final String STARTING_SCREEN_SUMMARY = "Summary";
-	public static final String STARTING_SCREEN_ADD_ENTRY = "Add Entry";
-	public static final String STARTING_SCREEN_ADD_BUDGET = "Add Budget";
 	
 	/* reference to the preferences of the app */
 	private SharedPreferences spref;

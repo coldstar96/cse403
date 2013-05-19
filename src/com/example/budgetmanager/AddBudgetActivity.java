@@ -20,11 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 /**
  *
@@ -35,9 +36,11 @@ import android.widget.CheckBox;
 public class AddBudgetActivity extends Activity {
 	// Text field for entering the Budget name
 	private EditText mBudgetNameView;
+	private String mBudgetName;
 
 	// Number field for entering the Budget amount
 	private EditText mBudgetAmountView;
+	private String mBudgetAmount;
 
 	// Enables the user to pick the start date of the Budget
 	private DatePicker mBudgetDateView;
@@ -47,6 +50,9 @@ public class AddBudgetActivity extends Activity {
 
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurringView;
+	
+	// Create button
+	private Button createButtonView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
+		createButtonView = (Button) findViewById(R.id.create_budget_button);
 
 		// Sets up the duration dropdown
 		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
@@ -133,16 +140,29 @@ public class AddBudgetActivity extends Activity {
 		View focusView = null;
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
+		
+		mBudgetAmount = mBudgetAmountView.getText().toString();
+		mBudgetName = mBudgetNameView.getText().toString();
 
 		// checks whether amount is not empty
-		if (mBudgetAmountView.getText().toString().isEmpty()) {
+		if (mBudgetAmount.isEmpty()) {
 			mBudgetAmountView.setError(getString(R.string.error_invalid_amount));
+			focusView = mBudgetAmountView;
+			cancel = true;
+		}
+		
+		double amount = Double.parseDouble(mBudgetAmountView.getText().toString());
+		
+		// checks whether the amount is non-zero
+		if (!cancel && amount == 0.0) {
+			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
+			mBudgetAmountView.requestFocus();
 			focusView = mBudgetAmountView;
 			cancel = true;
 		}
 
 		// checks whether name is not emtpy
-		if (mBudgetNameView.getText().toString().isEmpty()) {
+		if (mBudgetName.isEmpty()) {
 			mBudgetNameView.setError(getString(R.string.error_invalid_budget_name));
 			focusView = mBudgetNameView;
 			cancel = true;
@@ -156,6 +176,9 @@ public class AddBudgetActivity extends Activity {
 
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
+		
+		// disable button while calling api
+		createButtonView.setClickable(false);
 
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
@@ -172,6 +195,7 @@ public class AddBudgetActivity extends Activity {
 				// (the toast is for testing and debug purposes)
 				Toast.makeText(AddBudgetActivity.this, errorMessage,
 						Toast.LENGTH_LONG).show();
+				createButtonView.setClickable(true);
 			}
 		});
 	}

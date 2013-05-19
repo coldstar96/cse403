@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:calendarViewShown="false" />
 
+<<<<<<< HEAD
         <TextView
             style="@style/FieldHeader"
             android:text="@string/label_optional" />
