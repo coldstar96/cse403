@@ -443,7 +443,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final String PASSWORD_ERROR = "Invalid username or password.";
 		
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
-				.put("password", new JSONArray().put(PASSWORD_ERROR));
+				.put("password_digest", new JSONArray().put(PASSWORD_ERROR));
 		
 		testClient.setNextResponse(obj, false);
 		
@@ -464,7 +464,7 @@ public class TestApiInterface extends AndroidTestCase {
 	public void test_createUser_usernameTaken_shouldPassErrorBack() throws JSONException {
 		final String USERNAME = "test@test.com";
 		final String PASSWORD = "password";
-		final String USERNAME_ERROR = "Username already taken.";
+		final String USERNAME_ERROR = "\"Username already taken.\"";
 		
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR));
 		
