@@ -451,8 +451,8 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
 					try {
-						String nameErr = obj.getJSONArray("username").join(" ");
-						String passErr = obj.getJSONArray("password_digest").join(" ");
+						String nameErr = obj.getJSONArray("username").getString(0);
+						String passErr = obj.getJSONArray("password_digest").getString(0);
 
 						final String errMessage = nameErr + " " + passErr;
 
@@ -497,7 +497,7 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
 					try {
-						final String errMessage = obj.getJSONArray("username").join(" ");
+						final String errMessage = obj.getJSONArray("username").getString(0);
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
