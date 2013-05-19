@@ -33,18 +33,33 @@ public class EntryLogsActivity extends Activity {
 
 	private EntryLogAdapter adapter;
 
+	UBudgetApp app;
+	Spinner sortSpinner;
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		adapter.clear();
+
+		for (Budget b : app.getBudgetList()) {
+			adapter.addEntriesFromBudget(b);
+		}
+
+		int position = sortSpinner.getSelectedItemPosition();
+		sortBySortSpinnerIndex(position);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_entry_logs);
 
-		UBudgetApp app = (UBudgetApp)getApplication();
+		app = (UBudgetApp)getApplication();
 		Log.d(TAG, "Just got the app, about to make the adapter");
 		adapter = new EntryLogAdapter(this, R.layout.list_entry_layout,
 				app.getBudgetList());
 
-		// The initial sort will be first by amount and then by date.
-		adapter.sort(new EntryLogAdapter.EntryAmountComparator());
+		// The initial sort will be by date.
 		adapter.sort(new EntryLogAdapter.EntryDateComparator());
 		Log.d(TAG, "Made the adapter!");
 
@@ -72,14 +87,14 @@ public class EntryLogsActivity extends Activity {
 			}
 		});
 
-		Spinner sortSpinner = (Spinner)findViewById(R.id.spinner_logs_sort);
+		sortSpinner = (Spinner)findViewById(R.id.spinner_logs_sort);
 
 		sortSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				onSortSpinnerChanged(position);
+				sortBySortSpinnerIndex(position);
 			}
 
 			@Override
@@ -114,7 +129,7 @@ public class EntryLogsActivity extends Activity {
 		}
 	}
 
-	public void onSortSpinnerChanged(int position) {
+	public void sortBySortSpinnerIndex(int position) {
 		Comparator<Entry> comp;
 
 		switch(position) {
