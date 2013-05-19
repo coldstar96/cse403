@@ -32,8 +32,7 @@
             style="@style/FieldHeader"
             android:text="@string/prompt_budget_start_date" />
 
-        <View
-            style="@style/FieldHeaderDivider" />
+        <View style="@style/FieldHeaderDivider" />
 
         <DatePicker
             android:id="@+id/budget_date"
@@ -45,8 +44,7 @@
             style="@style/FieldHeader"
             android:text="@string/budget_duration" />
 
-        <View
-            style="@style/FieldHeaderDivider" />
+        <View style="@style/FieldHeaderDivider" />
 
         <Spinner
             android:id="@+id/budget_duration"
@@ -61,7 +59,6 @@
             android:text="@string/budget_recur"
             android:textColor="@color/dark_gray" />
 
-<<<<<<< HEAD
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
@@ -89,4 +86,5 @@
                 android:text="@string/action_create_budget" />
         </LinearLayout>
     </LinearLayout>
+
 </ScrollView>

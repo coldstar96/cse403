@@ -12,6 +12,8 @@
     <string name="title_section2">Summary</string>
     <string name="checkbox_remember_me">Remember me</string>
     <string name="error_network_connection">Check network connection and try again.</string>
+    <string name="error_zero_amount">Amount must be greater than $0</string>
+    <string name="error_invalid_amount">Please specify amount</string>
     
     <!-- Strings for the titles of the activities -->
     <string name="title_activity_add_budget">Add Budget</string>

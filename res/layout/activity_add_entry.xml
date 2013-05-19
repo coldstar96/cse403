@@ -24,8 +24,7 @@
             style="@style/FieldHeader"
             android:text="@string/label_budget" />
 
-        <View
-            style="@style/FieldHeaderDivider" />
+        <View style="@style/FieldHeaderDivider" />
 
         <Spinner
             android:id="@+id/spinner_budget"
@@ -36,8 +35,7 @@
             style="@style/FieldHeader"
             android:text="@string/label_date" />
 
-        <View
-            style="@style/FieldHeaderDivider" />
+        <View style="@style/FieldHeaderDivider" />
 
         <DatePicker
             android:id="@+id/entry_date_picker"
@@ -45,13 +43,11 @@
             android:layout_height="wrap_content"
             android:calendarViewShown="false" />
 
-<<<<<<< HEAD
         <TextView
             style="@style/FieldHeader"
             android:text="@string/label_optional" />
 
-        <View
-            style="@style/FieldHeaderDivider" />
+        <View style="@style/FieldHeaderDivider" />
 
         <EditText
             android:id="@+id/entry_notes"
