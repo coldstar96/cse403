@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     tools:context=".EntryLogsActivity" >
 
+    <Spinner
+        android:id="@+id/spinner_logs_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:entries="@array/sort_types"
+        android:prompt="@string/logs_sort_prompt" />
+
     <ListView
         android:id="@+id/entry_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/spinner_logs_sort"
         android:paddingBottom="@dimen/default_component_height" >
     </ListView>
 
@@ -26,7 +35,7 @@
             android:layout_marginBottom="@dimen/default_button_margin"
             android:layout_marginTop="@dimen/default_button_margin"
             android:layout_weight="1"
-            android:onClick="clearEntry"
+            android:onClick="onAddBudgetClicked"
             android:text="@string/action_add_budget" />
 
         <Button
@@ -37,7 +46,8 @@
             android:layout_marginBottom="@dimen/default_button_margin"
             android:layout_marginTop="@dimen/default_button_margin"
             android:layout_weight="1"
-            android:onClick="addEntry"
+            android:onClick="onAddEntryClicked"
             android:text="@string/action_add_entry" />
     </LinearLayout>
+
 </RelativeLayout>

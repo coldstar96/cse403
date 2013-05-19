@@ -11,13 +11,12 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,7 +49,7 @@ public class AddBudgetActivity extends Activity {
 
 	// Whether or not this Budget should recur after one cycle
 	private CheckBox mRecurringView;
-	
+
 	// Create button
 	private Button createButtonView;
 
@@ -172,9 +171,11 @@ public class AddBudgetActivity extends Activity {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
+		double amount = 0.0;
+
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
-		
+
 		mBudgetAmount = mBudgetAmountView.getText().toString();
 		mBudgetName = mBudgetNameView.getText().toString();
 
@@ -183,10 +184,11 @@ public class AddBudgetActivity extends Activity {
 			mBudgetAmountView.setError(getString(R.string.error_invalid_amount));
 			focusView = mBudgetAmountView;
 			cancel = true;
+		} else {
+			// Only attempt to parse the amount if it's non-empty.
+			amount = Double.parseDouble(mBudgetAmountView.getText().toString());
 		}
-		
-		double amount = Double.parseDouble(mBudgetAmountView.getText().toString());
-		
+
 		// checks whether the amount is non-zero
 		if (!cancel && amount == 0.0) {
 			mBudgetAmountView.setError(getString(R.string.error_zero_amount));
@@ -200,6 +202,20 @@ public class AddBudgetActivity extends Activity {
 			mBudgetNameView.setError(getString(R.string.error_invalid_budget_name));
 			focusView = mBudgetNameView;
 			cancel = true;
+		} else {
+			UBudgetApp app = (UBudgetApp) getApplication();
+
+			// Check to see if there's a budget with that name already
+			for (Budget budget : app.getBudgetList()) {
+				if (budget.getName().equals(mBudgetName)) {
+					mBudgetNameView.setError(getString(
+							R.string.error_name_already_exists));
+
+					focusView = mBudgetNameView;
+					cancel = true;
+					break;
+				}
+			}
 		}
 
 		// cancel adding budget with invalid input
@@ -210,7 +226,7 @@ public class AddBudgetActivity extends Activity {
 
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
-		
+
 		// disable button while calling api
 		createButtonView.setClickable(false);
 
@@ -275,11 +291,14 @@ public class AddBudgetActivity extends Activity {
 		mBudgetNameView.setText("");
 
 		// get current time
-		Time now = new Time();
-		now.setToNow();
+		LocalDate now = LocalDate.now();
 		// update the DatePicker
-		mBudgetDateView.updateDate(now.year, now.month, now.monthDay);
+		mBudgetDateView.updateDate(now.getYear(),
+				now.getMonthOfYear() - 1,
+				now.getDayOfMonth());
 
 		mRecurringView.setChecked(false);
+
+		mBudgetDurationView.setSelection(0);
 	}
 }

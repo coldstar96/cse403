@@ -1,12 +1,22 @@
 package com.example.budgetmanager;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 /**
  * This class handles preparing lists of entries for display in the Entry Log.
@@ -22,8 +32,27 @@ import android.widget.ArrayAdapter;
  */
 public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
+	private static final String TAG = "EntryLogAdapter";
+
+	// The list of budgets added to the log
+	private List<Budget> budgetList;
+
+	// List of entries added by budgets in the budgetList
+	private List<Entry> entryList;
+
+	// Store the activity context for usage when displaying rows
+	private Context context;
+
+	// resource ID for the layout to inflate into each row
+	int layoutResourceId;
+
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
+
+		this.budgetList = new ArrayList<Budget>();
+		this.entryList = new ArrayList<Entry>();
+		this.context = context;
+		this.layoutResourceId = layoutResourceId;
 	}
 
 	/**
@@ -35,6 +64,10 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	public EntryLogAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
+
+		for (Budget b : budgetList) {
+			addEntriesFromBudget(b);
+		}
 	}
 
 	/**
@@ -45,18 +78,24 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 */
 	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
 		this(context, layoutResourceId);
+
+		addEntriesFromBudget(budget);
 	}
 
 	/**
 	 * Attempts to add the given budget's entries to this EntryLog. If the
 	 * given Budget is already added to this EntryLog, it will not add again.
 	 * Entries will be added at the end of the list.
-	 *
-	 * @return true if the budget has not yet been added to this EntryLog,
-	 * false if the budget has already been added to this EntryLog.
 	 */
 	public void addEntriesFromBudget(Budget budget) {
+		if (!budgetList.contains(budget)) {
+			budgetList.add(budget);
 
+			List<Entry> budgetEntries = budget.getEntries();
+			addAll(budgetEntries);
+			entryList.addAll(budgetEntries);
+			Log.d(TAG, "Now have " + entryList.size() + " Entries");
+		}
 	}
 
 	/**
@@ -65,7 +104,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 * @return An unmodifiable list of entries for this EntryLog
 	 */
 	public List<Entry> getEntryList() {
-		return null;
+		return Collections.unmodifiableList(entryList);
 	}
 
 	/**
@@ -74,7 +113,9 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 */
 	@Override
 	public void clear() {
-
+		super.clear();
+		budgetList.clear();
+		entryList.clear();
 	}
 
 	/**
@@ -82,14 +123,52 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 * EntryLogs ListView.
 	 *
 	 * @param position The index of the row to get
-	 * @param row The old row to reuse, if there was already a row created here
+	 * @param row old row to reuse, if there was already a row created here,
+	 * otherwise null.
 	 * @param parent The parent view this row is attached to
 	 *
 	 * @return A view corresponding to the <code>position</code>th row
 	 */
 	@Override
 	public View getView(int position, View row, ViewGroup parent) {
-		return null;
+		Log.d(TAG, "getView: Processing row " + position);
+
+		if (row == null) {
+			// The row hasn't been loaded in yet, so inflate a new one
+			Log.d(TAG, "Inflating layout for row " + position);
+			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+			Log.d(TAG, "Got LayoutInflater");
+			row = inflater.inflate(layoutResourceId, parent, false);
+			Log.d(TAG, "Finished inflating layout for row " + position);
+		}
+
+		Log.d(TAG, "Getting TextViews for row " + position);
+		TextView dateView = (TextView)row.findViewById(R.id.item_date);
+		TextView amountView = (TextView)row.findViewById(R.id.item_amount);
+		TextView budgetNameView = (TextView)row.findViewById(R.id.item_budget);
+		TextView notesView = (TextView)row.findViewById(R.id.item_note);
+		Log.d(TAG, "Finished getting TextViews for row " + position);
+
+		Entry entry = entryList.get(position);
+
+		dateView.setText(entry.getDate().toString());
+		amountView.setText(Utilities.amountToDollars(entry.getAmount()));
+		budgetNameView.setText(entry.getBudget().getName());
+		notesView.setText(entry.getNotes());
+
+		Log.d(TAG, "getView: Finished processing row " + position);
+
+		return row;
+	}
+
+	/**
+	 * Sorts this EntryLogAdapter by the given comparator.
+	 * Does not notify observers of changes.
+	 */
+	@Override
+	public void sort(Comparator<? super Entry> comp) {
+		super.sort(comp);
+		Collections.sort(entryList, comp);
 	}
 
 	/**
@@ -112,7 +191,12 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		 */
 		@Override
 		public int compare(Entry lhs, Entry rhs) {
-			return 0;
+			LocalDate lhsDate = lhs.getDate();
+			LocalDate rhsDate = rhs.getDate();
+
+			// We want later dates to appear first in the sort, so we
+			// reverse the ordering of the comparison.
+			return rhsDate.compareTo(lhsDate);
 		}
 
 	}
@@ -138,7 +222,13 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		 */
 		@Override
 		public int compare(Entry lhs, Entry rhs) {
-			return 0;
+			int lhsAmount = lhs.getAmount();
+			int rhsAmount = rhs.getAmount();
+			Log.d(TAG, "Comparing " + lhsAmount + " with " + rhsAmount);
+
+			// We want bigger amounts first in the sort, so we reverse the
+			// normal ordering of the subtraction for the comparison.
+			return rhsAmount - lhsAmount;
 		}
 
 	}
@@ -164,7 +254,12 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		 */
 		@Override
 		public int compare(Entry lhs, Entry rhs) {
-			return 0;
+			LocalDateTime lhsTime = lhs.getCreatedAt();
+			LocalDateTime rhsTime = rhs.getCreatedAt();
+
+			// We want later creation times to appear first in the sort,
+			// so we reverse the order of the comparison.
+			return rhsTime.compareTo(lhsTime);
 		}
 
 	}
@@ -190,7 +285,12 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		 */
 		@Override
 		public int compare(Entry lhs, Entry rhs) {
-			return 0;
+			LocalDateTime lhsTime = lhs.getUpdatedAt();
+			LocalDateTime rhsTime = rhs.getUpdatedAt();
+
+			// We want later update times to appear first in the sort,
+			// so we reverse the order of the comparison.
+			return rhsTime.compareTo(lhsTime);
 		}
 
 	}
@@ -215,7 +315,18 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		 */
 		@Override
 		public int compare(Entry lhs, Entry rhs) {
-			return 0;
+			Locale loc = Locale.getDefault();
+
+			Budget lhsBudget = lhs.getBudget();
+			Budget rhsBudget = rhs.getBudget();
+
+			String lhsBudgetName = lhsBudget.getName().toLowerCase(loc);
+			String rhsBudgetName = rhsBudget.getName().toLowerCase(loc);
+
+			// Since we want budget names that lexicographically appear first
+			// to appear first in the sort, we don't reverse the order of the
+			// comparator for this one, which is different than the others.
+			return lhsBudgetName.compareTo(rhsBudgetName);
 		}
 
 	}
