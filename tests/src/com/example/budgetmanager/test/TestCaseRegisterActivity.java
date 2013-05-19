@@ -108,7 +108,7 @@ public class TestCaseRegisterActivity
 		// NOTE: we're banking on there already being a user with this email.
 		// In the current production state, there is. Thus, we shall never
 		// nuke the production database or remove this user!
-		solo.enterText(emailField, "chris808@gmail.com");
+		solo.enterText(emailField, "example@example.com");
 
 		String password = "password";
 		solo.enterText(passwordField, password);
