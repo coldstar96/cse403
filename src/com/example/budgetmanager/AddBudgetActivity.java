@@ -57,6 +57,9 @@ public class AddBudgetActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
+		
 		// check the preference to see which theme to set
 		String startingScreen = PreferenceManager.
 				getDefaultSharedPreferences(this).getString(SettingsFragment
@@ -73,9 +76,6 @@ public class AddBudgetActivity extends Activity {
 		
 		// inflate view
 		setContentView(R.layout.activity_add_budget);
-		
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
 		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);

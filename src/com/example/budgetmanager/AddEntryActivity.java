@@ -59,6 +59,9 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
+		
 		// check the preference to see which theme to set
 		String startingScreen = PreferenceManager.
 				getDefaultSharedPreferences(this).getString(SettingsFragment
@@ -78,9 +81,6 @@ public class AddEntryActivity extends Activity {
 
 		// retrieve the application data
 		appData = (UBudgetApp)getApplication();
-		
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);

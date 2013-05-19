@@ -41,6 +41,9 @@ public class EntryLogsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 		
 		// check the preference to see which theme to set
 		String startingScreen = PreferenceManager.
@@ -61,9 +64,6 @@ public class EntryLogsActivity extends Activity {
 
 		// retrieve the application data
 		UBudgetApp app = (UBudgetApp)getApplication();
-
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
 		EntryAdapter adapter = new EntryAdapter(this, 
 				R.layout.list_entry_layout, app.getEntryList());
