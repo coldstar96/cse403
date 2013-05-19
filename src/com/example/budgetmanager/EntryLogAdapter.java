@@ -194,6 +194,8 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			LocalDate lhsDate = lhs.getDate();
 			LocalDate rhsDate = rhs.getDate();
 
+			// We want later dates to appear first in the sort, so we
+			// reverse the ordering of the comparison.
 			return rhsDate.compareTo(lhsDate);
 		}
 
@@ -223,6 +225,9 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			int lhsAmount = lhs.getAmount();
 			int rhsAmount = rhs.getAmount();
 			Log.d(TAG, "Comparing " + lhsAmount + " with " + rhsAmount);
+
+			// We want bigger amounts first in the sort, so we reverse the
+			// normal ordering of the subtraction for the comparison.
 			return rhsAmount - lhsAmount;
 		}
 
@@ -252,6 +257,8 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			LocalDateTime lhsTime = lhs.getCreatedAt();
 			LocalDateTime rhsTime = rhs.getCreatedAt();
 
+			// We want later creation times to appear first in the sort,
+			// so we reverse the order of the comparison.
 			return rhsTime.compareTo(lhsTime);
 		}
 
@@ -281,6 +288,8 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			LocalDateTime lhsTime = lhs.getUpdatedAt();
 			LocalDateTime rhsTime = rhs.getUpdatedAt();
 
+			// We want later update times to appear first in the sort,
+			// so we reverse the order of the comparison.
 			return rhsTime.compareTo(lhsTime);
 		}
 
@@ -314,6 +323,9 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			String lhsBudgetName = lhsBudget.getName().toLowerCase(loc);
 			String rhsBudgetName = rhsBudget.getName().toLowerCase(loc);
 
+			// Since we want budget names that lexicographically appear first
+			// to appear first in the sort, we don't reverse the order of the
+			// comparator for this one, which is different than the others.
 			return lhsBudgetName.compareTo(rhsBudgetName);
 		}
 
