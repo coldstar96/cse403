@@ -342,6 +342,8 @@ public class TestApiInterface extends AndroidTestCase {
 						.put("amount", 1000 * (j + 1))
 						.put("expenditure_date", "2013-11-" + (14 + j))
 						.put("notes", "Note " + j)
+						.put("created_at", CREATED_UPDATED)
+						.put("updated_at", CREATED_UPDATED)
 				);
 			}
 			
@@ -353,8 +355,6 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("start_date", "1991-11-" + (14 + i))
 					.put("id", START_ID + i)
 					.put("entries", jsonEntries)
-					.put("created_at", CREATED_UPDATED)
-					.put("updated_at", CREATED_UPDATED)
 			);
 		}
 		
