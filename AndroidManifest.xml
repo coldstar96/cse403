@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.NoTitleBar" >
+        android:theme="@android:style/Theme.Holo.Light" >
         <activity
             android:name="com.example.budgetmanager.AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
@@ -31,7 +31,8 @@
         </activity>
         <activity
             android:name="com.example.budgetmanager.LogoActivity"
-            android:label="@string/title_activity_logo" >
+            android:label="@string/title_activity_logo"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +46,14 @@
         <activity
             android:name="com.example.budgetmanager.EntryLogsActivity"
             android:label="@string/title_activity_entry_logs" >
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.SummaryActivity"
+            android:label="@string/title_activity_summary" >
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.preference.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
