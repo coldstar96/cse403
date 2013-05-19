@@ -109,15 +109,15 @@ public class EntryLogsActivity extends Activity {
 
 class EntryAdapter extends ArrayAdapter<Entry> {
 
-	Context context;
-	int layoutResourceId;
-	List<Entry> data = null;
+	private Context context;
+	private int layoutResourceId;
+	private List<Entry> data = null;
 
 	/**
 	 * Constuctor
 	 *
 	 * @param context The current context
-	 * @param layoutResourceId the resource ID for a layout file containing 
+	 * @param layoutResourceId the resource ID for a layout file containing
 	 *		  a layout to use when instantiating views
 	 * @param data data to represent in the ListView
 	 */
@@ -159,9 +159,9 @@ class EntryAdapter extends ArrayAdapter<Entry> {
 	}
 
 	static class EntryHolder {
-		TextView note;
-		TextView date;
-		TextView amount;
-		TextView budget;
+		private TextView note;
+		private TextView date;
+		private TextView amount;
+		private TextView budget;
 	}
 }

@@ -33,6 +33,8 @@ import com.example.budgetmanager.api.ApiInterface;
  */
 public class LoginActivity extends Activity {
 
+	private final int MIN_PASS_LENGTH = 4;
+
 	private static final String TAG = "LoginActivity";
 
 	// Values for local storage
@@ -51,7 +53,7 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 
 	// application
-	UBudgetApp app;
+	private UBudgetApp app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +145,7 @@ public class LoginActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < MIN_PASS_LENGTH) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -154,8 +156,8 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".") ||
-				mEmail.contains(" ")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".")
+				|| mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -172,7 +174,7 @@ public class LoginActivity extends Activity {
 			showProgress(true);
 			Log.d(TAG, "calling ApiInterface for login");
 
-			ApiInterface.getInstance().logIn(mEmail, mPassword, new ApiCallback<Object>(){
+			ApiInterface.getInstance().logIn(mEmail, mPassword, new ApiCallback<Object>() {
 				// Create popup dialog for retry/register
 				@SuppressLint("ShowToast")
 				@Override
@@ -186,7 +188,7 @@ public class LoginActivity extends Activity {
 				@Override
 				public void onSuccess(Object result) {
 					ApiInterface.getInstance().fetchBudgetsAndEntries(
-							new ApiCallback<List<Budget>>(){
+							new ApiCallback<List<Budget>>() {
 								@Override
 								public void onSuccess(List<Budget> result) {
 									// Add these budgets to the application state
@@ -231,7 +233,7 @@ public class LoginActivity extends Activity {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
-		InputMethodManager imm = (InputMethodManager)getSystemService(
+		InputMethodManager imm = (InputMethodManager) getSystemService(
 			      Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {

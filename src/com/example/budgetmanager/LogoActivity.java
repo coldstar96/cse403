@@ -24,17 +24,17 @@ public class LogoActivity extends Activity {
 		setContentView(R.layout.activity_logo);
 
 		// check login status
-		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>(){
+		ApiInterface.getInstance().checkLoginStatus(new ApiCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
 
 				// fetch budgets and entries
 				ApiInterface.getInstance().fetchBudgetsAndEntries(
-						new ApiCallback<List<Budget>>(){
+						new ApiCallback<List<Budget>>() {
 					@Override
 					public void onSuccess(List<Budget> result) {
-						UBudgetApp app = (UBudgetApp)getApplication();
+						UBudgetApp app = (UBudgetApp) getApplication();
 
 						// Add these budgets to the application state
 						List<Budget> budgetList = app.getBudgetList();
@@ -48,7 +48,7 @@ public class LogoActivity extends Activity {
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName() + " budget fetched");
 							entryList.addAll(b.getEntries());
-							for(Entry e: b.getEntries()){
+							for (Entry e: b.getEntries()) {
 								Log.d(TAG, e.getAmount() + " entry fetched");
 							}
 						}
