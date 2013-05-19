@@ -1,11 +1,18 @@
 package com.example.budgetmanager.preference;
 
-import com.example.budgetmanager.R;
-
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.budgetmanager.R;
 
 /**
  * Main fragment used for allowing users to change settings for the app.
@@ -22,6 +29,10 @@ public class SettingsFragment extends PreferenceFragment
 	/** Strings associated with the starting screen options */
 	public static final String STARTING_SCREEN_LOG = "Log";
 	public static final String STARTING_SCREEN_SUMMARY = "Summary";
+	
+	/** Strings associated with the app theme options */
+	public static final String APP_THEME_LIGHT = "Light";
+	public static final String APP_THEME_DARK = "Dark";
 	
 	/* reference to the preferences of the app */
 	private SharedPreferences spref;

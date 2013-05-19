@@ -24,6 +24,7 @@
         <item name="android:padding">16dp</item>
     </style>
 
+    <!-- Style for field headers in forms -->
     <style name="FieldHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/default_component_height</item>
@@ -33,9 +34,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Style for a divider included with field headers -->
     <style name="FieldHeaderDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">2dp</item>
         <item name="android:background">@android:color/darker_gray</item>
         <item name="android:layout_margin">8dp</item>
     </style>
