@@ -7,7 +7,7 @@
     <Spinner
         android:id="@+id/spinner_logs_sort"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_component_height"
         android:layout_alignParentLeft="true"
         android:entries="@array/sort_types"
         android:prompt="@string/logs_sort_prompt" />
