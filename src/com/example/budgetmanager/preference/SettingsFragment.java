@@ -71,7 +71,7 @@ public class SettingsFragment extends PreferenceFragment
 		// on next the next launch of the app
 		// TODO Dynamically change the theme when the user changes it
 		if (key.equals(KEY_PREF_APP_THEME)) {
-        	Toast.makeText(getActivity(), "R.string/toast_theme_change"
+        	Toast.makeText(getActivity(), R.string.toast_theme_change
 					, Toast.LENGTH_LONG).show();
 		}
 	}
