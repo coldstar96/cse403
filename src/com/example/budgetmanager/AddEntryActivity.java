@@ -67,10 +67,10 @@ public class AddEntryActivity extends Activity {
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
+		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
-		mAmountView = (EditText) findViewById(R.id.edit_amount);
-		mDateView = (DatePicker) findViewById(R.id.date_picker);
-		mNotesView = (EditText) findViewById(R.id.edit_notes);
+		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
+		mNotesView = (EditText) findViewById(R.id.entry_notes);
 	}
 	
 	@Override
@@ -129,9 +129,9 @@ public class AddEntryActivity extends Activity {
 		budgetNameList.add(getResources().getString(R.string.new_budget));
 		// create an ArrayAdapter using the names of the Budgets
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-				R.layout.spinner_layout, budgetNameList);
+				android.R.layout.simple_spinner_item, budgetNameList);
 		// specify the layout to use when the list of choices appears
-		dataAdapter.setDropDownViewResource(R.layout.spinner_entry_layout);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// apply the adapter to the spinner
 		mBudgetView.setAdapter(dataAdapter);
 
@@ -141,6 +141,7 @@ public class AddEntryActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
+				// handle the case when user selects 'Create New Budget...'
 				if (pos == budgetList.size()) {
 					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
 				}

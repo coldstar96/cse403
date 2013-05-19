@@ -1,112 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/ubudgetbackground" >
-
-    <LinearLayout
-        android:id="@+id/add_entry_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/addentryheader" >
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/add_entry_header"
-        android:background="@drawable/shadowbackground"
-        android:paddingBottom="40dp" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <Spinner
-                android:id="@+id/spinner_budget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:prompt="@string/spinner_title"
-                android:spinnerMode="dropdown"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/label_amount"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/edit_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:imeOptions="actionSend|flagNoEnterAction"
-                android:inputType="numberDecimal"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:singleLine="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/label_date"
-                android:textSize="15sp" />
-
-            <DatePicker
-                android:id="@+id/date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleX=".8"
-                android:scaleY=".8" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/label_notes"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/edit_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="@string/hint_notes"
-                android:padding="10dp" />
-        </LinearLayout>
-    </ScrollView>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_layout_side_margin"
+        android:layout_marginRight="@dimen/default_layout_side_margin"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".AddEntryActivity" >
 
-        <Button
-            android:id="@+id/clear_entry_button"
+        <EditText
+            android:id="@+id/entry_amount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:onClick="clearEntry"
-            android:text="@string/action_clear" />
+            android:layout_height="@dimen/default_component_height"
+            android:hint="@string/hint_amount"
+            android:inputType="numberDecimal" />
 
-        <Button
-            android:id="@+id/add_entry_button"
+        <TextView
+            style="@style/FieldHeader"
+            android:text="@string/label_budget" />
+
+        <View
+            style="@style/FieldHeaderDivider" />
+
+        <Spinner
+            android:id="@+id/spinner_budget"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/default_component_height" />
+
+        <TextView
+            style="@style/FieldHeader"
+            android:text="@string/label_date" />
+
+        <View
+            style="@style/FieldHeaderDivider" />
+
+        <DatePicker
+            android:id="@+id/entry_date_picker"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="addEntry"
-            android:text="@string/action_add" />
+            android:calendarViewShown="false" />
+
+        <TextView
+            style="@style/FieldHeader"
+            android:text="@string/label_optional" />
+
+        <View
+            style="@style/FieldHeaderDivider" />
+
+        <EditText
+            android:id="@+id/entry_notes"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_component_height"
+            android:hint="@string/hint_notes" />
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_component_height"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/clear_entry_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/default_button_margin"
+                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_weight="2"
+                android:onClick="clearEntry"
+                android:text="@string/action_clear" />
+
+            <Button
+                android:id="@+id/add_entry_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/default_button_margin"
+                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_weight="1"
+                android:onClick="addEntry"
+                android:text="@string/action_add" />
+        </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

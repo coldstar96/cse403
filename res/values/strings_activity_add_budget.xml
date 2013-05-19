@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>    
-    <string name="title_activity_add_budget">Add Budget</string>
+    
 	<string name="prompt_budget_name">Budget Name</string>
 	<string name="prompt_budget_amount">Amount</string>
 	<string name="prompt_budget_start_date">START DATE</string>
@@ -19,4 +19,5 @@
 	<string name="error_invalid_amount">Please specify amount</string>
 	<string name="error_invalid_budget_name">Please specify name</string>
 	<string name="error_name_already_exists">Budget name already in use</string>
+	
 </resources>

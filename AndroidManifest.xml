@@ -31,6 +31,7 @@
         </activity>
         <activity
             android:name="com.example.budgetmanager.LogoActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:label="@string/title_activity_logo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -3,22 +3,24 @@
 
     <string name="app_name">uBudget</string>
     <string name="loginButton">Log in</string>
-    <string name="title_activity_signin">SigninActivity</string>
-    <string name="title_activity_add_entry">AddEntryActivity</string>
-    <string name="title_activity_summary">SummaryActivity</string>
     <string name="action_close">Close</string>
     <string name="action_add">Add</string>
     <string name="action_clear">Clear</string>
     <string name="title_activity_logo">uBudget</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_logs">LogsActivity</string>
-    <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_section1">Entry Logs</string>
     <string name="title_section2">Summary</string>
     <string name="checkbox_remember_me">Remember me</string>
-    <string name="title_activity_entry_logs">EntryLogsActivity</string>
     <string name="error_network_connection">Check network connection and try again.</string>
-
+    
+    <!-- Strings for the titles of the activities -->
+    <string name="title_activity_add_budget">Add Budget</string>
+    <string name="title_activity_signin">Sign in</string>
+    <string name="title_activity_add_entry">Add Entry</string>
+    <string name="title_activity_summary">Summary</string>
+    <string name="title_activity_entry_logs">Entry Logs</string>
+    <string name="title_activity_settings">Settings</string>
+    
     <!-- Date format used when sending dates to/from the server -->
     <string name="api_date_format">yyyy-MM-dd</string>
 

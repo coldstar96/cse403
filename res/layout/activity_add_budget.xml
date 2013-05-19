@@ -19,8 +19,7 @@
             android:layout_height="@dimen/default_component_height"
             android:hint="@string/prompt_budget_name"
             android:maxLines="1"
-            android:singleLine="true" >
-        </EditText>
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/budget_amount"
@@ -30,14 +29,11 @@
             android:inputType="numberDecimal" />
 
         <TextView
-            android:id="@+id/add_budget_start_date_label"
             style="@style/FieldHeader"
             android:text="@string/prompt_budget_start_date" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+            style="@style/FieldHeaderDivider" />
 
         <DatePicker
             android:id="@+id/budget_date"
@@ -46,14 +42,11 @@
             android:calendarViewShown="false" />
 
         <TextView
-            android:id="@+id/textView1"
             style="@style/FieldHeader"
             android:text="@string/budget_duration" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+            style="@style/FieldHeaderDivider" />
 
         <Spinner
             android:id="@+id/budget_duration"
@@ -95,5 +88,4 @@
                 android:text="@string/action_create_budget" />
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>
