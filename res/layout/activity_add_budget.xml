@@ -56,8 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/default_component_height"
             android:layout_gravity="right"
-            android:text="@string/budget_recur"
-            android:textColor="@color/dark_gray" />
+            android:text="@string/budget_recur" />
 
         <LinearLayout
             style="?android:attr/buttonBarStyle"
