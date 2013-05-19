@@ -109,7 +109,7 @@ public class AddBudgetActivity extends Activity {
 			focusView = mBudgetAmountView;
 			cancel = true;
 		} else {
-			// Only attempt to parse the amount if it's been
+			// Only attempt to parse the amount if it's non-empty.
 			amount = Double.parseDouble(mBudgetAmountView.getText().toString());
 		}
 
