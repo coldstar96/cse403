@@ -8,8 +8,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,8 +17,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +39,6 @@ public class LoginActivity extends Activity {
 	// Values for local storage
 	public static final String PREFS_EMAIL = "email";
 	public static final String PREFS_PASS = "password";
-	//	private SharedPreferences pref = getPreferences(MODE_PRIVATE);
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -51,17 +50,21 @@ public class LoginActivity extends Activity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	private ApiCallback<Object> callback;
+
+	// application
+	UBudgetApp app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		app = (UBudgetApp)getApplication();
+
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		mEmailView.setText(app.getEmail());
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -81,59 +84,7 @@ public class LoginActivity extends Activity {
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-		callback = new ApiCallback<Object>(){
-			// Create popup dialog for retry/register
-			@SuppressLint("ShowToast")
-			@Override
-			public void onFailure(String errorMessage) {
-				showProgress(false);
-				Toast.makeText(LoginActivity.this, R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
-			}
-
-			// Move to add entry activity
-			@Override
-			public void onSuccess(Object result) {
-				ApiInterface.getInstance().fetchBudgets(new ApiCallback<List<Budget>>() {
-
-					@Override
-					public void onSuccess(List<Budget> result) {
-
-						Log.d(TAG, "Success on login callback");
-
-						UBudgetApp app = (UBudgetApp)getApplication();
-
-						// Add these budgets to the application state
-						List<Budget> budgetList = app.getBudgetList();
-						budgetList.clear();
-						budgetList.addAll(result);
-
-						for (Budget b : budgetList) {
-							Log.d(TAG, b.getName());
-						}
-						
-						SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-
-						editor.putString(PREFS_EMAIL, mEmail);
-						editor.putString(PREFS_PASS, mPassword);
-						editor.commit();
-
-						Intent intent = new Intent(LoginActivity.this, EntryLogsActivity.class);
-						showProgress(false);
-						startActivity(intent);
-						finish();
-					}
-
-					@Override
-					public void onFailure(String errorMessage) {
-						Log.d(TAG, "fail on log in callback");
-
-						Toast.makeText(getBaseContext(), "Couldn't get a list of budgets", Toast.LENGTH_LONG).show();
-					}
-
-				});
-			}
-		};
-
+		// attempt login on log in button pressed
 		findViewById(R.id.log_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -141,16 +92,32 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
+
+		// move to register activity with all of the inputs passed on
 		findViewById(R.id.register_button).setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-						intent.putExtra("email", mEmailView.getText().toString());
-						intent.putExtra("password", mPasswordView.getText().toString());
-						startActivity(intent);
+						Intent intent = new Intent(LoginActivity.this,
+								RegisterActivity.class);
+						intent.putExtra("email", 
+								mEmailView.getText().toString());
+						intent.putExtra("password", 
+								mPasswordView.getText().toString());
+						startActivityForResult(intent, 1);
+
 					}
 				});
+	}
+
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, 
+			Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// finish activity if result is from Entrylogs Activity
+		if (requestCode == 1 && resultCode == 2) {
+			finish();
+		}
 	}
 
 	/**
@@ -188,7 +155,8 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") || !mEmail.contains(".") || mEmail.contains(" ")) {
+		} else if (!mEmail.contains("@") || !mEmail.contains(".") || 
+				mEmail.contains(" ")) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -202,11 +170,57 @@ public class LoginActivity extends Activity {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-
 			showProgress(true);
 			Log.d(TAG, "calling ApiInterface for login");
 
-			ApiInterface.getInstance().logIn(mEmail, mPassword, callback);
+			ApiInterface.getInstance().logIn(mEmail, mPassword, new ApiCallback<Object>(){
+				// Create popup dialog for retry/register
+				@SuppressLint("ShowToast")
+				@Override
+				public void onFailure(String errorMessage) {
+					showProgress(false);
+					Toast.makeText(LoginActivity.this, 
+							R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
+				}
+
+				// Move to entry logs activity
+				@Override
+				public void onSuccess(Object result) {
+					ApiInterface.getInstance().fetchBudgetsAndEntries(
+							new ApiCallback<List<Budget>>(){
+								@Override
+								public void onSuccess(List<Budget> result) {
+									// Add these budgets to the application state
+									List<Budget> budgetList = app.getBudgetList();
+									budgetList.clear();
+									budgetList.addAll(result);
+
+									// Add entries to the application state
+									List<Entry> entryList = app.getEntryList();
+									entryList.clear();
+									for (Budget b : budgetList) {
+										Log.d(TAG, b.getName() + " budget fetched");
+										entryList.addAll(b.getEntries());
+									}
+									Log.d(TAG, "fetch data on ApiInteface is success");
+
+									app.setEmail(mEmail);
+
+									startActivity(new Intent(LoginActivity.this, 
+											EntryLogsActivity.class));
+									finish();
+								}
+
+								@Override
+								public void onFailure(String errorMessage) {
+									Log.d(TAG, "fetch data on ApiInteface is failure");
+									startActivity(new Intent(LoginActivity.this, 
+											EntryLogsActivity.class));
+									finish();
+								}
+							});
+				}
+			});
 		}
 	}
 
@@ -215,12 +229,12 @@ public class LoginActivity extends Activity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
-		getWindow().setSoftInputMode(
-			      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		Log.d(TAG, "Showing in progress, should hide virtual keyboard");
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
+		InputMethodManager imm = (InputMethodManager)getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);

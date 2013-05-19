@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name="com.example.budgetmanager.AddEntryActivity"
             android:label="@string/title_activity_add_entry" >
@@ -42,7 +42,7 @@
             android:name="com.example.budgetmanager.AddBudgetActivity"
             android:label="@string/title_activity_add_budget" >
         </activity>
-		<activity
+        <activity
             android:name="com.example.budgetmanager.EntryLogsActivity"
             android:label="@string/title_activity_entry_logs" >
         </activity>
