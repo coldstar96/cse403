@@ -30,14 +30,11 @@ import com.example.budgetmanager.api.ApiInterface;
  * @author Chi Ho coldstar96
  */
 public class RegisterActivity extends Activity {
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-	
+	private final int MIN_PASS_LENGTH = 4;
+
 	// Values for local storage
-	public static final String PREFS_EMAIL = "email";
-	public static final String PREFS_PASS = "password";
+	private static final String PREFS_EMAIL = "email";
+	private static final String PREFS_PASS = "password";
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -111,7 +108,7 @@ public class RegisterActivity extends Activity {
 		// focuses to empty edit view
 		if (mEmail.isEmpty()) {
 			mEmailView.requestFocus();
-		} else if(mPassword.isEmpty()) {
+		} else if (mPassword.isEmpty()) {
 			mPasswordView.requestFocus();
 		} else {
 			mPasswordCheckView.requestFocus();
@@ -142,7 +139,7 @@ public class RegisterActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < MIN_PASS_LENGTH) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -179,14 +176,14 @@ public class RegisterActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			getWindow().setSoftInputMode(
-				      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			showProgress(true);
-			ApiInterface.getInstance().createUser(mEmail, mPassword, new ApiCallback<Object>(){
+			ApiInterface.getInstance().createUser(mEmail, mPassword, new ApiCallback<Object>() {
 				// Create popup dialog failure
 				@Override
 				public void onFailure(String errorMessage) {
 					showProgress(false);
-					Toast.makeText(RegisterActivity.this, 
+					Toast.makeText(RegisterActivity.this,
 							R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
 				}
 
@@ -194,18 +191,18 @@ public class RegisterActivity extends Activity {
 				@Override
 				public void onSuccess(Object result) {
 					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
-					
+
 					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
 					editor.putString(PREFS_EMAIL, mEmail);
 					editor.putString(PREFS_PASS, mPassword);
 					editor.commit();
-					
-					UBudgetApp app = (UBudgetApp)getApplication();
+
+					UBudgetApp app = (UBudgetApp) getApplication();
 					app.setEmail(mEmail);
-					
+
 					setResult(2);
-					
+
 					showProgress(false);
 					startActivity(intent);
 					finish();
@@ -222,9 +219,9 @@ public class RegisterActivity extends Activity {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
-		InputMethodManager imm = (InputMethodManager)getSystemService(
-			      Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
+		InputMethodManager imm = (InputMethodManager) getSystemService(
+				Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);

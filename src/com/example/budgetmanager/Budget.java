@@ -26,8 +26,10 @@ public class Budget {
 
 	public static final long NEW_ID = -1;
 
+	// ID that identifies the budget
 	private long budgetId;
 
+	// Name of the budget
 	private String name;
 
 	// Amount allocated for the budget, in cents
@@ -84,6 +86,8 @@ public class Budget {
 		case YEAR:
 			this.budgetDuration = Period.years(1);
 			break;
+		default:
+			throw new IllegalArgumentException("Invaid duration argument");
 		}
 	}
 
@@ -118,8 +122,8 @@ public class Budget {
 			throw new IllegalArgumentException("Tried to add a null Entry");
 		}
 		if (entries.contains(entry)) {
-			throw new IllegalArgumentException("Tried to add entry to " +
-					"budget that already contained it.");
+			throw new IllegalArgumentException("Tried to add entry to "
+					+ "budget that already contained it.");
 		}
 		entries.add(entry);
 	}
@@ -136,8 +140,8 @@ public class Budget {
 			throw new IllegalArgumentException("Tried to remove a null Entry");
 		}
 		if (!entries.contains(entry)) {
-			throw new IllegalArgumentException("Tried to remove entry from " +
-					"budget that did not contain it.");
+			throw new IllegalArgumentException("Tried to remove entry from "
+					+ "budget that did not contain it.");
 		}
 		entries.remove(entry);
 	}
@@ -255,5 +259,4 @@ public class Budget {
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
 	}
-
 }

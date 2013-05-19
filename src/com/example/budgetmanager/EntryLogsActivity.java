@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,10 +18,10 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.example.budgetmanager.preference.SettingsFragment;
+
 import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
 
 /**
  * Activity which displays list of entries screen to the user, offering add entry
@@ -31,15 +30,15 @@ import com.example.budgetmanager.preference.SettingsActivity;
  * @author Chi Ho coldstar96
  */
 public class EntryLogsActivity extends Activity {
-	public final String TAG = "EntrylogsActivity";
+	private final String TAG = "EntrylogsActivity";
 
 	// UI reference
 	private ListView listView;
+	private Spinner sortSpinner;
 
 	private EntryLogAdapter adapter;
 
-	UBudgetApp app;
-	Spinner sortSpinner;
+	private UBudgetApp app;
 
 	@Override
 	protected void onResume() {
@@ -78,7 +77,7 @@ public class EntryLogsActivity extends Activity {
 		setContentView(R.layout.activity_entry_logs);
 
 		// retrieve the application data
-		app = (UBudgetApp)getApplication();
+		app = (UBudgetApp) getApplication();
 		Log.d(TAG, "Just got the app, about to make the adapter");
 		adapter = new EntryLogAdapter(this, R.layout.list_entry_layout,
 				app.getBudgetList());
@@ -91,7 +90,7 @@ public class EntryLogsActivity extends Activity {
 		listView = (ListView) findViewById(R.id.entry_list);
 		listView.setAdapter(adapter);
 
-		listView.setOnItemClickListener(new OnItemClickListener(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v,
 					int pos, long id) {
@@ -111,7 +110,7 @@ public class EntryLogsActivity extends Activity {
 			}
 		});
 
-		sortSpinner = (Spinner)findViewById(R.id.spinner_logs_sort);
+		sortSpinner = (Spinner) findViewById(R.id.spinner_logs_sort);
 
 		sortSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -138,18 +137,18 @@ public class EntryLogsActivity extends Activity {
 
 		buttonSettings.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Take the users to the Settings activity upon clicking the button. 
+			/**
+			 * Take the users to the Settings activity upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(EntryLogsActivity.this, 
+				Intent settingsIntent = new Intent(EntryLogsActivity.this,
 						SettingsActivity.class);
 
 				// these extras allow SettingsActivity to skip the 'headers'
 				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, 
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
 						SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
 
 				EntryLogsActivity.this.startActivity(settingsIntent);
 
@@ -165,13 +164,13 @@ public class EntryLogsActivity extends Activity {
 
 		buttonSignout.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Sign out the user upon clicking the button. 
+			/**
+			 * Sign out the user upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
-				Toast.makeText(EntryLogsActivity.this, 
-						"Successfully handled Sign out selection", 
+				Toast.makeText(EntryLogsActivity.this,
+						"Successfully handled Sign out selection",
 						Toast.LENGTH_LONG).show();
 				return false;
 			}
@@ -190,11 +189,11 @@ public class EntryLogsActivity extends Activity {
 		// they need to create budget before they add an entry
 		List<Budget> budgets = ((UBudgetApp) getApplication()).
 				getBudgetList();
-		if(budgets.isEmpty()){
+		if (budgets.isEmpty()) {
 			Toast.makeText(EntryLogsActivity.this,
 					R.string.dialog_add_budget_first,
 					Toast.LENGTH_LONG).show();
-		}else{
+		} else {
 			Intent intent = new Intent(EntryLogsActivity.this,
 					AddEntryActivity.class);
 			startActivity(intent);

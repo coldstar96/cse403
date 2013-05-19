@@ -33,6 +33,8 @@ import android.widget.Toast;
  *
  */
 public class AddBudgetActivity extends Activity {
+	private final int DOLLAR_IN_CENTS = 100;
+
 	// Text field for entering the Budget name
 	private EditText mBudgetNameView;
 	private String mBudgetName;
@@ -55,14 +57,14 @@ public class AddBudgetActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
-		
+
 		// check the preference to see which theme to set
 		String startingScreen = PreferenceManager.
 				getDefaultSharedPreferences(this).getString(SettingsFragment
-				.KEY_PREF_APP_THEME, "");
+						.KEY_PREF_APP_THEME, "");
 
 		if (startingScreen.equals(SettingsFragment
 				.APP_THEME_LIGHT)) {
@@ -70,9 +72,9 @@ public class AddBudgetActivity extends Activity {
 		} else {
 			setTheme(android.R.style.Theme_Holo);
 		}
-		
+
 		super.onCreate(savedInstanceState);
-		
+
 		// inflate view
 		setContentView(R.layout.activity_add_budget);
 
@@ -86,7 +88,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
 		// Create an ArrayAdapter using the string array and a default spinner layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-		        R.array.duration_array, android.R.layout.simple_spinner_item);
+				R.array.duration_array, android.R.layout.simple_spinner_item);
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
@@ -108,30 +110,30 @@ public class AddBudgetActivity extends Activity {
 					}
 				});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// set up the button that lead to the settings activity
 		MenuItem buttonSettings = menu.add(R.string.title_settings);
-		
+
 		// this forces it to go in the overflow menu, which is preferred.
 		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-		
+
 		buttonSettings.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Take the users to the Settings activity upon clicking the button. 
+			/**
+			 * Take the users to the Settings activity upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(AddBudgetActivity.this, 
+				Intent settingsIntent = new Intent(AddBudgetActivity.this,
 						SettingsActivity.class);
-				
+
 				// these extras allow SettingsActivity to skip the 'headers'
 				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, 
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
 						SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
-				
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+
 				AddBudgetActivity.this.startActivity(settingsIntent);
 
 				return false;
@@ -140,19 +142,19 @@ public class AddBudgetActivity extends Activity {
 
 		// set up the button that lead to the signout activity
 		MenuItem buttonSignout = menu.add(R.string.title_signout);
-		
+
 		// this forces it to go in the overflow menu, which is preferred.
 		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-		
+
 		buttonSignout.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Sign out the user upon clicking the button. 
+			/**
+			 * Sign out the user upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
-				Toast.makeText(AddBudgetActivity.this, 
-						"Successfully handled Sign out selection", 
+				Toast.makeText(AddBudgetActivity.this,
+						"Successfully handled Sign out selection",
 						Toast.LENGTH_LONG).show();
 				return false;
 			}
@@ -167,7 +169,7 @@ public class AddBudgetActivity extends Activity {
 	 *
 	 * If it fails, toast the error.
 	 */
-	public void attemptAddBudget(){
+	public void attemptAddBudget() {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
@@ -252,7 +254,7 @@ public class AddBudgetActivity extends Activity {
 
 	/**
 	 * Creates a <code>Budget</code> based on the contents of the input fields.
-	 * 
+	 *
 	 * @return a <code>Budget</code> with values specified by the input fields.
 	 */
 	private Budget createBudget() {
@@ -260,7 +262,7 @@ public class AddBudgetActivity extends Activity {
 
 		// Multiply by 100 in order to convert the amount to cents for storage
 		String amountText = mBudgetAmountView.getText().toString();
-		int amount =  (int) Math.round(Double.parseDouble(amountText) * 100);
+		int amount =  (int) Math.round(Double.parseDouble(amountText) * DOLLAR_IN_CENTS);
 		boolean recur = mRecurringView.isChecked();
 
 		LocalDate startDate = new LocalDate(mBudgetDateView.getYear(),
