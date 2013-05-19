@@ -31,8 +31,8 @@
         </activity>
         <activity
             android:name="com.example.budgetmanager.LogoActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:label="@string/title_activity_logo" >
+            android:label="@string/title_activity_logo"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,11 +50,11 @@
         <activity
             android:name="com.example.budgetmanager.SummaryActivity"
             android:label="@string/title_activity_summary" >
-		</activity>
+        </activity>
         <activity
             android:name="com.example.budgetmanager.preference.SettingsActivity"
             android:label="@string/title_activity_settings" >
-		</activity>
+        </activity>
     </application>
 
 </manifest>
