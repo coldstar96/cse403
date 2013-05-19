@@ -240,7 +240,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 *
 	 */
 	public static class EntryCreationTimeComparator
-			implements Comparator<Entry> {
+	implements Comparator<Entry> {
 
 		/**
 		 * Compare Entries by their real creation times for use in sorting.
@@ -271,7 +271,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 *
 	 */
 	public static class EntryUpdateTimeComparator
-			implements Comparator<Entry> {
+	implements Comparator<Entry> {
 
 		/**
 		 * Compare Entries by their real last update times for use in sorting.

@@ -176,7 +176,7 @@ public class RegisterActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			getWindow().setSoftInputMode(
-				      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			showProgress(true);
 			ApiInterface.getInstance().createUser(mEmail, mPassword, new ApiCallback<Object>() {
 				// Create popup dialog failure
@@ -220,8 +220,8 @@ public class RegisterActivity extends Activity {
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
 		InputMethodManager imm = (InputMethodManager) getSystemService(
-			      Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
+				Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
