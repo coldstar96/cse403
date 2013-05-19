@@ -37,7 +37,7 @@ public class EntryLogsActivity extends Activity {
 
 	// UI references
 	private ListView listView;
-	private TextView userEmailView;
+	// private TextView userEmailView; TODO Decide whether to get rid of this
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +92,8 @@ public class EntryLogsActivity extends Activity {
 			}
 		});
 
-		userEmailView = (TextView) findViewById(R.id.text_user_email);
-		userEmailView.setText(app.getEmail());
+		// userEmailView = (TextView) findViewById(R.id.text_user_email); TODO Decide whether to get rid of this
+		// userEmailView.setText(app.getEmail()); TODO Decide whether to get rid of this
 
 		findViewById(R.id.add_entry_button).setOnClickListener(
 				new View.OnClickListener() {

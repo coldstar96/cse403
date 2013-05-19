@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Strings related to Settings -->
-    <string name="message_settings">This is a temporary string for settings activity</string>
+    <string name="toast_theme_change">New theme will be applied the next time you launch the app</string>
 
     <!-- Summary Strings -->
     <string name="summary_settings_starting_screen">Starting screen setting summary test</string>

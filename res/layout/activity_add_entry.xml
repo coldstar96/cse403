@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/default_button_margin"
                 android:layout_marginTop="@dimen/default_button_margin"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:onClick="clearEntry"
                 android:text="@string/action_clear" />
 

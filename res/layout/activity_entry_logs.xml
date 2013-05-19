@@ -2,55 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ubudgetbackground"
     tools:context=".EntryLogsActivity" >
-
-    <LinearLayout
-        android:id="@+id/entry_logs_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/entrylogsheader" >
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/text_user_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/dark_gray"
-        android:layout_below="@+id/entry_logs_header"
-        android:text="email@example.com" />
 
     <ListView
         android:id="@+id/entry_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/text_user_email"
-        android:background="@drawable/shadowbackground"
-        android:paddingBottom="55dp" >
+        android:paddingBottom="@dimen/default_component_height" >
     </ListView>
 
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_component_height"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/add_budget_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_marginBottom="@dimen/default_button_margin"
+            android:layout_marginTop="@dimen/default_button_margin"
+            android:layout_weight="1"
+            android:onClick="clearEntry"
             android:text="@string/action_add_budget" />
 
         <Button
             android:id="@+id/add_entry_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/default_button_margin"
+            android:layout_marginTop="@dimen/default_button_margin"
             android:layout_weight="1"
+            android:onClick="addEntry"
             android:text="@string/action_add_entry" />
     </LinearLayout>
-
 </RelativeLayout>

@@ -1,17 +1,12 @@
 package com.example.budgetmanager.preference;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.R;
 
 /**
@@ -71,6 +66,14 @@ public class SettingsFragment extends PreferenceFragment
 			, String key) {
 		// call helper method to change the summary accordingly
 		updatePreferences();
+		
+		// if the theme has been changed, toast that it will change 
+		// on next the next launch of the app
+		// TODO Dynamically change the theme when the user changes it
+		if (key.equals(KEY_PREF_APP_THEME)) {
+        	Toast.makeText(getActivity(), "R.string/toast_theme_change"
+					, Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	/*
@@ -86,6 +89,6 @@ public class SettingsFragment extends PreferenceFragment
 		// set the theme preference summary
 		findPreference(KEY_PREF_APP_THEME)
 				.setSummary("Current theme: " + spref
-        		.getString(KEY_PREF_APP_THEME, ""));
+        		.getString(KEY_PREF_APP_THEME, ""));	
 	}
 }
