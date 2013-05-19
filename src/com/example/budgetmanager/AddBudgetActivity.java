@@ -118,21 +118,20 @@ public class AddBudgetActivity extends Activity {
 		// this forces it to go in the overflow menu, which is preferred.
 		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 		
-		buttonSettings.setOnMenuItemClickListener(new MenuItem
-				.OnMenuItemClickListener() {
+		buttonSettings.setOnMenuItemClickListener(new MenuItem.
+				OnMenuItemClickListener() {
 			/** 
 			 * Take the users to the Settings activity upon clicking the button. 
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(AddBudgetActivity.this
-						, SettingsActivity.class);
+				Intent settingsIntent = new Intent(AddBudgetActivity.this, 
+						SettingsActivity.class);
 				
 				// these extras allow SettingsActivity to skip the 'headers'
 				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT
-						, SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS
-						, true);	
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, 
+						SettingsFragment.class.getName());
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
 				
 				AddBudgetActivity.this.startActivity(settingsIntent);
 
@@ -153,8 +152,9 @@ public class AddBudgetActivity extends Activity {
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
-				Toast.makeText(AddBudgetActivity.this, "Successfully handled Sign out selection"
-						, Toast.LENGTH_LONG).show();
+				Toast.makeText(AddBudgetActivity.this, 
+						"Successfully handled Sign out selection", 
+						Toast.LENGTH_LONG).show();
 				return false;
 			}
 		});
