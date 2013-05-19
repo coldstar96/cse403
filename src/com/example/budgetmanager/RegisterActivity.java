@@ -18,8 +18,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
@@ -34,7 +32,7 @@ public class RegisterActivity extends Activity {
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-	
+
 	// Values for local storage
 	public static final String PREFS_EMAIL = "email";
 	public static final String PREFS_PASS = "password";
@@ -186,26 +184,27 @@ public class RegisterActivity extends Activity {
 				@Override
 				public void onFailure(String errorMessage) {
 					showProgress(false);
-					Toast.makeText(RegisterActivity.this, 
-							R.string.dialog_fail_register, Toast.LENGTH_LONG).show();
+
+					mEmailView.setError(getString(R.string.error_email_already_exists));
+					mEmailView.requestFocus();
 				}
 
 				// Move to add budget activity
 				@Override
 				public void onSuccess(Object result) {
 					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
-					
+
 					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
 					editor.putString(PREFS_EMAIL, mEmail);
 					editor.putString(PREFS_PASS, mPassword);
 					editor.commit();
-					
+
 					UBudgetApp app = (UBudgetApp)getApplication();
 					app.setEmail(mEmail);
-					
+
 					setResult(2);
-					
+
 					showProgress(false);
 					startActivity(intent);
 					finish();
