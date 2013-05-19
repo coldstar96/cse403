@@ -6,7 +6,6 @@ import org.joda.time.LocalDate;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -217,11 +216,14 @@ public class AddBudgetActivity extends Activity {
 		mBudgetNameView.setText("");
 
 		// get current time
-		Time now = new Time();
-		now.setToNow();
+		LocalDate now = LocalDate.now();
 		// update the DatePicker
-		mBudgetDateView.updateDate(now.year, now.month, now.monthDay);
+		mBudgetDateView.updateDate(now.getYear(),
+				now.getMonthOfYear() - 1,
+				now.getDayOfMonth());
 
 		mRecurringView.setChecked(false);
+
+		mBudgetDurationView.setSelection(0);
 	}
 }

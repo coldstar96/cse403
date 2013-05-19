@@ -16,6 +16,7 @@ public class TestCaseAddBudgetActivity
 	private Solo solo;
 	private EditText nameField;
 	private EditText amountField;
+
 	private UBudgetApp app;
 
 	public TestCaseAddBudgetActivity() {
@@ -123,6 +124,30 @@ public class TestCaseAddBudgetActivity
 
 		// There should be no error on amountField
 		assertNull(amountField.getError());
+	}
+
+	public void test_clear_shouldResetAllFields() {
+		solo.enterText(nameField, "Clearing Budget");
+		solo.enterText(amountField, "12345.00");
+
+		// Since we only have one checkbox, this clicks it to set it.
+		solo.clickOnCheckBox(0);
+
+		// Similarly, since we only have one spinner, this sets its selected index.
+		solo.pressSpinnerItem(0, 3);
+
+		solo.clickOnButton("Clear");
+		solo.sleep(500);
+
+		String nameText = nameField.getText().toString();
+		String amountText = amountField.getText().toString();
+		boolean recurChecked = solo.isCheckBoxChecked(0);
+		boolean correctDuration = solo.isSpinnerTextSelected("Day");
+
+		assertEquals("Name field was not empty after clearing", "", nameText);
+		assertEquals("Amount field was not empty after clearing", "", amountText);
+		assertFalse("Recur CheckBox was checked after clearing", recurChecked);
+		assertTrue("Spinner text after clear should be 'Day'", correctDuration);
 	}
 
 }
