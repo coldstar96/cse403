@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -22,15 +21,15 @@ import com.example.budgetmanager.preference.SettingsFragment;
  */
 public class LogoActivity extends Activity {
 	public static final String TAG = "LogoActivity";
-	
+
 	/* reference to the preferences of the app */
 	private SharedPreferences spref;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
-		
+
 		// save a reference to the preferences for the app
 		spref = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -39,7 +38,7 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onSuccess(Object result) {
 				Log.d(TAG, "check login in on ApiInteface is success");
-				
+
 				// fetch budgets and entries
 				ApiInterface.getInstance().fetchBudgetsAndEntries(
 						new ApiCallback<List<Budget>>(){
@@ -51,7 +50,7 @@ public class LogoActivity extends Activity {
 						List<Budget> budgetList = app.getBudgetList();
 						budgetList.clear();
 						budgetList.addAll(result);
-						
+
 						// Add entries to the application state
 						List<Entry> entryList = app.getEntryList();
 						entryList.clear();
@@ -65,25 +64,19 @@ public class LogoActivity extends Activity {
 						}
 						Log.d(TAG, "fetch data on ApiInteface is success");
 
-				// check the preference to see which activity to launch into
-				String startingScreen = spref.getString(SettingsFragment
-							.KEY_PREF_STARTING_SCREEN, "");
-				
-				if (startingScreen.equals(SettingsFragment
-						.STARTING_SCREEN_LOG)) {
-					startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
-				} else if (startingScreen.equals(SettingsFragment
-						.STARTING_SCREEN_SUMMARY)) {
-					startActivity(new Intent(LogoActivity.this, SummaryActivity.class));
-				} else if (startingScreen.equals(SettingsFragment
-						.STARTING_SCREEN_ADD_ENTRY)) {
-					startActivity(new Intent(LogoActivity.this, AddEntryActivity.class));
-				} else {
-					startActivity(new Intent(LogoActivity.this, AddBudgetActivity.class));
-				}
+						// check the preference to see which activity to launch into
+						String startingScreen = spref.getString(SettingsFragment
+								.KEY_PREF_STARTING_SCREEN, "");
+
+						if (startingScreen.equals(SettingsFragment
+								.STARTING_SCREEN_LOG)) {
+							startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
+						} else {
+							startActivity(new Intent(LogoActivity.this, SummaryActivity.class));
+						}
 						finish();
 					}
-					
+
 					@Override
 					public void onFailure(String errorMessage) {
 						Log.d(TAG, "fetch data on ApiInteface is failure");
@@ -92,7 +85,6 @@ public class LogoActivity extends Activity {
 						finish();
 					}
 				});
->>>>>>> master
 			}
 
 			@Override

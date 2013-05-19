@@ -15,8 +15,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.app.Activity;
-import android.os.Bundle;
 import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +26,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
 
 /**
  *

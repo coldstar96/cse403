@@ -20,8 +20,6 @@
     <string-array name="pref_starting_screen_entrees">
         <item>Log</item>
         <item>Summary</item>
-        <item>Add Entry</item>
-        <item>Add Budget</item>
     </string-array>
     
     <!-- Array entries for themes -->

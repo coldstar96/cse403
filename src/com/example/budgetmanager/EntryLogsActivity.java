@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import java.util.List;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,37 +23,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
-=======
+
 /**
  * Activity which displays list of entries screen to the user, offering add entry
  * and add budget as well
  * 
  * @author Chi Ho coldstar96
  */
->>>>>>> master
-
 public class EntryLogsActivity extends Activity {
 	public final String TAG = "EntrylogsActivity";
 
 	// UI references
 	private ListView listView;
 	private TextView userEmailView;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// inflate view
 		setContentView(R.layout.activity_entry_logs);
 
 		// retrieve the application data
 		UBudgetApp app = (UBudgetApp)getApplication();
-		
+
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
@@ -63,7 +58,7 @@ public class EntryLogsActivity extends Activity {
 		// set up Entry Logs screen
 		listView = (ListView) findViewById(R.id.entry_list);
 		listView.setAdapter(adapter);
-		
+
 		listView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, 
@@ -72,7 +67,7 @@ public class EntryLogsActivity extends Activity {
 						"click not implemented yet", Toast.LENGTH_LONG).show();
 			}
 		});
-		
+
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -83,7 +78,7 @@ public class EntryLogsActivity extends Activity {
 				return false;
 			}
 		});
-		
+
 		userEmailView = (TextView) findViewById(R.id.text_user_email);
 		userEmailView.setText(app.getEmail());
 
@@ -120,35 +115,35 @@ public class EntryLogsActivity extends Activity {
 				});
 
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuItem buttonSettings = menu.add(R.string.title_settings);
-	    // this forces it to go in the overflow menu, which is preferred.
-	    buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-	    buttonSettings.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-	    	/** Take the users to the Settings activity upon clicking the button. */
-	        public boolean onMenuItemClick(MenuItem item) {
-	        	Intent settingsIntent = new Intent(EntryLogsActivity.this, SettingsActivity.class);
-	            settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
-	            settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
-	            EntryLogsActivity.this.startActivity(settingsIntent);
-	            
-	            return false;
-	        }
-	    });
-	    
-	    MenuItem buttonSignout = menu.add(R.string.title_signout);
-	    buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-	    buttonSignout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-	    	/** Sign out the user upon clicking the button. */
-	        public boolean onMenuItemClick(MenuItem item) {
-	        	Toast.makeText(EntryLogsActivity.this, "Successfully handled Sign out selection"
+		MenuItem buttonSettings = menu.add(R.string.title_settings);
+		// this forces it to go in the overflow menu, which is preferred.
+		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		buttonSettings.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			/** Take the users to the Settings activity upon clicking the button. */
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent settingsIntent = new Intent(EntryLogsActivity.this, SettingsActivity.class);
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
+				EntryLogsActivity.this.startActivity(settingsIntent);
+
+				return false;
+			}
+		});
+
+		MenuItem buttonSignout = menu.add(R.string.title_signout);
+		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		buttonSignout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+			/** Sign out the user upon clicking the button. */
+			public boolean onMenuItemClick(MenuItem item) {
+				Toast.makeText(EntryLogsActivity.this, "Successfully handled Sign out selection"
 						, Toast.LENGTH_LONG).show();
-	            return false;
-	        }
-	    });
-	    return true;
+				return false;
+			}
+		});
+		return true;
 	}
 }
 
