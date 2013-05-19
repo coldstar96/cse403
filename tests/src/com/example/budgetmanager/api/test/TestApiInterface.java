@@ -60,8 +60,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final long BUDGET_ID = 100;
 		testClient.setNextResponse(new JSONObject()
-				.put("id", BUDGET_ID)
-		);
+				.put("id", BUDGET_ID), true);
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(b, new ApiCallback<Long>() {
 			@Override
@@ -83,8 +82,7 @@ public class TestApiInterface extends AndroidTestCase {
 	public void test_create_newBudget_responseHasNoId_shouldReturnFailure() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		testClient.setNextResponse(new JSONObject()
-				.put("not-id", "gibberish")
-		);
+				.put("not-id", "gibberish"), true);
 		api.create(b, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
@@ -110,8 +108,7 @@ public class TestApiInterface extends AndroidTestCase {
 		testClient.setNextResponse(new JSONObject()
 				.put("id", ENTRY_ID)
 				.put("created_at", "2013-11-14 01:00:00")
-				.put("updated_at", "2013-11-14 01:30:00")
-		);
+				.put("updated_at", "2013-11-14 01:30:00"), true);
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(e, new ApiCallback<Long>() {
 			@Override
@@ -135,8 +132,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final Entry e = new Entry(100, b, "notes", 
 				LocalDate.parse("2013-11-14", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		testClient.setNextResponse(new JSONObject()
-				.put("not-id", "gibberish")
-		);
+				.put("not-id", "gibberish"), true);
 		api.create(e, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
@@ -170,7 +166,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonBudgets);
+		testClient.setNextResponse(jsonBudgets, true);
 		
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 
@@ -217,7 +213,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonBudgets);
+		testClient.setNextResponse(jsonBudgets, true);
 		
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 			@Override
@@ -256,7 +252,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonEntries);
+		testClient.setNextResponse(jsonEntries, true);
 		
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 
@@ -306,7 +302,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonEntries);
+		testClient.setNextResponse(jsonEntries, true);
 		
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 
@@ -358,7 +354,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonBudgets);
+		testClient.setNextResponse(jsonBudgets, true);
 		
 		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
@@ -422,7 +418,7 @@ public class TestApiInterface extends AndroidTestCase {
 			);
 		}
 		
-		testClient.setNextResponse(jsonBudgets);
+		testClient.setNextResponse(jsonBudgets, true);
 		
 		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
@@ -436,6 +432,54 @@ public class TestApiInterface extends AndroidTestCase {
 				assertNotNull(errorMessage);
 			}
 			
+		});
+	}
+	
+	@SmallTest
+	public void test_logIn_invalidUsernameOrPassword_shouldPassErrorBack() throws JSONException {
+		final String USERNAME = "test@test.com";
+		final String PASSWORD = "password";
+		final String USERNAME_ERROR = USERNAME + ":";
+		final String PASSWORD_ERROR = "Invalid username or password.";
+		
+		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
+				.put("password", new JSONArray().put(PASSWORD_ERROR));
+		
+		testClient.setNextResponse(obj, false);
+		
+		api.logIn(USERNAME, PASSWORD, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("Should fail, username/password were invalid.");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertEquals(USERNAME_ERROR + " " + PASSWORD_ERROR, errorMessage);
+			}
+		});
+	}
+	
+	@SmallTest
+	public void test_createUser_usernameTaken_shouldPassErrorBack() throws JSONException {
+		final String USERNAME = "test@test.com";
+		final String PASSWORD = "password";
+		final String USERNAME_ERROR = "Username already taken.";
+		
+		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR));
+		
+		testClient.setNextResponse(obj, false);
+		
+		api.createUser(USERNAME, PASSWORD, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("Should fail, username was already taken.");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertEquals(USERNAME_ERROR, errorMessage);
+			}
 		});
 	}
 	
