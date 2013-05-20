@@ -26,12 +26,13 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 	 * @throws IllegalArgumentException if the passed object is not JSONObject or JSONArray
 	 */
 	public void setNextResponse(Object obj, boolean succeeds) {
-		if (object = obj instanceof JSONObject)
+		if (object = obj instanceof JSONObject) {
 			jsonObject = (JSONObject) obj;
-		else if (obj instanceof JSONArray)
+		} else if (obj instanceof JSONArray) {
 			jsonArray = (JSONArray) obj;
-		else
+		} else {
 			throw new IllegalArgumentException("Must be JSONObject or JSONArray.");
+		}
 		
 		this.succeeds = succeeds;
 	}
@@ -45,16 +46,18 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 		assert handler instanceof JsonHttpResponseHandler;
 		if (object) {
 			assert jsonObject != null;
-			if (succeeds)
+			if (succeeds) {
 				((JsonHttpResponseHandler) handler).onSuccess(jsonObject);
-			else
+			} else {
 				((JsonHttpResponseHandler) handler).onFailure(new Exception("Set to fail."), jsonObject);
+			}
 		} else {
 			assert jsonArray != null;
-			if (succeeds)
+			if (succeeds) {
 				((JsonHttpResponseHandler) handler).onSuccess(jsonArray);
-			else
+			} else {
 				((JsonHttpResponseHandler) handler).onFailure(new Exception("Set to fail."), jsonArray);
+			}
 		}
 	}
 	

@@ -132,7 +132,7 @@
 
     <target name="checkstyle" >
 
-        <checkstyle config="ubudget_checks.xml" >
+        <checkstyle config="ubudget_checks.xml" failOnViolation="false" >
 
             <fileset
                 dir="src"
