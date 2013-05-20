@@ -197,9 +197,6 @@ public class RegisterActivity extends Activity {
 					editor.putString(PREFS_PASS, mPassword);
 					editor.commit();
 
-					UBudgetApp app = (UBudgetApp) getApplication();
-					app.setEmail(mEmail);
-
 					setResult(2);
 
 					showProgress(false);

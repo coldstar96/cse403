@@ -51,13 +51,8 @@ public class LogoActivity extends Activity {
 						budgetList.clear();
 						budgetList.addAll(result);
 
-						// Add entries to the application state
-						List<Entry> entryList = app.getEntryList();
-						entryList.clear();
-
 						for (Budget b : budgetList) {
 							Log.d(TAG, b.getName() + " budget fetched");
-							entryList.addAll(b.getEntries());
 							for (Entry e: b.getEntries()) {
 								Log.d(TAG, e.getAmount() + " entry fetched");
 							}

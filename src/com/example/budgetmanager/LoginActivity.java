@@ -65,7 +65,6 @@ public class LoginActivity extends Activity {
 
 		// Set up the login form.
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(app.getEmail());
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -197,15 +196,10 @@ public class LoginActivity extends Activity {
 									budgetList.addAll(result);
 
 									// Add entries to the application state
-									List<Entry> entryList = app.getEntryList();
-									entryList.clear();
 									for (Budget b : budgetList) {
 										Log.d(TAG, b.getName() + " budget fetched");
-										entryList.addAll(b.getEntries());
 									}
 									Log.d(TAG, "fetch data on ApiInteface is success");
-
-									app.setEmail(mEmail);
 
 									startActivity(new Intent(LoginActivity.this,
 											EntryLogsActivity.class));
