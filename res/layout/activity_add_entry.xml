@@ -2,40 +2,53 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingBottom="@dimen/default_layout_spacing"
+    android:paddingTop="@dimen/default_layout_spacing" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_layout_side_margin"
-        android:layout_marginRight="@dimen/default_layout_side_margin"
+        android:layout_marginLeft="@dimen/default_layout_spacing"
+        android:layout_marginRight="@dimen/default_layout_spacing"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".AddEntryActivity" >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_amount"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/entry_amount"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height"
-            android:hint="@string/hint_amount"
-            android:inputType="numberDecimal" />
+            style="@style/CustomEditText"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_budget" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_budget"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner_budget"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height" />
+            android:layout_height="@dimen/default_component_height"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_date" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_date"
+            android:textStyle="bold" />
 
         <DatePicker
             android:id="@+id/entry_date_picker"
@@ -44,44 +57,45 @@
             android:calendarViewShown="false" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_optional" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_optional"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/entry_notes"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height"
+            style="@style/CustomEditText"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
             android:hint="@string/hint_notes" />
 
         <LinearLayout
-            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
+            android:layout_marginTop="@dimen/default_layout_spacing"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/clear_entry_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/default_button_margin"
-                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_button_secondary"
                 android:onClick="clearEntry"
-                android:text="@string/action_clear" />
+                android:text="@string/action_clear"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/add_entry_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/default_button_margin"
-                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_button_primary"
                 android:onClick="addEntry"
-                android:text="@string/action_add" />
+                android:text="@string/action_add"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

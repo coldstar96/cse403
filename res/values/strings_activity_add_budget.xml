@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="prompt_budget_name">Budget Name</string>
-    <string name="prompt_budget_amount">Amount</string>
-    <string name="prompt_budget_start_date">START DATE</string>
-    <string name="budget_duration">DURATION</string>
+    <string name="header_budget_name">Budget Name</string>
+    <string name="header_budget_amount">Amount</string>
+    <string name="header_budget_start_date">START DATE</string>
+    <string name="header_budget_duration">DURATION</string>
     <string name="budget_recur">Recur</string>
     <string name="action_clear_budget">Clear</string>
 

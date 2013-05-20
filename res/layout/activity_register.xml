@@ -8,7 +8,6 @@
         android:id="@+id/login_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ubudgetbackground"
         android:visibility="gone"
         android:windowSoftInputMode="stateAlwaysHidden" >
 
@@ -45,62 +44,116 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ubudgetbackground" >
+        android:layout_marginLeft="@dimen/default_layout_spacing"
+        android:layout_marginRight="@dimen/default_layout_spacing"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/default_layout_spacing" >
 
-        <LinearLayout
-            style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:background="@drawable/ubudgettitle" >
-            </FrameLayout>
+            <!-- Header -->
 
-            <EditText
-                android:id="@+id/email"
+            <LinearLayout
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp" >
 
-            <EditText
-                android:id="@+id/password"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_register"
+                    android:textSize="26sp" />
+            </LinearLayout>
+
+            <!-- Login Form -->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:layout_below="@id/header"
+                android:layout_marginBottom="@dimen/default_layout_spacing"
+                android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/password2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_verify_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
+                <!-- Email Label -->
 
-            <Button
-                android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="@string/action_register" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/header_email"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_component_height"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="@dimen/default_edittext_padding"
+                    android:singleLine="true" />
+
+                <!-- Password Label -->
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/header_password"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_component_height"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="@dimen/default_edittext_padding"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/header_password2"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/password2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_component_height"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="@dimen/default_edittext_padding"
+                    android:singleLine="true" />
+
+                <!-- Register button -->
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_component_height"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_button_primary"
+                    android:text="@string/action_register"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 </merge>
