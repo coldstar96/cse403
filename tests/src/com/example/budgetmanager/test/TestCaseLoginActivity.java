@@ -10,7 +10,8 @@ import com.jayway.android.robotium.solo.Solo;
 
 /**
  * Tests that LoginActivity throws the correct errors for different invalid
- * inputs in the email and password fields, and does not throw any extra errors
+ * inputs in the email and password fields, and that it does not throw any extra
+ * errors
  * 
  * @author James PushaKi
  */
