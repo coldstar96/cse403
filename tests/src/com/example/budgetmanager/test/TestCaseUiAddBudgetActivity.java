@@ -75,7 +75,7 @@ public class TestCaseUiAddBudgetActivity
 				createButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// We should have an error on amount where you must have a positive
 		// amount
@@ -107,7 +107,7 @@ public class TestCaseUiAddBudgetActivity
 				createButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// We should have an error on amount where you must have a positive
 		// amount
@@ -140,7 +140,7 @@ public class TestCaseUiAddBudgetActivity
 				createButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// Amount field should complain about being empty
 		String expectedError = "Please specify amount";
@@ -170,7 +170,7 @@ public class TestCaseUiAddBudgetActivity
 				createButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// Name field should complain about being empty
 		String expectedError = "Please specify name";
@@ -210,7 +210,7 @@ public class TestCaseUiAddBudgetActivity
 				createButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// We expect the budget field complain about duplicate names
 		String expectedError = "Budget name already in use";
@@ -233,7 +233,13 @@ public class TestCaseUiAddBudgetActivity
 		// Set up some data in the fields
 		solo.enterText(nameField, "Clearing Budget");
 		solo.enterText(amountField, "12345.00");
-		solo.clickOnView(recurCheckBox, true);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				recurCheckBox.setChecked(true);
+			}
+		});
+		solo.sleep(1000);
 
 		// Clear the fields and wait for animations
 		getActivity().runOnUiThread(new Runnable() {
@@ -242,7 +248,7 @@ public class TestCaseUiAddBudgetActivity
 				clearButton.performClick();
 			}
 		});
-		solo.sleep(800);
+		solo.sleep(1000);
 
 		// The fields should be back to their defaults.
 		String nameText = nameField.getText().toString();

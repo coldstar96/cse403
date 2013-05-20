@@ -66,7 +66,7 @@ public class TestCaseUiRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// The email field should complain about being blank
 		String emailError = (String) emailField.getError();
@@ -84,7 +84,7 @@ public class TestCaseUiRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// The password field should complain about being blank
 		String passwordError = (String) passwordField.getError();
@@ -102,7 +102,7 @@ public class TestCaseUiRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// The confirmation field should complain about being blank
 		String confirmError = (String) passwordConfirmField.getError();
@@ -123,7 +123,7 @@ public class TestCaseUiRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// The email field should complain about the email being bad
 		String expectedError = "This email address is invalid";
@@ -146,7 +146,7 @@ public class TestCaseUiRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		// There should be an error about passwords not matching
 		// But only on the password field. Confirmation has no errors.
