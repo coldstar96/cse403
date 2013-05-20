@@ -193,12 +193,6 @@ public class LoginActivity extends Activity {
 									budgetList.clear();
 									budgetList.addAll(result);
 
-									// Add entries to the application state
-									for (Budget b : budgetList) {
-										Log.d(TAG, b.getName() + " budget fetched");
-									}
-									Log.d(TAG, "fetch data on ApiInteface is success");
-
 									startActivity(new Intent(LoginActivity.this,
 											EntryLogsActivity.class));
 									finish();

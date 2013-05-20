@@ -51,14 +51,6 @@ public class LogoActivity extends Activity {
 						budgetList.clear();
 						budgetList.addAll(result);
 
-						for (Budget b : budgetList) {
-							Log.d(TAG, b.getName() + " budget fetched");
-							for (Entry e: b.getEntries()) {
-								Log.d(TAG, e.getAmount() + " entry fetched");
-							}
-						}
-						Log.d(TAG, "fetch data on ApiInteface is success");
-
 						// check the preference to see which activity to launch into
 						String startingScreen = spref.getString(SettingsFragment
 								.KEY_PREF_STARTING_SCREEN, "");
