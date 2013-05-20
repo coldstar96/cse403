@@ -1,6 +1,8 @@
 package com.example.budgetmanager.api;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.SocketTimeoutException;
+
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -76,6 +78,7 @@ public class ApiInterface {
 
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
+		client.setTimeout(10000);
 		client.setCookieStore(cookieStore);
 
 		// Need to specify that we want JSON back from the server.
@@ -121,6 +124,14 @@ public class ApiInterface {
 			public void onFailure(Throwable t) {
 				callback.onFailure(t.getMessage());
 			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
+			}
 		});
 	}
 
@@ -164,6 +175,14 @@ public class ApiInterface {
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
 			}
 		});
 	}
@@ -270,6 +289,14 @@ public class ApiInterface {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
 			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
+			}
 		});
 	}
 
@@ -330,6 +357,14 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
 			}
 		});
 	}
@@ -418,6 +453,14 @@ public class ApiInterface {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
 			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
+			}
 		});
 	}
 
@@ -464,6 +507,14 @@ public class ApiInterface {
 					}
 				}
 			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
+			}
 		});
 	}
 
@@ -505,6 +556,14 @@ public class ApiInterface {
 						callback.onFailure(e.getMessage());
 					}
 				}
+			}
+			
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException)
+					callback.onFailure("Network Timeout");
+				else
+					callback.onFailure("FAILURE");
 			}
 		});
 	}
