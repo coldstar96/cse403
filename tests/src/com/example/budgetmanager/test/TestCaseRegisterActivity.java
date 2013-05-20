@@ -6,6 +6,7 @@ import com.jayway.android.robotium.solo.Solo;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class TestCaseRegisterActivity
@@ -16,6 +17,7 @@ public class TestCaseRegisterActivity
 	private EditText emailField;
 	private EditText passwordField;
 	private EditText passwordConfirmField;
+	private Button registerButton;
 
 	private static final String REQUIRED_FIELD = "This field is required";
 
@@ -37,13 +39,14 @@ public class TestCaseRegisterActivity
 
 		solo = new Solo(getInstrumentation(), getActivity());
 
-		emailField = solo.getEditText("Email");
-		passwordField = solo.getEditText("Password");
-		passwordConfirmField = solo.getEditText("Verify Password");
+		emailField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.email);
+		passwordField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.password);
+		passwordConfirmField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.password2);
+		registerButton = (Button) getActivity().findViewById(com.example.budgetmanager.R.id.register_button);
 	}
 
 	public void test_blankEmailField_shouldNotAllow() {
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		solo.sleep(500);
 
 		String emailError = (String) emailField.getError();
@@ -53,7 +56,7 @@ public class TestCaseRegisterActivity
 	}
 
 	public void test_blankPasswordField_shouldNotAllow() {
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		solo.sleep(500);
 
 		String passwordError = (String) passwordField.getError();
@@ -63,7 +66,7 @@ public class TestCaseRegisterActivity
 	}
 
 	public void test_blankVerifyPasswordField_shouldNotAllow() {
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		solo.sleep(500);
 
 		String confirmError = (String) passwordConfirmField.getError();
@@ -75,7 +78,7 @@ public class TestCaseRegisterActivity
 	public void test_badEmail_shouldNotAllow() {
 		solo.enterText(emailField, "not an email");
 
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		solo.sleep(500);
 
 		String expectedError = "This email address is invalid";
@@ -89,7 +92,7 @@ public class TestCaseRegisterActivity
 		solo.enterText(passwordField, "Password1");
 		solo.enterText(passwordConfirmField, "Password2");
 
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		solo.sleep(500);
 
 		String expectedError = "This password does not match the password above.";
@@ -114,7 +117,7 @@ public class TestCaseRegisterActivity
 		solo.enterText(passwordField, password);
 		solo.enterText(passwordConfirmField, password);
 
-		solo.clickOnButton("Register");
+		solo.clickOnView(registerButton);
 		// Give the network lots of time to respond
 		solo.sleep(10000);
 

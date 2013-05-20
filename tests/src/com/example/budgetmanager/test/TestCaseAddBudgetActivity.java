@@ -8,6 +8,8 @@ import com.example.budgetmanager.UBudgetApp;
 import com.jayway.android.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class TestCaseAddBudgetActivity
@@ -16,6 +18,9 @@ public class TestCaseAddBudgetActivity
 	private Solo solo;
 	private EditText nameField;
 	private EditText amountField;
+	private Button createButton;
+	private Button clearButton;
+	private CheckBox recurCheckBox;
 
 	private UBudgetApp app;
 
@@ -28,8 +33,11 @@ public class TestCaseAddBudgetActivity
 		super.setUp();
 		solo = new Solo(getInstrumentation(), getActivity());
 
-		nameField = solo.getEditText("Budget Name");
-		amountField = solo.getEditText("Amount");
+		nameField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.budget_name);
+		amountField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.budget_amount);
+		createButton = (Button) getActivity().findViewById(com.example.budgetmanager.R.id.create_budget_button);
+		clearButton = (Button) getActivity().findViewById(com.example.budgetmanager.R.id.clear_budget_button);
+		recurCheckBox = (CheckBox) getActivity().findViewById(com.example.budgetmanager.R.id.budget_recur);
 
 		app = (UBudgetApp) getActivity().getApplication();
 		app.getBudgetList().clear();
@@ -39,7 +47,7 @@ public class TestCaseAddBudgetActivity
 		solo.enterText(nameField, "Budget with 0 Amount");
 		solo.enterText(amountField, "0");
 
-		solo.clickOnButton("Create");
+		solo.clickOnView(createButton);
 		solo.sleep(500);
 
 		String expectedError = "Amount must be greater than $0";
@@ -56,7 +64,7 @@ public class TestCaseAddBudgetActivity
 		solo.enterText(nameField, "Budget with 0.00 Amount");
 		solo.enterText(amountField, "0.00");
 
-		solo.clickOnButton("Create");
+		solo.clickOnView(createButton);
 		solo.sleep(500);
 
 		String expectedError = "Amount must be greater than $0";
@@ -74,7 +82,7 @@ public class TestCaseAddBudgetActivity
 	public void test_emptyAmountValidName_shouldNotAllowIt() {
 		solo.enterText(nameField, "Empty Amount Budget");
 
-		solo.clickOnButton("Create");
+		solo.clickOnView(createButton);
 		solo.sleep(500);
 
 		String expectedError = "Please specify amount";
@@ -90,7 +98,7 @@ public class TestCaseAddBudgetActivity
 	public void test_emptyNameValidAmount_shouldNotAllowIt() {
 		solo.enterText(amountField, "1.00");
 
-		solo.clickOnButton("Create");
+		solo.clickOnView(createButton);
 		solo.sleep(500);
 
 		String expectedError = "Please specify name";
@@ -113,7 +121,7 @@ public class TestCaseAddBudgetActivity
 		solo.enterText(nameField, budgetName);
 		solo.enterText(amountField, "1.00");
 
-		solo.clickOnButton("Create");
+		solo.clickOnView(createButton);
 		solo.sleep(500);
 
 		String expectedError = "Budget name already in use";
@@ -126,28 +134,21 @@ public class TestCaseAddBudgetActivity
 		assertNull(amountField.getError());
 	}
 
-	public void test_clear_shouldResetAllFields() {
+	public void test_clear_shouldResetFields() {
 		solo.enterText(nameField, "Clearing Budget");
 		solo.enterText(amountField, "12345.00");
+		solo.clickOnView(recurCheckBox, true);
 
-		// Since we only have one checkbox, this clicks it to set it.
-		solo.clickOnCheckBox(0);
-
-		// Similarly, since we only have one spinner, this sets its selected index.
-		solo.pressSpinnerItem(0, 3);
-
-		solo.clickOnButton("Clear");
-		solo.sleep(500);
+		solo.clickOnView(clearButton);
+		solo.sleep(800);
 
 		String nameText = nameField.getText().toString();
 		String amountText = amountField.getText().toString();
-		boolean recurChecked = solo.isCheckBoxChecked(0);
-		boolean correctDuration = solo.isSpinnerTextSelected("Day");
+		boolean recurChecked = recurCheckBox.isChecked();
 
 		assertEquals("Name field was not empty after clearing", "", nameText);
 		assertEquals("Amount field was not empty after clearing", "", amountText);
 		assertFalse("Recur CheckBox was checked after clearing", recurChecked);
-		assertTrue("Spinner text after clear should be 'Day'", correctDuration);
 	}
 
 }
