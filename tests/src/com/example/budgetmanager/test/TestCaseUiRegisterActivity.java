@@ -5,13 +5,18 @@ import com.jayway.android.robotium.solo.Solo;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class TestCaseRegisterActivity
+/**
+ * Test the register activity.
+ *
+ * @author chris brucec5
+ *
+ */
+public class TestCaseUiRegisterActivity
 	extends ActivityInstrumentationTestCase2<RegisterActivity> {
 
 	private Solo solo;
@@ -23,7 +28,7 @@ public class TestCaseRegisterActivity
 
 	private static final String REQUIRED_FIELD = "This field is required";
 
-	public TestCaseRegisterActivity() {
+	public TestCaseUiRegisterActivity() {
 		super(RegisterActivity.class);
 	}
 
@@ -41,18 +46,29 @@ public class TestCaseRegisterActivity
 
 		solo = new Solo(getInstrumentation(), getActivity());
 
-		emailField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.email);
-		passwordField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.password);
-		passwordConfirmField = (EditText) getActivity().findViewById(com.example.budgetmanager.R.id.password2);
-		registerButton = (Button) getActivity().findViewById(com.example.budgetmanager.R.id.register_button);
+		// Get the various UI elements to interact with
+		emailField = (EditText) getActivity().findViewById(
+				com.example.budgetmanager.R.id.email);
+		passwordField = (EditText) getActivity().findViewById(
+				com.example.budgetmanager.R.id.password);
+		passwordConfirmField = (EditText) getActivity().findViewById(
+				com.example.budgetmanager.R.id.password2);
+		registerButton = (Button) getActivity().findViewById(
+				com.example.budgetmanager.R.id.register_button);
 	}
 
 	@MediumTest
-	@FlakyTest(tolerance=3)
 	public void test_blankEmailField_shouldNotAllow() {
-		solo.clickOnView(registerButton);
+		// Just click on the register button without doing anything.
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
+		// The email field should complain about being blank
 		String emailError = (String) emailField.getError();
 
 		assertNotNull(emailError);
@@ -60,11 +76,17 @@ public class TestCaseRegisterActivity
 	}
 
 	@MediumTest
-	@FlakyTest(tolerance=3)
 	public void test_blankPasswordField_shouldNotAllow() {
-		solo.clickOnView(registerButton);
+		// Just click on the register button without doing anything.
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
+		// The password field should complain about being blank
 		String passwordError = (String) passwordField.getError();
 
 		assertNotNull(passwordError);
@@ -72,11 +94,17 @@ public class TestCaseRegisterActivity
 	}
 
 	@MediumTest
-	@FlakyTest(tolerance=3)
 	public void test_blankVerifyPasswordField_shouldNotAllow() {
-		solo.clickOnView(registerButton);
+		// Just click on the register button without doing anything.
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
+		// The confirmation field should complain about being blank
 		String confirmError = (String) passwordConfirmField.getError();
 
 		assertNotNull(confirmError);
@@ -84,13 +112,20 @@ public class TestCaseRegisterActivity
 	}
 
 	@MediumTest
-	@FlakyTest(tolerance=3)
 	public void test_badEmail_shouldNotAllow() {
+		// Enter an email that isn't actually a valid email address
 		solo.enterText(emailField, "not an email");
 
-		solo.clickOnView(registerButton);
+		// Try to register, wait for animations.
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
+		// The email field should complain about the email being bad
 		String expectedError = "This email address is invalid";
 		String emailError = (String) emailField.getError();
 
@@ -99,14 +134,22 @@ public class TestCaseRegisterActivity
 	}
 
 	@MediumTest
-	@FlakyTest(tolerance=3)
 	public void test_nonMatchingPasswords_shouldNotAllow() {
+		// Input mismatched password/confirmation
 		solo.enterText(passwordField, "Password1");
 		solo.enterText(passwordConfirmField, "Password2");
 
-		solo.clickOnView(registerButton);
+		// Try to register and wait for animations
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
+		// There should be an error about passwords not matching
+		// But only on the password field. Confirmation has no errors.
 		String expectedError = "This password does not match the password above.";
 		String confirmError = (String) passwordConfirmField.getError();
 		String passwordError = (String) passwordField.getError();
@@ -119,21 +162,29 @@ public class TestCaseRegisterActivity
 	}
 
 	@LargeTest
-	@FlakyTest(tolerance=3)
 	public void test_emailInUseAlready_shouldNotAllow() {
 		// NOTE: we're banking on there already being a user with this email.
 		// In the current production state, there is. Thus, we shall never
 		// nuke the production database or remove this user!
 		solo.enterText(emailField, "example@example.com");
 
+		// Enter the same password and confirmation
 		String password = "password";
 		solo.enterText(passwordField, password);
 		solo.enterText(passwordConfirmField, password);
 
-		solo.clickOnView(registerButton);
+		// Try to register
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		// Give the network lots of time to respond
 		solo.sleep(10000);
 
+		// The only error should be on the email field,
+		// complaining about the non-uniqueness of the emails.
 		String expectedError = "This email address is already in use";
 		String emailError = (String) emailField.getError();
 		String confirmError = (String) passwordConfirmField.getError();
