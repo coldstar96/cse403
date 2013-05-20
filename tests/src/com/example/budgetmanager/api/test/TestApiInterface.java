@@ -41,10 +41,10 @@ public class TestApiInterface extends AndroidTestCase {
 			// NullPointerException.
 			setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
 		} catch (Exception e) { }
-		
+
 		api = ApiInterface.getInstance();
 		testClient = new TestAsyncHttpClient();
-		
+
 		try {
 			// API's client field is private. Lets use
 			// reflection to change it to our test client.
@@ -54,13 +54,17 @@ public class TestApiInterface extends AndroidTestCase {
 	
 	/**
 	 * Tests the creation of a budget from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_create_newBudget_shouldSetId() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final long BUDGET_ID = 100;
+
+		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
 				.put("id", BUDGET_ID), true);
+
 		assertEquals(Budget.NEW_ID, b.getId());
 		api.create(b, new ApiCallback<Long>() {
 			@Override
@@ -77,10 +81,12 @@ public class TestApiInterface extends AndroidTestCase {
 	
 	/**
 	 * Tests the failure of creation of a budget from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_create_newBudget_responseHasNoId_shouldReturnFailure() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
+		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish"), true);
 		api.create(b, new ApiCallback<Long>() {
@@ -105,6 +111,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final Entry e = new Entry(100, b, "notes", 
 				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		final long ENTRY_ID = 100;
+		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
 				.put("id", ENTRY_ID)
 				.put("created_at", "2013-11-14 01:00:00")
@@ -125,12 +132,14 @@ public class TestApiInterface extends AndroidTestCase {
 	
 	/**
 	 * Tests the failure of creation of an entry from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_create_newEntry_responseHasMissingFields_shouldFail() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		final Entry e = new Entry(100, b, "notes", 
 				LocalDate.parse("2013-11-14", DateTimeFormat.forPattern("yyyy-MM-dd")));
+		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish"), true);
 		api.create(e, new ApiCallback<Long>() {
@@ -148,12 +157,13 @@ public class TestApiInterface extends AndroidTestCase {
 	
 	/**
 	 * Tests the fetching of a user's budgets from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchBudgets_allValid_shouldSucceed() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
-		
+
 		JSONArray jsonBudgets = new JSONArray();
 		for (int i = 0; i < NUM_BUDGETS; i++) {
 			jsonBudgets.put(new JSONObject()
@@ -165,9 +175,10 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("id", START_ID + i)
 			);
 		}
-		
+
+		// Set next "response" from the server.
 		testClient.setNextResponse(jsonBudgets, true);
-		
+
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 
 			@Override
@@ -195,12 +206,13 @@ public class TestApiInterface extends AndroidTestCase {
 	
 	/**
 	 * Tests the failure of fetching of a user's budgets from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchBudgets_invalidResponse_shouldFail() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
-		
+
 		JSONArray jsonBudgets = new JSONArray();
 		for (int i = 0; i < NUM_BUDGETS; i++) {
 			jsonBudgets.put(new JSONObject()
@@ -212,9 +224,10 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("id", START_ID + i)
 			);
 		}
-		
+
+		// Set next "response" from the server.
 		testClient.setNextResponse(jsonBudgets, true);
-		
+
 		api.fetchBudgets(new ApiCallback<List<Budget>>() {
 			@Override
 			public void onSuccess(List<Budget> result) {
@@ -231,6 +244,7 @@ public class TestApiInterface extends AndroidTestCase {
 	/**
 	 * Tests the fetching of a user's specified budget's entries
 	 * from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchEntries_allValid_shouldSucceed() throws JSONException {
@@ -239,7 +253,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final String CREATED_UPDATED = "2013-11-14 01:00:00";
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		b.setId(100);
-		
+
 		JSONArray jsonEntries = new JSONArray();
 		for (int i = 0; i < NUM_ENTRIES; i++) {
 			jsonEntries.put(new JSONObject()
@@ -251,11 +265,11 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("updated_at", CREATED_UPDATED)
 			);
 		}
-		
-		testClient.setNextResponse(jsonEntries, true);
-		
-		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 
+		// Set next "response" from the server.
+		testClient.setNextResponse(jsonEntries, true);
+
+		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 			@Override
 			public void onSuccess(List<Entry> result) {
 				assertEquals(NUM_ENTRIES, result.size());
@@ -277,13 +291,13 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				fail("Shouldn't fail, results are valid.");
 			}
-			
 		});
 	}
 	
 	/**
 	 * Tests the failure of fetching of a user's specified budget's entries
 	 * from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchEntries_invalidResponse_shouldFail() throws JSONException {
@@ -301,11 +315,11 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("notes", "Note " + i)
 			);
 		}
-		
+
+		// Set next "response" from the server.
 		testClient.setNextResponse(jsonEntries, true);
 		
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
-
 			@Override
 			public void onSuccess(List<Entry> result) {
 				fail("Shouldn't succeed, results are invalid.");
@@ -315,20 +329,20 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				assertNotNull(errorMessage);
 			}
-			
 		});
 	}
 	
 	/**
 	 * Tests the fetching of a user's specified budget's, including entries,
 	 * from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchBudgetsAndEntries_allValid_shouldSucceed() throws JSONException {
 		final int NUM_BUDGETS_ENTRIES = 10;
 		final String CREATED_UPDATED = "2013-11-14 01:00:00";
 		final long START_ID = 1;
-		
+
 		JSONArray jsonBudgets = new JSONArray();
 		for (int i = 0; i < NUM_BUDGETS_ENTRIES; i++) {
 			JSONArray jsonEntries = new JSONArray();
@@ -342,7 +356,7 @@ public class TestApiInterface extends AndroidTestCase {
 						.put("updated_at", CREATED_UPDATED)
 				);
 			}
-			
+
 			jsonBudgets.put(new JSONObject()
 					.put("budget_name", "Budget " + i)
 					.put("recurrence_duration", Duration.DAY.toString())
@@ -353,11 +367,11 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("entries", jsonEntries)
 			);
 		}
-		
-		testClient.setNextResponse(jsonBudgets, true);
-		
-		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
+		// Set next "response" from the server.
+		testClient.setNextResponse(jsonBudgets, true);
+
+		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 			@Override
 			public void onSuccess(List<Budget> result) {
 				assertEquals(NUM_BUDGETS_ENTRIES, result.size());
@@ -392,19 +406,19 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				fail("Shouldn't fail, results are valid.");
 			}
-			
 		});
 	}
 	
 	/**
 	 * Tests the failure of fetching of a user's specified budget's, including entries,
 	 * from the server response data.
+	 * White-box test.
 	 */
 	@SmallTest
 	public void test_fetchBudgetsAndEntries_invalidResponse_shouldFail() throws JSONException {
 		final int NUM_BUDGETS = 10;
 		final long START_ID = 1;
-		
+
 		JSONArray jsonBudgets = new JSONArray();
 		for (int i = 0; i < NUM_BUDGETS; i++) {
 			jsonBudgets.put(new JSONObject()
@@ -417,11 +431,11 @@ public class TestApiInterface extends AndroidTestCase {
 					.put("entries", new JSONArray())
 			);
 		}
-		
-		testClient.setNextResponse(jsonBudgets, true);
-		
-		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 
+		// Set next "response" from the server.
+		testClient.setNextResponse(jsonBudgets, true);
+
+		api.fetchBudgetsAndEntries(new ApiCallback<List<Budget>>() {
 			@Override
 			public void onSuccess(List<Budget> result) {
 				fail("Shouldn't succeed, results are invalid.");
@@ -431,22 +445,26 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				assertNotNull(errorMessage);
 			}
-			
 		});
 	}
 	
+	/**
+	 * Tests the login failure handling functionality.
+	 * White-box test.
+	 */
 	@SmallTest
 	public void test_logIn_invalidUsernameOrPassword_shouldPassErrorBack() throws JSONException {
 		final String USERNAME = "test@test.com";
 		final String PASSWORD = "password";
 		final String USERNAME_ERROR = USERNAME + ":";
 		final String PASSWORD_ERROR = "Invalid username or password.";
-		
+
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
 				.put("password_digest", new JSONArray().put(PASSWORD_ERROR));
-		
+
+		// Set next "response" from the server.
 		testClient.setNextResponse(obj, false);
-		
+
 		api.logIn(USERNAME, PASSWORD, new ApiCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
@@ -460,6 +478,10 @@ public class TestApiInterface extends AndroidTestCase {
 		});
 	}
 	
+	/**
+	 * Tests the create user failure handling functionality
+	 * White-box test.
+	 */
 	@SmallTest
 	public void test_createUser_usernameTaken_shouldPassErrorBack() throws JSONException {
 		final String USERNAME = "test@test.com";
@@ -468,6 +490,7 @@ public class TestApiInterface extends AndroidTestCase {
 		
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR));
 		
+		// Set next "response" from the server.
 		testClient.setNextResponse(obj, false);
 		
 		api.createUser(USERNAME, PASSWORD, new ApiCallback<Object>() {
@@ -505,11 +528,6 @@ public class TestApiInterface extends AndroidTestCase {
      * @param className The complete name of the class (ex. java.lang.String)
      * @param fieldName The name of a static field in the class
      * @param newValue The value you want the field to be set to.
-     * @throws SecurityException .
-     * @throws NoSuchFieldException .
-     * @throws ClassNotFoundException .
-     * @throws IllegalArgumentException .
-     * @throws IllegalAccessException .
      */
     private static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
             ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
