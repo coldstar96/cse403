@@ -249,7 +249,7 @@ public class AddEntryActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				// if the request fails, do nothing (the toast is for testing purposes)
-				Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+				Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
 				addButtonView.setClickable(true);
 			}
 		});
