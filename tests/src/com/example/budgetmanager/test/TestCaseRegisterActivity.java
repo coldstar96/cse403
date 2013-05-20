@@ -5,7 +5,9 @@ import com.jayway.android.robotium.solo.Solo;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -45,6 +47,8 @@ public class TestCaseRegisterActivity
 		registerButton = (Button) getActivity().findViewById(com.example.budgetmanager.R.id.register_button);
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_blankEmailField_shouldNotAllow() {
 		solo.clickOnView(registerButton);
 		solo.sleep(500);
@@ -55,6 +59,8 @@ public class TestCaseRegisterActivity
 		assertEquals(REQUIRED_FIELD, emailError);
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_blankPasswordField_shouldNotAllow() {
 		solo.clickOnView(registerButton);
 		solo.sleep(500);
@@ -65,6 +71,8 @@ public class TestCaseRegisterActivity
 		assertEquals(REQUIRED_FIELD, passwordError);
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_blankVerifyPasswordField_shouldNotAllow() {
 		solo.clickOnView(registerButton);
 		solo.sleep(500);
@@ -75,6 +83,8 @@ public class TestCaseRegisterActivity
 		assertEquals(REQUIRED_FIELD, confirmError);
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_badEmail_shouldNotAllow() {
 		solo.enterText(emailField, "not an email");
 
@@ -88,6 +98,8 @@ public class TestCaseRegisterActivity
 		assertEquals(expectedError, emailError);
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_nonMatchingPasswords_shouldNotAllow() {
 		solo.enterText(passwordField, "Password1");
 		solo.enterText(passwordConfirmField, "Password2");
@@ -107,6 +119,7 @@ public class TestCaseRegisterActivity
 	}
 
 	@LargeTest
+	@FlakyTest(tolerance=3)
 	public void test_emailInUseAlready_shouldNotAllow() {
 		// NOTE: we're banking on there already being a user with this email.
 		// In the current production state, there is. Thus, we shall never

@@ -8,6 +8,8 @@ import com.example.budgetmanager.UBudgetApp;
 import com.jayway.android.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.FlakyTest;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -43,6 +45,8 @@ public class TestCaseAddBudgetActivity
 		app.getBudgetList().clear();
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_zeroAmountDollarsValidName_shouldNotAllowIt() {
 		solo.enterText(nameField, "Budget with 0 Amount");
 		solo.enterText(amountField, "0");
@@ -60,6 +64,8 @@ public class TestCaseAddBudgetActivity
 		assertNull(nameField.getError());
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_zeroAmountDollarsAndCentsValidName_shouldNotAllowIt() {
 		solo.enterText(nameField, "Budget with 0.00 Amount");
 		solo.enterText(amountField, "0.00");
@@ -79,6 +85,8 @@ public class TestCaseAddBudgetActivity
 
 	// Test written to fix issue #66
 	// https://github.com/coldstar96/cse403/issues/66
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_emptyAmountValidName_shouldNotAllowIt() {
 		solo.enterText(nameField, "Empty Amount Budget");
 
@@ -95,6 +103,8 @@ public class TestCaseAddBudgetActivity
 		assertNull(nameField.getError());
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_emptyNameValidAmount_shouldNotAllowIt() {
 		solo.enterText(amountField, "1.00");
 
@@ -113,6 +123,8 @@ public class TestCaseAddBudgetActivity
 
 	// Test written to fix issue #68
 	// https://github.com/coldstar96/cse403/issues/68
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_takenNameValidAmount_shouldNotAllowIt() {
 		String budgetName = "Duplicate Budget Name";
 		Budget b = new Budget(budgetName, 0, false, LocalDate.now(), Budget.Duration.WEEK);
@@ -134,6 +146,8 @@ public class TestCaseAddBudgetActivity
 		assertNull(amountField.getError());
 	}
 
+	@MediumTest
+	@FlakyTest(tolerance=3)
 	public void test_clear_shouldResetFields() {
 		solo.enterText(nameField, "Clearing Budget");
 		solo.enterText(amountField, "12345.00");
