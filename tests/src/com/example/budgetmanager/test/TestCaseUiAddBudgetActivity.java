@@ -69,7 +69,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.enterText(amountField, "0");
 
 		// Click create and wait a bit for animations to happen
-		solo.clickOnView(createButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				createButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// We should have an error on amount where you must have a positive
@@ -96,7 +101,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.enterText(amountField, "0.00");
 
 		// Click create and wait a bit for animations to happen
-		solo.clickOnView(createButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				createButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// We should have an error on amount where you must have a positive
@@ -124,7 +134,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.enterText(nameField, "Empty Amount Budget");
 
 		// Click create and wait a bit for animations to happen
-		solo.clickOnView(createButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				createButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// Amount field should complain about being empty
@@ -149,7 +164,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.enterText(amountField, "1.00");
 
 		// Click create and wait a bit for animations to happen
-		solo.clickOnView(createButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				createButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// Name field should complain about being empty
@@ -184,7 +204,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.enterText(amountField, "1.00");
 
 		// Click create and wait a bit for animations to happen
-		solo.clickOnView(createButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				createButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// We expect the budget field complain about duplicate names
@@ -211,7 +236,12 @@ public class TestCaseUiAddBudgetActivity
 		solo.clickOnView(recurCheckBox, true);
 
 		// Clear the fields and wait for animations
-		solo.clickOnView(clearButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				clearButton.performClick();
+			}
+		});
 		solo.sleep(800);
 
 		// The fields should be back to their defaults.

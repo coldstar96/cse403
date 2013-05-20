@@ -60,7 +60,12 @@ public class TestCaseUiRegisterActivity
 	@MediumTest
 	public void test_blankEmailField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// The email field should complain about being blank
@@ -73,7 +78,12 @@ public class TestCaseUiRegisterActivity
 	@MediumTest
 	public void test_blankPasswordField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// The password field should complain about being blank
@@ -86,7 +96,12 @@ public class TestCaseUiRegisterActivity
 	@MediumTest
 	public void test_blankVerifyPasswordField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// The confirmation field should complain about being blank
@@ -102,7 +117,12 @@ public class TestCaseUiRegisterActivity
 		solo.enterText(emailField, "not an email");
 
 		// Try to register, wait for animations.
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// The email field should complain about the email being bad
@@ -120,7 +140,12 @@ public class TestCaseUiRegisterActivity
 		solo.enterText(passwordConfirmField, "Password2");
 
 		// Try to register and wait for animations
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		solo.sleep(500);
 
 		// There should be an error about passwords not matching
@@ -149,7 +174,12 @@ public class TestCaseUiRegisterActivity
 		solo.enterText(passwordConfirmField, password);
 
 		// Try to register
-		solo.clickOnView(registerButton);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				registerButton.performClick();
+			}
+		});
 		// Give the network lots of time to respond
 		solo.sleep(10000);
 
