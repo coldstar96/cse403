@@ -65,13 +65,12 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_zeroAmountDollarsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0 amount should fail
-		solo.enterText(nameField, "Budget with 0 Amount");
-		solo.enterText(amountField, "0");
-
 		// Click create and wait a bit for animations to happen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				nameField.setText("Budget with 0 Amount");
+				amountField.setText("0");
 				createButton.performClick();
 			}
 		});
@@ -97,13 +96,12 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_zeroAmountDollarsAndCentsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0.00 amount should fail
-		solo.enterText(nameField, "Budget with 0.00 Amount");
-		solo.enterText(amountField, "0.00");
-
 		// Click create and wait a bit for animations to happen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				nameField.setText("Budget with 0.00 Amount");
+				amountField.setText("0.00");
 				createButton.performClick();
 			}
 		});
@@ -131,12 +129,12 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_emptyAmountValidName_shouldNotAllowIt() {
 		// Leave the amount field empty
-		solo.enterText(nameField, "Empty Amount Budget");
 
 		// Click create and wait a bit for animations to happen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				nameField.setText("Empty Amount Budget");
 				createButton.performClick();
 			}
 		});
@@ -161,12 +159,12 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_emptyNameValidAmount_shouldNotAllowIt() {
 		// Neglect to enter in a name
-		solo.enterText(amountField, "1.00");
 
 		// Click create and wait a bit for animations to happen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				amountField.setText("1.00");
 				createButton.performClick();
 			}
 		});
@@ -194,19 +192,18 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_takenNameValidAmount_shouldNotAllowIt() {
 		// Add a budget with this name to the budget list
-		String budgetName = "Duplicate Budget Name";
-		Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
-				Budget.Duration.WEEK);
-		app.getBudgetList().add(b);
-
 		// Enter a name that is the same as the other budget, and valid amount.
-		solo.enterText(nameField, budgetName);
-		solo.enterText(amountField, "1.00");
-
 		// Click create and wait a bit for animations to happen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				String budgetName = "Duplicate Budget Name";
+				Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
+						Budget.Duration.WEEK);
+				app.getBudgetList().add(b);
+
+				nameField.setText(budgetName);
+				amountField.setText("1.00");
 				createButton.performClick();
 			}
 		});
@@ -231,11 +228,11 @@ public class TestCaseUiAddBudgetActivity
 	@MediumTest
 	public void test_clear_shouldResetFields() {
 		// Set up some data in the fields
-		solo.enterText(nameField, "Clearing Budget");
-		solo.enterText(amountField, "12345.00");
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				nameField.setText("Clearing Budget");
+				amountField.setText("12345.00");
 				recurCheckBox.setChecked(true);
 			}
 		});
