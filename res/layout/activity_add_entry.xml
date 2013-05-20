@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:paddingBottom="@dimen/default_layout_spacing"
     android:paddingTop="@dimen/default_layout_spacing" >
 
@@ -15,29 +16,42 @@
         android:orientation="vertical"
         tools:context=".AddEntryActivity" >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_amount"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/entry_amount"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
-            android:hint="@string/hint_amount"
-            android:inputType="numberDecimal" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="@dimen/default_edittext_padding"
+            android:singleLine="true" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_budget" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_budget"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner_budget"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height" />
+            android:layout_height="@dimen/default_component_height"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_date" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_date"
+            android:textStyle="bold" />
 
         <DatePicker
             android:id="@+id/entry_date_picker"
@@ -46,16 +60,20 @@
             android:calendarViewShown="false" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/label_optional" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_entry_optional"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/entry_notes"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
-            android:hint="@string/hint_notes" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/hint_notes"
+            android:padding="@dimen/default_edittext_padding" />
 
         <LinearLayout
             android:layout_width="match_parent"

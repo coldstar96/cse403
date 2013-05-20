@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:paddingBottom="@dimen/default_layout_spacing"
     android:paddingTop="@dimen/default_layout_spacing" >
 
@@ -15,38 +16,60 @@
         android:orientation="vertical"
         tools:context=".AddBudgetActivity" >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_budget_name"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/budget_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
-            android:hint="@string/prompt_budget_name"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext"
             android:maxLines="1"
+            android:padding="@dimen/default_edittext_padding"
             android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_budget_amount"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/budget_amount"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
-            android:hint="@string/prompt_budget_amount"
-            android:inputType="numberDecimal" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="@dimen/default_edittext_padding"
+            android:singleLine="true" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/prompt_budget_start_date" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_budget_start_date"
+            android:textStyle="bold" />
 
         <DatePicker
             android:id="@+id/budget_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
             android:calendarViewShown="false" />
 
         <TextView
-            style="@style/FieldHeader"
-            android:text="@string/budget_duration" />
-
-        <View style="@style/FieldHeaderDivider" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_budget_duration"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/budget_duration"
