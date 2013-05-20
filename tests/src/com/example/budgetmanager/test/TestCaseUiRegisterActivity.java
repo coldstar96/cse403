@@ -114,12 +114,11 @@ public class TestCaseUiRegisterActivity
 	@MediumTest
 	public void test_badEmail_shouldNotAllow() {
 		// Enter an email that isn't actually a valid email address
-		solo.enterText(emailField, "not an email");
-
 		// Try to register, wait for animations.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailField.setText("not an email");
 				registerButton.performClick();
 			}
 		});
@@ -136,13 +135,12 @@ public class TestCaseUiRegisterActivity
 	@MediumTest
 	public void test_nonMatchingPasswords_shouldNotAllow() {
 		// Input mismatched password/confirmation
-		solo.enterText(passwordField, "Password1");
-		solo.enterText(passwordConfirmField, "Password2");
-
 		// Try to register and wait for animations
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				passwordField.setText("Password1");
+				passwordConfirmField.setText("Password2");
 				registerButton.performClick();
 			}
 		});
@@ -166,17 +164,17 @@ public class TestCaseUiRegisterActivity
 		// NOTE: we're banking on there already being a user with this email.
 		// In the current production state, there is. Thus, we shall never
 		// nuke the production database or remove this user!
-		solo.enterText(emailField, "example@example.com");
 
 		// Enter the same password and confirmation
-		String password = "password";
-		solo.enterText(passwordField, password);
-		solo.enterText(passwordConfirmField, password);
-
 		// Try to register
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				String password = "password";
+
+				emailField.setText("example@example.com");
+				passwordField.setText(password);
+				passwordConfirmField.setText(password);
 				registerButton.performClick();
 			}
 		});
