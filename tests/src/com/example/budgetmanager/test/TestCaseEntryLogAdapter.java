@@ -12,6 +12,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 /**
  * TDD-style tests for the EntryLogAdapter class
+ *
+ * @author chris brucec5
  */
 public class TestCaseEntryLogAdapter extends AndroidTestCase {
 
