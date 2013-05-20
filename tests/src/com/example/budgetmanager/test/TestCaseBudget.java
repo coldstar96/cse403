@@ -11,6 +11,13 @@ import com.example.budgetmanager.Entry;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
+/**
+ * This is a unit test for the {@link com.example.budgetmanager.Budget Budget} class.
+ * 
+ * It is a black-box test.
+ * 
+ * @author Chris brucec5
+ */
 public class TestCaseBudget extends AndroidTestCase {
 
 	/**
@@ -78,6 +85,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		return new LocalDate(year, month, dayOfMonth);
 	}
 
+	/**
+	 * Checks to see if adding a <code>null</code> entry to a budget causes
+	 * an IllegalArgumentException. Black-box test.
+	 */
 	@SmallTest
 	public void test_addEntry_nullEntry_throwsIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -89,6 +100,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		}
 	}
 
+	/**
+	 * Checks to see if adding the same exact entry object to a budget twice
+	 * causes an IllegalArgumentException. Black-box test.
+	 */
 	@SmallTest
 	public void test_addEntry_duplicateEntry_throwsIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -102,6 +117,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		}
 	}
 
+	/**
+	 * Checks to see if adding an entry to a budget works as it should.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_addEntry_newEntry_shouldHaveTheEntry() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -112,18 +131,30 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(entry, entries.get(0));
 	}
 
+	/**
+	 * Checks to see if a budget set to be recurring is, indeed, recurring.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_isRecurring_isRecurring_shouldBeRecurring() {
 		Budget budget = new Budget("", 0, true, LocalDate.now(), Duration.DAY);
 		assertTrue(budget.isRecurring());
 	}
 
+	/**
+	 * Checks to see if a budget set to be NOT recurring is, indeed, not recurring.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_isRecurring_isNotRecurring_shouldNotBeRecurring() {
 		Budget budget = new Budget("", 0, false, LocalDate.now(), Duration.DAY);
 		assertFalse(budget.isRecurring());
 	}
 
+	/**
+	 * Checks to see if removing a null entry from a budget fails with an
+	 * IllegalArgumentException. Black-box test.
+	 */
 	@SmallTest
 	public void test_removeEntry_removeNull_throwsIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -135,6 +166,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		}
 	}
 
+	/**
+	 * Checks to see if removing an entry does, indeed, remove that entry, but only
+	 * that entry. Black-box test.
+	 */
 	@SmallTest
 	public void test_removeEntry_existingEntry_shouldNotHaveTheEntry() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -149,6 +184,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertTrue(entries.contains(entry2));
 	}
 
+	/**
+	 * Checks to see if the cycle of a budget before it starts is negative.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_getCurrentCycle_isBeforeStart_shoudBeNegative1() {
 		// Create a budget that starts tomorrow, so that it's always
@@ -158,6 +197,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(-1, budget.getCurrentCycle());
 	}
 
+	/**
+	 * Checks to see if the current cycle of a budget on-start is one.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_getCurrentCycle_isOnStart_shouldBe1() {
 		Budget budget = new Budget("test", 1000, true,
@@ -165,6 +208,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(0, budget.getCurrentCycle());
 	}
 
+	/**
+	 * Checks to see if the current cycle, after the first cycle period,
+	 * is greater than one. Black-box test.
+	 */
 	@SmallTest
 	public void test_getCurrentCycle_isAfterStart_shouldBeGreaterThan1() {
 		Budget budget = new Budget("test", 1000, true,
@@ -172,6 +219,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		assertEquals(1, budget.getCurrentCycle());
 	}
 
+	/**
+	 * Checks to see if the start date of a negative cycle of a budget causes
+	 * an IllegalArgumentException to occur. Black-box test.
+	 */
 	@SmallTest
 	public void test_getStartDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -184,6 +235,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		}
 	}
 
+	/**
+	 * Checks to see if the start date of a budget is the start date of the 0th cycle.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_getStartDate_zeroCycleWeekly_shouldBeInitialStartDate() {
 		LocalDate initialStartDate = new LocalDate(2012, 05, 05);
@@ -191,6 +246,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runStartDateTest(Duration.WEEK, initialStartDate, initialStartDate, 0);
 	}
 
+	/**
+	 * Checks to see if exactly one week after the start of a weekly budget is the start
+	 * date of the 1st (index-logic) cycle. Black-box test.
+	 */
 	@SmallTest
 	public void test_getStartDate_firstCycleWeekly_shouldBeOneWeekLater() {
 		LocalDate initialStartDate = new LocalDate(2012, 05, 05);
@@ -199,6 +258,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runStartDateTest(Duration.WEEK, initialStartDate, startDate, 1);
 	}
 
+	/**
+	 * Checks to see if exactly one fortnight after the start of a fortnightly budget
+	 * is the start date of the 1st (index-logic) cycle. Black-box test.
+	 */
 	@SmallTest
 	public void test_getStartDate_firstCycleFortnightly_shouldBeOneFortnightLater() {
 		LocalDate initialStartDate = new LocalDate(2012, 05, 05);
@@ -207,6 +270,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runStartDateTest(Duration.FORTNIGHT, initialStartDate, startDate, 1);
 	}
 
+	/**
+	 * Checks to see if exactly one day after the start of a daily budget
+	 * is the start date of the 1st (index-logic) cycle. Black-box test.
+	 */
 	@SmallTest
 	public void test_getStartDate_firstCycleDaily_shouldBeOneDayLater() {
 		LocalDate initialStartDate = new LocalDate(2012, 05, 05);
@@ -215,6 +282,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runStartDateTest(Duration.DAY, initialStartDate, startDate, 1);
 	}
 
+	/**
+	 * Checks to see if getting the end date of a negative cycle throws an
+	 * IllegalArgumentException. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
@@ -227,6 +298,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		}
 	}
 
+	/**
+	 * Checks to see if getting the end date of a negative cycle throws an
+	 * IllegalArgumentException. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_zeroCycleWeekly_shouldBeInSixDays() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);
@@ -235,6 +310,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runEndDateTest(Duration.WEEK, startDate, endDate, 0);
 	}
 
+	/**
+	 * Checks to see if the end date of the 0th cycle of a daily budget is
+	 * the same day as the start date. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_zeroCycleDaily_shouldBeToday() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);
@@ -243,6 +322,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runEndDateTest(Duration.DAY, startDate, endDate, 0);
 	}
 
+	/**
+	 * Checks to see if the end date of the 0th cycle of a monthly budget is
+	 * one day less than a month away from the start date. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_zeroCycleMonthly_shouldBeNextMonthFromYesterday() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);
@@ -251,6 +334,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runEndDateTest(Duration.MONTH, startDate, endDate, 0);
 	}
 
+	/**
+	 * Checks to see if the end date of the 1st cycle of a weekly budget is
+	 * thirteen days away. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_firstCycleWeekly_shouldBeInThirteenDays() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);
@@ -259,6 +346,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runEndDateTest(Duration.WEEK, startDate, endDate, 1);
 	}
 
+	/**
+	 * Checks to see if the end date of the 1st cycle of a daily budget is
+	 * the day after its start date. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_firstCycleDaily_shouldBeTomorrow() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);
@@ -267,6 +358,10 @@ public class TestCaseBudget extends AndroidTestCase {
 		runEndDateTest(Duration.DAY, startDate, endDate, 1);
 	}
 
+	/**
+	 * Checks to see if the end date of the 1st cycle of a monthly budget is
+	 * two months after the day before the budget's start date. Black-box test.
+	 */
 	@SmallTest
 	public void test_getEndDate_firstCycleMonthly_shouldBeTwoMonthsFromYesterday() {
 		LocalDate startDate = new LocalDate(2012, 05, 05);

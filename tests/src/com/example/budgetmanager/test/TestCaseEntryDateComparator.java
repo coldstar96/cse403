@@ -10,8 +10,17 @@ import junit.framework.TestCase;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryDateComparator class
+ * 
+ * Black-box tests.
+ * 
+ * @author Chris brucec5
  */
 public class TestCaseEntryDateComparator extends TestCase {
+	/**
+	 * Checks that comparing an entry with a later date
+	 * to an entry with an earlier date produces a negative
+	 * result from the comparator. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_laterToEarlier_shouldBeNegative() {
 		Budget budget = Factory.budgetFactory(1, 0);
@@ -28,6 +37,11 @@ public class TestCaseEntryDateComparator extends TestCase {
 		assertTrue(msg, comp.compare(later, earlier) < 0);
 	}
 
+	/**
+	 * Checks that comparing two entries with the same date
+	 * produces a equal (zero) outcome from the comparator.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_same_shouldBeZero() {
 		Budget budget = Factory.budgetFactory(1, 0);
@@ -44,6 +58,11 @@ public class TestCaseEntryDateComparator extends TestCase {
 		assertEquals(msg, 0, comp.compare(lhsEntry, rhsEntry));
 	}
 
+	/**
+	 * Checks that comparing an entry with an earlier date
+	 * to an entry with a later date produces a negative
+	 * result from the comparator. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_earlierToLater_shouldBePositive() {
 		Budget budget = Factory.budgetFactory(1, 0);

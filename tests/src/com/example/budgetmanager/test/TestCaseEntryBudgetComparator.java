@@ -9,8 +9,17 @@ import com.example.budgetmanager.EntryLogAdapter;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryBudgetComparator class
+ * 
+ * Black-box tests.
+ * 
+ * @author Chris brucec5
  */
 public class TestCaseEntryBudgetComparator extends TestCase {
+	/**
+	 * Checks that comparing a "higher" named budget to a "lower" named
+	 * budget provides a negative output from the comparator.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_moreToLess_shouldBeNegative() {
 		Budget lessBudget = Factory.budgetFactory(1, 0);
@@ -28,6 +37,10 @@ public class TestCaseEntryBudgetComparator extends TestCase {
 		assertTrue(msg, comp.compare(less, more) < 0);
 	}
 
+	/**
+	 * Checks that comparing two budgets of the same name have equality
+	 * (zero output) according to the comparator. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_same_shouldBeZero() {
 		Budget rhsBudget = Factory.budgetFactory(1, 0);
@@ -45,6 +58,11 @@ public class TestCaseEntryBudgetComparator extends TestCase {
 		assertEquals(msg, 0, comp.compare(lhsEntry, rhsEntry));
 	}
 
+	/**
+	 * Checks that comparing a "lower" named budget to a "higher" named
+	 * budget provides a positive output from the comparator.
+	 * Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_lessToMore_shouldBePositive() {
 		Budget lessBudget = Factory.budgetFactory(1, 0);
