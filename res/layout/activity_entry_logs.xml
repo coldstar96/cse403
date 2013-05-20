@@ -10,6 +10,7 @@
         android:layout_height="@dimen/default_component_height"
         android:layout_alignParentLeft="true"
         android:entries="@array/sort_types"
+        android:layout_marginBottom="@dimen/default_edittext_padding"
         android:prompt="@string/logs_sort_prompt" />
 
     <ListView
@@ -17,37 +18,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/spinner_logs_sort"
-        android:paddingBottom="@dimen/default_component_height" >
+        android:layout_marginBottom="64dp" >
     </ListView>
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_component_height"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/default_edittext_padding"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/add_budget_button"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/default_button_margin"
-            android:layout_marginTop="@dimen/default_button_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
+            android:background="@drawable/rounded_button_secondary"
             android:onClick="onAddBudgetClicked"
-            android:text="@string/action_add_budget" />
+            android:text="@string/action_add_budget"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/add_entry_button"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/default_button_margin"
-            android:layout_marginTop="@dimen/default_button_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
+            android:background="@drawable/rounded_button_primary"
             android:onClick="onAddEntryClicked"
-            android:text="@string/action_add_entry" />
+            android:text="@string/action_add_entry"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </RelativeLayout>
