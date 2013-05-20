@@ -18,11 +18,12 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 	private JSONArray jsonArray;
 	boolean object;
 	boolean succeeds;
-	
+
 	/**
 	 * Sets the next response to a handler.
 	 * 
 	 * @param obj The JSONObject or JSONArray to set the next response to.
+	 * @param succeeds Whether the next response will call the onSuccess or onFailure handlers.
 	 * @throws IllegalArgumentException if the passed object is not JSONObject or JSONArray
 	 */
 	public void setNextResponse(Object obj, boolean succeeds) {
@@ -36,7 +37,7 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 		
 		this.succeeds = succeeds;
 	}
-	
+
 	/**
 	 * Calls the specified handler with the last set JSON response.
 	 * 
@@ -60,24 +61,36 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 			}
 		}
 	}
-	
+
 	// Overwrite AsyncHttpClient methods to use our forwarding method.
-	
+
+	/**
+	 * Returns a mock network connection response to the <code>handler</code>.
+	 */
 	@Override
 	public void post(String arg, RequestParams params, AsyncHttpResponseHandler handler) {
 		callHandler(handler);
 	}
-	
+
+	/**
+	 * Returns a mock network connection response to the <code>handler</code>.
+	 */
 	@Override
 	public void post(String arg, AsyncHttpResponseHandler handler) {
 		callHandler(handler);
 	}
-	
+
+	/**
+	 * Returns a mock network connection response to the <code>handler</code>.
+	 */
 	@Override
 	public void get(String arg, RequestParams params, AsyncHttpResponseHandler handler) {
 		callHandler(handler);
 	}
-	
+
+	/**
+	 * Returns a mock network connection response to the <code>handler</code>.
+	 */
 	@Override
 	public void get(String arg, AsyncHttpResponseHandler handler) {
 		callHandler(handler);

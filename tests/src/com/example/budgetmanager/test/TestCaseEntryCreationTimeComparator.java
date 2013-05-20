@@ -9,8 +9,17 @@ import junit.framework.TestCase;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryCreationTimeComparator class
+ * 
+ * Black-box tests.
+ * 
+ * @author Chris brucec5
  */
 public class TestCaseEntryCreationTimeComparator extends TestCase {
+	/**
+	 * Checks that comparing an entry with a later creation time
+	 * to an entry with an earlier creation time produces a negative
+	 * result from the comparator. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_laterToEarlier_shouldBeNegative() {
 		Budget budget = Factory.budgetFactory(1, 0);
@@ -27,6 +36,10 @@ public class TestCaseEntryCreationTimeComparator extends TestCase {
 		assertTrue(msg, comp.compare(later, earlier) < 0);
 	}
 
+	/**
+	 * Checks that the comparator returns an equal (zero) value from
+	 * two entries with an identical creation time. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_same_shouldBeZero() {
 		Budget budget = Factory.budgetFactory(1, 0);
@@ -43,6 +56,11 @@ public class TestCaseEntryCreationTimeComparator extends TestCase {
 		assertEquals(msg, 0, comp.compare(later, earlier));
 	}
 
+	/**
+	 * Checks that comparing an entry with an earlier creation time
+	 * to an entry with a later creation time produces a positive
+	 * result from the comparator. Black-box test.
+	 */
 	@SmallTest
 	public void test_compare_earlierToLater_shouldBePositive() {
 		Budget budget = Factory.budgetFactory(1, 0);
