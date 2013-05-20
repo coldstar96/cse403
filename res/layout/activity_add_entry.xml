@@ -24,14 +24,11 @@
 
         <EditText
             android:id="@+id/entry_amount"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height"
+            style="@style/CustomEditText"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edittext"
             android:inputType="numberDecimal"
             android:maxLines="1"
-            android:padding="@dimen/default_edittext_padding"
             android:singleLine="true" />
 
         <TextView
@@ -67,13 +64,10 @@
 
         <EditText
             android:id="@+id/entry_notes"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height"
+            style="@style/CustomEditText"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="@string/hint_notes"
-            android:padding="@dimen/default_edittext_padding" />
+            android:hint="@string/hint_notes" />
 
         <LinearLayout
             android:layout_width="match_parent"
