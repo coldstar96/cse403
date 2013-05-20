@@ -233,7 +233,13 @@ public class TestCaseUiAddBudgetActivity
 		// Set up some data in the fields
 		solo.enterText(nameField, "Clearing Budget");
 		solo.enterText(amountField, "12345.00");
-		solo.clickOnView(recurCheckBox, true);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				recurCheckBox.setChecked(false);
+			}
+		});
+		solo.sleep(800);
 
 		// Clear the fields and wait for animations
 		getActivity().runOnUiThread(new Runnable() {
