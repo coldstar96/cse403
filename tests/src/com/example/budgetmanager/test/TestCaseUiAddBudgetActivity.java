@@ -19,7 +19,7 @@ import android.widget.EditText;
  * @author chris brucec5
  *
  */
-public class TestCaseAddBudgetActivity
+public class TestCaseUiAddBudgetActivity
 	extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 
 	private Solo solo;
@@ -31,7 +31,7 @@ public class TestCaseAddBudgetActivity
 
 	private UBudgetApp app;
 
-	public TestCaseAddBudgetActivity() {
+	public TestCaseUiAddBudgetActivity() {
 		super(AddBudgetActivity.class);
 	}
 
@@ -57,6 +57,11 @@ public class TestCaseAddBudgetActivity
 		app.getBudgetList().clear();
 	}
 
+	/**
+	 * Ensure that an amount of 0 is question.
+	 *
+	 * This is a Black Box test.
+	 */
 	@MediumTest
 	public void test_zeroAmountDollarsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0 amount should fail
@@ -79,6 +84,11 @@ public class TestCaseAddBudgetActivity
 		assertNull(nameField.getError());
 	}
 
+	/**
+	 * Ensure that an amount of 0.00 is out of the question.
+	 *
+	 * This is a black box test.
+	 */
 	@MediumTest
 	public void test_zeroAmountDollarsAndCentsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0.00 amount should fail
@@ -103,6 +113,11 @@ public class TestCaseAddBudgetActivity
 
 	// Test written to fix issue #66
 	// https://github.com/coldstar96/cse403/issues/66
+	/**
+	 * Ensure an empty amount results in a reported error.
+	 *
+	 * This is a Black Box test.
+	 */
 	@MediumTest
 	public void test_emptyAmountValidName_shouldNotAllowIt() {
 		// Leave the amount field empty
@@ -123,6 +138,11 @@ public class TestCaseAddBudgetActivity
 		assertNull(nameField.getError());
 	}
 
+	/**
+	 * Ensure an empty name results in a reported error.
+	 *
+	 * This is a Black Box test.
+	 */
 	@MediumTest
 	public void test_emptyNameValidAmount_shouldNotAllowIt() {
 		// Neglect to enter in a name
@@ -145,6 +165,12 @@ public class TestCaseAddBudgetActivity
 
 	// Test written to fix issue #68
 	// https://github.com/coldstar96/cse403/issues/68
+	/**
+	 * Ensure a budget name that is already in use for you can't
+	 * get used again.
+	 *
+	 * This is a Black Box test.
+	 */
 	@MediumTest
 	public void test_takenNameValidAmount_shouldNotAllowIt() {
 		// Add a budget with this name to the budget list
@@ -172,6 +198,11 @@ public class TestCaseAddBudgetActivity
 		assertNull(amountField.getError());
 	}
 
+	/**
+	 * Ensure fields are reset upon clicking the clear button.
+	 *
+	 * This is a black box test.
+	 */
 	@MediumTest
 	public void test_clear_shouldResetFields() {
 		// Set up some data in the fields
