@@ -44,7 +44,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	private Context context;
 
 	// resource ID for the layout to inflate into each row
-	int layoutResourceId;
+	private int layoutResourceId;
 
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
@@ -143,10 +143,10 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		}
 
 		Log.d(TAG, "Getting TextViews for row " + position);
-		TextView dateView = (TextView)row.findViewById(R.id.item_date);
-		TextView amountView = (TextView)row.findViewById(R.id.item_amount);
-		TextView budgetNameView = (TextView)row.findViewById(R.id.item_budget);
-		TextView notesView = (TextView)row.findViewById(R.id.item_note);
+		TextView dateView = (TextView) row.findViewById(R.id.item_date);
+		TextView amountView = (TextView) row.findViewById(R.id.item_amount);
+		TextView budgetNameView = (TextView) row.findViewById(R.id.item_budget);
+		TextView notesView = (TextView) row.findViewById(R.id.item_note);
 		Log.d(TAG, "Finished getting TextViews for row " + position);
 
 		Entry entry = entryList.get(position);
@@ -240,7 +240,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 *
 	 */
 	public static class EntryCreationTimeComparator
-			implements Comparator<Entry> {
+	implements Comparator<Entry> {
 
 		/**
 		 * Compare Entries by their real creation times for use in sorting.
@@ -271,7 +271,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 *
 	 */
 	public static class EntryUpdateTimeComparator
-			implements Comparator<Entry> {
+	implements Comparator<Entry> {
 
 		/**
 		 * Compare Entries by their real last update times for use in sorting.

@@ -45,27 +45,27 @@ public class AddEntryActivity extends Activity {
 
 	// List of Budgets to choose from
 	private Spinner mBudgetView;
-	
+
 	// Number field for entering the Entry amount
 	private EditText mAmountView;
-	
+
 	// Enables the user to pick the start date of the Budget
 	private DatePicker mDateView;
-	
+
 	// Text field for entering notes for the Entry
 	private EditText mNotesView;
 	private Button addButtonView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
-		
+
 		// check the preference to see which theme to set
 		String startingScreen = PreferenceManager.
 				getDefaultSharedPreferences(this).getString(SettingsFragment
-				.KEY_PREF_APP_THEME, "");
+						.KEY_PREF_APP_THEME, "");
 
 		if (startingScreen.equals(SettingsFragment
 				.APP_THEME_LIGHT)) {
@@ -73,14 +73,14 @@ public class AddEntryActivity extends Activity {
 		} else {
 			setTheme(android.R.style.Theme_Holo);
 		}
-		
+
 		super.onCreate(savedInstanceState);
 
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
 
 		// retrieve the application data
-		appData = (UBudgetApp)getApplication();
+		appData = (UBudgetApp) getApplication();
 
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
@@ -88,30 +88,30 @@ public class AddEntryActivity extends Activity {
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		addButtonView = (Button) findViewById(R.id.add_entry_button);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// set up the button that lead to the settings activity
 		MenuItem buttonSettings = menu.add(R.string.title_settings);
-		
+
 		// this forces it to go in the overflow menu, which is preferred.
 		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-		
+
 		buttonSettings.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Take the users to the Settings activity upon clicking the button. 
+			/**
+			 * Take the users to the Settings activity upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(AddEntryActivity.this, 
+				Intent settingsIntent = new Intent(AddEntryActivity.this,
 						SettingsActivity.class);
-				
+
 				// these extras allow SettingsActivity to skip the 'headers'
 				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, 
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
 						SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);	
-				
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+
 				AddEntryActivity.this.startActivity(settingsIntent);
 
 				return false;
@@ -120,19 +120,19 @@ public class AddEntryActivity extends Activity {
 
 		// set up the button that lead to the signout activity
 		MenuItem buttonSignout = menu.add(R.string.title_signout);
-		
+
 		// this forces it to go in the overflow menu, which is preferred.
 		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-		
+
 		buttonSignout.setOnMenuItemClickListener(new MenuItem.
 				OnMenuItemClickListener() {
-			/** 
-			 * Sign out the user upon clicking the button. 
+			/**
+			 * Sign out the user upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
-				Toast.makeText(AddEntryActivity.this, 
-						"Successfully handled Sign out selection", 
+				Toast.makeText(AddEntryActivity.this,
+						"Successfully handled Sign out selection",
 						Toast.LENGTH_LONG).show();
 				return false;
 			}
@@ -144,7 +144,6 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
@@ -155,7 +154,7 @@ public class AddEntryActivity extends Activity {
 		final List<Budget> budgetList = appData.getBudgetList();
 		// list for the String names for each Budget object
 		List<String> budgetNameList = new ArrayList<String>();
-		
+
 		// build the list of Budget names
 		for (Budget b : budgetList) {
 			Log.d(TAG, b.getName());
@@ -174,7 +173,6 @@ public class AddEntryActivity extends Activity {
 
 		// set the spinner to display selection upon selecting an item
 		mBudgetView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
@@ -188,7 +186,6 @@ public class AddEntryActivity extends Activity {
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// do nothing
 			}
-
 		});
 	}
 
@@ -206,7 +203,7 @@ public class AddEntryActivity extends Activity {
 			mAmountView.requestFocus();
 			return;
 		}
-		
+
 		// checks whether the amount is non-zero
 		if (Double.parseDouble(mAmountView.getText().toString()) == 0.0) {
 			mAmountView.setError(getString(R.string.error_zero_amount));
@@ -222,13 +219,13 @@ public class AddEntryActivity extends Activity {
 			return;
 		}
 		addButtonView.setClickable(false);
-		
+
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
 				UBudgetApp app = (UBudgetApp) getApplication();
 				app.getEntryList().add(0, newEntry);
-				
+
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "
@@ -252,7 +249,7 @@ public class AddEntryActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				// if the request fails, do nothing (the toast is for testing purposes)
-				Toast.makeText(AddEntryActivity.this, "FAILED", Toast.LENGTH_LONG).show();
+				Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
 				addButtonView.setClickable(true);
 			}
 		});

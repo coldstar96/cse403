@@ -1,6 +1,8 @@
 package com.example.budgetmanager.api;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.SocketTimeoutException;
+
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -76,6 +78,7 @@ public class ApiInterface {
 
 		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
+		client.setTimeout(10000);
 		client.setCookieStore(cookieStore);
 
 		// Need to specify that we want JSON back from the server.
@@ -121,6 +124,15 @@ public class ApiInterface {
 			public void onFailure(Throwable t) {
 				callback.onFailure(t.getMessage());
 			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
+				}
+			}
 		});
 	}
 
@@ -164,6 +176,15 @@ public class ApiInterface {
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -257,6 +278,8 @@ public class ApiInterface {
 						budgetList.add(newBudget);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 
@@ -267,6 +290,15 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -316,6 +348,8 @@ public class ApiInterface {
 						b.addEntry(newEntry);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 
@@ -326,6 +360,15 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -401,6 +444,8 @@ public class ApiInterface {
 						budgetList.add(newBudget);
 					} catch (JSONException e) {
 						Log.e(TAG, e.getMessage());
+						callback.onFailure(e.getMessage());
+						return;
 					}
 				}
 
@@ -411,6 +456,15 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -445,8 +499,8 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
 					try {
-						String nameErr = obj.getJSONArray("username").join(" ");
-						String passErr = obj.getJSONArray("password_digest").join(" ");
+						String nameErr = obj.getJSONArray("username").getString(0);
+						String passErr = obj.getJSONArray("password_digest").getString(0);
 
 						final String errMessage = nameErr + " " + passErr;
 
@@ -456,6 +510,15 @@ public class ApiInterface {
 						Log.d(TAG, "JSON problems on log in: " + e.getMessage());
 						callback.onFailure(e.getMessage());
 					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
 				}
 			}
 		});
@@ -491,13 +554,22 @@ public class ApiInterface {
 			public void onFailure(Throwable e, JSONObject obj) {
 				if (callback != null) {
 					try {
-						final String errMessage = obj.getJSONArray("username").join(" ");
+						final String errMessage = obj.getJSONArray("username").getString(0);
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
 						Log.d(TAG, "JSON problems on user creation: " + e.getMessage());
 						callback.onFailure(e.getMessage());
 					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure("FAILURE");
 				}
 			}
 		});
