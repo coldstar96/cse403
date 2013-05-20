@@ -8,8 +8,12 @@ import org.joda.time.LocalDate;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -22,6 +26,8 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsFragment;
+import com.example.budgetmanager.preference.SettingsActivity;
 
 /**
  * Activity which allows users to add entries.
@@ -37,64 +43,140 @@ public class AddEntryActivity extends Activity {
 	// shared data across the app
 	private UBudgetApp appData;
 
-	// views to extract information from
+	// List of Budgets to choose from
 	private Spinner mBudgetView;
+
+	// Number field for entering the Entry amount
 	private EditText mAmountView;
+
+	// Enables the user to pick the start date of the Budget
 	private DatePicker mDateView;
+
+	// Text field for entering notes for the Entry
 	private EditText mNotesView;
 	private Button addButtonView;
 
-	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
+
+		// check the preference to see which theme to set
+		String startingScreen = PreferenceManager.
+				getDefaultSharedPreferences(this).getString(SettingsFragment
+						.KEY_PREF_APP_THEME, "");
+
+		if (startingScreen.equals(SettingsFragment
+				.APP_THEME_LIGHT)) {
+			setTheme(android.R.style.Theme_Holo_Light);
+		} else {
+			setTheme(android.R.style.Theme_Holo);
+		}
+
 		super.onCreate(savedInstanceState);
 
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
 
 		// retrieve the application data
-		appData = (UBudgetApp)getApplication();
+		appData = (UBudgetApp) getApplication();
 
+		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
-		mAmountView = (EditText) findViewById(R.id.edit_amount);
-		mDateView = (DatePicker) findViewById(R.id.date_picker);
-		mNotesView = (EditText) findViewById(R.id.edit_notes);
+		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
+		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		addButtonView = (Button) findViewById(R.id.add_entry_button);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// set up the button that lead to the settings activity
+		MenuItem buttonSettings = menu.add(R.string.title_settings);
+
+		// this forces it to go in the overflow menu, which is preferred.
+		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+		buttonSettings.setOnMenuItemClickListener(new MenuItem.
+				OnMenuItemClickListener() {
+			/**
+			 * Take the users to the Settings activity upon clicking the button.
+			 */
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent settingsIntent = new Intent(AddEntryActivity.this,
+						SettingsActivity.class);
+
+				// these extras allow SettingsActivity to skip the 'headers'
+				// layer, which is unnecessary since we have very few settings
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+						SettingsFragment.class.getName());
+				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+
+				AddEntryActivity.this.startActivity(settingsIntent);
+
+				return false;
+			}
+		});
+
+		// set up the button that lead to the signout activity
+		MenuItem buttonSignout = menu.add(R.string.title_signout);
+
+		// this forces it to go in the overflow menu, which is preferred.
+		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+		buttonSignout.setOnMenuItemClickListener(new MenuItem.
+				OnMenuItemClickListener() {
+			/**
+			 * Sign out the user upon clicking the button.
+			 */
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO implement a signout functionality
+				Toast.makeText(AddEntryActivity.this,
+						"Successfully handled Sign out selection",
+						Toast.LENGTH_LONG).show();
+				return false;
+			}
+		});
+		return true;
+	}
 
 	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 	}
 
-	// Populate the spinner with the current list of Budgets.
+	// Populates the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
+		// get the actual Budget objects
 		final List<Budget> budgetList = appData.getBudgetList();
+		// list for the String names for each Budget object
 		List<String> budgetNameList = new ArrayList<String>();
 
+		// build the list of Budget names
 		for (Budget b : budgetList) {
 			Log.d(TAG, b.getName());
 			budgetNameList.add(b.getName());
 		}
 
+		// last entry of the list of Budget is for adding a new Budget
 		budgetNameList.add(getResources().getString(R.string.new_budget));
-
+		// create an ArrayAdapter using the names of the Budgets
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-				R.layout.spinner_layout, budgetNameList);
-		dataAdapter.setDropDownViewResource(R.layout.spinner_entry_layout);
+				android.R.layout.simple_spinner_item, budgetNameList);
+		// specify the layout to use when the list of choices appears
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// apply the adapter to the spinner
 		mBudgetView.setAdapter(dataAdapter);
 
 		// set the spinner to display selection upon selecting an item
 		mBudgetView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
+				// handle the case when user selects 'Create New Budget...'
 				if (pos == budgetList.size()) {
 					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
 				}
@@ -104,7 +186,6 @@ public class AddEntryActivity extends Activity {
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// do nothing
 			}
-
 		});
 	}
 
@@ -122,7 +203,7 @@ public class AddEntryActivity extends Activity {
 			mAmountView.requestFocus();
 			return;
 		}
-		
+
 		// checks whether the amount is non-zero
 		if (Double.parseDouble(mAmountView.getText().toString()) == 0.0) {
 			mAmountView.setError(getString(R.string.error_zero_amount));
@@ -138,13 +219,13 @@ public class AddEntryActivity extends Activity {
 			return;
 		}
 		addButtonView.setClickable(false);
-		
+
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
 				UBudgetApp app = (UBudgetApp) getApplication();
 				app.getEntryList().add(0, newEntry);
-				
+
 				// for testing purposes
 				Toast.makeText(AddEntryActivity.this, "Added $"
 						+ ((double) newEntry.getAmount() / CENTS) + " to the "
