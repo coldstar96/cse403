@@ -127,10 +127,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -179,10 +180,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -292,10 +294,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -361,10 +364,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -456,10 +460,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -510,10 +515,11 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
@@ -560,10 +566,11 @@ public class ApiInterface {
 			
 			@Override
 			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException)
+				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
-				else
+				} else {
 					callback.onFailure("FAILURE");
+				}
 			}
 		});
 	}
