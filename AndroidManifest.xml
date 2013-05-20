@@ -22,12 +22,14 @@
         </activity>
         <activity
             android:name="com.example.budgetmanager.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="@string/title_activity_signin"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name="com.example.budgetmanager.RegisterActivity"
-            android:label="@string/title_activity_signin" >
+            android:label="@string/title_activity_register"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.example.budgetmanager.LogoActivity"
