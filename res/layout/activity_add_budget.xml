@@ -2,13 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/default_layout_spacing"
+    android:paddingTop="@dimen/default_layout_spacing" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_layout_side_margin"
-        android:layout_marginRight="@dimen/default_layout_side_margin"
+        android:layout_marginLeft="@dimen/default_layout_spacing"
+        android:layout_marginRight="@dimen/default_layout_spacing"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".AddBudgetActivity" >
@@ -59,30 +61,30 @@
             android:text="@string/budget_recur" />
 
         <LinearLayout
-            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_component_height"
+            android:layout_marginTop="@dimen/default_layout_spacing"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/clear_budget_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/default_button_margin"
-                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:text="@string/action_clear_budget" />
+                android:background="@drawable/rounded_button_secondary"
+                android:text="@string/action_clear_budget"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/create_budget_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/default_button_margin"
-                android:layout_marginTop="@dimen/default_button_margin"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:text="@string/action_create_budget" />
+                android:background="@drawable/rounded_button_primary"
+                android:text="@string/action_create_budget"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 
