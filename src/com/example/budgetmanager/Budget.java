@@ -59,7 +59,7 @@ public class Budget {
 
 	/**
 	 * Create a new <code>Budget</code>. This also adds the created budget in
-	 * the list of all budgets
+	 * the list of all budgets.
 	 *
 	 * @param name The name of the <code>Budget</code>.
 	 * @param amount The amount in cents allowed in this <code>Budget</code>.
@@ -98,7 +98,7 @@ public class Budget {
 			throw new IllegalArgumentException("Invaid duration argument");
 		}
 
-		// Throw it into the main Budget list.
+		// Throw it into the main Budget list at the beginning of the list.
 		budgetList.add(0, this);
 	}
 

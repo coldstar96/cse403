@@ -40,9 +40,6 @@ public class AddEntryActivity extends Activity {
 	// tag for logging
 	private final static String TAG = "AddEntryActivity";
 
-	// shared data across the app
-	private UBudgetApp appData;
-
 	// List of Budgets to choose from
 	private Spinner mBudgetView;
 
@@ -78,9 +75,6 @@ public class AddEntryActivity extends Activity {
 
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
-
-		// retrieve the application data
-		appData = (UBudgetApp) getApplication();
 
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);

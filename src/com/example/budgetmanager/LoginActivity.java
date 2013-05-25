@@ -52,14 +52,9 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
-	// application
-	private UBudgetApp app;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		app = (UBudgetApp) getApplication();
 
 		setContentView(R.layout.activity_login);
 
