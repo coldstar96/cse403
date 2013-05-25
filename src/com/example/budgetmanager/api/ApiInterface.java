@@ -98,7 +98,7 @@ public class ApiInterface {
 	 * the ID of the Budget on the server.
 	 */
 	public void create(final Budget b, final ApiCallback<Long> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		RequestParams params = new RequestParams();
@@ -152,7 +152,7 @@ public class ApiInterface {
 	 * ID of the Entry on the server.
 	 */
 	public void create(final Entry e, final ApiCallback<Long> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		RequestParams params = new RequestParams();
@@ -257,7 +257,7 @@ public class ApiInterface {
 	 * containing all Budgets for the current user.
 	 */
 	public void fetchBudgets(final ApiCallback<List<Budget>> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		Log.d(TAG, "Fetching budgets");
@@ -326,7 +326,7 @@ public class ApiInterface {
 	 * containing all Entries for the given Budget.
 	 */
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
@@ -399,7 +399,7 @@ public class ApiInterface {
 	 * containing all of its Entries.
 	 */
 	public void fetchBudgetsAndEntries(final ApiCallback<List<Budget>> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		Log.d(TAG, "Fetching all budgets and entries");
@@ -498,7 +498,7 @@ public class ApiInterface {
 	 */
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		RequestParams params = new RequestParams();
@@ -556,7 +556,7 @@ public class ApiInterface {
 	 */
 	public void createUser(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		RequestParams params = new RequestParams();
@@ -609,7 +609,7 @@ public class ApiInterface {
 	 * as its parameter.
 	 */
 	public void checkLoginStatus(final ApiCallback<Object> callback) {
-		if (!hasInternet(callback))
+		if (!failOnNoInternet(callback))
 			return;
 		
 		client.get(sessionUrl, new AsyncHttpResponseHandler() {
@@ -636,7 +636,7 @@ public class ApiInterface {
 	 * @param callback The callback to call onFailure on if there is no Internet.
 	 * @return <code>true</code> if there is a connection, <code>false</code> otherwise.
 	 */
-	private boolean hasInternet(ApiCallback<?> callback) {
+	private boolean failOnNoInternet(ApiCallback<?> callback) {
 		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
 		
