@@ -119,6 +119,18 @@ public class Budget {
 	}
 
 	/**
+	 * Remove a budget from the budget list (for use when deleting)
+	 *
+	 * @param budget the Budget to be removed
+	 *
+	 * @return true if the Budget list was modified (ie. the budget was
+	 * removed), false otherwise.
+	 */
+	public static boolean removeBudget(Budget budget) {
+		return budgetList.remove(budget);
+	}
+
+	/**
 	 * Sets this <code>Budget</code> ID to be <code>budgetId</code>.
 	 *
 	 * @param budgetId The ID of this <code>Budget</code>.
