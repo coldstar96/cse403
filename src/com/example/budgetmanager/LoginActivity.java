@@ -52,14 +52,9 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
-	// application
-	private UBudgetApp app;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		app = (UBudgetApp) getApplication();
 
 		setContentView(R.layout.activity_login);
 
@@ -190,11 +185,6 @@ public class LoginActivity extends Activity {
 							new ApiCallback<List<Budget>>() {
 								@Override
 								public void onSuccess(List<Budget> result) {
-									// Add these budgets to the application state
-									List<Budget> budgetList = app.getBudgetList();
-									budgetList.clear();
-									budgetList.addAll(result);
-
 									startActivity(new Intent(LoginActivity.this,
 											EntryLogsActivity.class));
 									finish();

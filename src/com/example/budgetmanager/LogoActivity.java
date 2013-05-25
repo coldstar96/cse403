@@ -44,13 +44,6 @@ public class LogoActivity extends Activity {
 						new ApiCallback<List<Budget>>() {
 					@Override
 					public void onSuccess(List<Budget> result) {
-						UBudgetApp app = (UBudgetApp) getApplication();
-
-						// Add these budgets to the application state
-						List<Budget> budgetList = app.getBudgetList();
-						budgetList.clear();
-						budgetList.addAll(result);
-
 						// check the preference to see which activity to launch into
 						String startingScreen = spref.getString(SettingsFragment
 								.KEY_PREF_STARTING_SCREEN, "");

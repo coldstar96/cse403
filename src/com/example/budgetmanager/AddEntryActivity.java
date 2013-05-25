@@ -40,9 +40,6 @@ public class AddEntryActivity extends Activity {
 	// tag for logging
 	private final static String TAG = "AddEntryActivity";
 
-	// shared data across the app
-	private UBudgetApp appData;
-
 	// List of Budgets to choose from
 	private Spinner mBudgetView;
 
@@ -79,9 +76,6 @@ public class AddEntryActivity extends Activity {
 		// inflate view
 		setContentView(R.layout.activity_add_entry);
 
-		// retrieve the application data
-		appData = (UBudgetApp) getApplication();
-
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
@@ -102,6 +96,7 @@ public class AddEntryActivity extends Activity {
 			/**
 			 * Take the users to the Settings activity upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent settingsIntent = new Intent(AddEntryActivity.this,
 						SettingsActivity.class);
@@ -129,6 +124,7 @@ public class AddEntryActivity extends Activity {
 			/**
 			 * Sign out the user upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
 				Toast.makeText(AddEntryActivity.this,
@@ -151,7 +147,7 @@ public class AddEntryActivity extends Activity {
 	// Populates the spinner with the current list of Budgets.
 	private void addItemsToBudgetSpinner() {
 		// get the actual Budget objects
-		final List<Budget> budgetList = appData.getBudgetList();
+		final List<Budget> budgetList = Budget.getBudgets();
 		// list for the String names for each Budget object
 		List<String> budgetNameList = new ArrayList<String>();
 
@@ -265,7 +261,7 @@ public class AddEntryActivity extends Activity {
 		String notes = mNotesView.getText().toString();
 
 		// retrieve selected budget
-		final List<Budget> budgetList = appData.getBudgetList();
+		final List<Budget> budgetList = Budget.getBudgets();
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 
 		// Need to add 1 to the month because the DatePicker
