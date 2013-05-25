@@ -640,10 +640,13 @@ public class ApiInterface {
 		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
 		
-		if (activeNetwork != null && activeNetwork.isConnected())
+		if (activeNetwork != null && activeNetwork.isConnected()) {
+			Log.d(TAG, "Internet connection found.");
 			return true;
+		}
 		
-		callback.onFailure("There is no active Internet connection.");
+		Log.d(TAG, "No internet connection found.");
+		callback.onFailure("Active internet connection required.");
 		return false;
 	}
 }

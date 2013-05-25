@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -67,6 +68,9 @@ public class LogoActivity extends Activity {
 					@Override
 					public void onFailure(String errorMessage) {
 						Log.d(TAG, "fetch data on ApiInteface is failure");
+						if (errorMessage != null)
+							Toast.makeText(LogoActivity.this,
+									errorMessage, Toast.LENGTH_LONG).show();
 						startActivity(new Intent(LogoActivity.this,
 								EntryLogsActivity.class));
 						finish();
@@ -77,6 +81,9 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				Log.d(TAG, "check login in on ApiInteface is failure");
+				if (errorMessage != null)
+					Toast.makeText(LogoActivity.this,
+							errorMessage, Toast.LENGTH_LONG).show();
 				startActivity(new Intent(LogoActivity.this,
 						LoginActivity.class));
 				finish();
