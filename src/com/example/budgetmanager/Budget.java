@@ -51,10 +51,10 @@ public class Budget {
 	private List<Entry> entries;
 
 	// Hold the list of all loaded budgets
-	private static final List<Budget> budgetList;
+	private static final List<Budget> BUDGET_LIST;
 
 	static {
-		budgetList = new ArrayList<Budget>();
+		BUDGET_LIST = new ArrayList<Budget>();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class Budget {
 		}
 
 		// Throw it into the main Budget list at the beginning of the list.
-		budgetList.add(0, this);
+		BUDGET_LIST.add(0, this);
 	}
 
 	/**
@@ -108,14 +108,14 @@ public class Budget {
 	 * @return An unmodifiable list of all budgets
 	 */
 	public static List<Budget> getBudgets() {
-		return Collections.unmodifiableList(budgetList);
+		return Collections.unmodifiableList(BUDGET_LIST);
 	}
 
 	/**
 	 * Clears the internal list of Budgets, mainly used for testing.
 	 */
 	public static void clearBudgets() {
-		budgetList.clear();
+		BUDGET_LIST.clear();
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class Budget {
 	 * removed), false otherwise.
 	 */
 	public static boolean removeBudget(Budget budget) {
-		return budgetList.remove(budget);
+		return BUDGET_LIST.remove(budget);
 	}
 
 	/**
