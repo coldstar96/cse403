@@ -99,7 +99,7 @@ public class Budget {
 		}
 
 		// Throw it into the main Budget list.
-		budgetList.add(this);
+		budgetList.add(0, this);
 	}
 
 	/**
