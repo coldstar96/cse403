@@ -50,8 +50,16 @@ public class Budget {
 	// List of entries associated with this Budget
 	private List<Entry> entries;
 
+	// Hold the list of all loaded budgets
+	private static final List<Budget> budgetList;
+
+	static {
+		budgetList = new ArrayList<Budget>();
+	}
+
 	/**
-	 * Create a new <code>Budget</code>.
+	 * Create a new <code>Budget</code>. This also adds the created budget in
+	 * the list of all budgets.
 	 *
 	 * @param name The name of the <code>Budget</code>.
 	 * @param amount The amount in cents allowed in this <code>Budget</code>.
@@ -89,6 +97,37 @@ public class Budget {
 		default:
 			throw new IllegalArgumentException("Invaid duration argument");
 		}
+
+		// Throw it into the main Budget list at the beginning of the list.
+		budgetList.add(0, this);
+	}
+
+	/**
+	 * Returns a list of all Budgets tracked by the current user
+	 *
+	 * @return An unmodifiable list of all budgets
+	 */
+	public static List<Budget> getBudgets() {
+		return Collections.unmodifiableList(budgetList);
+	}
+
+	/**
+	 * Clears the internal list of Budgets, mainly used for testing.
+	 */
+	public static void clearBudgets() {
+		budgetList.clear();
+	}
+
+	/**
+	 * Remove a budget from the budget list (for use when deleting)
+	 *
+	 * @param budget the Budget to be removed
+	 *
+	 * @return true if the Budget list was modified (ie. the budget was
+	 * removed), false otherwise.
+	 */
+	public static boolean removeBudget(Budget budget) {
+		return budgetList.remove(budget);
 	}
 
 	/**

@@ -124,6 +124,7 @@ public class AddBudgetActivity extends Activity {
 			/**
 			 * Take the users to the Settings activity upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent settingsIntent = new Intent(AddBudgetActivity.this,
 						SettingsActivity.class);
@@ -151,6 +152,7 @@ public class AddBudgetActivity extends Activity {
 			/**
 			 * Sign out the user upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
 				Toast.makeText(AddBudgetActivity.this,
@@ -205,10 +207,8 @@ public class AddBudgetActivity extends Activity {
 			focusView = mBudgetNameView;
 			cancel = true;
 		} else {
-			UBudgetApp app = (UBudgetApp) getApplication();
-
 			// Check to see if there's a budget with that name already
-			for (Budget budget : app.getBudgetList()) {
+			for (Budget budget : Budget.getBudgets()) {
 				if (budget.getName().equals(mBudgetName)) {
 					mBudgetNameView.setError(getString(
 							R.string.error_name_already_exists));
@@ -235,9 +235,6 @@ public class AddBudgetActivity extends Activity {
 		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
-				// add the Budget object into the list Budgets
-				UBudgetApp app = (UBudgetApp) getApplication();
-				app.getBudgetList().add(0, newBudget);
 				finish();
 			}
 

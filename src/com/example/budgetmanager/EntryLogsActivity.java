@@ -36,16 +36,15 @@ public class EntryLogsActivity extends Activity {
 	private ListView listView;
 	private Spinner sortSpinner;
 
+	// The adapter for displaying/sorting the Entries
 	private EntryLogAdapter adapter;
-
-	private UBudgetApp app;
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		adapter.clear();
 
-		for (Budget b : app.getBudgetList()) {
+		for (Budget b : Budget.getBudgets()) {
 			adapter.addEntriesFromBudget(b);
 		}
 
@@ -76,11 +75,9 @@ public class EntryLogsActivity extends Activity {
 		// inflate view
 		setContentView(R.layout.activity_entry_logs);
 
-		// retrieve the application data
-		app = (UBudgetApp) getApplication();
-		Log.d(TAG, "Just got the app, about to make the adapter");
+		Log.d(TAG, "About to make the adapter");
 		adapter = new EntryLogAdapter(this, R.layout.list_entry_layout,
-				app.getBudgetList());
+				Budget.getBudgets());
 
 		// The initial sort will be by date.
 		adapter.sort(new EntryLogAdapter.EntryDateComparator());
@@ -140,6 +137,7 @@ public class EntryLogsActivity extends Activity {
 			/**
 			 * Take the users to the Settings activity upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent settingsIntent = new Intent(EntryLogsActivity.this,
 						SettingsActivity.class);
@@ -167,6 +165,7 @@ public class EntryLogsActivity extends Activity {
 			/**
 			 * Sign out the user upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
 				Toast.makeText(EntryLogsActivity.this,
@@ -187,8 +186,7 @@ public class EntryLogsActivity extends Activity {
 	public void onAddEntryClicked(View view) {
 		// if there is no created budget, notify user that
 		// they need to create budget before they add an entry
-		List<Budget> budgets = ((UBudgetApp) getApplication()).
-				getBudgetList();
+		List<Budget> budgets = Budget.getBudgets();
 		if (budgets.isEmpty()) {
 			Toast.makeText(EntryLogsActivity.this,
 					R.string.dialog_add_budget_first,
