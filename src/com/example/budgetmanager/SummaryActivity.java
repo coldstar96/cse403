@@ -1,24 +1,64 @@
 package com.example.budgetmanager;
 
-import com.example.budgetmanager.preference.SettingsActivity;
-import com.example.budgetmanager.preference.SettingsFragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
 public class SummaryActivity extends Activity {
+	private final String TAG = "SummaryActivity";
+
+	// UI reference
+	private ListView listView;
+
+	private BudgetLogAdapter adapter;
+
+	private UBudgetApp app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
+
+		// check the preference to see which theme to set
+		String startingScreen = PreferenceManager.
+				getDefaultSharedPreferences(this).getString(SettingsFragment
+						.KEY_PREF_APP_THEME, "");
+
+		if (startingScreen.equals(SettingsFragment
+				.APP_THEME_LIGHT)) {
+			setTheme(android.R.style.Theme_Holo_Light);
+		} else {
+			setTheme(android.R.style.Theme_Holo);
+		}
+		
 		super.onCreate(savedInstanceState);
 
 		// inflate view
 		setContentView(R.layout.activity_summary);
+
+		// retrieve the application data
+		app = (UBudgetApp) getApplication();
+		Log.d(TAG, "Just got the app, about to make the adapter");
+		adapter = new BudgetLogAdapter(this, R.layout.list_budget_layout,
+				app.getBudgetList());
+		Log.d(TAG, "Made the adapter!");
+
+		// set up Entry Logs screen
+		listView = (ListView) findViewById(R.id.budget_list);
+		listView.setAdapter(adapter);
+		Log.d(TAG, "added the adapter!");
+
 	}
 
 	@Override

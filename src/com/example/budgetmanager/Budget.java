@@ -259,4 +259,32 @@ public class Budget {
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
 	}
+	
+	/**
+	 * Returns the amount spent within the given cycle
+	 * 
+	 * @param cycle The cycle to calculate the amount
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent(int cycle){
+		int amount = 0;
+		LocalDate startDate = getStartDate(cycle).minusDays(1);
+		LocalDate endDate = getEndDate(cycle).plusDays(1);
+		for (Entry e : entries) {
+			LocalDate usedDate = e.getDate();
+			if (usedDate.isAfter(startDate) && usedDate.isBefore(endDate)) {
+				amount += e.getAmount();
+			}
+		}
+		return amount;
+	}
+	
+	/**
+	 * Returns the amount spent within the current cycle
+	 * 
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent(){
+		return getAmountSpent(getCurrentCycle());
+	}
 }
