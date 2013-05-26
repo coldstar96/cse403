@@ -634,7 +634,7 @@ public class ApiInterface {
 	 * the callback specified is alerted via onFailure with an error specifying so.
 	 * 
 	 * @param callback The callback to call onFailure on if there is no Internet.
-	 * @return <code>true</code> if there is a connection, <code>false</code> otherwise.
+	 * @return <code>true</code> if failure occurs (no internet), <code>false</code> otherwise.
 	 */
 	private boolean failOnNoInternet(ApiCallback<?> callback) {
 		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
