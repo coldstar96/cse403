@@ -95,14 +95,6 @@ public class RegisterActivity extends Activity {
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-		findViewById(R.id.register_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						registerAttempt();
-					}
-				});
-
 		// focuses to empty edit view
 		if (mEmail.isEmpty()) {
 			mEmailView.requestFocus();

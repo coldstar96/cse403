@@ -91,6 +91,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_secondary"
+                android:onClick="clearEntry"
                 android:text="@string/action_clear_budget"
                 android:textColor="@color/white" />
 
@@ -101,6 +102,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_primary"
+                android:onClick="attemptAddBudget"
                 android:text="@string/action_create_budget"
                 android:textColor="@color/white" />
         </LinearLayout>
