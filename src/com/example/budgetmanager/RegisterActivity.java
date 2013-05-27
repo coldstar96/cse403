@@ -68,7 +68,7 @@ public class RegisterActivity extends Activity {
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
 				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt();
+					registerAttempt(textView);
 					return true;
 				}
 				return false;
@@ -84,7 +84,7 @@ public class RegisterActivity extends Activity {
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
 				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt();
+					registerAttempt(textView);
 					return true;
 				}
 				return false;
@@ -110,7 +110,7 @@ public class RegisterActivity extends Activity {
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
-	public void registerAttempt() {
+	public void registerAttempt(View view) {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
