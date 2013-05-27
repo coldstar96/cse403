@@ -14,15 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 /**
- * This class handles preparing lists of entries for display in the Budget Log.
- * It aggregates the entries associated with one or more budgets and allows for
- * them to be displayed in a ListView. Thus, it could be considered a kind of
- * View Model.
+ * This class handles preparing lists of budgets for display in the summary screen.
+ * It aggregates the budgets and allows for them to be displayed in a ListView. 
+ * Thus, it could be considered a kind of View Model.
  *
- * This class also contains Comparators that allow for sorting entries by
- * different attributes.
- *
- * @author chris brucec5
+ * @author Chi Ho coldstar96
  *
  */
 public class BudgetLogAdapter extends ArrayAdapter<Budget> {
@@ -50,7 +46,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 	 * Constructs a new BudgetLog
 	 * @param context the current Context
 	 * @param layoutResourceId Resource ID for the row view
-	 * @param budgetList List of budgets from which entries are to be grabbed
+	 * @param budgetList List of budgets
 	 */
 	public BudgetLogAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
@@ -61,8 +57,8 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 	}
 
 	/**
-	 * Clears this BudgetLogAdapter of all Entries such that it
-	 * no longer holds any Entries.
+	 * Clears this BudgetLogAdapter of all budgets such that it
+	 * no longer holds any budgets.
 	 */
 	@Override
 	public void clear() {

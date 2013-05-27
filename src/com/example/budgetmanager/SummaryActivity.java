@@ -14,6 +14,13 @@ import android.widget.Toast;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
+/**
+ * Activity which displays list of budgets screen to the user, 
+ * showing summaries of the budgets.
+ *
+ * @author Chi Ho coldstar96
+ */
+
 public class SummaryActivity extends Activity {
 	private final String TAG = "SummaryActivity";
 
