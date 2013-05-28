@@ -64,7 +64,7 @@ public class SummaryActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO implement a signout functionality
 				Toast.makeText(SummaryActivity.this,
-						"Successfully handled Sign out selection",
+						"Handled Sign out selection",
 						Toast.LENGTH_LONG).show();
 				return false;
 			}
