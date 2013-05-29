@@ -1,6 +1,7 @@
 package com.example.budgetmanager.test;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -52,19 +53,23 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 				getView(com.example.budgetmanager.R.id.log_in_button);
 	}
 
+	@MediumTest
 	public void test_onCreate_viewsNotNull() {
+		// Ensure all of the views are present
 		assertNotNull(emailView);
 		assertNotNull(passwordView);
 		assertNotNull(loginButton);
 	}
 
+	@MediumTest
 	public void test_attemptLogin_emptyEmailThrowsError() {
-		solo.typeText(emailView, "");
-		solo.typeText(passwordView, VALID_PASSWORD);
-
+		// Set up a case with a missing email and a valid password.
+		// Should only have an error on the email field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText("");
+				passwordView.setText(VALID_PASSWORD);
 				loginButton.performClick();
 			}
 		});
@@ -81,13 +86,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(passwordView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_spaceInEmailThrowsError() {
-		solo.typeText(emailView, INVALID_EMAIL_HAS_SPACE);
-		solo.typeText(passwordView, VALID_PASSWORD);
-
+		// Set up a case with a badly formatted email and a good password.
+		// Should only have an error on the email field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(INVALID_EMAIL_HAS_SPACE);
+				passwordView.setText(VALID_PASSWORD);
 				loginButton.performClick();
 			}
 		});
@@ -104,13 +111,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(passwordView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_noAtSignInEmailThrowsError() {
-		solo.typeText(emailView, INVALID_EMAIL_NO_AT);
-		solo.typeText(passwordView, VALID_PASSWORD);
-
+		// Set up a case with a badly formatted email and a good password.
+		// Should only have an error on the email field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(INVALID_EMAIL_NO_AT);
+				passwordView.setText(VALID_PASSWORD);
 				loginButton.performClick();
 			}
 		});
@@ -127,13 +136,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(passwordView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_noPeriodInEmailThrowsError() {
-		solo.typeText(emailView, INVALID_EMAIL_NO_DOT);
-		solo.typeText(passwordView, VALID_PASSWORD);
-
+		// Set up a case with a badly formatted email and a good password.
+		// Should only have an error on the email field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(INVALID_EMAIL_NO_DOT);
+				passwordView.setText(VALID_PASSWORD);
 				loginButton.performClick();
 			}
 		});
@@ -150,13 +161,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(passwordView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_emptyPasswordThrowsError() {
-		solo.typeText(emailView, VALID_EMAIL);
-		solo.typeText(passwordView, "");
-
+		// Set up a case with a missing password but a good email.
+		// Should only throw an error on the password field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(VALID_EMAIL);
+				passwordView.setText("");
 				loginButton.performClick();
 			}
 		});
@@ -173,13 +186,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(emailView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_passwordTooShortThrowsError() {
-		solo.typeText(emailView, VALID_EMAIL);
-		solo.typeText(passwordView, INVALID_PASSWORD_TOO_SHORT);
-
+		// Set up a case with too-short of a password but a good email.
+		// Should only have an error on the password field.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(VALID_EMAIL);
+				passwordView.setText(INVALID_PASSWORD_TOO_SHORT);
 				loginButton.performClick();
 			}
 		});
@@ -196,13 +211,15 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(emailView.getError());
 	}
 
+	@MediumTest
 	public void test_attemptLogin_validEmailAndPasswordNoError() {
-		solo.typeText(emailView, VALID_EMAIL);
-		solo.typeText(passwordView, VALID_PASSWORD);
-
+		// Set up a completely valid email/password.
+		// Should not cause any errors on the UI elements.
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				emailView.setText(VALID_EMAIL);
+				passwordView.setText(VALID_PASSWORD);
 				loginButton.performClick();
 			}
 		});
