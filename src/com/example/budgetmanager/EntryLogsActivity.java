@@ -168,9 +168,12 @@ public class EntryLogsActivity extends Activity {
 			 */
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();
+				ApiInterface.getInstance().logOut();			
+				Intent logOut = new Intent(EntryLogsActivity.this, LoginActivity.class);
+				// Clear the back stack so when you press the back button you will exit the app 
+				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				// Goes to the login page
-				startActivity(new Intent(EntryLogsActivity.this, LoginActivity.class));
+				startActivity(logOut);
 				return false;
 			}
 		});
