@@ -18,7 +18,7 @@ import android.widget.EditText;
  * @author chris brucec5
  *
  */
-public class TestCaseUiAddBudgetActivity
+public class TestCaseAddBudgetActivity
 	extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 
 	private Solo solo;
@@ -28,7 +28,7 @@ public class TestCaseUiAddBudgetActivity
 	private Button clearButton;
 	private CheckBox recurCheckBox;
 
-	public TestCaseUiAddBudgetActivity() {
+	public TestCaseAddBudgetActivity() {
 		super(AddBudgetActivity.class);
 	}
 
