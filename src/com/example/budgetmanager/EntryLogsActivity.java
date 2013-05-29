@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
@@ -167,10 +168,9 @@ public class EntryLogsActivity extends Activity {
 			 */
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO implement a signout functionality
-				Toast.makeText(EntryLogsActivity.this,
-						"Successfully handled Sign out selection",
-						Toast.LENGTH_LONG).show();
+				ApiInterface.getInstance().logOut();
+				// Goes to the login page
+				startActivity(new Intent(EntryLogsActivity.this, LoginActivity.class));
 				return false;
 			}
 		});

@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class SummaryActivity extends Activity {
 
@@ -62,10 +62,8 @@ public class SummaryActivity extends Activity {
 			 * Sign out the user upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO implement a signout functionality
-				Toast.makeText(SummaryActivity.this,
-						"Handled Sign out selection",
-						Toast.LENGTH_LONG).show();
+				ApiInterface.getInstance().logOut();
+				startActivity(new Intent(SummaryActivity.this, LoginActivity.class));
 				return false;
 			}
 		});
