@@ -16,7 +16,7 @@ import android.widget.EditText;
  * @author chris brucec5
  *
  */
-public class TestCaseUiRegisterActivity
+public class TestCaseRegisterActivity
 	extends ActivityInstrumentationTestCase2<RegisterActivity> {
 
 	private Solo solo;
@@ -28,7 +28,7 @@ public class TestCaseUiRegisterActivity
 
 	private static final String REQUIRED_FIELD = "This field is required";
 
-	public TestCaseUiRegisterActivity() {
+	public TestCaseRegisterActivity() {
 		super(RegisterActivity.class);
 	}
 
