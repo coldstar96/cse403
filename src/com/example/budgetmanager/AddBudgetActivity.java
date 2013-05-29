@@ -93,22 +93,6 @@ public class AddBudgetActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
-
-		// Submit button activity
-		findViewById(R.id.create_budget_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						attemptAddBudget();
-					}
-				});
-		findViewById(R.id.clear_budget_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						AddBudgetActivity.this.clearEntry(null);
-					}
-				});
 	}
 
 	@Override
@@ -171,7 +155,7 @@ public class AddBudgetActivity extends Activity {
 	 *
 	 * If it fails, toast the error.
 	 */
-	public void attemptAddBudget() {
+	public void attemptAddBudget(View view) {
 		// check input validity
 		boolean cancel = false;
 		View focusView = null;
