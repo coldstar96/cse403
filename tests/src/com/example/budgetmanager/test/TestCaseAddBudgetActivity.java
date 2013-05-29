@@ -4,7 +4,6 @@ import org.joda.time.LocalDate;
 
 import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.Budget;
-import com.example.budgetmanager.UBudgetApp;
 import com.jayway.android.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -19,7 +18,7 @@ import android.widget.EditText;
  * @author chris brucec5
  *
  */
-public class TestCaseUiAddBudgetActivity
+public class TestCaseAddBudgetActivity
 	extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 
 	private Solo solo;
@@ -29,9 +28,7 @@ public class TestCaseUiAddBudgetActivity
 	private Button clearButton;
 	private CheckBox recurCheckBox;
 
-	private UBudgetApp app;
-
-	public TestCaseUiAddBudgetActivity() {
+	public TestCaseAddBudgetActivity() {
 		super(AddBudgetActivity.class);
 	}
 
@@ -53,8 +50,7 @@ public class TestCaseUiAddBudgetActivity
 		recurCheckBox = (CheckBox) getActivity().findViewById(
 				com.example.budgetmanager.R.id.budget_recur);
 
-		app = (UBudgetApp) getActivity().getApplication();
-		app.getBudgetList().clear();
+		Budget.clearBudgets();
 	}
 
 	/**
@@ -198,9 +194,9 @@ public class TestCaseUiAddBudgetActivity
 			@Override
 			public void run() {
 				String budgetName = "Duplicate Budget Name";
+				@SuppressWarnings("unused")
 				Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
 						Budget.Duration.WEEK);
-				app.getBudgetList().add(b);
 
 				nameField.setText(budgetName);
 				amountField.setText("1.00");
