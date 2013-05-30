@@ -10,6 +10,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -117,54 +118,40 @@ public class EntryLogsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// set up the button that lead to the settings activity
-		MenuItem buttonSettings = menu.add(R.string.title_settings);
+		// inflate the menu
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.items, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			// take the user to the Settings screen
+			Intent settingsIntent = new Intent(EntryLogsActivity.this,
+					SettingsActivity.class);
 
-		// this forces it to go in the overflow menu, which is preferred.
-		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			// these extras allow SettingsActivity to skip the 'headers'
+			// layer, which is unnecessary since we have very few settings
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+					SettingsFragment.class.getName());
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
 
-		buttonSettings.setOnMenuItemClickListener(new MenuItem.
-				OnMenuItemClickListener() {
-			/**
-			 * Take the users to the Settings activity upon clicking the button.
-			 */
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(EntryLogsActivity.this,
-						SettingsActivity.class);
+			startActivity(settingsIntent);
 
-				// these extras allow SettingsActivity to skip the 'headers'
-				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-						SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
-
-				EntryLogsActivity.this.startActivity(settingsIntent);
-
-				return false;
-			}
-		});
-
-		// set up the button that lead to the signout activity
-		MenuItem buttonSignout = menu.add(R.string.title_signout);
-
-		// this forces it to go in the overflow menu, which is preferred.
-		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-		buttonSignout.setOnMenuItemClickListener(new MenuItem.
-				OnMenuItemClickListener() {
-			/**
-			 * Sign out the user upon clicking the button.
-			 */
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// TODO implement a signout functionality
-				Toast.makeText(EntryLogsActivity.this,
-						"Successfully handled Sign out selection",
-						Toast.LENGTH_LONG).show();
-				return false;
-			}
-		});
+			return false;
+			
+		case R.id.menu_signout:
+			// sign the user out
+			// TODO implement a signout functionality
+			Toast.makeText(EntryLogsActivity.this,
+					"Successfully handled Sign out selection",
+					Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
 		return true;
 	}
 
