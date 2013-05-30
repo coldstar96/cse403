@@ -40,7 +40,7 @@ public class Utilities {
 	 * @param act The Activity to set the theme of.
 	 * @param ctxt The Context of the passed Activity.
 	 */
-	public static void setThemeToActivity(Activity act, Context ctxt) {
+	public static void setActivityTheme(Activity act, Context ctxt) {
 		
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(act, R.layout.fragment_settings, false);

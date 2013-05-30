@@ -57,7 +57,7 @@ public class AddEntryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		// set theme based on current preferences	
-		Utilities.setThemeToActivity(this, getApplicationContext());
+		Utilities.setActivityTheme(this, getApplicationContext());
 
 		super.onCreate(savedInstanceState);
 
