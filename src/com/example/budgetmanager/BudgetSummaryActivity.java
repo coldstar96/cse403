@@ -46,7 +46,7 @@ public class BudgetSummaryActivity extends Activity {
 		budgetBalance = (TextView) findViewById(R.id.budget_balance);
 		
 		//TODO implement better way to pass entries to surface
-		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setEntryList(myEntries);
+		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setEntryList(myEntries, myBudget);
 	}
 	
 	@Override
