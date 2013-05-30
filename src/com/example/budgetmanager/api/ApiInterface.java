@@ -136,7 +136,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -192,7 +192,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -206,8 +206,41 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void update(Budget b, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void update(Budget b, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback))
+			return;
+		
+		RequestParams params = new RequestParams();
+
+		String startDate = b.getStartDate().toString(DATE_FORMAT);
+
+		params.put("id", "" + b.getId());
+		params.put("budget_name", b.getName());
+		params.put("amount", "" + b.getBudgetAmount());
+		params.put("recur", "" + b.isRecurring());
+		params.put("start_date", startDate);
+		params.put("recurrence_duration", b.getDuration().toString());
+
+		client.put(budgetsUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				callback.onSuccess(null);
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -218,8 +251,37 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void update(Entry e, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void update(Entry e, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback))
+			return;
+		
+		RequestParams params = new RequestParams();
+		params.put("id", "" + e.getEntryId());
+		params.put("amount", "" + e.getAmount());
+		params.put("notes", e.getNotes());
+		params.put("expenditure_date", e.getDate().toString(DATE_FORMAT));
+		params.put("budget_id", "" + e.getBudget().getId());
+
+		client.put(entriesUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				callback.onSuccess(null);
+			}
+
+			@Override
+			public void onFailure(Throwable t, JSONObject obj) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -231,8 +293,41 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void remove(Budget b, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void remove(Budget b, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback))
+			return;
+
+		client.delete(budgetsUrl + "/" + b.getId(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
+						callback.onSuccess(null);
+					} else {
+						callback.onFailure("Error deleting budget.");
+					}
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send a destruction
+					// verification, but it's designed to always send one.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -243,8 +338,41 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void remove(Entry e, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void remove(Entry e, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback))
+			return;
+
+		client.delete(entriesUrl + "/" + e.getEntryId(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
+						callback.onSuccess(null);
+					} else {
+						callback.onFailure("Error deleting entry.");
+					}
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send a destruction
+					// verification, but it's designed to always send one.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -309,7 +437,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -382,7 +510,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -481,7 +609,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -539,7 +667,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -593,7 +721,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
