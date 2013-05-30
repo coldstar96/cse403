@@ -62,8 +62,8 @@ public class RegisterActivity extends Activity {
 		mPassword = getIntent().getExtras().getString("password");
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView.setText(mPassword);
-		mPasswordView
-		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordView.setOnEditorActionListener(
+				new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
@@ -78,8 +78,8 @@ public class RegisterActivity extends Activity {
 		mPasswordCheck = "";
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
 		mPasswordCheckView.setText(mPasswordCheck);
-		mPasswordCheckView
-		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordCheckView.setOnEditorActionListener(
+				new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {

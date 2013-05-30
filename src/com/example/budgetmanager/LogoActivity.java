@@ -61,9 +61,10 @@ public class LogoActivity extends Activity {
 					@Override
 					public void onFailure(String errorMessage) {
 						Log.d(TAG, "fetch data on ApiInteface is failure");
-						if (errorMessage != null)
+						if (errorMessage != null) {
 							Toast.makeText(LogoActivity.this,
 									errorMessage, Toast.LENGTH_LONG).show();
+						}
 						startActivity(new Intent(LogoActivity.this,
 								EntryLogsActivity.class));
 						finish();
@@ -74,9 +75,10 @@ public class LogoActivity extends Activity {
 			@Override
 			public void onFailure(String errorMessage) {
 				Log.d(TAG, "check login in on ApiInteface is failure");
-				if (errorMessage != null)
+				if (errorMessage != null) {
 					Toast.makeText(LogoActivity.this,
 							errorMessage, Toast.LENGTH_LONG).show();
+				}
 				startActivity(new Intent(LogoActivity.this,
 						LoginActivity.class));
 				finish();
