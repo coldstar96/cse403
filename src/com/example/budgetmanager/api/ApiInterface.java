@@ -251,7 +251,7 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void update(Entry e, final ApiCallback<Object> callback) {
+	public void update(final Entry e, final ApiCallback<Object> callback) {
 		if (failOnNoInternet(callback))
 			return;
 		
@@ -265,7 +265,16 @@ public class ApiInterface {
 		client.put(entriesUrl, params, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject obj) {
-				callback.onSuccess(null);
+				try {
+					// Get the server-generated "updated-at" time.
+					LocalDateTime updatedAt = LocalDateTime.parse(
+							obj.getString("updated_at"),
+							DateTimeFormat.forPattern(DATETIME_FORMAT));
+					e.setUpdatedAt(updatedAt);
+					callback.onSuccess(null);
+				} catch (JSONException e) {
+					callback.onFailure(e.getMessage());
+				}
 			}
 
 			@Override
