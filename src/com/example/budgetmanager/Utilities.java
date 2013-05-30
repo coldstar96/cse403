@@ -41,6 +41,10 @@ public class Utilities {
 	 * @param ctxt The Context of the passed Activity.
 	 */
 	public static void setThemeToActivity(Activity act, Context ctxt) {
+		
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(act, R.layout.fragment_settings, false);
+		
 		// check the Activity's preference to see which theme to set
 		String theme = PreferenceManager.getDefaultSharedPreferences(ctxt).
 				getString(SettingsFragment.KEY_PREF_APP_THEME, "");

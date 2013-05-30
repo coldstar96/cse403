@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -27,8 +26,8 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
 
 /**
  * Activity which allows users to add entries.
@@ -56,9 +55,6 @@ public class AddEntryActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.layout.fragment_settings, false);
 
 		// set theme based on current preferences	
 		Utilities.setThemeToActivity(this, getApplicationContext());

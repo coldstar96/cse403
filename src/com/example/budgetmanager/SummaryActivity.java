@@ -1,25 +1,21 @@
 package com.example.budgetmanager;
 
-import com.example.budgetmanager.preference.SettingsActivity;
-import com.example.budgetmanager.preference.SettingsFragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
 public class SummaryActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.layout.fragment_settings, false);
 
 		// set theme based on current preferences	
 		Utilities.setThemeToActivity(this, getApplicationContext());

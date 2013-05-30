@@ -4,20 +4,13 @@ import java.util.Locale;
 
 import org.joda.time.LocalDate;
 
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
-import com.example.budgetmanager.preference.SettingsActivity;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +19,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
 
 /**
  *
@@ -58,9 +57,6 @@ public class AddBudgetActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.layout.fragment_settings, false);
 
 		// set theme based on current preferences	
 		Utilities.setThemeToActivity(this, getApplicationContext());
