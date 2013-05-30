@@ -57,7 +57,7 @@ public class AddEntryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
+		PreferenceManager.setDefaultValues(this, R.layout.fragment_settings, false);
 
 		// set theme based on current preferences	
 		Utilities.setThemeToActivity(this, getApplicationContext());
