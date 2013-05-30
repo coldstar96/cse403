@@ -126,10 +126,12 @@ public class AddEntryActivity extends Activity {
 			 */
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO implement a signout functionality
-				Toast.makeText(AddEntryActivity.this,
-						"Successfully handled Sign out selection",
-						Toast.LENGTH_LONG).show();
+				ApiInterface.getInstance().logOut();			
+				Intent logOut = new Intent(AddEntryActivity.this, LoginActivity.class);
+				// Clear the back stack so when you press the back button you will exit the app 
+				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				// Goes to the login page
+				startActivity(logOut);
 				return false;
 			}
 		});

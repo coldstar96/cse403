@@ -62,8 +62,12 @@ public class SummaryActivity extends Activity {
 			 * Sign out the user upon clicking the button.
 			 */
 			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();
-				startActivity(new Intent(SummaryActivity.this, LoginActivity.class));
+				ApiInterface.getInstance().logOut();			
+				Intent logOut = new Intent(SummaryActivity.this, LoginActivity.class);
+				// Clear the back stack so when you press the back button you will exit the app 
+				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				// Goes to the login page
+				startActivity(logOut);
 				return false;
 			}
 		});
