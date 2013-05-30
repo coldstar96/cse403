@@ -59,17 +59,8 @@ public class AddEntryActivity extends Activity {
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
-		// check the preference to see which theme to set
-		String startingScreen = PreferenceManager.
-				getDefaultSharedPreferences(this).getString(SettingsFragment
-						.KEY_PREF_APP_THEME, "");
-
-		if (startingScreen.equals(SettingsFragment
-				.APP_THEME_LIGHT)) {
-			setTheme(android.R.style.Theme_Holo_Light);
-		} else {
-			setTheme(android.R.style.Theme_Holo);
-		}
+		// set theme based on current preferences	
+		Utilities.setThemeToActivity(this, getApplicationContext());
 
 		super.onCreate(savedInstanceState);
 
