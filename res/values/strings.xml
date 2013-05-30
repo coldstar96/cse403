@@ -5,6 +5,8 @@
     <string name="action_close">Close</string>
     <string name="action_add">Add</string>
     <string name="action_clear">Clear</string>
+    <string name="action_Edit">Edit</string>
+    <string name="action_Delete">Delete</string>
     <string name="title_activity_logo">uBudget</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_section1">Entry Logs</string>
@@ -22,6 +24,7 @@
     <string name="title_activity_summary">Summary</string>
     <string name="title_activity_entry_logs">Entry Log</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_budget_summary">Budget Summary</string>
 
     <!-- Date format used when sending dates to/from the server -->
     <string name="api_date_format">yyyy-MM-dd</string>
