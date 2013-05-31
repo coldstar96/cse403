@@ -56,7 +56,7 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		// set theme based on current preferences	
+		// set theme based on current preferences
 		Utilities.setActivityTheme(this, getApplicationContext());
 
 		super.onCreate(savedInstanceState);
@@ -78,7 +78,7 @@ public class AddEntryActivity extends Activity {
 		inflater.inflate(R.menu.items, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -97,7 +97,7 @@ public class AddEntryActivity extends Activity {
 			startActivity(settingsIntent);
 
 			return false;
-			
+
 		case R.id.menu_signout:
 			// sign the user out
 			// TODO implement a signout functionality
@@ -106,7 +106,7 @@ public class AddEntryActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
-		
+
 		return true;
 	}
 

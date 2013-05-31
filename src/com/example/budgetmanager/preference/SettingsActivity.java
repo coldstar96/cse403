@@ -23,7 +23,7 @@ public class SettingsActivity extends PreferenceActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		spref = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// set theme based on current preferences	
+		// set theme based on current preferences
 		Utilities.setActivityTheme(this, getApplicationContext());
 		
 		// call this after setting the theme to correctly set the theme

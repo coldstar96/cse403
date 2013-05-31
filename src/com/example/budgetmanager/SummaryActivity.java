@@ -17,9 +17,9 @@ public class SummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		// set theme based on current preferences	
+		// set theme based on current preferences
 		Utilities.setActivityTheme(this, getApplicationContext());
-		
+
 		super.onCreate(savedInstanceState);
 
 		// inflate view
@@ -33,7 +33,7 @@ public class SummaryActivity extends Activity {
 		inflater.inflate(R.menu.items, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -52,7 +52,7 @@ public class SummaryActivity extends Activity {
 			startActivity(settingsIntent);
 
 			return false;
-			
+
 		case R.id.menu_signout:
 			// sign the user out
 			// TODO implement a signout functionality
@@ -61,7 +61,7 @@ public class SummaryActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			return false;
 		}
-		
+
 		return true;
 	}
 }
