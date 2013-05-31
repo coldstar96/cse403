@@ -180,6 +180,8 @@ public class EntryLogsActivity extends Activity {
 	public void onAddBudgetClicked(View view) {
 		Intent intent = new Intent(EntryLogsActivity.this,
 				AddBudgetActivity.class);
+		// Tell the AddBudgetActivity that we are adding budgets.
+		intent.putExtra("Add", true);
 		startActivity(intent);
 	}
 

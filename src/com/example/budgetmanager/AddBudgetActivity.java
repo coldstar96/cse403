@@ -1,22 +1,12 @@
 package com.example.budgetmanager;
 
-import java.util.Locale;
-
-import org.joda.time.LocalDate;
-
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
-import com.example.budgetmanager.preference.SettingsActivity;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +15,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.text.MessageFormat;
+import java.util.Locale;
 
 /**
  *
@@ -53,7 +54,7 @@ public class AddBudgetActivity extends Activity {
 	private CheckBox mRecurringView;
 
 	// Create button
-	private Button createButtonView;
+	private Button mAddButtonView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
-		createButtonView = (Button) findViewById(R.id.create_budget_button);
+		mAddButtonView = (Button) findViewById(R.id.create_budget_button);
 
 		// Sets up the duration dropdown
 		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
@@ -93,6 +94,50 @@ public class AddBudgetActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
+
+		// Find out if we want to add or edit budgets.
+		Bundle bundle = getIntent().getExtras();
+		// Set the title and add button
+		if (bundle.getBoolean("Add")) {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_budget_add)));
+			mAddButtonView.setText(getString(R.string.budget_activity_button_add));
+		} else {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_budget_edit)));
+			mAddButtonView.setText(getString(R.string.budget_activity_button_edit));
+
+			// Populate the fields with the current budget data
+			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
+			String name = b.getName();
+			int amount = b.getBudgetAmount();
+			boolean recur = b.isRecurring();
+			LocalDate startDate = b.getStartDate();
+			Duration duration = b.getDuration();
+			mBudgetNameView.setText(name);
+			mBudgetAmountView.setText(amount);
+			mRecurringView.setChecked(recur);
+			mBudgetDateView.updateDate(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
+			switch (duration) {
+			case DAY:
+				mBudgetDurationView.setSelection(0);
+				break;
+			case WEEK:
+				mBudgetDurationView.setSelection(1);
+				break;
+			case FORTNIGHT:
+				mBudgetDurationView.setSelection(2);
+				break;
+			case MONTH:
+				mBudgetDurationView.setSelection(3);
+				break;
+			case YEAR:
+				mBudgetDurationView.setSelection(4);
+				break;
+			default:
+				throw new IllegalArgumentException("Invaid duration argument");
+			}
+		}
 	}
 
 	@Override
@@ -210,27 +255,62 @@ public class AddBudgetActivity extends Activity {
 			return;
 		}
 
+
+		Bundle bundle = getIntent().getExtras();
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
-		// disable button while calling api
-		createButtonView.setClickable(false);
+		if (bundle.getBoolean("Add")) {
+			// disable button while calling api
+			mAddButtonView.setClickable(false);
 
-		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
-			@Override
-			public void onSuccess(Long result) {
-				finish();
-			}
+			ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
+				@Override
+				public void onSuccess(Long result) {
+					finish();
+				}
 
-			@Override
-			public void onFailure(String errorMessage) {
-				// if the request fails, do nothing
-				// (the toast is for testing and debug purposes)
-				Toast.makeText(AddBudgetActivity.this, errorMessage,
-						Toast.LENGTH_LONG).show();
-				createButtonView.setClickable(true);
-			}
-		});
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing
+					// (the toast is for testing and debug purposes)
+					Toast.makeText(AddBudgetActivity.this, errorMessage,
+							Toast.LENGTH_LONG).show();
+					mAddButtonView.setClickable(true);
+				}
+			});
+		} else {
+			// disable button while calling api
+			mAddButtonView.setClickable(false);
+
+			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
+			// In case the request fails
+			newBudget.setId(actualBudget.getId());
+			newBudget.setBudgetAmount(actualBudget.getBudgetAmount());
+			newBudget.setRecurring(actualBudget.isRecurring());
+			newBudget.setDuration(actualBudget.getDuration());
+			newBudget.setStartDate(actualBudget.getStartDate());
+
+			ApiInterface.getInstance().update(newBudget, new ApiCallback<Object>() {
+				@Override
+				public void onSuccess(Object result){
+					actualBudget.setId(newBudget.getId());
+					actualBudget.setBudgetAmount(newBudget.getBudgetAmount());
+					actualBudget.setRecurring(newBudget.isRecurring());
+					actualBudget.setDuration(newBudget.getDuration());
+					actualBudget.setStartDate(newBudget.getStartDate());
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing (the toast is for testing purposes)
+					Toast.makeText(AddBudgetActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					mAddButtonView.setClickable(true);
+				}
+			});
+		}
+
+
 	}
 
 	/**
@@ -258,6 +338,7 @@ public class AddBudgetActivity extends Activity {
 
 		return new Budget(name, amount, recur,
 				startDate, Duration.valueOf(duration));
+
 	}
 
 	/**

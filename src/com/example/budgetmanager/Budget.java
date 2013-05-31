@@ -1,11 +1,11 @@
 package com.example.budgetmanager;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 /**
  * This is the budget object. It keeps track of all the entries
@@ -48,7 +48,7 @@ public class Budget {
 	private Period budgetDuration;
 
 	// List of entries associated with this Budget
-	private List<Entry> entries;
+	private final List<Entry> entries;
 
 	// Hold the list of all loaded budgets
 	private static final List<Budget> BUDGET_LIST;
@@ -109,6 +109,22 @@ public class Budget {
 	 */
 	public static List<Budget> getBudgets() {
 		return Collections.unmodifiableList(BUDGET_LIST);
+	}
+
+	/** Search through the user's Budgets for the budget who's ID matches
+	 * <code>id</code>.
+	 * 
+	 * @param id The ID of the budget in question.
+	 * @return The budget with <code>id</code>
+	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
+	 */
+	public static Budget getBudgetById(long id) {
+		for (Budget b : BUDGET_LIST) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
 	}
 
 	/**
@@ -203,6 +219,15 @@ public class Budget {
 	}
 
 	/**
+	 * Sets the name of this budget
+	 * 
+	 * @param name The new name of this budget
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * Gets and returns the user-specified total budget amount of this
 	 * <code>Budget</code>. This number is the maximum amount of cents
 	 * the user can spend without going over-budget.
@@ -211,6 +236,15 @@ public class Budget {
 	 */
 	public int getBudgetAmount() {
 		return amount;
+	}
+
+	/**
+	 * Sets the amount of this budget
+	 * 
+	 * @param amount The new amount of this budget
+	 */
+	public void setBudgetAmount(int amount){
+		this.amount = amount;
 	}
 
 	/**
@@ -225,11 +259,29 @@ public class Budget {
 	}
 
 	/**
+	 * Sets whether this budget is recurring or not
+	 * 
+	 * @param recur if it is recurring or not
+	 */
+	public void setRecurring(boolean recur) {
+		this.recur = recur;
+	}
+
+	/**
 	 * Returns the duration type of this budget
 	 * @return the duration of this budget
 	 */
 	public Duration getDuration() {
 		return duration;
+	}
+
+	/**
+	 * Sets the duration of this budget
+	 * 
+	 * @param duration the new duration of this budget
+	 */
+	public void setDuration(Duration duration) {
+		this.duration = duration;
 	}
 
 	/**
@@ -282,6 +334,15 @@ public class Budget {
 	 */
 	public LocalDate getStartDate() {
 		return startDate;
+	}
+
+	/**
+	 * Sets the start date of this budget
+	 * 
+	 * @param startDate the new start date of this budget
+	 */
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
 	/**
