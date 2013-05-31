@@ -1,20 +1,30 @@
 package com.example.budgetmanager.test;
 
+import android.test.suitebuilder.annotation.SmallTest;
+
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.EntryLogAdapter;
 
-import android.test.suitebuilder.annotation.SmallTest;
 import junit.framework.TestCase;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryUpdateTimeComparator class
- * 
+ *
  * Black-box tests.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseEntryUpdateTimeComparator extends TestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
+
 	/**
 	 * Checks that comparing an entry with a later update time
 	 * to an entry with an earlier update time produces a negative

@@ -10,12 +10,21 @@ import junit.framework.TestCase;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryAmountComparator class
- * 
+ *
  * Black-box tests.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseEntryAmountComparator extends TestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
+
 	/**
 	 * Checks that comparing a higher value entry to a lower value
 	 * entry provides a negative output from the amount comparator.
