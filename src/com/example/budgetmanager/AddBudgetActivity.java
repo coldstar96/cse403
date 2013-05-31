@@ -1,22 +1,12 @@
 package com.example.budgetmanager;
 
-import java.util.Locale;
-
-import org.joda.time.LocalDate;
-
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
-import com.example.budgetmanager.preference.SettingsActivity;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +15,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.util.Locale;
 
 /**
  *
@@ -154,9 +154,9 @@ public class AddBudgetActivity extends Activity {
 			 */
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();			
+				ApiInterface.getInstance().logOut();
 				Intent logOut = new Intent(AddBudgetActivity.this, LoginActivity.class);
-				// Clear the back stack so when you press the back button you will exit the app 
+				// Clear the back stack so when you press the back button you will exit the app
 				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				// Goes to the login page
 				startActivity(logOut);

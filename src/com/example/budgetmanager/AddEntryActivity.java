@@ -1,10 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.joda.time.LocalDate;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +21,13 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity which allows users to add entries.
@@ -126,9 +126,9 @@ public class AddEntryActivity extends Activity {
 			 */
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();			
+				ApiInterface.getInstance().logOut();
 				Intent logOut = new Intent(AddEntryActivity.this, LoginActivity.class);
-				// Clear the back stack so when you press the back button you will exit the app 
+				// Clear the back stack so when you press the back button you will exit the app
 				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				// Goes to the login page
 				startActivity(logOut);

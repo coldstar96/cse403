@@ -1,16 +1,4 @@
 package com.example.budgetmanager.api;
-import java.util.ArrayList;
-import java.util.List;
-import java.net.SocketTimeoutException;
-
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -27,6 +15,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -53,7 +52,7 @@ public class ApiInterface {
 
 	private final AsyncHttpClient client;
 	private final PersistentCookieStore cookieStore;
-	
+
 	/**
 	 * Singleton factory method to get the singleton instance.
 	 *
@@ -96,7 +95,7 @@ public class ApiInterface {
 		// clears the cookies in the storage.
 		cookieStore.clear();
 	}
-	
+
 	/**
 	 * Creates a budget on the API server. Asynchronous.
 	 *
@@ -107,9 +106,10 @@ public class ApiInterface {
 	 * the ID of the Budget on the server.
 	 */
 	public void create(final Budget b, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 
 		String startDate = b.getStartDate().toString(DATE_FORMAT);
@@ -161,9 +161,10 @@ public class ApiInterface {
 	 * ID of the Entry on the server.
 	 */
 	public void create(final Entry e, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("amount", "" + e.getAmount());
 		params.put("notes", e.getNotes());
@@ -266,9 +267,10 @@ public class ApiInterface {
 	 * containing all Budgets for the current user.
 	 */
 	public void fetchBudgets(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching budgets");
 
 		client.get(budgetsUrl, new JsonHttpResponseHandler() {
@@ -335,9 +337,10 @@ public class ApiInterface {
 	 * containing all Entries for the given Budget.
 	 */
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
 		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
 
@@ -355,8 +358,8 @@ public class ApiInterface {
 						long id = entriesObject.getLong("id");
 						int amount = entriesObject.getInt("amount");
 						LocalDate date = LocalDate.parse(
-									entriesObject.getString("expenditure_date"),
-									DateTimeFormat.forPattern(DATE_FORMAT));
+								entriesObject.getString("expenditure_date"),
+								DateTimeFormat.forPattern(DATE_FORMAT));
 						LocalDateTime createdAt = LocalDateTime.parse(
 								entriesObject.getString("created_at"),
 								DateTimeFormat.forPattern(DATETIME_FORMAT));
@@ -408,9 +411,10 @@ public class ApiInterface {
 	 * containing all of its Entries.
 	 */
 	public void fetchBudgetsAndEntries(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching all budgets and entries");
 
 		client.get(budgetsAndEntriesUrl, new JsonHttpResponseHandler() {
@@ -507,9 +511,10 @@ public class ApiInterface {
 	 */
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
@@ -565,9 +570,10 @@ public class ApiInterface {
 	 */
 	public void createUser(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
@@ -618,9 +624,10 @@ public class ApiInterface {
 	 * as its parameter.
 	 */
 	public void checkLoginStatus(final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		client.get(sessionUrl, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response) {
@@ -637,7 +644,7 @@ public class ApiInterface {
 			}
 		});
 	}
-	
+
 	/**
 	 * Checks if there is an active connection to the Internet. If there is no connection,
 	 * the callback specified is alerted via onFailure with an error specifying so.
@@ -648,12 +655,12 @@ public class ApiInterface {
 	private boolean failOnNoInternet(ApiCallback<?> callback) {
 		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
-		
+
 		if (activeNetwork != null && activeNetwork.isConnected()) {
 			Log.d(TAG, "Internet connection found.");
 			return false;
 		}
-		
+
 		Log.d(TAG, "No internet connection found.");
 		callback.onFailure("Active internet connection required.");
 		return true;

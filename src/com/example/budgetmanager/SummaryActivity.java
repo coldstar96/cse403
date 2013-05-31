@@ -1,15 +1,15 @@
 package com.example.budgetmanager;
 
-import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsActivity;
-import com.example.budgetmanager.preference.SettingsFragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
 
 public class SummaryActivity extends Activity {
 
@@ -34,6 +34,7 @@ public class SummaryActivity extends Activity {
 			/**
 			 * Take the users to the Settings activity upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent settingsIntent = new Intent(SummaryActivity.this,
 						SettingsActivity.class);
@@ -61,10 +62,11 @@ public class SummaryActivity extends Activity {
 			/**
 			 * Sign out the user upon clicking the button.
 			 */
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();			
+				ApiInterface.getInstance().logOut();
 				Intent logOut = new Intent(SummaryActivity.this, LoginActivity.class);
-				// Clear the back stack so when you press the back button you will exit the app 
+				// Clear the back stack so when you press the back button you will exit the app
 				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				// Goes to the login page
 				startActivity(logOut);
