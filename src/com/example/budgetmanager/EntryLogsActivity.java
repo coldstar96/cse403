@@ -1,8 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.Comparator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +19,9 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Activity which displays list of entries screen to the user, offering add entry
@@ -194,6 +194,7 @@ public class EntryLogsActivity extends Activity {
 		} else {
 			Intent intent = new Intent(EntryLogsActivity.this,
 					AddEntryActivity.class);
+			intent.addCategory("Add");
 			startActivity(intent);
 		}
 	}

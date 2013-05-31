@@ -1,17 +1,5 @@
 package com.example.budgetmanager.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.net.SocketTimeoutException;
-
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -28,6 +16,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -492,8 +491,8 @@ public class ApiInterface {
 						long id = entriesObject.getLong("id");
 						int amount = entriesObject.getInt("amount");
 						LocalDate date = LocalDate.parse(
-									entriesObject.getString("expenditure_date"),
-									DateTimeFormat.forPattern(DATE_FORMAT));
+								entriesObject.getString("expenditure_date"),
+								DateTimeFormat.forPattern(DATE_FORMAT));
 						LocalDateTime createdAt = LocalDateTime.parse(
 								entriesObject.getString("created_at"),
 								DateTimeFormat.forPattern(DATETIME_FORMAT));

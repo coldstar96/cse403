@@ -1,11 +1,11 @@
 package com.example.budgetmanager;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 /**
  * This is the budget object. It keeps track of all the entries
@@ -30,25 +30,25 @@ public class Budget {
 	private long budgetId;
 
 	// Name of the budget
-	private String name;
+	private final String name;
 
 	// Amount allocated for the budget, in cents
-	private int amount;
+	private final int amount;
 
 	// true for recurring Budget
-	private boolean recur;
+	private final boolean recur;
 
 	// The start date of the first cycle
-	private LocalDate startDate;
+	private final LocalDate startDate;
 
 	// Duration type for this Budget
-	private Duration duration;
+	private final Duration duration;
 
 	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
 
 	// List of entries associated with this Budget
-	private List<Entry> entries;
+	private final List<Entry> entries;
 
 	// Hold the list of all loaded budgets
 	private static final List<Budget> BUDGET_LIST;
@@ -116,6 +116,23 @@ public class Budget {
 	 */
 	public static void clearBudgets() {
 		BUDGET_LIST.clear();
+	}
+
+	/**
+	 * Search through the user's Budgets for the budget who's ID matches
+	 * <code>id</code>.
+	 * 
+	 * @param id The ID of the budget in question.
+	 * @return The budget with <code>id</code>
+	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
+	 */
+	public static Budget getBudgetById(long id) {
+		for (Budget b : BUDGET_LIST) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
 	}
 
 	/**
@@ -191,6 +208,23 @@ public class Budget {
 	 */
 	public List<Entry> getEntries() {
 		return Collections.unmodifiableList(entries);
+	}
+
+	/**
+	 * Search through the budget's entries for the entry who's ID matches
+	 * <code>id</code>.
+	 * 
+	 * @param id The ID of the Entry in question.
+	 * @return The entry with <code>id</code>
+	 * @throws IllegalArgumentException if no entry with <code>id</code> exists.
+	 */
+	public Entry getEntryById(long id) {
+		for (Entry e : entries) {
+			if (id == e.getEntryId()) {
+				return e;
+			}
+		}
+		throw new IllegalArgumentException("No entry with id, " + id + ", found.");
 	}
 
 	/**

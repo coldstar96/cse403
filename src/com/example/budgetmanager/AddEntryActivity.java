@@ -1,10 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.joda.time.LocalDate;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +21,14 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsFragment;
 import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity which allows users to add entries.
@@ -51,11 +52,10 @@ public class AddEntryActivity extends Activity {
 
 	// Text field for entering notes for the Entry
 	private EditText mNotesView;
-	private Button addButtonView;
+	private Button mAddButtonView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		// set default values for settings (if never done before)
 		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
 
@@ -80,7 +80,35 @@ public class AddEntryActivity extends Activity {
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
-		addButtonView = (Button) findViewById(R.id.add_entry_button);
+		mAddButtonView = (Button) findViewById(R.id.add_entry_button);
+
+		// Set all the add/edit specific fields.
+		Bundle bundle = getIntent().getExtras();
+		if (bundle.getBoolean("Add")) {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_entry_add)));
+			mAddButtonView.setText(getString(R.string.entry_activity_button_add));
+		} else {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_entry_edit)));
+			mAddButtonView.setText(getString(R.string.entry_activity_button_edit));
+
+			// Set fields to saved entry's fields.
+			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
+			Entry e = b.getEntryById(bundle.getLong("EntryId"));
+
+			mAmountView.setText(e.getAmount());
+
+			LocalDate date = e.getDate();
+			mDateView.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+
+			mNotesView.setText(e.getNotes());
+
+			ArrayAdapter<String> editAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item, new String[]{b.getName()});
+			mBudgetView.setAdapter(editAdapter);
+			mBudgetView.setEnabled(false);
+		}
 	}
 
 	@Override
@@ -140,8 +168,11 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// populate list items for the budget selector
-		addItemsToBudgetSpinner();
+
+		if (!getIntent().getExtras().getBoolean("Add")) {
+			// populate list items for the budget selector
+			addItemsToBudgetSpinner();
+		}
 	}
 
 	// Populates the spinner with the current list of Budgets.
@@ -207,50 +238,79 @@ public class AddEntryActivity extends Activity {
 			return;
 		}
 
-		// create the Entry object to add to the Budget
-		final Entry newEntry = createEntry();
+		final Entry newEntry = createEntry(getIntent().getExtras().getBoolean("Add"));
 
 		if (newEntry == null) {
 			// do nothing until add Budget activity is up
 			return;
 		}
-		addButtonView.setClickable(false);
+		mAddButtonView.setClickable(false);
 
-		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
-			@Override
-			public void onSuccess(Long result) {
+		if (getIntent().getExtras().getBoolean("Add")) {
+			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
+				@Override
+				public void onSuccess(Long result) {
 
-				// for testing purposes
-				Toast.makeText(AddEntryActivity.this, "Added $"
-						+ ((double) newEntry.getAmount() / CENTS) + " to the "
-						+ newEntry.getBudget().getName() + " budget "
-						+ "with the date of: " + newEntry.getDate()
-						+ " with a note of: " + newEntry.getNotes()
-						, Toast.LENGTH_LONG).show();
+					// for testing purposes
+					Toast.makeText(AddEntryActivity.this, "Added $"
+							+ ((double) newEntry.getAmount() / CENTS) + " to the "
+							+ newEntry.getBudget().getName() + " budget "
+							+ "with the date of: " + newEntry.getDate()
+							+ " with a note of: " + newEntry.getNotes()
+							, Toast.LENGTH_LONG).show();
 
-				// clear the fields if the add was successful.
-				// passes a null since the method doesn't need
-				// a reference to a view object to work.
-				AddEntryActivity.this.clearEntry(null);
+					// clear the fields if the add was successful.
+					// passes a null since the method doesn't need
+					// a reference to a view object to work.
+					AddEntryActivity.this.clearEntry(null);
 
-				// add the entry into the Budget object
-				newEntry.getBudget().addEntry(newEntry);
+					// add the entry into the Budget object
+					newEntry.getBudget().addEntry(newEntry);
 
-				// goto logs screen
-				finish();
-			}
+					// goto logs screen
+					finish();
+				}
 
-			@Override
-			public void onFailure(String errorMessage) {
-				// if the request fails, do nothing (the toast is for testing purposes)
-				Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-				addButtonView.setClickable(true);
-			}
-		});
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing (the toast is for testing purposes)
+					Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					mAddButtonView.setClickable(true);
+				}
+			});
+		} else {
+			Bundle bundle = getIntent().getExtras();
+			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
+			final Entry actualEntry = b.getEntryById(bundle.getLong("EntryId"));
+
+			// We need to send a seperate entry, so we don't have to save
+			// old values if the request fails.
+			newEntry.setEntryId(actualEntry.getEntryId());
+			newEntry.setCreatedAt(actualEntry.getCreatedAt());
+			newEntry.setUpdatedAt(actualEntry.getUpdatedAt());
+
+			ApiInterface.getInstance().update(newEntry, new ApiCallback<Object>() {
+				@Override
+				public void onSuccess(Object result) {
+					// Update all the actualEntry's fields.
+					actualEntry.setUpdatedAt(newEntry.getUpdatedAt());
+					actualEntry.setAmount(newEntry.getAmount());
+					actualEntry.setDate(newEntry.getDate());
+					actualEntry.setNotes(newEntry.getNotes());
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing (the toast is for testing purposes)
+					Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					mAddButtonView.setClickable(true);
+				}
+			});
+		}
 	}
 
 	// Helper method to create the new <code>Entry</code> object to be added.
-	private Entry createEntry() {
+	private Entry createEntry(boolean adding) {
 		// extract the amount information from its text field
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
 
@@ -261,8 +321,13 @@ public class AddEntryActivity extends Activity {
 		String notes = mNotesView.getText().toString();
 
 		// retrieve selected budget
-		final List<Budget> budgetList = Budget.getBudgets();
-		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
+		Budget budget;
+		if (adding) {
+			final List<Budget> budgetList = Budget.getBudgets();
+			budget = budgetList.get(mBudgetView.getSelectedItemPosition());
+		} else {
+			budget = Budget.getBudgetById(getIntent().getExtras().getLong("BudgetId"));
+		}
 
 		// Need to add 1 to the month because the DatePicker
 		// has zero-based months.
