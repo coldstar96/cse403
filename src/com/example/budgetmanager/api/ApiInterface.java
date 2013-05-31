@@ -1,4 +1,5 @@
 package com.example.budgetmanager.api;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.net.SocketTimeoutException;
@@ -98,8 +99,9 @@ public class ApiInterface {
 	 * the ID of the Budget on the server.
 	 */
 	public void create(final Budget b, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 
@@ -152,8 +154,9 @@ public class ApiInterface {
 	 * ID of the Entry on the server.
 	 */
 	public void create(final Entry e, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 		params.put("amount", "" + e.getAmount());
@@ -207,8 +210,9 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
 	public void update(Budget b, final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 
@@ -252,8 +256,9 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
 	public void update(final Entry e, final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 		params.put("id", "" + e.getEntryId());
@@ -303,8 +308,9 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
 	public void remove(Budget b, final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 
 		client.delete(budgetsUrl + "/" + b.getId(), new JsonHttpResponseHandler() {
 			@Override
@@ -348,8 +354,9 @@ public class ApiInterface {
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
 	public void remove(Entry e, final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 
 		client.delete(entriesUrl + "/" + e.getEntryId(), new JsonHttpResponseHandler() {
 			@Override
@@ -394,8 +401,9 @@ public class ApiInterface {
 	 * containing all Budgets for the current user.
 	 */
 	public void fetchBudgets(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		Log.d(TAG, "Fetching budgets");
 
@@ -463,8 +471,9 @@ public class ApiInterface {
 	 * containing all Entries for the given Budget.
 	 */
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
 		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
@@ -536,8 +545,9 @@ public class ApiInterface {
 	 * containing all of its Entries.
 	 */
 	public void fetchBudgetsAndEntries(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		Log.d(TAG, "Fetching all budgets and entries");
 
@@ -635,8 +645,9 @@ public class ApiInterface {
 	 */
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 		params.put("username", email);
@@ -693,8 +704,9 @@ public class ApiInterface {
 	 */
 	public void createUser(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		RequestParams params = new RequestParams();
 		params.put("username", email);
@@ -746,8 +758,9 @@ public class ApiInterface {
 	 * as its parameter.
 	 */
 	public void checkLoginStatus(final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
+		}
 		
 		client.get(sessionUrl, new AsyncHttpResponseHandler() {
 			@Override
