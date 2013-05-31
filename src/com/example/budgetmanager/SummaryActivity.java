@@ -27,7 +27,7 @@ public class SummaryActivity extends Activity {
 	// UI reference
 	private ListView listView;
 
-	private BudgetLogAdapter adapter;
+	private BudgetSummaryAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +40,8 @@ public class SummaryActivity extends Activity {
 		// inflate view
 		setContentView(R.layout.activity_summary);
 
-		// retrieve the application data
-		Log.d(TAG, "Just got the app, about to make the adapter");
-		adapter = new BudgetLogAdapter(this, R.layout.list_budget_layout,
+		// set adapter
+		adapter = new BudgetSummaryAdapter(this, R.layout.list_budget_layout,
 				Budget.getBudgets());
 		Log.d(TAG, "Made the adapter!");
 
@@ -51,8 +50,28 @@ public class SummaryActivity extends Activity {
 		listView.setAdapter(adapter);
 		Log.d(TAG, "added the adapter!");
 
-		adapter.sort(new BudgetLogAdapter.BudgetActiveComparator());
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
 		adapter.notifyDataSetChanged();
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, SummaryActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 
 	@Override

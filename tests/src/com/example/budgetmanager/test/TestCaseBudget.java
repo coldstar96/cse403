@@ -1,21 +1,21 @@
 package com.example.budgetmanager.test;
 
-import java.util.List;
-
-import org.joda.time.LocalDate;
+import android.test.AndroidTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.Entry;
 
-import android.test.AndroidTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
+import org.joda.time.LocalDate;
+
+import java.util.List;
 
 /**
  * This is a unit test for the {@link com.example.budgetmanager.Budget Budget} class.
- * 
+ *
  * It is a black-box test.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseBudget extends AndroidTestCase {
@@ -337,5 +337,4 @@ public class TestCaseBudget extends AndroidTestCase {
 
 		runEndDateTest(Duration.MONTH, startDate, endDate, 1);
 	}
-
 }

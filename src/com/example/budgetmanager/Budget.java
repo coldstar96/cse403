@@ -245,7 +245,7 @@ public class Budget {
 		} else {
 			int cycle = -1;
 			LocalDate startOfPeriod = startDate;
-			while (startOfPeriod.isBefore(now)) {
+			while (startOfPeriod.isBefore(now) || startOfPeriod.equals(now)) {
 				++cycle;
 				startOfPeriod = startOfPeriod.plus(budgetDuration);
 			}

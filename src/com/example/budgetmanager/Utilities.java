@@ -71,4 +71,18 @@ public class Utilities {
 			act.setTheme(android.R.style.Theme_Holo);
 		}
 	}
+
+	/**
+	 * Shortens text with given length with "..." appended at the end
+	 * @param s string to shorten
+	 * @param len maximum length that can be shown (including ...)
+	 * @return String with shortened string
+	 */
+	public static String shorten(String s, int len) {
+		s = s.trim();
+		if (s.length() > 12) {
+			s = s.substring(0, len - 3).trim() + "...";
+		}
+		return s;
+	}
 }
