@@ -1,4 +1,4 @@
-package com.example.budgetmanager.test;
+package com.example.budgetmanager.ui.test;
 
 import org.joda.time.LocalDate;
 
@@ -68,6 +68,7 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		// Should always tear down budgets
 		Budget.clearBudgets();
 
+		@SuppressWarnings("unused")
 		Budget testBudget = new Budget(TEST_BUDGET_NAME, 200, false,
 				LocalDate.now(), Duration.MONTH);
 	}
