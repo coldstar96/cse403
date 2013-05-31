@@ -129,6 +129,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_button_primary"
+                    android:onClick="attemptLogin"
                     android:text="@string/action_sign_in"
                     android:textColor="@color/white" />
 
@@ -142,6 +143,7 @@
                     android:layout_height="@dimen/default_component_height"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/rounded_button_secondary"
+                    android:onClick="moveToRegisterActivity"
                     android:text="@string/action_register"
                     android:textColor="@color/white" />
             </LinearLayout>

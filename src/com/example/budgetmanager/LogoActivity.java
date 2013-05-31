@@ -43,40 +43,42 @@ public class LogoActivity extends Activity {
 				// fetch budgets and entries
 				ApiInterface.getInstance().fetchBudgetsAndEntries(
 						new ApiCallback<List<Budget>>() {
-					@Override
-					public void onSuccess(List<Budget> result) {
-						// check the preference to see which activity to launch into
-						String startingScreen = spref.getString(SettingsFragment
-								.KEY_PREF_STARTING_SCREEN, "");
+							@Override
+							public void onSuccess(List<Budget> result) {
+								// check the preference to see which activity to launch into
+								String startingScreen = spref.getString(SettingsFragment
+										.KEY_PREF_STARTING_SCREEN, "");
 
-						if (startingScreen.equals(SettingsFragment
-								.STARTING_SCREEN_LOG)) {
-							startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
-						} else {
-							startActivity(new Intent(LogoActivity.this, SummaryActivity.class));
-						}
-						finish();
-					}
+								if (startingScreen.equals(SettingsFragment
+										.STARTING_SCREEN_LOG)) {
+									startActivity(new Intent(LogoActivity.this, EntryLogsActivity.class));
+								} else {
+									startActivity(new Intent(LogoActivity.this, SummaryActivity.class));
+								}
+								finish();
+							}
 
-					@Override
-					public void onFailure(String errorMessage) {
-						Log.d(TAG, "fetch data on ApiInteface is failure");
-						if (errorMessage != null)
-							Toast.makeText(LogoActivity.this,
-									errorMessage, Toast.LENGTH_LONG).show();
-						startActivity(new Intent(LogoActivity.this,
-								EntryLogsActivity.class));
-						finish();
-					}
-				});
+							@Override
+							public void onFailure(String errorMessage) {
+								Log.d(TAG, "fetch data on ApiInteface is failure");
+								if (errorMessage != null) {
+									Toast.makeText(LogoActivity.this,
+											errorMessage, Toast.LENGTH_LONG).show();
+								}
+								startActivity(new Intent(LogoActivity.this,
+										EntryLogsActivity.class));
+								finish();
+							}
+						});
 			}
 
 			@Override
 			public void onFailure(String errorMessage) {
 				Log.d(TAG, "check login in on ApiInteface is failure");
-				if (errorMessage != null)
+				if (errorMessage != null) {
 					Toast.makeText(LogoActivity.this,
 							errorMessage, Toast.LENGTH_LONG).show();
+				}
 				startActivity(new Intent(LogoActivity.this,
 						LoginActivity.class));
 				finish();

@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -68,7 +67,7 @@ public class LoginActivity extends Activity {
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
 				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					attemptLogin();
+					attemptLogin(textView);
 					return true;
 				}
 				return false;
@@ -78,31 +77,6 @@ public class LoginActivity extends Activity {
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-
-		// attempt login on log in button pressed
-		findViewById(R.id.log_in_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						attemptLogin();
-					}
-				});
-
-		// move to register activity with all of the inputs passed on
-		findViewById(R.id.register_button).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						Intent intent = new Intent(LoginActivity.this,
-								RegisterActivity.class);
-						intent.putExtra("email",
-								mEmailView.getText().toString());
-						intent.putExtra("password",
-								mPasswordView.getText().toString());
-						startActivityForResult(intent, 1);
-
-					}
-				});
 	}
 
 	@Override
@@ -120,7 +94,7 @@ public class LoginActivity extends Activity {
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
-	public void attemptLogin() {
+	public void attemptLogin(View view) {
 		Log.d(TAG, "attempt login");
 
 		// Reset errors.
@@ -201,6 +175,22 @@ public class LoginActivity extends Activity {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Moves to the Register screen register activity with all of the
+	 * inputs passed on.
+	 *
+	 * @param view The reference to the register button.
+	 */
+	public void moveToRegisterActivity(View view) {
+		Intent intent = new Intent(LoginActivity.this,
+				RegisterActivity.class);
+		intent.putExtra("email",
+				mEmailView.getText().toString());
+		intent.putExtra("password",
+				mPasswordView.getText().toString());
+		startActivityForResult(intent, 1);
 	}
 
 	/**

@@ -62,13 +62,13 @@ public class RegisterActivity extends Activity {
 		mPassword = getIntent().getExtras().getString("password");
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView.setText(mPassword);
-		mPasswordView
-		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordView.setOnEditorActionListener(
+				new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
 				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt();
+					registerAttempt(textView);
 					return true;
 				}
 				return false;
@@ -78,13 +78,13 @@ public class RegisterActivity extends Activity {
 		mPasswordCheck = "";
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
 		mPasswordCheckView.setText(mPasswordCheck);
-		mPasswordCheckView
-		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordCheckView.setOnEditorActionListener(
+				new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int id,
 					KeyEvent keyEvent) {
 				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt();
+					registerAttempt(textView);
 					return true;
 				}
 				return false;
@@ -94,14 +94,6 @@ public class RegisterActivity extends Activity {
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-
-		findViewById(R.id.register_button).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						registerAttempt();
-					}
-				});
 
 		// focuses to empty edit view
 		if (mEmail.isEmpty()) {
@@ -118,7 +110,7 @@ public class RegisterActivity extends Activity {
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
-	public void registerAttempt() {
+	public void registerAttempt(View view) {
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);

@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -56,20 +56,8 @@ public class AddEntryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		// set default values for settings (if never done before)
-		PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, false);
-
-		// check the preference to see which theme to set
-		String startingScreen = PreferenceManager.
-				getDefaultSharedPreferences(this).getString(SettingsFragment
-						.KEY_PREF_APP_THEME, "");
-
-		if (startingScreen.equals(SettingsFragment
-				.APP_THEME_LIGHT)) {
-			setTheme(android.R.style.Theme_Holo_Light);
-		} else {
-			setTheme(android.R.style.Theme_Holo);
-		}
+		// set theme based on current preferences
+		Utilities.setActivityTheme(this, getApplicationContext());
 
 		super.onCreate(savedInstanceState);
 
@@ -81,69 +69,69 @@ public class AddEntryActivity extends Activity {
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		addButtonView = (Button) findViewById(R.id.add_entry_button);
+
+		// populate list items for the budget selector
+		addItemsToBudgetSpinner();
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// set up the button that lead to the settings activity
-		MenuItem buttonSettings = menu.add(R.string.title_settings);
+		// inflate the menu
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.items, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-		// this forces it to go in the overflow menu, which is preferred.
-		buttonSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			// take the user to the Settings screen
+			Intent settingsIntent = new Intent(AddEntryActivity.this,
+					SettingsActivity.class);
 
-		buttonSettings.setOnMenuItemClickListener(new MenuItem.
-				OnMenuItemClickListener() {
-			/**
-			 * Take the users to the Settings activity upon clicking the button.
-			 */
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				Intent settingsIntent = new Intent(AddEntryActivity.this,
-						SettingsActivity.class);
+			// these extras allow SettingsActivity to skip the 'headers'
+			// layer, which is unnecessary since we have very few settings
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+					SettingsFragment.class.getName());
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
 
-				// these extras allow SettingsActivity to skip the 'headers'
-				// layer, which is unnecessary since we have very few settings
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-						SettingsFragment.class.getName());
-				settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+			startActivity(settingsIntent);
 
-				AddEntryActivity.this.startActivity(settingsIntent);
+			return false;
 
-				return false;
-			}
-		});
-
-		// set up the button that lead to the signout activity
-		MenuItem buttonSignout = menu.add(R.string.title_signout);
-
-		// this forces it to go in the overflow menu, which is preferred.
-		buttonSignout.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-		buttonSignout.setOnMenuItemClickListener(new MenuItem.
-				OnMenuItemClickListener() {
-			/**
-			 * Sign out the user upon clicking the button.
-			 */
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				ApiInterface.getInstance().logOut();
-				Intent logOut = new Intent(AddEntryActivity.this, LoginActivity.class);
-				// Clear the back stack so when you press the back button you will exit the app
-				logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				// Goes to the login page
-				startActivity(logOut);
-				return false;
-			}
-		});
+		case R.id.menu_signout:
+			// sign the user out
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(AddEntryActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
+			return false;
+		}
 		return true;
 	}
 
-	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// populate list items for the budget selector
-		addItemsToBudgetSpinner();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, AddEntryActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 
 	// Populates the spinner with the current list of Budgets.
