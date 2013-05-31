@@ -29,8 +29,6 @@ public class SummaryActivity extends Activity {
 
 	private BudgetLogAdapter adapter;
 
-	private UBudgetApp app;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,17 +53,18 @@ public class SummaryActivity extends Activity {
 		setContentView(R.layout.activity_summary);
 
 		// retrieve the application data
-		app = (UBudgetApp) getApplication();
 		Log.d(TAG, "Just got the app, about to make the adapter");
 		adapter = new BudgetLogAdapter(this, R.layout.list_budget_layout,
-				app.getBudgetList());
+				Budget.getBudgets());
 		Log.d(TAG, "Made the adapter!");
 
 		// set up Entry Logs screen
 		listView = (ListView) findViewById(R.id.budget_list);
 		listView.setAdapter(adapter);
 		Log.d(TAG, "added the adapter!");
-
+		
+		adapter.sort(new BudgetLogAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override

@@ -243,7 +243,7 @@ public class Budget {
 		if (startDate.isAfter(now)) {
 			return -1;
 		} else {
-			int cycle = 0;
+			int cycle = -1;
 			LocalDate startOfPeriod = startDate;
 			while (startOfPeriod.isBefore(now)) {
 				++cycle;
@@ -260,19 +260,16 @@ public class Budget {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isActive() {
-		return recur || getCurrentCycle() == 0;
+		int currentCycle = getCurrentCycle();
+		return currentCycle == 0 || (recur && currentCycle >= 0);
 	}
 
 	/**
 	 * Gets the start date of the given cycle
 	 * @param cycle the cycle number to get the start date from.
 	 * @return The start date of the cycle
-	 * @throws IllealArgumentException If the cycle is negative
 	 */
 	public LocalDate getStartDate(int cycle) {
-		if (cycle < 0) {
-			throw new IllegalArgumentException("Cycle was negative: " + cycle);
-		}
 		return startDate.withPeriodAdded(budgetDuration, cycle);
 	}
 
@@ -289,12 +286,8 @@ public class Budget {
 	 *
 	 * @param cycle The cycle to calculate the end time of.
 	 * @return The end time, in milliseconds, of the <code>cycle</code>.
-	 * @throws IllegalArgumentException If the cycle is negative
 	 */
 	public LocalDate getEndDate(int cycle) {
-		if (cycle < 0) {
-			throw new IllegalArgumentException("Cycle was negative: " + cycle);
-		}
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
 	}

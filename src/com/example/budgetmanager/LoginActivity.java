@@ -1,7 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
@@ -15,7 +13,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -24,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+
+import java.util.List;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -156,6 +155,8 @@ public class LoginActivity extends Activity {
 				// Move to entry logs activity
 				@Override
 				public void onSuccess(Object result) {
+
+					Budget.clearBudgets();
 					ApiInterface.getInstance().fetchBudgetsAndEntries(
 							new ApiCallback<List<Budget>>() {
 								@Override
@@ -177,9 +178,9 @@ public class LoginActivity extends Activity {
 			});
 		}
 	}
-	
+
 	/**
-	 * Moves to the Register screen register activity with all of the 
+	 * Moves to the Register screen register activity with all of the
 	 * inputs passed on.
 	 *
 	 * @param view The reference to the register button.
