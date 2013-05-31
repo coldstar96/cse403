@@ -7,8 +7,8 @@ import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
@@ -75,10 +75,13 @@ public class SummaryActivity extends Activity {
 
 		case R.id.menu_signout:
 			// sign the user out
-			// TODO implement a signout functionality
-			Toast.makeText(SummaryActivity.this,
-					"Successfully handled Sign out selection",
-					Toast.LENGTH_LONG).show();
+			// sign the user out
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(SummaryActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
 			return false;
 		}
 
