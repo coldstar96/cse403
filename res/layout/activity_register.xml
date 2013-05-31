@@ -2,46 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Signinctivity" >
 
-    <!-- Login progress -->
+    <!-- register progress -->
 
-    <RelativeLayout
-        android:id="@+id/login_status"
+    <LinearLayout
+        android:id="@+id/register_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         android:visibility="gone"
         android:windowSoftInputMode="stateAlwaysHidden" >
 
-        <LinearLayout
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal" >
+            android:layout_marginBottom="8dp" />
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/register_status_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/register_progress_signing_in"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_gray" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/login_status_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/login_progress_signing_in"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/dark_gray" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <!-- Login form -->
+    <!-- Register form -->
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/default_layout_spacing"
@@ -69,7 +64,7 @@
                     android:textSize="26sp" />
             </LinearLayout>
 
-            <!-- Login Form -->
+            <!-- register Form -->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +108,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/rounded_edittext"
-                    android:imeActionId="@+id/login"
+                    android:imeActionId="@+id/register"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -134,7 +129,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/rounded_edittext"
-                    android:imeActionId="@+id/login"
+                    android:imeActionId="@+id/register"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -142,15 +137,15 @@
                     android:padding="@dimen/default_edittext_padding"
                     android:singleLine="true" />
 
-                <!-- Register button -->
+                <!-- register button -->
 
                 <Button
                     android:id="@+id/register_button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_component_height"
                     android:layout_marginTop="10dp"
-                    android:onClick="registerAttempt"
                     android:background="@drawable/rounded_button_primary"
+                    android:onClick="registerAttempt"
                     android:text="@string/action_register"
                     android:textColor="@color/white" />
             </LinearLayout>

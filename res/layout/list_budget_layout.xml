@@ -33,8 +33,8 @@
             android:id="@+id/budget_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_above="@+id/budget_duration"
+            android:layout_alignParentRight="true"
             android:maxLines="1"
             android:text="startDate ~ endDate" />
 

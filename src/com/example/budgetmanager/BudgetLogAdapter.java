@@ -1,12 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.joda.time.LocalDate;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -17,9 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * This class handles preparing lists of budgets for display in the summary screen.
- * It aggregates the budgets and allows for them to be displayed in a ListView. 
+ * It aggregates the budgets and allows for them to be displayed in a ListView.
  * Thus, it could be considered a kind of View Model.
  *
  * @author Chi Ho coldstar96
@@ -31,13 +31,13 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 	private final double WARNING_PROPORTION = 1.20;
 
 	// The list of budgets added to the log
-	private List<Budget> budgetList;
+	private final List<Budget> budgetList;
 
 	// Store the activity context for usage when displaying rows
-	private Context context;
+	private final Context context;
 
 	// resource ID for the layout to inflate into each row
-	private int layoutResourceId;
+	private final int layoutResourceId;
 
 	public BudgetLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
@@ -72,7 +72,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 	}
 
 	@Override
-	public int getCount(){
+	public int getCount() {
 		return budgetList.size();
 	}
 
@@ -122,7 +122,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		if (budget.isRecurring()) {
 			currentCycle = budget.getCurrentCycle();
 		}
-		
+
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
 
@@ -133,19 +133,19 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		} else {
 			budgetCycleView.setVisibility(View.VISIBLE);
 		}
-		
+
 		int totalDays = Utilities.dateDifference(startDate, endDate);
 		int currentDays = Math.min(totalDays, Utilities.dateDifference(startDate, LocalDate.now()));
 
 		budgetDurationView.setText(String.format("%d / %d days", currentDays, totalDays));
-		
+
 		int amountSpent = budget.getAmountSpent();
 		int budgetAmount = budget.getBudgetAmount();
 		int amountLeft = budgetAmount - amountSpent;
-		
+
 		expenditureTextView.setText(String.format("$%.02f / $%.02f ($%.02f left)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
-		
+
 		progressView.setMax(budgetAmount);
 		progressView.setProgress(Math.min(amountSpent, budgetAmount));
 
@@ -158,13 +158,13 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / (totalDays - currentDays);
 		}
-		
+
 		actualDailyAvgView.setText(String.format("$%.02f / day", actualAvg));
 		suggestDailyAvgView.setText(String.format("$%.02f / day", suggestedAvg));
-		
-		double spending = actualAvg / expectedAvg ;
 
-		
+		double spending = actualAvg / expectedAvg;
+
+
 		if (budget.isActive()) {
 			if (spending <= 1.0) {
 				expenditureTextView.setTextColor(getContext().getResources().getColor(R.color.green));
@@ -181,7 +181,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 
 		return row;
 	}
-	
+
 
 	/**
 	 * Sorts this BudgetLogAdapter by the given comparator.
@@ -192,7 +192,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		super.sort(comp);
 		Collections.sort(budgetList, comp);
 	}
-	
+
 
 	/**
 	 * Comparator for comparing Entries by their dates.
@@ -215,11 +215,12 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		public int compare(Budget lhs, Budget rhs) {
 			boolean lhsRecur = lhs.isActive();
 			boolean rhsRecur = rhs.isActive();
-			
-			if (lhsRecur && !rhsRecur)
+
+			if (lhsRecur && !rhsRecur) {
 				return -1;
-			else if(!lhsRecur && rhsRecur)
+			} else if (!lhsRecur && rhsRecur) {
 				return 1;
+			}
 			return 0;
 		}
 

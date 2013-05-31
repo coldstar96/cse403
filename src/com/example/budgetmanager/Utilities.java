@@ -44,7 +44,7 @@ public class Utilities {
 	 * @param end	end date
 	 * @return int	number of days between two days (inclusive)
 	 */
-	public static int dateDifference(LocalDate start, LocalDate end){
+	public static int dateDifference(LocalDate start, LocalDate end) {
 		PeriodType monthDay = PeriodType.yearMonthDay();
 		int days = new Period(start, end, monthDay).getDays() + 1;
 		return days;
@@ -52,7 +52,7 @@ public class Utilities {
 
 	/**
 	 * Sets the theme of the passed Activity.
-	 * 
+	 *
 	 * @param act The Activity to set the theme of.
 	 * @param ctxt The Context of the passed Activity.
 	 */
