@@ -211,7 +211,7 @@ public class ApiInterface {
 		if (failOnNoInternet(callback)) {
 			return;
 		}
-		
+
 		RequestParams params = new RequestParams();
 
 		String startDate = b.getStartDate().toString(DATE_FORMAT);
@@ -257,7 +257,7 @@ public class ApiInterface {
 		if (failOnNoInternet(callback)) {
 			return;
 		}
-		
+
 		RequestParams params = new RequestParams();
 		params.put("id", "" + e.getEntryId());
 		params.put("amount", "" + e.getAmount());
@@ -770,23 +770,23 @@ public class ApiInterface {
 			}
 		});
 	}
-	
+
 	/**
 	 * Checks if there is an active connection to the Internet. If there is no connection,
 	 * the callback specified is alerted via onFailure with an error specifying so.
-	 * 
+	 *
 	 * @param callback The callback to call onFailure on if there is no Internet.
 	 * @return <code>true</code> if failure occurs (no internet), <code>false</code> otherwise.
 	 */
 	private boolean failOnNoInternet(ApiCallback<?> callback) {
 		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
-		
+
 		if (activeNetwork != null && activeNetwork.isConnected()) {
 			Log.d(TAG, "Internet connection found.");
 			return false;
 		}
-		
+
 		Log.d(TAG, "No internet connection found.");
 		callback.onFailure("Active internet connection required.");
 		return true;
