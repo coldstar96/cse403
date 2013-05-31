@@ -102,6 +102,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 
 		Log.d(TAG, "Getting TextViews for row " + position);
 
+		// Views for the row
 		TextView budgetNameView = (TextView) row.findViewById(R.id.budget_name);
 		TextView budgetCycleView = (TextView) row.findViewById(R.id.budget_cycle);
 		TextView budgetDurationView = (TextView) row.findViewById(R.id.budget_duration);
@@ -116,6 +117,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 
 		Budget budget = budgetList.get(position);
 
+		// set budget name
 		budgetNameView.setText(budget.getName());
 
 		int currentCycle = 0;
@@ -123,9 +125,11 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 			currentCycle = budget.getCurrentCycle();
 		}
 
+		// start date and end date of cycle
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
 
+		// set period
 		budgetPeriodView.setText(startDate.toString() + " ~ " + endDate.toString());
 
 		if (!budget.isRecurring()) {
@@ -134,11 +138,13 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 			budgetCycleView.setVisibility(View.VISIBLE);
 		}
 
+		// set duration
 		int totalDays = Utilities.dateDifference(startDate, endDate);
 		int currentDays = Math.min(totalDays, Utilities.dateDifference(startDate, LocalDate.now()));
 
 		budgetDurationView.setText(String.format("%d / %d days", currentDays, totalDays));
 
+		// set expenditure
 		int amountSpent = budget.getAmountSpent();
 		int budgetAmount = budget.getBudgetAmount();
 		int amountLeft = budgetAmount - amountSpent;
@@ -149,12 +155,11 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 		progressView.setMax(budgetAmount);
 		progressView.setProgress(Math.min(amountSpent, budgetAmount));
 
-		double actualAvg = amountSpent / 100.0 / currentDays;
-
+		// set averages
 		int daysLeft =  totalDays - currentDays;
+		double actualAvg = amountSpent / 100.0 / currentDays;
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
-
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / (totalDays - currentDays);
 		}
@@ -164,7 +169,7 @@ public class BudgetLogAdapter extends ArrayAdapter<Budget> {
 
 		double spending = actualAvg / expectedAvg;
 
-
+		// set color of text
 		if (budget.isActive()) {
 			if (spending <= 1.0) {
 				expenditureTextView.setTextColor(getContext().getResources().getColor(R.color.green));
