@@ -3,9 +3,14 @@ package com.example.budgetmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
+import com.example.budgetmanager.Budget.Duration;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class BudgetSummaryActivity extends Activity {
@@ -22,20 +27,46 @@ public class BudgetSummaryActivity extends Activity {
 
 		//get the budget id from the intent
 		int budgetId = intent.getIntExtra("BUDGET_ID", -1);
+        int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
+        /*
 		for(Budget b: Budget.getBudgets()) {
 			if(b.getId() == budgetId) {
 				myBudget = b;
 				break;
 			}
 		}
+		*/
+		        
+		Budget budget = new Budget("budget", 50, false, new LocalDate(2000,9,9), Duration.WEEK);
+		budget.addEntry(new Entry(10, budget, "entry1", new LocalDate(2000,9,10)));
+		budget.addEntry(new Entry(5, budget, "entry1", new LocalDate(2000,9,11)));
+		budget.addEntry(new Entry(35, budget, "entry1", new LocalDate(2000,9,15)));
+		
+		myBudget = budget;
+		
+        if(cycle == -1) {
+        	if(myBudget.isRecurring()) {
+        		cycle = myBudget.getCurrentCycle();
+        	} else {
+        		cycle = 0;
+        	}
+        }
 
+		
 		//Only use entries from current period.
 		//Code should be refactored to be elsewhere
-		int cycle = myBudget.getCurrentCycle();
 		myEntries = new ArrayList<Entry>();
+
 		for(Entry e: myBudget.getEntries()) {
-			if(e.getDate().isAfter(myBudget.getStartDate(cycle)) && e.getDate().isBefore(myBudget.getEndDate(cycle))) {
+			Log.v("mytag","Will it add it?  I don't know... :/ " + e.getDate().toString());
+			Log.v("mytag", myBudget.getStartDate(cycle).toString());
+			Log.v("mytag", myBudget.getEndDate(cycle).toString());
+			Log.v("mytag", myBudget.getStartDate().toString());
+			Log.v("mytag", Boolean.toString(e.getDate().isAfter(myBudget.getStartDate(cycle))));
+			Log.v("mytag", Boolean.toString(e.getDate().isBefore(myBudget.getEndDate(cycle))));
+			if(e.getDate().isAfter(myBudget.getStartDate(cycle)) && e.getDate().isBefore(myBudget.getEndDate(cycle)) || e.getDate().isEqual(myBudget.getEndDate(cycle))) {
+				Log.v("mytag","adding entry! " + e.getNotes());
 				myEntries.add(e);
 			}	
 		}
@@ -46,7 +77,7 @@ public class BudgetSummaryActivity extends Activity {
 		budgetBalance = (TextView) findViewById(R.id.budget_balance);
 		
 		//TODO implement better way to pass entries to surface
-		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setEntryList(myEntries, myBudget);
+		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setEntryList(myEntries, myBudget, cycle);
 	}
 	
 	@Override
