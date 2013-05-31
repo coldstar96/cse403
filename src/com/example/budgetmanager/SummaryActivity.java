@@ -29,7 +29,6 @@ public class SummaryActivity extends Activity {
 		getIntent().setAction("Already created");
 	}
 
-	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
