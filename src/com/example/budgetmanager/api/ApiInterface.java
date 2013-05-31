@@ -92,7 +92,7 @@ public class ApiInterface {
 	/**
 	 * Logs the user out of the app.
 	 */
-	public void logOut(){
+	public void logOut() {
 		// clears the cookies in the storage.
 		cookieStore.clear();
 	}
