@@ -69,6 +69,12 @@ public class AddEntryActivity extends Activity {
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		addButtonView = (Button) findViewById(R.id.add_entry_button);
+
+		// populate list items for the budget selector
+		addItemsToBudgetSpinner();
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
 	}
 
 	@Override
@@ -110,12 +116,21 @@ public class AddEntryActivity extends Activity {
 		return true;
 	}
 
-	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// populate list items for the budget selector
-		addItemsToBudgetSpinner();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, AddEntryActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 
 	// Populates the spinner with the current list of Budgets.

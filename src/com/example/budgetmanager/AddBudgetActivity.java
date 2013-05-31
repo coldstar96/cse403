@@ -81,6 +81,26 @@ public class AddBudgetActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, AddBudgetActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 
 	@Override
