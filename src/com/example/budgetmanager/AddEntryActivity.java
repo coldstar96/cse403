@@ -116,15 +116,6 @@ public class AddEntryActivity extends Activity {
 		return true;
 	}
 
-	//	/** Called whenever the activity is brought back to the foreground */
-	//	@Override
-	//	protected void onResume() {
-	//		super.onResume();
-	//		// populate list items for the budget selector
-	//		addItemsToBudgetSpinner();
-	//	}
-
-	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
 		super.onResume();

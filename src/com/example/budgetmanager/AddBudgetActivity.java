@@ -88,6 +88,8 @@ public class AddBudgetActivity extends Activity {
 
 	@Override
 	protected void onResume() {
+		super.onResume();
+
 		String action = getIntent().getAction();
 		if (action == null || !action.equals("Already created")) {
 			// don't restart if action is present
@@ -99,8 +101,6 @@ public class AddBudgetActivity extends Activity {
 			// call will force restart
 			getIntent().setAction(null);
 		}
-
-		super.onResume();
 	}
 
 	@Override

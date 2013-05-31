@@ -32,9 +32,8 @@ public class SummaryActivity extends Activity {
 	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
-		//		 super.onResume();
-		//		 // populate list items for the budget selector
-		//		 addItemsToBudgetSpinner();
+		super.onResume();
+
 		String action = getIntent().getAction();
 		if (action == null || !action.equals("Already created")) {
 			// don't restart if action is present
@@ -46,10 +45,7 @@ public class SummaryActivity extends Activity {
 			// call will force restart
 			getIntent().setAction(null);
 		}
-
-		super.onResume();
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
