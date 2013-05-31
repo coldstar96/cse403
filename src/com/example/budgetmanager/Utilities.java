@@ -1,5 +1,11 @@
 package com.example.budgetmanager;
 
+import android.app.Activity;
+import android.content.Context;
+import android.preference.PreferenceManager;
+
+import com.example.budgetmanager.preference.SettingsFragment;
+
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -31,7 +37,7 @@ public class Utilities {
 		s += (n % DOLLOR_IN_CENTS);
 		return s;
 	}
-	
+
 	/**
 	 * Calculates number of days between two dates (inclusive)
 	 * @param start starting date
@@ -42,5 +48,27 @@ public class Utilities {
 		PeriodType monthDay = PeriodType.yearMonthDay();
 		int days = new Period(start, end, monthDay).getDays() + 1;
 		return days;
+	}
+
+	/**
+	 * Sets the theme of the passed Activity.
+	 * 
+	 * @param act The Activity to set the theme of.
+	 * @param ctxt The Context of the passed Activity.
+	 */
+	public static void setActivityTheme(Activity act, Context ctxt) {
+
+		// set default values for settings (if never done before)
+		PreferenceManager.setDefaultValues(act, R.layout.fragment_settings, false);
+
+		// check the Activity's preference to see which theme to set
+		String theme = PreferenceManager.getDefaultSharedPreferences(ctxt).
+				getString(SettingsFragment.KEY_PREF_APP_THEME, "");
+
+		if (theme.equals(SettingsFragment.APP_THEME_LIGHT)) {
+			act.setTheme(android.R.style.Theme_Holo_Light);
+		} else {
+			act.setTheme(android.R.style.Theme_Holo);
+		}
 	}
 }

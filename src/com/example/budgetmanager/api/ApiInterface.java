@@ -1,4 +1,5 @@
 package com.example.budgetmanager.api;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.net.SocketTimeoutException;
@@ -98,9 +99,10 @@ public class ApiInterface {
 	 * the ID of the Budget on the server.
 	 */
 	public void create(final Budget b, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 
 		String startDate = b.getStartDate().toString(DATE_FORMAT);
@@ -136,7 +138,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -152,9 +154,10 @@ public class ApiInterface {
 	 * ID of the Entry on the server.
 	 */
 	public void create(final Entry e, final ApiCallback<Long> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("amount", "" + e.getAmount());
 		params.put("notes", e.getNotes());
@@ -192,7 +195,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -206,8 +209,42 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void update(Budget b, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void update(Budget b, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback)) {
+			return;
+		}
+
+		RequestParams params = new RequestParams();
+
+		String startDate = b.getStartDate().toString(DATE_FORMAT);
+
+		params.put("id", "" + b.getId());
+		params.put("budget_name", b.getName());
+		params.put("amount", "" + b.getBudgetAmount());
+		params.put("recur", "" + b.isRecurring());
+		params.put("start_date", startDate);
+		params.put("recurrence_duration", b.getDuration().toString());
+
+		client.put(budgetsUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				callback.onSuccess(null);
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -218,8 +255,47 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void update(Entry e, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void update(final Entry e, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback)) {
+			return;
+		}
+
+		RequestParams params = new RequestParams();
+		params.put("id", "" + e.getEntryId());
+		params.put("amount", "" + e.getAmount());
+		params.put("notes", e.getNotes());
+		params.put("expenditure_date", e.getDate().toString(DATE_FORMAT));
+		params.put("budget_id", "" + e.getBudget().getId());
+
+		client.put(entriesUrl, params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					// Get the server-generated "updated-at" time.
+					LocalDateTime updatedAt = LocalDateTime.parse(
+							obj.getString("updated_at"),
+							DateTimeFormat.forPattern(DATETIME_FORMAT));
+					e.setUpdatedAt(updatedAt);
+					callback.onSuccess(null);
+				} catch (JSONException e) {
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t, JSONObject obj) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -231,8 +307,42 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void remove(Budget b, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void remove(Budget b, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback)) {
+			return;
+		}
+
+		client.delete(budgetsUrl + "/" + b.getId(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
+						callback.onSuccess(null);
+					} else {
+						callback.onFailure("Error deleting budget.");
+					}
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send a destruction
+					// verification, but it's designed to always send one.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -243,8 +353,42 @@ public class ApiInterface {
 	 * <code>null</code> for no callbacks.
 	 * For onSuccess, the object passed is always <code>null</code>.
 	 */
-	public void remove(Entry e, ApiCallback<Object> callback) {
-		// TODO: implement
+	public void remove(Entry e, final ApiCallback<Object> callback) {
+		if (failOnNoInternet(callback)) {
+			return;
+		}
+
+		client.delete(entriesUrl + "/" + e.getEntryId(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject obj) {
+				try {
+					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
+						callback.onSuccess(null);
+					} else {
+						callback.onFailure("Error deleting entry.");
+					}
+				} catch (JSONException e) {
+					// This will catch if the server doesn't send a destruction
+					// verification, but it's designed to always send one.
+					Log.e(TAG, e.getMessage());
+					callback.onFailure(e.getMessage());
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable t) {
+				callback.onFailure(t.getMessage());
+			}
+
+			@Override
+			public void onFailure(Throwable e, String message) {
+				if (e instanceof SocketTimeoutException) {
+					callback.onFailure("Network Timeout");
+				} else {
+					callback.onFailure(message);
+				}
+			}
+		});
 	}
 
 	/**
@@ -257,9 +401,10 @@ public class ApiInterface {
 	 * containing all Budgets for the current user.
 	 */
 	public void fetchBudgets(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching budgets");
 
 		client.get(budgetsUrl, new JsonHttpResponseHandler() {
@@ -309,7 +454,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -326,9 +471,10 @@ public class ApiInterface {
 	 * containing all Entries for the given Budget.
 	 */
 	public void fetchEntries(final Budget b, final ApiCallback<List<Entry>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching entries for budget # " + b.getId());
 		String requestUrl = entriesUrl + "/" + b.getId() + "/by_budget";
 
@@ -382,7 +528,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -399,9 +545,10 @@ public class ApiInterface {
 	 * containing all of its Entries.
 	 */
 	public void fetchBudgetsAndEntries(final ApiCallback<List<Budget>> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		Log.d(TAG, "Fetching all budgets and entries");
 
 		client.get(budgetsAndEntriesUrl, new JsonHttpResponseHandler() {
@@ -481,7 +628,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -498,9 +645,10 @@ public class ApiInterface {
 	 */
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
@@ -539,7 +687,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -556,9 +704,10 @@ public class ApiInterface {
 	 */
 	public void createUser(final String email, final String password,
 			final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		RequestParams params = new RequestParams();
 		params.put("username", email);
 		params.put("password", password);
@@ -593,7 +742,7 @@ public class ApiInterface {
 				if (e instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
-					callback.onFailure("FAILURE");
+					callback.onFailure(message);
 				}
 			}
 		});
@@ -609,9 +758,10 @@ public class ApiInterface {
 	 * as its parameter.
 	 */
 	public void checkLoginStatus(final ApiCallback<Object> callback) {
-		if (failOnNoInternet(callback))
+		if (failOnNoInternet(callback)) {
 			return;
-		
+		}
+
 		client.get(sessionUrl, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response) {
@@ -628,23 +778,25 @@ public class ApiInterface {
 			}
 		});
 	}
-	
+
 	/**
 	 * Checks if there is an active connection to the Internet. If there is no connection,
 	 * the callback specified is alerted via onFailure with an error specifying so.
-	 * 
+	 *
 	 * @param callback The callback to call onFailure on if there is no Internet.
 	 * @return <code>true</code> if failure occurs (no internet), <code>false</code> otherwise.
 	 */
 	private boolean failOnNoInternet(ApiCallback<?> callback) {
-		ConnectivityManager conMgr = (ConnectivityManager)UBudgetApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager conMgr = (ConnectivityManager)
+				UBudgetApp.getAppContext().getSystemService(
+						Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
-		
+
 		if (activeNetwork != null && activeNetwork.isConnected()) {
 			Log.d(TAG, "Internet connection found.");
 			return false;
 		}
-		
+
 		Log.d(TAG, "No internet connection found.");
 		callback.onFailure("Active internet connection required.");
 		return true;

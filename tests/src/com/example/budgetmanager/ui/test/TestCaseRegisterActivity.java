@@ -1,4 +1,4 @@
-package com.example.budgetmanager.test;
+package com.example.budgetmanager.ui.test;
 
 import com.example.budgetmanager.RegisterActivity;
 import com.jayway.android.robotium.solo.Solo;
