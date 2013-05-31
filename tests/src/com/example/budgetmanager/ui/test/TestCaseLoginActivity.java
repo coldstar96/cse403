@@ -1,4 +1,4 @@
-package com.example.budgetmanager.test;
+package com.example.budgetmanager.ui.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;

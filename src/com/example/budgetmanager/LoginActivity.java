@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -177,9 +176,9 @@ public class LoginActivity extends Activity {
 			});
 		}
 	}
-	
+
 	/**
-	 * Moves to the Register screen register activity with all of the 
+	 * Moves to the Register screen register activity with all of the
 	 * inputs passed on.
 	 *
 	 * @param view The reference to the register button.
