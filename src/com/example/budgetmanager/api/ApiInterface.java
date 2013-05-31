@@ -1,17 +1,5 @@
 package com.example.budgetmanager.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.net.SocketTimeoutException;
-
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -28,6 +16,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -53,6 +52,7 @@ public class ApiInterface {
 	private final String DATETIME_FORMAT;
 
 	private final AsyncHttpClient client;
+	private final PersistentCookieStore cookieStore;
 
 	/**
 	 * Singleton factory method to get the singleton instance.
@@ -80,13 +80,21 @@ public class ApiInterface {
 		DATE_FORMAT = r.getString(R.string.api_date_format);
 		DATETIME_FORMAT = r.getString(R.string.api_datetime_format);
 
-		PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+		cookieStore = new PersistentCookieStore(context);
 		client = new AsyncHttpClient();
 		client.setTimeout(10000);
 		client.setCookieStore(cookieStore);
 
 		// Need to specify that we want JSON back from the server.
 		client.addHeader("Accept", "application/json");
+	}
+
+	/**
+	 * Logs the user out of the app.
+	 */
+	public void logOut(){
+		// clears the cookies in the storage.
+		cookieStore.clear();
 	}
 
 	/**
@@ -492,8 +500,8 @@ public class ApiInterface {
 						long id = entriesObject.getLong("id");
 						int amount = entriesObject.getInt("amount");
 						LocalDate date = LocalDate.parse(
-									entriesObject.getString("expenditure_date"),
-									DateTimeFormat.forPattern(DATE_FORMAT));
+								entriesObject.getString("expenditure_date"),
+								DateTimeFormat.forPattern(DATE_FORMAT));
 						LocalDateTime createdAt = LocalDateTime.parse(
 								entriesObject.getString("created_at"),
 								DateTimeFormat.forPattern(DATETIME_FORMAT));
