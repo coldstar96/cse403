@@ -249,14 +249,14 @@ public class AddBudgetActivity extends Activity {
 		}
 
 
+		// disable button while calling api
+		mAddButtonView.setClickable(false);
+
 		Bundle bundle = getIntent().getExtras();
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
 		if (bundle.getBoolean("Add")) {
-			// disable button while calling api
-			mAddButtonView.setClickable(false);
-
 			ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
@@ -273,9 +273,6 @@ public class AddBudgetActivity extends Activity {
 				}
 			});
 		} else {
-			// disable button while calling api
-			mAddButtonView.setClickable(false);
-
 			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
 			// In case the request fails
 			newBudget.setId(actualBudget.getId());
@@ -331,7 +328,6 @@ public class AddBudgetActivity extends Activity {
 
 		return new Budget(name, amount, recur,
 				startDate, Duration.valueOf(duration));
-
 	}
 
 	/**

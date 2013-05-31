@@ -1,10 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.joda.time.LocalDate;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +23,11 @@ import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity which allows users to add entries.
