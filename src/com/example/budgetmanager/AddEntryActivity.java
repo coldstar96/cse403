@@ -127,6 +127,8 @@ public class AddEntryActivity extends Activity {
 	/** Called whenever the activity is brought back to the foreground */
 	@Override
 	protected void onResume() {
+		super.onResume();
+
 		String action = getIntent().getAction();
 		if (action == null || !action.equals("Already created")) {
 			// don't restart if action is present
@@ -138,8 +140,6 @@ public class AddEntryActivity extends Activity {
 			// call will force restart
 			getIntent().setAction(null);
 		}
-
-		super.onResume();
 	}
 
 	// Populates the spinner with the current list of Budgets.
