@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.widget.Toast;
 
 import com.example.budgetmanager.R;
 
@@ -14,7 +13,7 @@ import com.example.budgetmanager.R;
  * @author Ji jiwpark90
  */
 public class SettingsFragment extends PreferenceFragment
-		implements OnSharedPreferenceChangeListener {
+implements OnSharedPreferenceChangeListener {
 	/** Keys associated with the settings items */
 	public static final String KEY_PREF_STARTING_SCREEN =
 			"pref_starting_screen";
@@ -23,6 +22,8 @@ public class SettingsFragment extends PreferenceFragment
 	/** Strings associated with the starting screen options */
 	public static final String STARTING_SCREEN_LOG = "Log";
 	public static final String STARTING_SCREEN_SUMMARY = "Summary";
+	public static final int STARTING_SCREEN_LOG_INT = 0;
+	public static final int STARTING_SCREEN_SUMMARY_INT = 1;
 
 	/** Strings associated with the app theme options */
 	public static final String APP_THEME_LIGHT = "Light";
@@ -36,9 +37,9 @@ public class SettingsFragment extends PreferenceFragment
 		super.onCreate(savedInstanceState);
 
 		// load the preferences from an XML resource
-		addPreferencesFromResource(R.xml.fragment_settings);
+		addPreferencesFromResource(R.layout.fragment_settings);
 
-		// save a reference to the preferences for the app, and make
+		// save a reference to the preferences for the app and make
 		// sure all the preference summaries are up-to-date
 		spref = getPreferenceManager().getSharedPreferences();
 		spref.registerOnSharedPreferenceChangeListener(this);
@@ -65,14 +66,6 @@ public class SettingsFragment extends PreferenceFragment
 			, String key) {
 		// call helper method to change the summary accordingly
 		updatePreferences();
-
-		// if the theme has been changed, toast that it will change
-		// on next the next launch of the app
-		// TODO Dynamically change the theme when the user changes it
-		if (key.equals(KEY_PREF_APP_THEME)) {
-			Toast.makeText(getActivity(), R.string.toast_theme_change
-					, Toast.LENGTH_LONG).show();
-		}
 	}
 
 	/*
