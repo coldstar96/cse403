@@ -21,6 +21,14 @@ import java.util.List;
 public class TestCaseBudget extends AndroidTestCase {
 
 	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
+
+	/**
 	 * Creates a new budget with the given duration d.
 	 * The rest of the parameters are as follows:
 	 *

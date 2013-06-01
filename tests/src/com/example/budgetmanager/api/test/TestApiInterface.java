@@ -1,7 +1,13 @@
 package com.example.budgetmanager.api.test;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import android.test.AndroidTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
+
+import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.Entry;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -10,19 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.budgetmanager.Budget;
-import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.Entry;
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-
-import android.test.AndroidTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * This is a whitebox test of the ApiInterface. It tests the internals
  * of network response callbacks using a special HTTP client.
- * 
+ *
  * @author Graham grahamb5
  */
 public class TestApiInterface extends AndroidTestCase {
@@ -36,6 +36,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * server.
 	 */
 	protected void setUp() {
+		Budget.clearBudgets();
 		try {
 			// Need to set the context for the test, or we'll get a
 			// NullPointerException.
@@ -51,7 +52,7 @@ public class TestApiInterface extends AndroidTestCase {
 			setInstanceValue(api, "client", testClient);
 		} catch (Exception e) { }
 	}
-	
+
 	/**
 	 * Tests the creation of a budget from the server response data.
 	 * White-box test.
@@ -78,7 +79,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the failure of creation of a budget from the server response data.
 	 * White-box test.
@@ -101,14 +102,14 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the creation of an entry from the server response data.
 	 */
 	@SmallTest
 	public void test_create_newEntry_shouldSetId() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
-		final Entry e = new Entry(100, b, "notes", 
+		final Entry e = new Entry(100, b, "notes",
 				LocalDate.parse("2013-05-16", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		final long ENTRY_ID = 100;
 		// Set next "response" from the server.
@@ -129,7 +130,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the failure of creation of an entry from the server response data.
 	 * White-box test.
@@ -137,7 +138,7 @@ public class TestApiInterface extends AndroidTestCase {
 	@SmallTest
 	public void test_create_newEntry_responseHasMissingFields_shouldFail() throws JSONException {
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
-		final Entry e = new Entry(100, b, "notes", 
+		final Entry e = new Entry(100, b, "notes",
 				LocalDate.parse("2013-11-14", DateTimeFormat.forPattern("yyyy-MM-dd")));
 		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
@@ -154,7 +155,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the fetching of a user's budgets from the server response data.
 	 * White-box test.
@@ -190,7 +191,7 @@ public class TestApiInterface extends AndroidTestCase {
 					assertEquals(Duration.DAY, b.getDuration());
 					assertEquals(1000 * (i + 1), b.getBudgetAmount());
 					assertTrue(b.isRecurring());
-					assertEquals(LocalDate.parse("1991-11-" + (14 + i), 
+					assertEquals(LocalDate.parse("1991-11-" + (14 + i),
 							DateTimeFormat.forPattern("yyyy-MM-dd")), b.getStartDate());
 					assertEquals(START_ID + i, b.getId());
 				}
@@ -200,10 +201,10 @@ public class TestApiInterface extends AndroidTestCase {
 			public void onFailure(String errorMessage) {
 				fail("Shouldn't fail, results are valid.");
 			}
-			
+
 		});
 	}
-	
+
 	/**
 	 * Tests the failure of fetching of a user's budgets from the server response data.
 	 * White-box test.
@@ -240,7 +241,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the fetching of a user's specified budget's entries
 	 * from the server response data.
@@ -277,12 +278,12 @@ public class TestApiInterface extends AndroidTestCase {
 					Entry e = result.get(i);
 					assertEquals(START_ID + i, e.getEntryId());
 					assertEquals(1000 * (i + 1), e.getAmount());
-					assertEquals(LocalDate.parse("2013-11-" + (14 + i), 
+					assertEquals(LocalDate.parse("2013-11-" + (14 + i),
 							DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 					assertEquals("Note " + i, e.getNotes());
-					assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+					assertEquals(LocalDateTime.parse(CREATED_UPDATED,
 							DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getCreatedAt());
-					assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+					assertEquals(LocalDateTime.parse(CREATED_UPDATED,
 							DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getUpdatedAt());
 				}
 			}
@@ -293,7 +294,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the failure of fetching of a user's specified budget's entries
 	 * from the server response data.
@@ -305,7 +306,7 @@ public class TestApiInterface extends AndroidTestCase {
 		final long START_ID = 1;
 		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
 		b.setId(100);
-		
+
 		JSONArray jsonEntries = new JSONArray();
 		for (int i = 0; i < NUM_BUDGETS; i++) {
 			jsonEntries.put(new JSONObject()
@@ -318,7 +319,7 @@ public class TestApiInterface extends AndroidTestCase {
 
 		// Set next "response" from the server.
 		testClient.setNextResponse(jsonEntries, true);
-		
+
 		api.fetchEntries(b, new ApiCallback<List<Entry>>() {
 			@Override
 			public void onSuccess(List<Entry> result) {
@@ -331,7 +332,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the fetching of a user's specified budget's, including entries,
 	 * from the server response data.
@@ -381,22 +382,22 @@ public class TestApiInterface extends AndroidTestCase {
 					assertEquals(Duration.DAY, b.getDuration());
 					assertEquals(1000 * (i + 1), b.getBudgetAmount());
 					assertTrue(b.isRecurring());
-					assertEquals(LocalDate.parse("1991-11-" + (14 + i), 
+					assertEquals(LocalDate.parse("1991-11-" + (14 + i),
 							DateTimeFormat.forPattern("yyyy-MM-dd")), b.getStartDate());
 					assertEquals(START_ID + i, b.getId());
-					
+
 					List<Entry> entries = b.getEntries();
 					assertEquals(NUM_BUDGETS_ENTRIES, result.size());
 					for (int j = 0; j < NUM_BUDGETS_ENTRIES; j++) {
 						Entry e = entries.get(j);
 						assertEquals(START_ID + j, e.getEntryId());
 						assertEquals(1000 * (j + 1), e.getAmount());
-						assertEquals(LocalDate.parse("2013-11-" + (14 + j), 
+						assertEquals(LocalDate.parse("2013-11-" + (14 + j),
 								DateTimeFormat.forPattern("yyyy-MM-dd")), e.getDate());
 						assertEquals("Note " + j, e.getNotes());
-						assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+						assertEquals(LocalDateTime.parse(CREATED_UPDATED,
 								DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getCreatedAt());
-						assertEquals(LocalDateTime.parse(CREATED_UPDATED, 
+						assertEquals(LocalDateTime.parse(CREATED_UPDATED,
 								DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")), e.getUpdatedAt());
 					}
 				}
@@ -408,7 +409,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the failure of fetching of a user's specified budget's, including entries,
 	 * from the server response data.
@@ -447,7 +448,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the login failure handling functionality.
 	 * White-box test.
@@ -477,7 +478,7 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
 	 * Tests the create user failure handling functionality
 	 * White-box test.
@@ -487,12 +488,12 @@ public class TestApiInterface extends AndroidTestCase {
 		final String USERNAME = "test@test.com";
 		final String PASSWORD = "password";
 		final String USERNAME_ERROR = "Username already taken.";
-		
+
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR));
-		
+
 		// Set next "response" from the server.
 		testClient.setNextResponse(obj, false);
-		
+
 		api.createUser(USERNAME, PASSWORD, new ApiCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
@@ -505,10 +506,10 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-	
+
 	/**
      * Use reflection to change value of any instance field.
-     * 
+     *
      * @param classInstance An Object instance.
      * @param fieldName The name of a field in the class instantiated by classInstancee
      * @param newValue The value you want the field to be set to.
@@ -522,7 +523,7 @@ public class TestApiInterface extends AndroidTestCase {
         // Sets the field to the new value for this instance
         field.set(classInstance, newValue);
     }
-    
+
     /**
      * Use reflection to change value of any static field.
      * @param className The complete name of the class (ex. java.lang.String)
