@@ -82,6 +82,9 @@ public class BudgetSummaryActivity extends Activity {
 		budgetBalance = (TextView) findViewById(R.id.budget_balance);
 
 		Collections.sort(myEntries, new EntryLogAdapter.EntryDateComparator());
+
+		//Reversing after sorting, because our comparator has the reverse
+		//behavior from what is desired in this situation.
 		Collections.reverse(myEntries);
 
 		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setProperties(myEntries, myBudget, cycle);
