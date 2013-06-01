@@ -16,19 +16,19 @@ import java.util.List;
  */
 public class BudgetSummaryActivity extends Activity {
 
-    //Budget being viewed
+	//Budget being viewed
 	private Budget myBudget;
 
-    //List of entries from budget that are in the current cycle.
+	//List of entries from budget that are in the current cycle.
 	private List<Entry> myEntries;
 
-    //Text views that are set programmatically.
+	//Text views that are set programmatically.
 	private TextView budgetName;
 	private TextView budgetTotal;
 	private TextView budgetSpent;
 	private TextView budgetBalance;
 
-    /**
+	/**
 	 * Sets up the budget data for display
 	 */
 	@Override
@@ -38,7 +38,7 @@ public class BudgetSummaryActivity extends Activity {
 
 		//get the budget id from the intent
 		int budgetId = intent.getIntExtra("BUDGET_ID", -1);
-        int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
+		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
 
 		for(Budget b: Budget.getBudgets()) {
@@ -48,13 +48,13 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
-        if(cycle == -1) {
-        	if(myBudget.isRecurring()) {
-        		cycle = myBudget.getCurrentCycle();
-        	} else {
-        		cycle = 0;
-        	}
-        }
+		if(cycle == -1) {
+			if(myBudget.isRecurring()) {
+				cycle = myBudget.getCurrentCycle();
+			} else {
+				cycle = 0;
+			}
+		}
 
 
 		//Only use entries from current period.
@@ -67,7 +67,7 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
-        //Inflate view
+		//Inflate view
 		setContentView(R.layout.activity_budget_summary);
 
 		budgetName = (TextView) findViewById(R.id.budget_name);
