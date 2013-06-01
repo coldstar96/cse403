@@ -7,6 +7,7 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.RegisterActivity;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.api.test.TestAsyncHttpClient;
@@ -67,8 +68,12 @@ public class TestCaseRegisterActivity
 		registerButton = (Button) getActivity().findViewById(
 				com.example.budgetmanager.R.id.register_button);
 
+
+		// Set up a fake API
 		testClient = new TestAsyncHttpClient();
 		api = TestUtilities.getStubbedApiInterface(testClient);
+
+		Budget.clearBudgets();
 	}
 
 	@MediumTest

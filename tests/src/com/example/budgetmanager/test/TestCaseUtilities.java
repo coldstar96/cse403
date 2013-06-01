@@ -1,11 +1,21 @@
 package com.example.budgetmanager.test;
 
+import android.test.suitebuilder.annotation.SmallTest;
+
+import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Utilities;
 
-import android.test.suitebuilder.annotation.SmallTest;
 import junit.framework.TestCase;
 
 public class TestCaseUtilities extends TestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
 
 	@SmallTest
 	public void test_amountToDollars_zeroCents() {

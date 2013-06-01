@@ -36,6 +36,7 @@ public class TestApiInterface extends AndroidTestCase {
 	 * server.
 	 */
 	protected void setUp() {
+		Budget.clearBudgets();
 		try {
 			// Need to set the context for the test, or we'll get a
 			// NullPointerException.
