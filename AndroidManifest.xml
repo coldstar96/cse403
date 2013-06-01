@@ -51,12 +51,8 @@
             android:label="@string/title_activity_add_budget" >
         </activity>
         <activity
-            android:name="com.example.budgetmanager.EntryLogsActivity"
-            android:label="@string/title_activity_entry_logs" >
-        </activity>
-        <activity
-            android:name="com.example.budgetmanager.SummaryActivity"
-            android:label="@string/title_activity_summary" >
+            android:name="com.example.budgetmanager.MainActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.example.budgetmanager.preference.SettingsActivity"

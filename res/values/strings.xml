@@ -14,16 +14,16 @@
     <string name="error_zero_amount">Amount must be greater than $0</string>
     <string name="error_invalid_amount">Please specify amount</string>
 
-    <!-- Strings for the titles of the activities -->
+    <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_add_budget">Add Budget</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_signin">Sign in</string>
-    <string name="title_activity_add_entry">{0} Entry</string>
-    <string name="title_activity_summary">Summary</string>
-    <string name="title_activity_entry_logs">Entry Log</string>
-    <string name="title_activity_settings">Settings</string>
     <string name="title_activity_budget_summary">Budget Summary</string>
-
+    <string name="title_activity_add_entry">Add Entry</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_fragment_summary">Summary</string>
+    <string name="title_fragment_entry_logs">Entry Log</string>
+    
     <!-- Date format used when sending dates to/from the server -->
     <string name="api_date_format">yyyy-MM-dd</string>
     <string name="api_datetime_format">yyyy-MM-dd HH:mm:ss</string>
