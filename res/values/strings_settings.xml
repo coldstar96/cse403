@@ -3,6 +3,7 @@
 
     <!-- Strings related to Settings -->
     <string name="toast_theme_change">New theme will be applied the next time you launch the app</string>
+    <string name="action_settings">Settings</string>
 
     <!-- Summary Strings -->
     <string name="summary_settings_starting_screen">Starting screen setting summary test</string>
@@ -11,17 +12,17 @@
     <!-- Title Strings -->
     <string name="title_settings_starting_screen">Starting Screen</string>
     <string name="title_settings_app_theme">Theme</string>
-    
+
     <!-- Default Values -->
     <string name="pref_starting_screen_default">Log</string>
     <string name="pref_app_theme_default">Light</string>
-    
+
     <!-- Array entries for starting screens -->
     <string-array name="pref_starting_screen_entrees">
         <item>Log</item>
         <item>Summary</item>
     </string-array>
-    
+
     <!-- Array entries for themes -->
     <string-array name="pref_app_theme_entrees">
         <item>Light</item>
