@@ -176,10 +176,12 @@ public class AddBudgetActivity extends Activity {
 
 		case R.id.menu_signout:
 			// sign the user out
-			// TODO implement a signout functionality
-			Toast.makeText(AddBudgetActivity.this,
-					"Successfully handled Sign out selection",
-					Toast.LENGTH_LONG).show();
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(AddBudgetActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
 			return false;
 		}
 

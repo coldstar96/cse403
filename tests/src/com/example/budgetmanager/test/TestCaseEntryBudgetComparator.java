@@ -1,20 +1,30 @@
 package com.example.budgetmanager.test;
 
-import junit.framework.TestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.EntryLogAdapter;
 
+import junit.framework.TestCase;
+
 /**
  * TDD-style tests for the EntryLogAdapter.EntryBudgetComparator class
- * 
+ *
  * Black-box tests.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseEntryBudgetComparator extends TestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
+
 	/**
 	 * Checks that comparing a "higher" named budget to a "lower" named
 	 * budget provides a negative output from the comparator.

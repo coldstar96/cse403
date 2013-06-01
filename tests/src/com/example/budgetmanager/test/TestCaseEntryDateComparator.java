@@ -10,12 +10,21 @@ import junit.framework.TestCase;
 
 /**
  * TDD-style tests for the EntryLogAdapter.EntryDateComparator class
- * 
+ *
  * Black-box tests.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseEntryDateComparator extends TestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
+
 	/**
 	 * Checks that comparing an entry with a later date
 	 * to an entry with an earlier date produces a negative
