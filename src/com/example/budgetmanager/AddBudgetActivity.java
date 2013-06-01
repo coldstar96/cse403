@@ -181,7 +181,7 @@ public class AddBudgetActivity extends Activity {
 			cancel = true;
 		}
 
-		// checks whether name is not emtpy
+		// checks whether name is not empty
 		if (mBudgetName.isEmpty()) {
 			mBudgetNameView.setError(getString(R.string.error_invalid_budget_name));
 			focusView = mBudgetNameView;
