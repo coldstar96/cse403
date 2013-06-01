@@ -182,7 +182,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	}
 
 	private void setExpenditureTextColor(Budget budget, double spending,
-			TextView budgetDurationView, TextView expenditureTextView){
+			TextView budgetDurationView, TextView expenditureTextView) {
 		// set color of text
 		int color;
 		if (budget.isActive()) {
