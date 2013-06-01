@@ -42,7 +42,7 @@ public class DrawBudgetGraph extends SurfaceView {
 	 *         or entryList or budget are null
 	 */
 	public void setProperties(List<Entry> entryList, Budget budget, int cycle) {
-		if(cycle < 0 || entryList == null || budget == null) {
+		if (cycle < 0 || entryList == null || budget == null) {
 			throw new IllegalArgumentException();
 		}
 		this.entryList = entryList;
@@ -98,16 +98,16 @@ public class DrawBudgetGraph extends SurfaceView {
 		//Draw entries
 		int[] entryHeights = new int[entryList.size()];
 
-		if(!entryList.isEmpty()) {
+		if (!entryList.isEmpty()) {
 			entryHeights[0] = entryList.get(0).getAmount();
 		}
 
-		for(int i = 1; i < entryList.size(); i++) {
+		for (int i = 1; i < entryList.size(); i++) {
 			entryHeights[i] = entryHeights[i - 1] + entryList.get(i).getAmount();
 		}
 
 		int max = budgetMax;
-		if(entryList.size() > 0) {
+		if (entryList.size() > 0) {
 			max = Math.max(budgetMax, entryHeights[entryList.size() - 1]);
 		}
 
@@ -115,8 +115,11 @@ public class DrawBudgetGraph extends SurfaceView {
 		long lasty = height;
 
 
-		for(int i = 0; i < entryList.size(); i++) {
-			long x = dateToX(entryList.get(i).getDate().toDateTimeAtStartOfDay().getMillis(),budget.getStartDate(cycle).toDateTimeAtStartOfDay().getMillis(),budget.getEndDate(cycle).toDateTimeAtStartOfDay().getMillis(),width);
+		for (int i = 0; i < entryList.size(); i++) {
+			long x = dateToX(entryList.get(i).getDate().toDateTimeAtStartOfDay().getMillis(),
+					budget.getStartDate(cycle).toDateTimeAtStartOfDay().getMillis(),
+					budget.getEndDate(cycle).toDateTimeAtStartOfDay().getMillis(),
+					width);
 			long y = priceToY(entryHeights[i], max, height);
 
 			canvas.drawLine(lastx, lasty, x, y, entryPaint);

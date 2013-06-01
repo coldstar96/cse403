@@ -41,19 +41,19 @@ public class BudgetSummaryActivity extends Activity {
 		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
 
-		for(Budget b: Budget.getBudgets()) {
-			if(b.getId() == budgetId) {
+		for (Budget b: Budget.getBudgets()) {
+			if (b.getId() == budgetId) {
 				myBudget = b;
 				break;
 			}
 		}
 
-		if(myBudget == null) {
+		if (myBudget == null) {
 			throw new IllegalArgumentException();
 		}
 
-		if(cycle == -1) {
-			if(myBudget.isRecurring()) {
+		if (cycle == -1) {
+			if (myBudget.isRecurring()) {
 				cycle = myBudget.getCurrentCycle();
 			} else {
 				cycle = 0;
@@ -65,8 +65,10 @@ public class BudgetSummaryActivity extends Activity {
 		//Code should be refactored to be elsewhere
 		myEntries = new ArrayList<Entry>();
 
-		for(Entry e: myBudget.getEntries()) {
-			if(e.getDate().isAfter(myBudget.getStartDate(cycle)) && e.getDate().isBefore(myBudget.getEndDate(cycle)) || e.getDate().isEqual(myBudget.getEndDate(cycle))) {
+		for (Entry e: myBudget.getEntries()) {
+			if (e.getDate().isAfter(myBudget.getStartDate(cycle)) &&
+					e.getDate().isBefore(myBudget.getEndDate(cycle)) ||
+					e.getDate().isEqual(myBudget.getEndDate(cycle))) {
 				myEntries.add(e);
 			}
 		}
@@ -93,7 +95,7 @@ public class BudgetSummaryActivity extends Activity {
 		int totalBudget = 0;
 		int balance;
 
-		for(Entry e: myEntries) {
+		for (Entry e: myEntries) {
 			totalBudget += e.getAmount();
 		}
 
