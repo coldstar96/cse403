@@ -119,6 +119,23 @@ public class Budget {
 	}
 
 	/**
+	 * Search through the user's Budgets for the budget who's ID matches
+	 * <code>id</code>.
+	 * 
+	 * @param id The ID of the budget in question.
+	 * @return The budget with <code>id</code>
+	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
+	 */
+	public static Budget getBudgetById(long id) {
+		for (Budget b : BUDGET_LIST) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
+	}
+
+	/**
 	 * Remove a budget from the budget list (for use when deleting)
 	 *
 	 * @param budget the Budget to be removed
@@ -191,6 +208,23 @@ public class Budget {
 	 */
 	public List<Entry> getEntries() {
 		return Collections.unmodifiableList(entries);
+	}
+
+	/**
+	 * Search through the budget's entries for the entry who's ID matches
+	 * <code>id</code>.
+	 * 
+	 * @param id The ID of the Entry in question.
+	 * @return The entry with <code>id</code>
+	 * @throws IllegalArgumentException if no entry with <code>id</code> exists.
+	 */
+	public Entry getEntryById(long id) {
+		for (Entry e : entries) {
+			if (id == e.getEntryId()) {
+				return e;
+			}
+		}
+		throw new IllegalArgumentException("No entry with id, " + id + ", found.");
 	}
 
 	/**
