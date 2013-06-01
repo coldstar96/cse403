@@ -1,5 +1,8 @@
 package com.example.budgetmanager;
 
+import java.util.Comparator;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +23,6 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
-
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Activity which displays list of entries screen to the user, offering add entry
@@ -80,8 +80,19 @@ public class EntryLogsActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v,
 					int pos, long id) {
+				Log.d(TAG, "You've picked the  " + pos + "th item.");
 				Toast.makeText(EntryLogsActivity.this,
-						"click not implemented yet", Toast.LENGTH_LONG).show();
+						"You've picked the " + pos + "th item.", Toast.LENGTH_LONG).show();
+				Entry e = (Entry) listView.getItemAtPosition(pos);
+				if (e == null) {
+					Log.d(TAG, "ENTRY IS NULL");
+				} else {
+					Log.d(TAG, "ENTRY IS NOT NULL");
+				}
+				Toast.makeText(EntryLogsActivity.this,
+						"This item has an entryID of: " + e.getEntryId() + ",", Toast.LENGTH_LONG).show();
+				Toast.makeText(EntryLogsActivity.this,
+						"This item has an amout of: " + (double)e.getAmount() / 100, Toast.LENGTH_LONG).show();
 			}
 		});
 
