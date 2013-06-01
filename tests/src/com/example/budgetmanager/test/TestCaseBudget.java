@@ -236,7 +236,7 @@ public class TestCaseBudget extends AndroidTestCase {
 	public void test_getStartDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
 		try {
-			budget.getStartDate(1);
+			budget.getStartDate(-1);
 			fail("Should have thrown an IllegalArgumentException with negative cycle");
 		} catch (IllegalArgumentException e) {
 			assertNotNull(e.getMessage());
