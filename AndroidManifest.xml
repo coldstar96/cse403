@@ -43,6 +43,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.example.budgetmanager.BudgetSummaryActivity"
+            android:label="@string/title_activity_budget_summary" >
+        </activity>
+        <activity
             android:name="com.example.budgetmanager.AddBudgetActivity"
             android:label="@string/title_activity_add_budget" >
         </activity>
