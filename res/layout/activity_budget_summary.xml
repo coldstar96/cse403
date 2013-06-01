@@ -16,10 +16,16 @@
         android:orientation="vertical"
         tools:context=".BudgetSummaryActivity" >
 
+        <TextView
+            android:id="@+id/budget_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold" />
+
         <com.example.budgetmanager.DrawBudgetGraph
             android:id="@+id/BudgetGraph"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dip"
             android:layout_weight="0.95" />
 
         <TextView
@@ -29,10 +35,22 @@
             android:textStyle="bold" />
 
         <TextView
+            android:textIsSelectable="true"
             android:id="@+id/budget_total"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/header_budget_spent"
             android:textStyle="bold" />
+
+        <TextView
+            android:textIsSelectable="true"
+            android:id="@+id/budget_spent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="match_parent"
@@ -41,10 +59,10 @@
             android:textStyle="bold" />
 
         <TextView
+            android:textIsSelectable="true"
             android:id="@+id/budget_balance"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"

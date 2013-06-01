@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string name="header_budget_total">Total</string>
+
+    <string name="header_budget_total">Budget Total</string>
+    <string name="header_budget_spent">Total Spent</string>
     <string name="header_budget_balance">Balance</string>
     <string name="action_edit_budget">Edit</string>
     <string name="action_delete_budget">Delete</string>
-    
+
 </resources>
