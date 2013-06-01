@@ -69,7 +69,6 @@ public class Entry {
 
 	/**
 	 * Retrieve the amount (in cents) of the Entry.
-	 *
 	 * @return amount (in cents) of the Entry.
 	 */
 	public int getAmount() {
@@ -78,7 +77,6 @@ public class Entry {
 
 	/**
 	 * Set the amount (in cents) of this entry to <code>amount</code>.
-	 * 
 	 * @param amount (in cents) of the Entry.
 	 */
 	public void setAmount(int amount) {
@@ -105,7 +103,7 @@ public class Entry {
 
 	/**
 	 * Sets this entry's notes to <code>notes</code>.
-	 * 
+	 *
 	 * @param notes The notes for this entry.
 	 */
 	public void setNotes(String notes) {
@@ -142,7 +140,7 @@ public class Entry {
 
 	/**
 	 * Set the creation date of this Entry to <code>date</code>.
-	 * 
+	 *
 	 * @param date to change this Entry's date to.
 	 */
 	public void setDate(LocalDate date) {

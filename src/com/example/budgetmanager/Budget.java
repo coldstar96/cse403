@@ -121,7 +121,7 @@ public class Budget {
 	/**
 	 * Search through the user's Budgets for the budget who's ID matches
 	 * <code>id</code>.
-	 * 
+	 *
 	 * @param id The ID of the budget in question.
 	 * @return The budget with <code>id</code>
 	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
@@ -213,7 +213,7 @@ public class Budget {
 	/**
 	 * Search through the budget's entries for the entry who's ID matches
 	 * <code>id</code>.
-	 * 
+	 *
 	 * @param id The ID of the Entry in question.
 	 * @return The entry with <code>id</code>
 	 * @throws IllegalArgumentException if no entry with <code>id</code> exists.
