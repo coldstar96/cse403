@@ -1,15 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * This class handles preparing lists of entries for display in the Entry Log.
@@ -136,7 +135,8 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		if (row == null) {
 			// The row hasn't been loaded in yet, so inflate a new one
 			Log.d(TAG, "Inflating layout for row " + position);
-			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+			LayoutInflater inflater = (LayoutInflater)
+					context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			Log.d(TAG, "Got LayoutInflater");
 			row = inflater.inflate(layoutResourceId, parent, false);
 			Log.d(TAG, "Finished inflating layout for row " + position);
