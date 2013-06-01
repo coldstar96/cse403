@@ -97,16 +97,12 @@ public class AddBudgetActivity extends Activity {
 
 			// Populate the fields with the current budget data
 			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
-			String name = b.getName();
-			int amount = b.getBudgetAmount();
-			boolean recur = b.isRecurring();
-			LocalDate startDate = b.getStartDate();
-			Duration duration = b.getDuration();
-			mBudgetNameView.setText(name);
-			mBudgetAmountView.setText(amount);
-			mRecurringView.setChecked(recur);
-			mBudgetDateView.updateDate(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
-			switch (duration) {
+			mBudgetNameView.setText(b.getName());
+			mBudgetAmountView.setText(b.getBudgetAmount());
+			mRecurringView.setChecked(b.isRecurring());
+			mBudgetDateView.updateDate(b.getStartDate().getYear(),
+					b.getStartDate().getMonthOfYear(), b.getStartDate().getDayOfMonth());
+			switch (b.getDuration()) {
 			case DAY:
 				mBudgetDurationView.setSelection(0);
 				break;
@@ -291,12 +287,16 @@ public class AddBudgetActivity extends Activity {
 					actualBudget.setRecurring(newBudget.isRecurring());
 					actualBudget.setDuration(newBudget.getDuration());
 					actualBudget.setStartDate(newBudget.getStartDate());
+					// Remove the temporary budget
+					Budget.removeBudget(newBudget);
 				}
 
 				@Override
 				public void onFailure(String errorMessage) {
 					// if the request fails, do nothing (the toast is for testing purposes)
 					Toast.makeText(AddBudgetActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					// Remove the temporary budget
+					Budget.removeBudget(newBudget);
 					mAddButtonView.setClickable(true);
 				}
 			});
