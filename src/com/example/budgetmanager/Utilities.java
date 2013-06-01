@@ -36,7 +36,7 @@ public class Utilities {
 
 	/**
 	 * Sets the theme of the passed Activity.
-	 * 
+	 *
 	 * @param act The Activity to set the theme of.
 	 * @param ctxt The Context of the passed Activity.
 	 */
