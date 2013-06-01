@@ -290,11 +290,16 @@ public class TestCaseBudget extends AndroidTestCase {
 		runStartDateTest(Duration.DAY, initialStartDate, startDate, 1);
 	}
 
+	/**
+	 * Checks to see if getting the end date of a negative cycle throws an
+	 * IllegalArgumentException. Blackbox test.
+	 */
+	@SmallTest
 	public void test_getEndDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
 
 		try {
-			budget.getEndDate(1);
+			budget.getEndDate(-1);
 			fail("Should have thrown an IllegalArgumentException with negative cycle");
 		} catch (IllegalArgumentException e) {
 			assertNotNull(e.getMessage());
