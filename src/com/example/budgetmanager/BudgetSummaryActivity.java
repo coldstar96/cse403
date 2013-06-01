@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.budgetmanager.Budget.Duration;
-
-import org.joda.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,22 +40,13 @@ public class BudgetSummaryActivity extends Activity {
 		int budgetId = intent.getIntExtra("BUDGET_ID", -1);
         int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
-        /*
+
 		for(Budget b: Budget.getBudgets()) {
 			if(b.getId() == budgetId) {
 				myBudget = b;
 				break;
 			}
 		}
-		*/
-
-        //TODO throw exception when budget does not exist.
-		Budget budget = new Budget("budget", 50, false, new LocalDate(2000,9,9), Duration.WEEK);
-		budget.addEntry(new Entry(10, budget, "entry1", new LocalDate(2000,9,10)));
-		budget.addEntry(new Entry(5, budget, "entry1", new LocalDate(2000,9,11)));
-		budget.addEntry(new Entry(35, budget, "entry1", new LocalDate(2000,9,15)));
-
-		myBudget = budget;
 
         if(cycle == -1) {
         	if(myBudget.isRecurring()) {

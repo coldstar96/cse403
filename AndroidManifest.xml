@@ -36,15 +36,15 @@
             android:name="com.example.budgetmanager.LogoActivity"
             android:label="@string/title_activity_logo"
             android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.example.budgetmanager.BudgetSummaryActivity"
-            android:label="@string/title_activity_budget_summary" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.budgetmanager.BudgetSummaryActivity"
+            android:label="@string/title_activity_budget_summary" >
         </activity>
         <activity
             android:name="com.example.budgetmanager.AddBudgetActivity"
