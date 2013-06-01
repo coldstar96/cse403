@@ -30,8 +30,5 @@
     <!-- Strings for the options menu -->
     <string name="title_settings">Settings</string>
     <string name="title_signout">Sign out</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_section3">Section 3</string>
 
 </resources>
