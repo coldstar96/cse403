@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-
 import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
@@ -40,7 +38,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	private DatePicker dateView;
 	private EditText notesView;
 	private Button addButtonView;
-	private SpinnerAdapter budgetSpinnerAdapter;
 
 	public TestCaseAddEntryActivity() {
 		super(AddEntryActivity.class);
@@ -63,7 +60,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 				com.example.budgetmanager.R.id.entry_notes);
 		addButtonView = (Button) getActivity().findViewById(
 				com.example.budgetmanager.R.id.add_entry_button);
-		budgetSpinnerAdapter = budgetView.getAdapter();
 
 		// Should always tear down budgets
 		Budget.clearBudgets();
@@ -102,8 +98,8 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	public void test_addItemsToBudgetSpinner_checkSpinnerListenerAndAdapter() {
 		// Checks that the spinner containing budget selections has a listener,
 		// and that the spinner's adapter is not null
-		assertTrue(budgetView.getOnItemSelectedListener() != null);
-		assertTrue(budgetSpinnerAdapter != null);
+		assertNotNull(budgetView.getOnItemSelectedListener());
+		assertNotNull(budgetView.getAdapter());
 	}
 
 	@MediumTest
