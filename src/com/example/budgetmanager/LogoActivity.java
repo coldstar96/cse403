@@ -1,7 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +11,8 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import java.util.List;
 
 /**
  * Activity which shows the Husky logo and fetches all budgets and entries
@@ -41,6 +41,7 @@ public class LogoActivity extends Activity {
 				Log.d(TAG, "check login in on ApiInteface is success");
 
 				// fetch budgets and entries
+				Budget.clearBudgets();
 				ApiInterface.getInstance().fetchBudgetsAndEntries(
 						new ApiCallback<List<Budget>>() {
 							@Override
