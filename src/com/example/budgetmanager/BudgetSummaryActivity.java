@@ -41,7 +41,7 @@ public class BudgetSummaryActivity extends Activity {
 		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
 
-		for (Budget b: Budget.getBudgets()) {
+		for (Budget b : Budget.getBudgets()) {
 			if (b.getId() == budgetId) {
 				myBudget = b;
 				break;
@@ -65,7 +65,7 @@ public class BudgetSummaryActivity extends Activity {
 		//Code should be refactored to be elsewhere
 		myEntries = new ArrayList<Entry>();
 
-		for (Entry e: myBudget.getEntries()) {
+		for (Entry e : myBudget.getEntries()) {
 			if (e.getDate().isAfter(myBudget.getStartDate(cycle)) &&
 					e.getDate().isBefore(myBudget.getEndDate(cycle)) ||
 					e.getDate().isEqual(myBudget.getEndDate(cycle))) {
@@ -95,7 +95,7 @@ public class BudgetSummaryActivity extends Activity {
 		int totalBudget = 0;
 		int balance;
 
-		for (Entry e: myEntries) {
+		for (Entry e : myEntries) {
 			totalBudget += e.getAmount();
 		}
 
