@@ -160,7 +160,7 @@ public class LoginActivity extends Activity {
 								@Override
 								public void onSuccess(List<Budget> result) {
 									startActivity(new Intent(LoginActivity.this,
-											EntryLogsActivity.class));
+											MainActivity.class));
 									finish();
 								}
 
@@ -168,7 +168,7 @@ public class LoginActivity extends Activity {
 								public void onFailure(String errorMessage) {
 									Log.d(TAG, "fetch data on ApiInteface is failure");
 									startActivity(new Intent(LoginActivity.this,
-											EntryLogsActivity.class));
+											MainActivity.class));
 									finish();
 								}
 							});
