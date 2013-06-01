@@ -1,11 +1,11 @@
 package com.example.budgetmanager;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 /**
  * This is the budget object. It keeps track of all the entries
@@ -30,25 +30,25 @@ public class Budget {
 	private long budgetId;
 
 	// Name of the budget
-	private String name;
+	private final String name;
 
 	// Amount allocated for the budget, in cents
-	private int amount;
+	private final int amount;
 
 	// true for recurring Budget
-	private boolean recur;
+	private final boolean recur;
 
 	// The start date of the first cycle
-	private LocalDate startDate;
+	private final LocalDate startDate;
 
 	// Duration type for this Budget
-	private Duration duration;
+	private final Duration duration;
 
 	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
 
 	// List of entries associated with this Budget
-	private List<Entry> entries;
+	private final List<Entry> entries;
 
 	// Hold the list of all loaded budgets
 	private static final List<Budget> BUDGET_LIST;
@@ -243,9 +243,9 @@ public class Budget {
 		if (startDate.isAfter(now)) {
 			return -1;
 		} else {
-			int cycle = 0;
+			int cycle = -1;
 			LocalDate startOfPeriod = startDate;
-			while (startOfPeriod.isBefore(now)) {
+			while (startOfPeriod.isBefore(now) || startOfPeriod.equals(now)) {
 				++cycle;
 				startOfPeriod = startOfPeriod.plus(budgetDuration);
 			}
@@ -260,7 +260,8 @@ public class Budget {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isActive() {
-		return recur || getCurrentCycle() == 0;
+		int currentCycle = getCurrentCycle();
+		return currentCycle == 0 || (recur && currentCycle >= 0);
 	}
 
 	/**
@@ -286,7 +287,6 @@ public class Budget {
 
 	/**
 	 * Returns the end date of the given cycle.
-	 *
 	 * @param cycle The cycle to calculate the end time of.
 	 * @return The end time, in milliseconds, of the <code>cycle</code>.
 	 * @throws IllegalArgumentException If the cycle is negative
@@ -297,5 +297,33 @@ public class Budget {
 		}
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
+	}
+
+	/**
+	 * Returns the amount spent within the given cycle
+	 *
+	 * @param cycle The cycle to calculate the amount
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent(int cycle) {
+		int amount = 0;
+		LocalDate startDate = getStartDate(cycle).minusDays(1);
+		LocalDate endDate = getEndDate(cycle).plusDays(1);
+		for (Entry e : entries) {
+			LocalDate usedDate = e.getDate();
+			if (usedDate.isAfter(startDate) && usedDate.isBefore(endDate)) {
+				amount += e.getAmount();
+			}
+		}
+		return amount;
+	}
+
+	/**
+	 * Returns the amount spent within the current cycle
+	 *
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent() {
+		return getAmountSpent(getCurrentCycle());
 	}
 }

@@ -328,6 +328,5 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 			// comparator for this one, which is different than the others.
 			return lhsBudgetName.compareTo(rhsBudgetName);
 		}
-
 	}
 }

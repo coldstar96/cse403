@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_component_height"
         android:layout_alignParentLeft="true"
-        android:entries="@array/sort_types"
         android:layout_marginBottom="@dimen/default_edittext_padding"
+        android:entries="@array/sort_types"
         android:prompt="@string/logs_sort_prompt" />
 
     <ListView

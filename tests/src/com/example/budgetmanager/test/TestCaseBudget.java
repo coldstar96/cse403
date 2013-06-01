@@ -24,6 +24,7 @@ public class TestCaseBudget extends AndroidTestCase {
 	 * Perform preliminary set-up of the tests.
 	 * Namely, clears out all cached budgets.
 	 */
+	@Override
 	protected void setUp() {
 		Budget.clearBudgets();
 	}
@@ -229,12 +230,11 @@ public class TestCaseBudget extends AndroidTestCase {
 
 	/**
 	 * Checks to see if the start date of a negative cycle of a budget causes
-	 * an IllegalArgumentException to occur. Black-box test.
+	 * an IllegalArgumentException to occur. Blackbox test.
 	 */
 	@SmallTest
 	public void test_getStartDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
-
 		try {
 			budget.getStartDate(-1);
 			fail("Should have thrown an IllegalArgumentException with negative cycle");
@@ -292,7 +292,7 @@ public class TestCaseBudget extends AndroidTestCase {
 
 	/**
 	 * Checks to see if getting the end date of a negative cycle throws an
-	 * IllegalArgumentException. Black-box test.
+	 * IllegalArgumentException. Blackbox test.
 	 */
 	@SmallTest
 	public void test_getEndDate_negativeCycle_shouldThrowIllegalArgumentException() {
@@ -377,5 +377,4 @@ public class TestCaseBudget extends AndroidTestCase {
 
 		runEndDateTest(Duration.MONTH, startDate, endDate, 1);
 	}
-
 }

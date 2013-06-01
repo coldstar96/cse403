@@ -6,6 +6,9 @@ import android.preference.PreferenceManager;
 
 import com.example.budgetmanager.preference.SettingsFragment;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+
 /**
  * Miscellaneous methods that we use in routine
  *
@@ -35,6 +38,16 @@ public class Utilities {
 	}
 
 	/**
+	 * Calculates number of days between two dates (inclusive)
+	 * @param start starting date
+	 * @param end	end date
+	 * @return int	number of days between two days (inclusive)
+	 */
+	public static int dateDifference(LocalDate start, LocalDate end) {
+		return Days.daysBetween(start, end).getDays() + 1;
+	}
+
+	/**
 	 * Sets the theme of the passed Activity.
 	 *
 	 * @param act The Activity to set the theme of.
@@ -54,5 +67,19 @@ public class Utilities {
 		} else {
 			act.setTheme(android.R.style.Theme_Holo);
 		}
+	}
+
+	/**
+	 * Shortens text with given length with "..." appended at the end
+	 * @param s string to shorten
+	 * @param len maximum length that can be shown (including ...)
+	 * @return String shortened string with ... at the end
+	 */
+	public static String shorten(String s, int len) {
+		s = s.trim();
+		if (s.length() > len) {
+			s = s.substring(0, len - 3).trim() + "...";
+		}
+		return s;
 	}
 }

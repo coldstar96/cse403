@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <ListPreference
-        android:key="pref_starting_screen"
-        android:title="@string/title_settings_starting_screen"
-        android:summary="@string/summary_settings_starting_screen"
+        android:defaultValue="@string/pref_starting_screen_default"
         android:dialogTitle="@string/title_settings_starting_screen"
         android:entries="@array/pref_starting_screen_entrees"
         android:entryValues="@array/pref_starting_screen_entrees"
-        android:defaultValue="@string/pref_starting_screen_default" />
-    
-	<ListPreference
-        android:key="pref_app_theme"
-        android:title="@string/title_settings_app_theme"
-        android:summary="@string/summary_settings_app_theme"
+        android:key="pref_starting_screen"
+        android:summary="@string/summary_settings_starting_screen"
+        android:title="@string/title_settings_starting_screen" />
+
+    <ListPreference
+        android:defaultValue="@string/pref_app_theme_default"
         android:dialogTitle="@string/title_settings_app_theme"
         android:entries="@array/pref_app_theme_entrees"
         android:entryValues="@array/pref_app_theme_entrees"
-        android:defaultValue="@string/pref_app_theme_default" />
+        android:key="pref_app_theme"
+        android:summary="@string/summary_settings_app_theme"
+        android:title="@string/title_settings_app_theme" />
+
 </PreferenceScreen>
