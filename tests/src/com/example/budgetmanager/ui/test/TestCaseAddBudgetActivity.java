@@ -207,7 +207,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		solo.enterText(nameField, "Clearing Budget");
 		solo.enterText(amountField, "12345.00");
 		solo.clickOnCheckBox(0);
-		assertTrue(solo.isCheckBoxChecked("Recur"));
+		assertTrue("Recur CheckBox was not checked", solo.isCheckBoxChecked("Recur"));
 		solo.sleep(1000);
 
 		// Clear the fields and wait for animations
@@ -217,11 +217,11 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		// The fields should be back to their defaults.
 		String nameText = nameField.getText().toString();
 		String amountText = amountField.getText().toString();
-		boolean recurChecked = recurCheckBox.isChecked();
 
 		assertEquals("Name field was not empty after clearing", "", nameText);
 		assertEquals("Amount field was not empty after clearing", "", amountText);
-		assertFalse("Recur CheckBox was checked after clearing", recurChecked);
+		assertFalse("Recur CheckBox was not unchecked after clearing",
+				solo.isCheckBoxChecked("Recur"));
 	}
 
 }
