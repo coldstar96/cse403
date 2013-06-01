@@ -6,9 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.example.budgetmanager.preference.SettingsFragment;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 /**
  * Miscellaneous methods that we use in routine
@@ -45,9 +44,7 @@ public class Utilities {
 	 * @return int	number of days between two days (inclusive)
 	 */
 	public static int dateDifference(LocalDate start, LocalDate end) {
-		PeriodType monthDay = PeriodType.yearMonthDay();
-		int days = new Period(start, end, monthDay).getDays() + 1;
-		return days;
+		return Days.daysBetween(start, end).getDays() + 1;
 	}
 
 	/**
