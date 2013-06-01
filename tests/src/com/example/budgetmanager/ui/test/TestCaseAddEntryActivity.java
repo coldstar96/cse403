@@ -71,6 +71,16 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		@SuppressWarnings("unused")
 		Budget testBudget = new Budget(TEST_BUDGET_NAME, 200, false,
 				LocalDate.now(), Duration.MONTH);
+
+		// Have to call addItemsToBudgetSpinner() manually to get the spinner
+		// to refresh and show the newly created budget, testBudget.
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActivity().addItemsToBudgetSpinner();
+			}
+		});
+		solo.sleep(500);
 	}
 
 	@Override
@@ -101,17 +111,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		// Checks that addItemsToBudgetSpinner() correctly adds budgets to the
 		// spinner, and that they are able to be selected
 
-		// Have to call addItemsToBudgetSpinner() manually to get the spinner
-		// to refresh and show the newly created budget, testBudget.
-		// Called at the start of most test methods in this test class.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActivity().addItemsToBudgetSpinner();
-			}
-		});
-		solo.sleep(1000);
-
 		solo.pressSpinnerItem(0, 0);
 		assertTrue(solo.isSpinnerTextSelected(TEST_BUDGET_NAME));
 	}
@@ -120,16 +119,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	public void test_addItemsToBudgetSpinner_addNewBudgetOptionStartsActivityCorrectly() {
 		// Tests that when a user clicks the spinner option to create a new
 		// budget that AddBudgetActivity is started
-
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActivity().addItemsToBudgetSpinner();
-			}
-		});
-		// When selecting to add a new budget, in the spinner, the
-		// AddBudgetActivity will not start unless there is at least one
-		// budget in the spinner
 
 		solo.pressSpinnerItem(0, 1);
 		solo.sleep(500);
@@ -143,12 +132,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	public void test_emptyAmount_shouldNotAllowIt() {
 		// An empty amount in the amount EditText should cause an error to be
 		// thrown
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActivity().addItemsToBudgetSpinner();
-			}
-		});
 
 		// Don't touch the "Amount" EditText, leaving it empty
 
@@ -174,13 +157,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	public void test_zeroAmount_shouldNotAllowIt() {
 		// A zero amount in the amount EditText should cause an error to be
 		// thrown
-
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActivity().addItemsToBudgetSpinner();
-			}
-		});
 
 		// Set the amount EditText to $0
 		solo.enterText(amountView, "0");
@@ -208,13 +184,6 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		// Tests that when the user clicks the "Clear" button, that there is
 		// no error on the amount field, that the DatePicker has been reset,
 		// and that all other fields have been cleared
-
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getActivity().addItemsToBudgetSpinner();
-			}
-		});
 
 		// Set input fields to some valid values, before pressing "Clear"
 		solo.enterText(amountView, "220");
