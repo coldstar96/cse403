@@ -1,14 +1,22 @@
 package com.example.budgetmanager.ui.test;
 
-import com.example.budgetmanager.RegisterActivity;
-import com.jayway.android.robotium.solo.Solo;
-
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.RegisterActivity;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.api.test.TestAsyncHttpClient;
+import com.example.budgetmanager.test.TestUtilities;
+import com.jayway.android.robotium.solo.Solo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Test the register activity.
@@ -25,6 +33,10 @@ public class TestCaseRegisterActivity
 	private EditText passwordField;
 	private EditText passwordConfirmField;
 	private Button registerButton;
+
+	@SuppressWarnings("unused")
+	private ApiInterface api;
+	private TestAsyncHttpClient testClient;
 
 	private static final String REQUIRED_FIELD = "This field is required";
 
@@ -55,6 +67,13 @@ public class TestCaseRegisterActivity
 				com.example.budgetmanager.R.id.password2);
 		registerButton = (Button) getActivity().findViewById(
 				com.example.budgetmanager.R.id.register_button);
+
+
+		// Set up a fake API
+		testClient = new TestAsyncHttpClient();
+		api = TestUtilities.getStubbedApiInterface(testClient);
+
+		Budget.clearBudgets();
 	}
 
 	@MediumTest
@@ -160,10 +179,13 @@ public class TestCaseRegisterActivity
 	}
 
 	@LargeTest
-	public void test_emailInUseAlready_shouldNotAllow() {
-		// NOTE: we're banking on there already being a user with this email.
-		// In the current production state, there is. Thus, we shall never
-		// nuke the production database or remove this user!
+	public void test_emailInUseAlready_shouldNotAllow() throws JSONException {
+		// Use the stubbed HTTP client to set up a result from the server
+		// without ever hitting the network. This result says that there's
+		// already a user with that email, so it should fail the request.
+		final String USERNAME_ERROR = "Username already taken.";
+		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR));
+		testClient.setNextResponse(obj, false);
 
 		// Enter the same password and confirmation
 		// Try to register
@@ -178,8 +200,7 @@ public class TestCaseRegisterActivity
 				registerButton.performClick();
 			}
 		});
-		// Give the network lots of time to respond
-		solo.sleep(10000);
+		solo.sleep(1000);
 
 		// The only error should be on the email field,
 		// complaining about the non-uniqueness of the emails.

@@ -1,7 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
@@ -23,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+
+import java.util.List;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -155,6 +155,8 @@ public class LoginActivity extends Activity {
 				// Move to entry logs activity
 				@Override
 				public void onSuccess(Object result) {
+
+					Budget.clearBudgets();
 					ApiInterface.getInstance().fetchBudgetsAndEntries(
 							new ApiCallback<List<Budget>>() {
 								@Override

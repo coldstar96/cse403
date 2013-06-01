@@ -1,24 +1,33 @@
 package com.example.budgetmanager.test;
 
-import java.util.List;
-
-import org.joda.time.LocalDate;
+import android.test.AndroidTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.Entry;
 
-import android.test.AndroidTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
+import org.joda.time.LocalDate;
+
+import java.util.List;
 
 /**
  * This is a unit test for the {@link com.example.budgetmanager.Budget Budget} class.
- * 
+ *
  * It is a black-box test.
- * 
+ *
  * @author Chris brucec5
  */
 public class TestCaseBudget extends AndroidTestCase {
+
+	/**
+	 * Perform preliminary set-up of the tests.
+	 * Namely, clears out all cached budgets.
+	 */
+	@Override
+	protected void setUp() {
+		Budget.clearBudgets();
+	}
 
 	/**
 	 * Creates a new budget with the given duration d.
@@ -221,12 +230,11 @@ public class TestCaseBudget extends AndroidTestCase {
 
 	/**
 	 * Checks to see if the start date of a negative cycle of a budget causes
-	 * an IllegalArgumentException to occur. Black-box test.
+	 * an IllegalArgumentException to occur. Blackbox test.
 	 */
 	@SmallTest
 	public void test_getStartDate_negativeCycle_shouldThrowIllegalArgumentException() {
 		Budget budget = buildBasicBudget(Duration.WEEK);
-
 		try {
 			budget.getStartDate(-1);
 			fail("Should have thrown an IllegalArgumentException with negative cycle");
@@ -284,7 +292,7 @@ public class TestCaseBudget extends AndroidTestCase {
 
 	/**
 	 * Checks to see if getting the end date of a negative cycle throws an
-	 * IllegalArgumentException. Black-box test.
+	 * IllegalArgumentException. Blackbox test.
 	 */
 	@SmallTest
 	public void test_getEndDate_negativeCycle_shouldThrowIllegalArgumentException() {
@@ -369,5 +377,4 @@ public class TestCaseBudget extends AndroidTestCase {
 
 		runEndDateTest(Duration.MONTH, startDate, endDate, 1);
 	}
-
 }

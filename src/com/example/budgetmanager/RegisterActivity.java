@@ -18,11 +18,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
 /**
- * Activity which displays a login screen to the user, offering registration as
+ * Activity which displays a Register screen to the user, offering registration as
  * well.
  *
  * @author Chi Ho coldstar96
@@ -34,7 +35,7 @@ public class RegisterActivity extends Activity {
 	private static final String PREFS_EMAIL = "email";
 	private static final String PREFS_PASS = "password";
 
-	// Values for email and password at the time of the login attempt.
+	// Values for email and password at the time of the register attempt.
 	private String mEmail;
 	private String mPassword;
 	private String mPasswordCheck;
@@ -43,9 +44,9 @@ public class RegisterActivity extends Activity {
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private EditText mPasswordCheckView;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
+	private View mRegisterFormView;
+	private View mRegisterStatusView;
+	private TextView mRegisterStatusMessageView;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -54,7 +55,7 @@ public class RegisterActivity extends Activity {
 
 		setContentView(R.layout.activity_register);
 
-		// Set up the login form.
+		// Set up the register form.
 		mEmail = getIntent().getExtras().getString("email");
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
@@ -64,36 +65,36 @@ public class RegisterActivity extends Activity {
 		mPasswordView.setText(mPassword);
 		mPasswordView.setOnEditorActionListener(
 				new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView textView, int id,
-					KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt(textView);
-					return true;
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
+						if (id == R.id.register || id == EditorInfo.IME_NULL) {
+							registerAttempt(textView);
+							return true;
+						}
+						return false;
+					}
+				});
 
 		mPasswordCheck = "";
 		mPasswordCheckView = (EditText) findViewById(R.id.password2);
 		mPasswordCheckView.setText(mPasswordCheck);
 		mPasswordCheckView.setOnEditorActionListener(
 				new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView textView, int id,
-					KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					registerAttempt(textView);
-					return true;
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
+						if (id == R.id.register || id == EditorInfo.IME_NULL) {
+							registerAttempt(textView);
+							return true;
+						}
+						return false;
+					}
+				});
 
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		mRegisterFormView = findViewById(R.id.register_form);
+		mRegisterStatusView = findViewById(R.id.register_status);
+		mRegisterStatusMessageView = (TextView) findViewById(R.id.register_status_message);
 
 		// focuses to empty edit view
 		if (mEmail.isEmpty()) {
@@ -106,9 +107,9 @@ public class RegisterActivity extends Activity {
 	}
 
 	/**
-	 * Attempts to sign in or register the account specified by the login form.
+	 * Attempts to register and sign in the account specified by the register form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
+	 * errors are presented and no actual register attempt is made.
 	 */
 	public void registerAttempt(View view) {
 		// Reset errors.
@@ -116,7 +117,7 @@ public class RegisterActivity extends Activity {
 		mPasswordView.setError(null);
 		mPasswordCheckView.setError(null);
 
-		// Store values at the time of the login attempt.
+		// Store values at the time of the register attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		mPasswordCheck = mPasswordCheckView.getText().toString();
@@ -158,13 +159,13 @@ public class RegisterActivity extends Activity {
 		}
 
 		if (cancel) {
-			// There was an error; don't attempt login and focus the first
+			// There was an error; don't attempt register and focus the first
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			// perform the user register attempt.
+			mRegisterStatusMessageView.setText(R.string.register_progress_signing_in);
 			getWindow().setSoftInputMode(
 					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			showProgress(true);
@@ -200,7 +201,7 @@ public class RegisterActivity extends Activity {
 	}
 
 	/**
-	 * Shows the progress UI and hides the login form.
+	 * Shows the progress UI and hides the register form.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
@@ -214,32 +215,32 @@ public class RegisterActivity extends Activity {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
+			mRegisterStatusView.setVisibility(View.VISIBLE);
+			mRegisterStatusView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 1 : 0)
 			.setListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator animation) {
-					mLoginStatusView.setVisibility(show ? View.VISIBLE
+					mRegisterStatusView.setVisibility(show ? View.VISIBLE
 							: View.GONE);
 				}
 			});
 
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
+			mRegisterFormView.setVisibility(View.VISIBLE);
+			mRegisterFormView.animate().setDuration(shortAnimTime)
 			.alpha(show ? 0 : 1)
 			.setListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator animation) {
-					mLoginFormView.setVisibility(show ? View.GONE
+					mRegisterFormView.setVisibility(show ? View.GONE
 							: View.VISIBLE);
 				}
 			});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+			mRegisterStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+			mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
 }

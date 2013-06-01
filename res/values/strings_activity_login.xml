@@ -21,5 +21,6 @@
     <string name="error_no_match_password">This password does not match the password above.</string>
     <string name="dialog_fail_log_in_title">Failed signing in</string>
     <string name="dialog_fail_register_title">Failed registering</string>
+    <string name="register_progress_signing_in">Registering&#8230;</string>
 
 </resources>

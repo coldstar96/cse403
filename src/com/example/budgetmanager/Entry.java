@@ -18,7 +18,7 @@ public class Entry {
 	private long entryId;
 
 	// the Budget object this entry belongs to
-	private Budget budget;
+	private final Budget budget;
 
 	// in cents
 	private int amount;
@@ -69,11 +69,18 @@ public class Entry {
 
 	/**
 	 * Retrieve the amount (in cents) of the Entry.
-	 *
 	 * @return amount (in cents) of the Entry.
 	 */
 	public int getAmount() {
 		return amount;
+	}
+
+	/**
+	 * Set the amount (in cents) of this entry to <code>amount</code>.
+	 * @param amount (in cents) of the Entry.
+	 */
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	/**
@@ -92,6 +99,15 @@ public class Entry {
 	 */
 	public String getNotes() {
 		return notes;
+	}
+
+	/**
+	 * Sets this entry's notes to <code>notes</code>.
+	 *
+	 * @param notes The notes for this entry.
+	 */
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	/**
@@ -123,6 +139,15 @@ public class Entry {
 	}
 
 	/**
+	 * Set the creation date of this Entry to <code>date</code>.
+	 *
+	 * @param date to change this Entry's date to.
+	 */
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	/**
 	 * Set the creation time as supplied by the server
 	 *
 	 * @param createdAt when this Entry was created on the server
@@ -148,6 +173,10 @@ public class Entry {
 		return createdAt;
 	}
 
+	/**
+	 * Get the time at which this instance was updated on the server.
+	 * @return
+	 */
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}

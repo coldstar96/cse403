@@ -1,8 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.Comparator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +17,12 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Activity which displays list of entries screen to the user, offering add entry
@@ -141,13 +142,14 @@ public class EntryLogsActivity extends Activity {
 
 		case R.id.menu_signout:
 			// sign the user out
-			// TODO implement a signout functionality
-			Toast.makeText(EntryLogsActivity.this,
-					"Successfully handled Sign out selection",
-					Toast.LENGTH_LONG).show();
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(EntryLogsActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
 			return false;
 		}
-
 		return true;
 	}
 
@@ -168,6 +170,7 @@ public class EntryLogsActivity extends Activity {
 		} else {
 			Intent intent = new Intent(EntryLogsActivity.this,
 					AddEntryActivity.class);
+			intent.addCategory("Add");
 			startActivity(intent);
 		}
 	}

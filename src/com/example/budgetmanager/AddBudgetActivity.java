@@ -1,8 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.Locale;
-
-import org.joda.time.LocalDate;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +23,9 @@ import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
+import org.joda.time.LocalDate;
+
+import java.util.Locale;
 /**
  *
  * @author Andrew theclinger
@@ -81,6 +81,26 @@ public class AddBudgetActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, AddBudgetActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 
 	@Override
@@ -112,10 +132,12 @@ public class AddBudgetActivity extends Activity {
 
 		case R.id.menu_signout:
 			// sign the user out
-			// TODO implement a signout functionality
-			Toast.makeText(AddBudgetActivity.this,
-					"Successfully handled Sign out selection",
-					Toast.LENGTH_LONG).show();
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(AddBudgetActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
 			return false;
 		}
 

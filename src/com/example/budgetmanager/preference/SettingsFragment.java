@@ -13,7 +13,7 @@ import com.example.budgetmanager.R;
  * @author Ji jiwpark90
  */
 public class SettingsFragment extends PreferenceFragment
-implements OnSharedPreferenceChangeListener {
+		implements OnSharedPreferenceChangeListener {
 	/** Keys associated with the settings items */
 	public static final String KEY_PREF_STARTING_SCREEN =
 			"pref_starting_screen";
