@@ -48,6 +48,10 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
+		if(myBudget == null) {
+			throw new IllegalArgumentException();
+		}
+
 		if(cycle == -1) {
 			if(myBudget.isRecurring()) {
 				cycle = myBudget.getCurrentCycle();
