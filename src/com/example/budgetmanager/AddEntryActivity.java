@@ -54,6 +54,8 @@ public class AddEntryActivity extends Activity {
 	private EditText mNotesView;
 	private Button mAddButtonView;
 
+	private boolean addMode;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// set theme based on current preferences
@@ -73,12 +75,10 @@ public class AddEntryActivity extends Activity {
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 
-		// trick to prevent infinite looping when onResume() is called
-		getIntent().setAction("Already created");
-
 		// Set all the add/edit specific fields.
 		Bundle bundle = getIntent().getExtras();
-		if (bundle.getBoolean("Add")) {
+		addMode = bundle.getBoolean("Add", true);
+		if (addMode) {
 			setTitle(MessageFormat.format(getTitle().toString(),
 					getString(R.string.title_entry_add)));
 			mAddButtonView.setText(getString(R.string.entry_activity_button_add));
@@ -103,6 +103,9 @@ public class AddEntryActivity extends Activity {
 			mBudgetView.setAdapter(editAdapter);
 			mBudgetView.setEnabled(false);
 		}
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
 	}
 
 	@Override
@@ -224,7 +227,7 @@ public class AddEntryActivity extends Activity {
 			return;
 		}
 
-		final Entry newEntry = createEntry(getIntent().getExtras().getBoolean("Add"));
+		final Entry newEntry = createEntry();
 
 		if (newEntry == null) {
 			// do nothing until add Budget activity is up
@@ -232,7 +235,7 @@ public class AddEntryActivity extends Activity {
 		}
 		mAddButtonView.setClickable(false);
 
-		if (getIntent().getExtras().getBoolean("Add")) {
+		if (addMode) {
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
@@ -296,7 +299,7 @@ public class AddEntryActivity extends Activity {
 	}
 
 	// Helper method to create the new <code>Entry</code> object to be added.
-	private Entry createEntry(boolean adding) {
+	private Entry createEntry() {
 		// extract the amount information from its text field
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
 
@@ -308,7 +311,7 @@ public class AddEntryActivity extends Activity {
 
 		// retrieve selected budget
 		Budget budget;
-		if (adding) {
+		if (addMode) {
 			final List<Budget> budgetList = Budget.getBudgets();
 			budget = budgetList.get(mBudgetView.getSelectedItemPosition());
 		} else {

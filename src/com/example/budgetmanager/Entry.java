@@ -8,7 +8,7 @@ import org.joda.time.LocalDateTime;
  * @author Ji jiwpark90
  *
  */
-public class Entry implements Cloneable {
+public class Entry {
 	/**
 	 * The ID given to an Entry upon creation locally.
 	 */
