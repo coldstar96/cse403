@@ -8,6 +8,7 @@ import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.test.TestUtilities;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -16,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -39,17 +39,11 @@ public class TestApiInterface extends AndroidTestCase {
 		try {
 			// Need to set the context for the test, or we'll get a
 			// NullPointerException.
-			setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
+			TestUtilities.setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
 		} catch (Exception e) { }
 
-		api = ApiInterface.getInstance();
 		testClient = new TestAsyncHttpClient();
-
-		try {
-			// API's client field is private. Lets use
-			// reflection to change it to our test client.
-			setInstanceValue(api, "client", testClient);
-		} catch (Exception e) { }
+		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 
 	/**
@@ -731,39 +725,4 @@ public class TestApiInterface extends AndroidTestCase {
 			}
 		});
 	}
-
-	/**
-     * Use reflection to change value of any instance field.
-     *
-     * @param classInstance An Object instance.
-     * @param fieldName The name of a field in the class instantiated by classInstancee
-     * @param newValue The value you want the field to be set to.
-     */
-    private static void setInstanceValue(final Object classInstance, final String fieldName, final Object newValue) throws SecurityException,
-            NoSuchFieldException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
-        // Get the private field
-        final Field field = classInstance.getClass().getDeclaredField(fieldName);
-        // Allow modification on the field
-        field.setAccessible(true);
-        // Sets the field to the new value for this instance
-        field.set(classInstance, newValue);
-    }
-
-    /**
-     * Use reflection to change value of any static field.
-     * @param className The complete name of the class (ex. java.lang.String)
-     * @param fieldName The name of a static field in the class
-     * @param newValue The value you want the field to be set to.
-     */
-    private static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
-            ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
-        // Get the private String field
-        final Field field = Class.forName(className).getDeclaredField(fieldName);
-        // Allow modification on the field
-        field.setAccessible(true);
-        // Get
-        final Object oldValue = field.get(Class.forName(className));
-        // Sets the field to the new value
-        field.set(oldValue, newValue);
-    }
 }
