@@ -1,17 +1,5 @@
 package com.example.budgetmanager.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.net.SocketTimeoutException;
-
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -28,6 +16,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton class that facilitates connections to the HTTP API.
@@ -49,8 +48,15 @@ public class ApiInterface {
 	private final String entriesUrl;
 	private final String budgetsAndEntriesUrl;
 
-	private final String DATE_FORMAT;
-	private final String DATETIME_FORMAT;
+	/**
+	 * The format used to transfer dates between the client and server
+	 */
+	public final String DATE_FORMAT;
+
+	/**
+	 * The format used to transfer date-times between the client and server
+	 */
+	public final String DATETIME_FORMAT;
 
 	private final AsyncHttpClient client;
 
@@ -134,8 +140,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -191,8 +197,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -237,8 +243,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -248,7 +254,8 @@ public class ApiInterface {
 	}
 
 	/**
-	 * Updates an already existing Budget on the API server. Asynchronous.
+	 * Updates an already existing Entry on the API server. Asynchronous.
+	 * If successful, it will update the Entry's updatedAt time.
 	 *
 	 * @param e Entry instance to send to the server.
 	 * @param callback Callbacks to run on success or failure, or
@@ -288,8 +295,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -335,8 +342,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -381,8 +388,8 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -444,14 +451,14 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject obj) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -518,14 +525,14 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject obj) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -618,14 +625,14 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject obj) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				String status = obj.optString("status", "Service Error");
 				callback.onFailure(status);
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -665,7 +672,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject obj) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				if (callback != null) {
 					try {
 						String nameErr = obj.getJSONArray("username").getString(0);
@@ -676,15 +683,15 @@ public class ApiInterface {
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
-						Log.d(TAG, "JSON problems on log in: " + e.getMessage());
-						callback.onFailure(e.getMessage());
+						Log.d(TAG, "JSON problems on log in: " + t.getMessage());
+						callback.onFailure(t.getMessage());
 					}
 				}
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -724,22 +731,22 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject obj) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				if (callback != null) {
 					try {
 						final String errMessage = obj.getJSONArray("username").getString(0);
 						Log.d(TAG, "errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
-						Log.d(TAG, "JSON problems on user creation: " + e.getMessage());
-						callback.onFailure(e.getMessage());
+						Log.d(TAG, "JSON problems on user creation: " + t.getMessage());
+						callback.onFailure(t.getMessage());
 					}
 				}
 			}
 
 			@Override
-			public void onFailure(Throwable e, String message) {
-				if (e instanceof SocketTimeoutException) {
+			public void onFailure(Throwable t, String message) {
+				if (t instanceof SocketTimeoutException) {
 					callback.onFailure("Network Timeout");
 				} else {
 					callback.onFailure(message);
@@ -771,7 +778,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable e, String response) {
+			public void onFailure(Throwable t, String response) {
 				if (callback != null) {
 					callback.onFailure(null);
 				}
