@@ -37,9 +37,8 @@ public class BudgetSummaryActivity extends Activity {
 		Intent intent = getIntent();
 
 		//get the budget id from the intent
-		int budgetId = intent.getIntExtra("BUDGET_ID", -1);
+		long budgetId = intent.getLongExtra("BUDGET_ID", -1);
 		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
-
 
 		for (Budget b : Budget.getBudgets()) {
 			if (b.getId() == budgetId) {
@@ -59,7 +58,6 @@ public class BudgetSummaryActivity extends Activity {
 				cycle = 0;
 			}
 		}
-
 
 		//Only use entries from current period.
 		//Code should be refactored to be elsewhere

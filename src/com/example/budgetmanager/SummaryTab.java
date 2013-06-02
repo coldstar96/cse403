@@ -1,11 +1,14 @@
 package com.example.budgetmanager;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -49,6 +52,30 @@ public class SummaryTab extends Fragment {
 		listView = (ListView) layout.findViewById(R.id.budget_list);
 		listView.setAdapter(adapter);
 		Log.d(TAG, "added the adapter!");
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v,
+					int pos, long id) {
+				Budget selectedBudget = adapter.getItem(pos);
+				// Code to get default current budget
+				int cycle;
+				if (selectedBudget.isRecurring()) {
+					cycle = selectedBudget.getCurrentCycle();
+				} else {
+					cycle = 0;
+				}
+
+				Intent intent = new Intent(getActivity(), BudgetSummaryActivity.class);
+				intent.putExtra("BUDGET_ID", selectedBudget.getId());
+
+				// In future releases this is where the information for a specific
+				// can be displayed, instead of just the current cycle.
+				intent.putExtra("BUDGET_CYCLE", cycle);
+
+				startActivity(intent);
+			}
+		});
 
 		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
 		adapter.notifyDataSetChanged();

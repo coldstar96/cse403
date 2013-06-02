@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
@@ -31,6 +32,8 @@ public class DrawBudgetGraph extends SurfaceView {
 	//Different paints used in the graph.
 	private final Paint entryPaint;
 	private final Paint averagePaint;
+	private final Paint textPaint;
+	private final Paint legendTextPaint;
 
 	/**
 	 * Returns the end date of the given cycle.
@@ -69,7 +72,21 @@ public class DrawBudgetGraph extends SurfaceView {
 		averagePaint.setColor(Color.YELLOW);
 		averagePaint.setStyle(Style.STROKE);
 		averagePaint.setStrokeWidth(4);
+
+		//Currently the line refuses to display the Dashed effect on it's path.
 		averagePaint.setPathEffect(new DashPathEffect(new float[] {5, 5}, 3));
+		averagePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+		textPaint = new Paint();
+		textPaint.setColor(Color.BLACK);
+		textPaint.setTextSize(20);
+		textPaint.setTextAlign(Align.CENTER);
+		textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+		legendTextPaint = new Paint();
+		legendTextPaint.setColor(Color.BLACK);
+		legendTextPaint.setTextSize(20);
+		legendTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 	}
 
 	/** Helper method to convert from a price to a Y coordinate */
@@ -80,6 +97,11 @@ public class DrawBudgetGraph extends SurfaceView {
 	/** Helper method to convert from a date to an X coordinate */
 	private static long dateToX(long date, long start, long end, int width) {
 		long duration = end - start;
+
+		if (duration == 0) {
+			return width;
+		}
+
 		return ((date - start) * (width)) / duration;
 	}
 
@@ -116,18 +138,38 @@ public class DrawBudgetGraph extends SurfaceView {
 
 
 		for (int i = 0; i < entryList.size(); i++) {
+
 			long x = dateToX(entryList.get(i).getDate().toDateTimeAtStartOfDay().getMillis(),
 					budget.getStartDate(cycle).toDateTimeAtStartOfDay().getMillis(),
 					budget.getEndDate(cycle).toDateTimeAtStartOfDay().getMillis(),
 					width);
+
 			long y = priceToY(entryHeights[i], max, height);
 
 			canvas.drawLine(lastx, lasty, x, y, entryPaint);
+
 			lastx = x;
 			lasty = y;
 		}
 
 		//Draw target line
-		canvas.drawLine(0, height - 1, width - 1, priceToY(budgetMax, max, height), averagePaint);
+		canvas.drawLine(0, height - 1, width - 1,
+				priceToY(budgetMax, max, height), averagePaint);
+
+		//Draw the legend.
+		//Draw the labels on the axis
+/*
+		Rect xRect = new Rect();
+		textPaint.getTextBounds("Days", 0, "Days".length(), xRect);
+
+		Rect yRect = new Rect();
+		textPaint.getTextBounds("Dollars Spent", 0, "Dollars Spent".length(), yRect);
+
+		canvas.drawText("Days", width / 2, height - xRect.height(), textPaint);
+		canvas.save();
+		canvas.rotate(90, width/2, height/2);
+		canvas.drawText("Dollars Spent", width / 2, width - yRect.height(), textPaint);
+		canvas.restore();*/
+
 	}
 }
