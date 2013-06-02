@@ -166,7 +166,7 @@ public class AddEntryActivity extends Activity {
 	}
 
 	// Populates the spinner with the current list of Budgets.
-	private void addItemsToBudgetSpinner() {
+	public void addItemsToBudgetSpinner() {
 		// get the actual Budget objects
 		final List<Budget> budgetList = Budget.getBudgets();
 		// list for the String names for each Budget object
@@ -194,7 +194,7 @@ public class AddEntryActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
 				// handle the case when user selects 'Create New Budget...'
-				if (pos == budgetList.size()) {
+				if (pos == budgetList.size() && !budgetList.isEmpty()) {
 					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
 				}
 			}

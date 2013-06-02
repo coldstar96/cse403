@@ -19,7 +19,9 @@ import android.widget.EditText;
  *
  */
 public class TestCaseAddBudgetActivity
-	extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
+extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
+
+	private final String DUPLICATE_BUDGET_NAME = "Duplicate Budget Name";
 
 	private Solo solo;
 	private EditText nameField;
@@ -62,14 +64,9 @@ public class TestCaseAddBudgetActivity
 	public void test_zeroAmountDollarsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0 amount should fail
 		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Budget with 0 Amount");
-				amountField.setText("0");
-				createButton.performClick();
-			}
-		});
+		solo.enterText(nameField, "Budget with 0 Amount");
+		solo.enterText(amountField, "0");
+		solo.clickOnButton("Create");
 		solo.sleep(1000);
 
 		// We should have an error on amount where you must have a positive
@@ -93,14 +90,9 @@ public class TestCaseAddBudgetActivity
 	public void test_zeroAmountDollarsAndCentsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0.00 amount should fail
 		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Budget with 0.00 Amount");
-				amountField.setText("0.00");
-				createButton.performClick();
-			}
-		});
+		solo.enterText(nameField, "Budget with 0.00 Amount");
+		solo.enterText(amountField, "0.00");
+		solo.clickOnButton("Create");
 		solo.sleep(1000);
 
 		// We should have an error on amount where you must have a positive
@@ -127,13 +119,8 @@ public class TestCaseAddBudgetActivity
 		// Leave the amount field empty
 
 		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Empty Amount Budget");
-				createButton.performClick();
-			}
-		});
+		solo.enterText(nameField, "Empty Amount Budget");
+		solo.clickOnButton("Create");
 		solo.sleep(1000);
 
 		// Amount field should complain about being empty
@@ -157,13 +144,8 @@ public class TestCaseAddBudgetActivity
 		// Neglect to enter in a name
 
 		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				amountField.setText("1.00");
-				createButton.performClick();
-			}
-		});
+		solo.enterText(amountField, "1.00");
+		solo.clickOnButton("Create");
 		solo.sleep(1000);
 
 		// Name field should complain about being empty
@@ -193,16 +175,14 @@ public class TestCaseAddBudgetActivity
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				String budgetName = "Duplicate Budget Name";
 				@SuppressWarnings("unused")
-				Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
+				Budget b = new Budget(DUPLICATE_BUDGET_NAME, 0, false, LocalDate.now(),
 						Budget.Duration.WEEK);
-
-				nameField.setText(budgetName);
-				amountField.setText("1.00");
-				createButton.performClick();
 			}
 		});
+		solo.enterText(nameField, DUPLICATE_BUDGET_NAME);
+		solo.enterText(amountField, "1.00");
+		solo.clickOnButton("Create");
 		solo.sleep(1000);
 
 		// We expect the budget field complain about duplicate names
@@ -224,33 +204,24 @@ public class TestCaseAddBudgetActivity
 	@MediumTest
 	public void test_clear_shouldResetFields() {
 		// Set up some data in the fields
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Clearing Budget");
-				amountField.setText("12345.00");
-				recurCheckBox.setChecked(true);
-			}
-		});
+		solo.enterText(nameField, "Clearing Budget");
+		solo.enterText(amountField, "12345.00");
+		solo.clickOnCheckBox(0);
+		assertTrue("Recur CheckBox was not checked", solo.isCheckBoxChecked("Recur"));
 		solo.sleep(1000);
 
 		// Clear the fields and wait for animations
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				clearButton.performClick();
-			}
-		});
+		solo.clickOnButton("Clear");
 		solo.sleep(1000);
 
 		// The fields should be back to their defaults.
 		String nameText = nameField.getText().toString();
 		String amountText = amountField.getText().toString();
-		boolean recurChecked = recurCheckBox.isChecked();
 
 		assertEquals("Name field was not empty after clearing", "", nameText);
 		assertEquals("Amount field was not empty after clearing", "", amountText);
-		assertFalse("Recur CheckBox was checked after clearing", recurChecked);
+		assertFalse("Recur CheckBox was not unchecked after clearing",
+				solo.isCheckBoxChecked("Recur"));
 	}
 
 }
