@@ -179,10 +179,10 @@ public class RegisterActivity extends Activity {
 					mEmailView.requestFocus();
 				}
 
-				// Move to add budget activity
+				// Move to entry log activity
 				@Override
 				public void onSuccess(Object result) {
-					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
+					Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
 
 					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
