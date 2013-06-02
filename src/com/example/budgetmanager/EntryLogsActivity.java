@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -39,6 +40,9 @@ public class EntryLogsActivity extends Activity {
 
 	// The adapter for displaying/sorting the Entries
 	private EntryLogAdapter adapter;
+
+	// The currently selected entry
+	private Entry selectedEntry = null;
 
 	@Override
 	protected void onResume() {
@@ -76,36 +80,39 @@ public class EntryLogsActivity extends Activity {
 		listView = (ListView) findViewById(R.id.entry_list);
 		listView.setAdapter(adapter);
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View v,
-					int pos, long id) {
-				Log.d(TAG, "You've picked the  " + pos + "th item.");
-				Toast.makeText(EntryLogsActivity.this,
-						"You've picked the " + pos + "th item.", Toast.LENGTH_LONG).show();
-				Entry e = (Entry) listView.getItemAtPosition(pos);
-				if (e == null) {
-					Log.d(TAG, "ENTRY IS NULL");
-				} else {
-					Log.d(TAG, "ENTRY IS NOT NULL");
-				}
-				Toast.makeText(EntryLogsActivity.this,
-						"This item has an entryID of: " + e.getEntryId() + ",", Toast.LENGTH_LONG).show();
-				Toast.makeText(EntryLogsActivity.this,
-						"This item has an amout of: " + (double)e.getAmount() / 100, Toast.LENGTH_LONG).show();
-			}
-		});
+		registerForContextMenu(listView);
+		//		listView.setOnItemClickListener(new OnItemClickListener() {
+		//
+		//			@Override
+		//			public void onItemClick(AdapterView<?> arg0, View v,
+		//					int pos, long id) {
+		//////				// get the selected Entry object
+		//////				Entry e = (Entry) listView.getItemAtPosition(pos);
+		//////
+		//////				// go to the AddEntryActivity with all the necessary information.
+		//////				// tell AddEntryActivity that it should be an edit entry session
+		//////				Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
+		//////				intent.putExtra("Add", false);
+		//////				intent.putExtra("EntryId", e.getEntryId());
+		//////				intent.putExtra("BudgetId", e.getBudget().getId());
+		//////				startActivity(intent);
+		////
+		//				registerForContextMenu(v);
+		//				openContextMenu(v);
+		//				unregisterForContextMenu(v);
+		//			}
+		//		});
 
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Toast.makeText(EntryLogsActivity.this,
-						"Long click not implemented yet",
-						Toast.LENGTH_LONG).show();
-				return false;
-			}
-		});
+		//		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		//			@Override
+		//			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+		//					int arg2, long arg3) {
+		//				Toast.makeText(EntryLogsActivity.this,
+		//						"Long click not implemented yet",
+		//						Toast.LENGTH_LONG).show();
+		//				return false;
+		//			}
+		//		});
 
 		sortSpinner = (Spinner) findViewById(R.id.spinner_logs_sort);
 
@@ -122,6 +129,42 @@ public class EntryLogsActivity extends Activity {
 
 			}
 		});
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		// Get the info on which item was selected
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+
+		// Retrieve the item that was clicked on
+		selectedEntry = adapter.getItem(info.position);
+
+		// inflate the context menu
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_edit:
+			// tell AddEntryActivity to start an edit entry session
+			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
+			intent.putExtra("Add", false);
+			intent.putExtra("EntryId", selectedEntry.getEntryId());
+			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
+
+			startActivity(intent);
+		case R.id.menu_delete:
+			Toast.makeText(EntryLogsActivity.this,
+					"delete not implemented yet",
+					Toast.LENGTH_LONG).show();
+		}
+
+		return true;
 	}
 
 	@Override
@@ -181,7 +224,9 @@ public class EntryLogsActivity extends Activity {
 		} else {
 			Intent intent = new Intent(EntryLogsActivity.this,
 					AddEntryActivity.class);
-			intent.addCategory("Add");
+
+			// tell AddEntryActivity that it should be an add entry session
+			intent.putExtra("Add", true);
 			startActivity(intent);
 		}
 	}
