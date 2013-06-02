@@ -182,7 +182,7 @@ public class RegisterActivity extends Activity {
 				// Move to add budget activity
 				@Override
 				public void onSuccess(Object result) {
-					Intent intent = new Intent(RegisterActivity.this, EntryLogsActivity.class);
+					Intent intent = new Intent(RegisterActivity.this, EntryLogsTab.class);
 
 					SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
