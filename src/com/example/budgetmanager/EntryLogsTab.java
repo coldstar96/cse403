@@ -25,14 +25,12 @@ import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
 /**
- * Activity which displays list of entries screen to the user, offering add entry
- * and add budget as well
+ * Fragment which displays list of entries screen to the user, offering add
+ * entry and add budget as well
  *
  * @author Chi Ho coldstar96
  */
 public class EntryLogsTab extends Fragment {
-	private final String TAG = "EntrylogsActivity";
-
 	// UI reference
 	private ListView listView;
 	private Spinner sortSpinner;
@@ -42,6 +40,9 @@ public class EntryLogsTab extends Fragment {
 
 	// The currently selected entry
 	private Entry selectedEntry = null;
+
+	// tag for logging
+	private final static String TAG = "AddEntryActivity";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +56,17 @@ public class EntryLogsTab extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_entry_logs, container, false);
-		Log.d(TAG, "About to make the adapter");
-		adapter = new EntryLogAdapter(getActivity(), R.layout.list_entry_layout,
-				Budget.getBudgets());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		RelativeLayout layout =
+				(RelativeLayout) inflater.inflate(R.layout.activity_entry_logs,
+				container, false);
+
+		adapter = new EntryLogAdapter(getActivity(),
+				R.layout.list_entry_layout, Budget.getBudgets());
 
 		// The initial sort will be by date.
 		adapter.sort(new EntryLogAdapter.EntryDateComparator());
-		Log.d(TAG, "Made the adapter!");
 
 		// set up Entry Logs screen
 		listView = (ListView) layout.findViewById(R.id.entry_list);

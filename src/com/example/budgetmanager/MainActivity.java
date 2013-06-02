@@ -1,7 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.List;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -20,6 +18,8 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import java.util.List;
 
 /**
  * Main Activity holding the Entry Logs and Summary fragments.
@@ -138,8 +138,10 @@ public class MainActivity extends Activity {
 			// sign the user out
 			ApiInterface.getInstance().logOut();
 			Intent logOut = new Intent(MainActivity.this, LoginActivity.class);
-			// Clear the back stack so when you press the back button you will exit the app
-			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Clear the back stack so when you press the back button you
+			// will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			// Goes to the login page
 			startActivity(logOut);
 			return false;

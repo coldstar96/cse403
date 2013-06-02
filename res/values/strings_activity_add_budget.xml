@@ -7,7 +7,11 @@
     <string name="header_budget_duration">DURATION</string>
     <string name="budget_recur">Recur</string>
     <string name="action_clear_budget">Clear</string>
-
+	<string name="title_budget_add">Add</string>
+	<string name="title_budget_edit">Edit</string>
+	<string name="budget_activity_button_add">Add</string>
+	<string name="budget_activity_button_edit">Submit</string>
+    
     <string-array name="duration_array">
         <item>Day</item>
         <item>Week</item>
