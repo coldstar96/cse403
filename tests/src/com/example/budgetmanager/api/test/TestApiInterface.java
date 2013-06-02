@@ -8,6 +8,7 @@ import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.test.TestUtilities;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -16,12 +17,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * This is a whitebox test of the ApiInterface. It tests the internals
- * of network response callbacks using a special HTTP client.
+ * of network response callbacks using a special stubbed-out HTTP client.
  *
  * @author Graham grahamb5
  */
@@ -40,17 +40,11 @@ public class TestApiInterface extends AndroidTestCase {
 		try {
 			// Need to set the context for the test, or we'll get a
 			// NullPointerException.
-			setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
+			TestUtilities.setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
 		} catch (Exception e) { }
 
-		api = ApiInterface.getInstance();
 		testClient = new TestAsyncHttpClient();
-
-		try {
-			// API's client field is private. Lets use
-			// reflection to change it to our test client.
-			setInstanceValue(api, "client", testClient);
-		} catch (Exception e) { }
+		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 
 	/**
@@ -508,37 +502,228 @@ public class TestApiInterface extends AndroidTestCase {
 	}
 
 	/**
-     * Use reflection to change value of any instance field.
-     *
-     * @param classInstance An Object instance.
-     * @param fieldName The name of a field in the class instantiated by classInstancee
-     * @param newValue The value you want the field to be set to.
-     */
-    private static void setInstanceValue(final Object classInstance, final String fieldName, final Object newValue) throws SecurityException,
-            NoSuchFieldException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
-        // Get the private field
-        final Field field = classInstance.getClass().getDeclaredField(fieldName);
-        // Allow modification on the field
-        field.setAccessible(true);
-        // Sets the field to the new value for this instance
-        field.set(classInstance, newValue);
-    }
+	 * Tests the Entry updating success functionality.
+	 * The updatedAt of the Entry should be updated.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_update_entry_shouldUpdateUpdatedAt() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		final Entry entry = new Entry(1, 100, budget, "Test Entry", LocalDate.now());
 
-    /**
-     * Use reflection to change value of any static field.
-     * @param className The complete name of the class (ex. java.lang.String)
-     * @param fieldName The name of a static field in the class
-     * @param newValue The value you want the field to be set to.
-     */
-    private static void setStaticValue(final String className, final String fieldName, final Object newValue) throws SecurityException, NoSuchFieldException,
-            ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
-        // Get the private String field
-        final Field field = Class.forName(className).getDeclaredField(fieldName);
-        // Allow modification on the field
-        field.setAccessible(true);
-        // Get
-        final Object oldValue = field.get(Class.forName(className));
-        // Sets the field to the new value
-        field.set(oldValue, newValue);
-    }
+		String expectedUpdatedAtStr = "2013-11-14 01:00:00";
+		final LocalDateTime expectedUpdatedAt = LocalDateTime.parse(
+				expectedUpdatedAtStr, DateTimeFormat.forPattern(api.getDateTimeFormat()));
+		JSONObject obj = new JSONObject().put("updated_at", expectedUpdatedAtStr);
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.update(entry, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				assertEquals("The updatedAt was not set properly by the API",
+						expectedUpdatedAt, entry.getUpdatedAt());
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				fail("Should have called the onFailure callback");
+			}
+		});
+	}
+
+	/**
+	 * Tests the Entry updating failure functionality (server sends missing data).
+	 * The updatedAt of the Entry should remain the same.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_update_entry_invalidResponse_shouldFail() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		final Entry entry = new Entry(1, 100, budget, "Test Entry", LocalDate.now());
+
+		JSONObject obj = new JSONObject().put("updatedat", "");
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.update(entry, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("This request should have not succeeded (should be a JSON failure)");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertNotNull(errorMessage);
+			}
+		});
+	}
+
+	/**
+	 * Tests the Budget updating success functionality.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_update_budget_allGoesWell_shouldSucceed() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		budget.setId(1);
+
+		JSONObject obj = new JSONObject().put("success", "true");
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.update(budget, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				// The result should be null.
+				assertNull(result);
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				fail("This request should have succeeded");
+			}
+		});
+	}
+
+	/**
+	 * Tests the Budget updating failure functionality.
+	 * White-box test.
+	 * @throws JSONException
+	 */
+	@SmallTest
+	public void test_update_budget_serverError_shouldFail() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		budget.setId(1);
+
+		JSONObject obj = new JSONObject().put("success", "false");
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, false);
+
+		api.update(budget, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("This request should have failed");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertNotNull(errorMessage);
+			}
+		});
+	}
+
+	/**
+	 * Tests the Entry removal success functionality.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_remove_entry_successfullyDeleted_shouldSucceed() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		final Entry entry = new Entry(1, 100, budget, "Test Entry", LocalDate.now());
+
+		JSONObject obj = new JSONObject().put("destroyed", true);
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.remove(entry, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				assertNull(result);
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				fail("This request should have succeeded");
+			}
+		});
+	}
+
+	/**
+	 * Tests the Entry removal failure functionality.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_remove_entry_notProperlyDeleted_shouldFail() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		final Entry entry = new Entry(1, 100, budget, "Test Entry", LocalDate.now());
+
+		JSONObject obj = new JSONObject().put("destroyed", false);
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.remove(entry, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("This request should have failed (bad JSON )");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertNotNull(errorMessage);
+			}
+		});
+	}
+
+	/**
+	 * Tests the Budget removal success functionality.
+	 * White-box test.
+	 */
+	@SmallTest
+	public void test_remove_budget_successfullyDeleted_shouldSucceed() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		budget.setId(1);
+
+		JSONObject obj = new JSONObject().put("destroyed", true);
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.remove(budget, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				// The result should be null.
+				assertNull(result);
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				fail("This request should have succeeded");
+			}
+		});
+	}
+
+	/**
+	 * Tests the Budget removal failure functionality.
+	 * White-box test.
+	 * @throws JSONException
+	 */
+	@SmallTest
+	public void test_remove_budget_notProperlyDeleted_shouldFail() throws JSONException {
+		Budget budget = new Budget("Test Budget", 200, true, LocalDate.now(), Duration.WEEK);
+		budget.setId(1);
+
+		JSONObject obj = new JSONObject().put("destroyed", false);
+
+		// Set next "response" from the "server"
+		testClient.setNextResponse(obj, true);
+
+		api.remove(budget, new ApiCallback<Object>() {
+			@Override
+			public void onSuccess(Object result) {
+				fail("This request should not have succeeded (bad JSON)");
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				assertNotNull(errorMessage);
+			}
+		});
+	}
 }

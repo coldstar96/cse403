@@ -21,7 +21,8 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 * Perform preliminary set-up of the tests.
 	 * Namely, clears out all cached budgets.
 	 */
-	protected void setUp() {
+	protected void setUp() throws Exception {
+		super.setUp();
 		Budget.clearBudgets();
 	}
 
@@ -49,10 +50,10 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_singleBudgetConstructor_hasEntries_shouldListEntries() {
-		Budget budgets = Factory.budgetFactory(0, 2);
+		Budget budget = Factory.budgetFactory(0, 2);
 
 		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+				R.layout.entry_log_adapter_test_layout, budget);
 
 		List<Entry> logEntryList = log.getEntryList();
 
