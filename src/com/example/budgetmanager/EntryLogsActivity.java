@@ -1,28 +1,30 @@
 package com.example.budgetmanager;
 
 import java.util.Comparator;
+import java.util.List;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.preference.SettingsActivity;
+import com.example.budgetmanager.preference.SettingsFragment;
 
 /**
  * Activity which displays list of entries screen to the user, offering add entry
@@ -30,7 +32,7 @@ import com.example.budgetmanager.api.ApiInterface;
  *
  * @author Chi Ho coldstar96
  */
-public class EntryLogsTab extends Fragment {
+public class EntryLogsActivity extends Activity {
 	private final String TAG = "EntrylogsActivity";
 
 	// UI reference
@@ -44,21 +46,24 @@ public class EntryLogsTab extends Fragment {
 	private Entry selectedEntry = null;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	public void onResume() {
+	protected void onResume() {
 		super.onResume();
 		refreshList();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_entry_logs, container, false);
+	protected void onCreate(Bundle savedInstanceState) {
+
+		// set theme based on current preferences
+		Utilities.setActivityTheme(this, getApplicationContext());
+
+		super.onCreate(savedInstanceState);
+
+		// inflate view
+		setContentView(R.layout.activity_entry_logs);
+
 		Log.d(TAG, "About to make the adapter");
-		adapter = new EntryLogAdapter(getActivity(), R.layout.list_entry_layout,
+		adapter = new EntryLogAdapter(this, R.layout.list_entry_layout,
 				Budget.getBudgets());
 
 		// The initial sort will be by date.
@@ -66,13 +71,13 @@ public class EntryLogsTab extends Fragment {
 		Log.d(TAG, "Made the adapter!");
 
 		// set up Entry Logs screen
-		listView = (ListView) layout.findViewById(R.id.entry_list);
+		listView = (ListView) findViewById(R.id.entry_list);
 		listView.setAdapter(adapter);
 
 		// set up a context menu for the list items
 		registerForContextMenu(listView);
 
-		sortSpinner = (Spinner) layout.findViewById(R.id.spinner_logs_sort);
+		sortSpinner = (Spinner) findViewById(R.id.spinner_logs_sort);
 
 		sortSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -84,10 +89,9 @@ public class EntryLogsTab extends Fragment {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// do nothing if nothing is selected
+
 			}
 		});
-		return layout;
 	}
 
 	@Override
@@ -105,7 +109,7 @@ public class EntryLogsTab extends Fragment {
 				getBudget().getName());
 
 		// inflate the context menu
-		MenuInflater inflater = getActivity().getMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.context_menu, menu);
 	}
 
@@ -115,7 +119,7 @@ public class EntryLogsTab extends Fragment {
 		// both edit and delete at once
 		if (item.getItemId() == R.id.menu_edit) {
 			// tell AddEntryActivity to start an edit entry session
-			Intent intent = new Intent(getActivity(), AddEntryActivity.class);
+			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
 			intent.putExtra("Add", false);
 			intent.putExtra("EntryId", selectedEntry.getEntryId());
 			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
@@ -129,13 +133,12 @@ public class EntryLogsTab extends Fragment {
 				public void onSuccess(Object result) {
 					Log.d(TAG, "Delete entry onSuccess entered.");
 					// for testing purposes
-					Toast.makeText(getActivity(),
+					Toast.makeText(EntryLogsActivity.this,
 							R.string.success_delete_entry,
 							Toast.LENGTH_LONG).show();
 
 					// remove the Entry from the Budget it is included in
 					selectedEntry.getBudget().removeEntry(selectedEntry);
-					selectedEntry = null;
 
 					// refresh the view upon change
 					refreshList();
@@ -145,11 +148,51 @@ public class EntryLogsTab extends Fragment {
 				public void onFailure(String errorMessage) {
 					Log.d(TAG, "Delete entry onFailure entered.");
 					// if the request fails, do nothing (the toast is for testing purposes)
-					Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+					Toast.makeText(EntryLogsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
 				}
 			});
 		}
 
+		return true;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// inflate the menu
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.items, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			// take the user to the Settings screen
+			Intent settingsIntent = new Intent(EntryLogsActivity.this,
+					SettingsActivity.class);
+
+			// these extras allow SettingsActivity to skip the 'headers'
+			// layer, which is unnecessary since we have very few settings
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
+					SettingsFragment.class.getName());
+			settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+
+			startActivity(settingsIntent);
+
+			return false;
+
+		case R.id.menu_signout:
+			// sign the user out
+			ApiInterface.getInstance().logOut();
+			Intent logOut = new Intent(EntryLogsActivity.this, LoginActivity.class);
+			// Clear the back stack so when you press the back button you will exit the app
+			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// Goes to the login page
+			startActivity(logOut);
+			return false;
+		}
 		return true;
 	}
 
@@ -165,6 +208,30 @@ public class EntryLogsTab extends Fragment {
 		sortBySortSpinnerIndex(position);
 
 		adapter.notifyDataSetChanged();
+	}
+
+	public void onAddBudgetClicked(View view) {
+		Intent intent = new Intent(EntryLogsActivity.this,
+				AddBudgetActivity.class);
+		startActivity(intent);
+	}
+
+	public void onAddEntryClicked(View view) {
+		// if there is no created budget, notify user that
+		// they need to create budget before they add an entry
+		List<Budget> budgets = Budget.getBudgets();
+		if (budgets.isEmpty()) {
+			Toast.makeText(EntryLogsActivity.this,
+					R.string.dialog_add_budget_first,
+					Toast.LENGTH_LONG).show();
+		} else {
+			Intent intent = new Intent(EntryLogsActivity.this,
+					AddEntryActivity.class);
+
+			// tell AddEntryActivity that it should be an add entry session
+			intent.putExtra("Add", true);
+			startActivity(intent);
+		}
 	}
 
 	private void sortBySortSpinnerIndex(int position) {
