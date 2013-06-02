@@ -48,15 +48,9 @@ public class ApiInterface {
 	private final String entriesUrl;
 	private final String budgetsAndEntriesUrl;
 
-	/**
-	 * The format used to transfer dates between the client and server
-	 */
-	public final String DATE_FORMAT;
+	private final String DATE_FORMAT;
 
-	/**
-	 * The format used to transfer date-times between the client and server
-	 */
-	public final String DATETIME_FORMAT;
+	private final String DATETIME_FORMAT;
 
 	private final AsyncHttpClient client;
 	private final PersistentCookieStore cookieStore;
@@ -94,6 +88,22 @@ public class ApiInterface {
 
 		// Need to specify that we want JSON back from the server.
 		client.addHeader("Accept", "application/json");
+	}
+
+	/**
+	 * The format used to transfer dates between the client and server
+	 * @return A string holding the date format used by the server
+	 */
+	public String getDateFormat() {
+		return DATE_FORMAT;
+	}
+
+	/**
+	 * The format used to transfer date-times between the client and server
+	 * @return A string holding the date-time format used by the server
+	 */
+	public String getDateTimeFormat() {
+		return DATETIME_FORMAT;
 	}
 
 	/**

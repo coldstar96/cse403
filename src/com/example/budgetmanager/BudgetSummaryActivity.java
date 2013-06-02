@@ -66,9 +66,9 @@ public class BudgetSummaryActivity extends Activity {
 		myEntries = new ArrayList<Entry>();
 
 		for (Entry e : myBudget.getEntries()) {
-			if (e.getDate().isAfter(myBudget.getStartDate(cycle)) &&
-					e.getDate().isBefore(myBudget.getEndDate(cycle)) ||
-					e.getDate().isEqual(myBudget.getEndDate(cycle))) {
+			if (e.getDate().isAfter(myBudget.getStartDate(cycle))
+					&& e.getDate().isBefore(myBudget.getEndDate(cycle))
+					|| e.getDate().isEqual(myBudget.getEndDate(cycle))) {
 				myEntries.add(e);
 			}
 		}

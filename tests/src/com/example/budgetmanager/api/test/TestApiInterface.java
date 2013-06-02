@@ -513,7 +513,7 @@ public class TestApiInterface extends AndroidTestCase {
 
 		String expectedUpdatedAtStr = "2013-11-14 01:00:00";
 		final LocalDateTime expectedUpdatedAt = LocalDateTime.parse(
-				expectedUpdatedAtStr, DateTimeFormat.forPattern(api.DATETIME_FORMAT));
+				expectedUpdatedAtStr, DateTimeFormat.forPattern(api.getDateTimeFormat()));
 		JSONObject obj = new JSONObject().put("updated_at", expectedUpdatedAtStr);
 
 		// Set next "response" from the "server"
