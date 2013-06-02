@@ -91,7 +91,7 @@ public class AddEntryActivity extends Activity {
 			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			Entry e = b.getEntryById(bundle.getLong("EntryId"));
 
-			mAmountView.setText(e.getAmount());
+			mAmountView.setText("" + (double) e.getAmount() / Utilities.DOLLOR_IN_CENTS);
 
 			LocalDate date = e.getDate();
 			mDateView.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
