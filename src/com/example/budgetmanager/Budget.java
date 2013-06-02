@@ -113,7 +113,7 @@ public class Budget {
 
 	/** Search through the user's Budgets for the budget who's ID matches
 	 * <code>id</code>.
-	 * 
+	 *
 	 * @param id The ID of the budget in question.
 	 * @return The budget with <code>id</code>
 	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
@@ -237,7 +237,7 @@ public class Budget {
 
 	/**
 	 * Sets the name of this budget
-	 * 
+	 *
 	 * @param name The new name of this budget
 	 */
 	public void setName(String name) {
@@ -257,7 +257,7 @@ public class Budget {
 
 	/**
 	 * Sets the amount of this budget
-	 * 
+	 *
 	 * @param amount The new amount of this budget
 	 */
 	public void setBudgetAmount(int amount){
@@ -277,7 +277,7 @@ public class Budget {
 
 	/**
 	 * Sets whether this budget is recurring or not
-	 * 
+	 *
 	 * @param recur if it is recurring or not
 	 */
 	public void setRecurring(boolean recur) {
@@ -294,7 +294,7 @@ public class Budget {
 
 	/**
 	 * Sets the duration of this budget
-	 * 
+	 *
 	 * @param duration the new duration of this budget
 	 */
 	public void setDuration(Duration duration) {
@@ -356,7 +356,7 @@ public class Budget {
 
 	/**
 	 * Sets the start date of this budget
-	 * 
+	 *
 	 * @param startDate the new start date of this budget
 	 */
 	public void setStartDate(LocalDate startDate) {
