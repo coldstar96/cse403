@@ -30,19 +30,19 @@ public class Budget {
 	private long budgetId;
 
 	// Name of the budget
-	private final String name;
+	private String name;
 
 	// Amount allocated for the budget, in cents
-	private final int amount;
+	private int amount;
 
 	// true for recurring Budget
-	private final boolean recur;
+	private boolean recur;
 
 	// The start date of the first cycle
-	private final LocalDate startDate;
+	private LocalDate startDate;
 
 	// Duration type for this Budget
-	private final Duration duration;
+	private Duration duration;
 
 	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
@@ -132,23 +132,6 @@ public class Budget {
 	 */
 	public static void clearBudgets() {
 		BUDGET_LIST.clear();
-	}
-
-	/**
-	 * Search through the user's Budgets for the budget who's ID matches
-	 * <code>id</code>.
-	 *
-	 * @param id The ID of the budget in question.
-	 * @return The budget with <code>id</code>
-	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
-	 */
-	public static Budget getBudgetById(long id) {
-		for (Budget b : BUDGET_LIST) {
-			if (b.getId() == id) {
-				return b;
-			}
-		}
-		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
 	}
 
 	/**
