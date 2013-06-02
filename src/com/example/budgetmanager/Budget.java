@@ -30,19 +30,19 @@ public class Budget {
 	private long budgetId;
 
 	// Name of the budget
-	private String name;
+	private final String name;
 
 	// Amount allocated for the budget, in cents
-	private int amount;
+	private final int amount;
 
 	// true for recurring Budget
-	private boolean recur;
+	private final boolean recur;
 
 	// The start date of the first cycle
-	private LocalDate startDate;
+	private final LocalDate startDate;
 
 	// Duration type for this Budget
-	private Duration duration;
+	private final Duration duration;
 
 	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
@@ -135,6 +135,23 @@ public class Budget {
 	}
 
 	/**
+	 * Search through the user's Budgets for the budget who's ID matches
+	 * <code>id</code>.
+	 *
+	 * @param id The ID of the budget in question.
+	 * @return The budget with <code>id</code>
+	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
+	 */
+	public static Budget getBudgetById(long id) {
+		for (Budget b : BUDGET_LIST) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
+	}
+
+	/**
 	 * Remove a budget from the budget list (for use when deleting)
 	 *
 	 * @param budget the Budget to be removed
@@ -207,6 +224,23 @@ public class Budget {
 	 */
 	public List<Entry> getEntries() {
 		return Collections.unmodifiableList(entries);
+	}
+
+	/**
+	 * Search through the budget's entries for the entry who's ID matches
+	 * <code>id</code>.
+	 *
+	 * @param id The ID of the Entry in question.
+	 * @return The entry with <code>id</code>
+	 * @throws IllegalArgumentException if no entry with <code>id</code> exists.
+	 */
+	public Entry getEntryById(long id) {
+		for (Entry e : entries) {
+			if (id == e.getEntryId()) {
+				return e;
+			}
+		}
+		throw new IllegalArgumentException("No entry with id, " + id + ", found.");
 	}
 
 	/**
@@ -295,9 +329,9 @@ public class Budget {
 		if (startDate.isAfter(now)) {
 			return -1;
 		} else {
-			int cycle = 0;
+			int cycle = -1;
 			LocalDate startOfPeriod = startDate;
-			while (startOfPeriod.isBefore(now)) {
+			while (startOfPeriod.isBefore(now) || startOfPeriod.equals(now)) {
 				++cycle;
 				startOfPeriod = startOfPeriod.plus(budgetDuration);
 			}
@@ -312,7 +346,8 @@ public class Budget {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isActive() {
-		return recur || getCurrentCycle() == 0;
+		int currentCycle = getCurrentCycle();
+		return currentCycle == 0 || (recur && currentCycle >= 0);
 	}
 
 	/**
@@ -347,7 +382,6 @@ public class Budget {
 
 	/**
 	 * Returns the end date of the given cycle.
-	 *
 	 * @param cycle The cycle to calculate the end time of.
 	 * @return The end time, in milliseconds, of the <code>cycle</code>.
 	 * @throws IllegalArgumentException If the cycle is negative
@@ -358,5 +392,33 @@ public class Budget {
 		}
 		return startDate.withPeriodAdded(budgetDuration,
 				cycle + 1).minusDays(1);
+	}
+
+	/**
+	 * Returns the amount spent within the given cycle
+	 *
+	 * @param cycle The cycle to calculate the amount
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent(int cycle) {
+		int amount = 0;
+		LocalDate startDate = getStartDate(cycle).minusDays(1);
+		LocalDate endDate = getEndDate(cycle).plusDays(1);
+		for (Entry e : entries) {
+			LocalDate usedDate = e.getDate();
+			if (usedDate.isAfter(startDate) && usedDate.isBefore(endDate)) {
+				amount += e.getAmount();
+			}
+		}
+		return amount;
+	}
+
+	/**
+	 * Returns the amount spent within the current cycle
+	 *
+	 * @return the cumulative sum of amount spent in cents
+	 */
+	public int getAmountSpent() {
+		return getAmountSpent(getCurrentCycle());
 	}
 }

@@ -7,7 +7,14 @@ import android.widget.EditText;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.LoginActivity;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.api.test.TestAsyncHttpClient;
+import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Tests that LoginActivity throws the correct errors for different invalid
@@ -32,6 +39,10 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	private EditText passwordView;
 	private Button loginButton;
 
+	@SuppressWarnings("unused")
+	private ApiInterface api;
+	private TestAsyncHttpClient testClient;
+
 	public TestCaseLoginActivity() {
 		super(LoginActivity.class);
 	}
@@ -51,6 +62,9 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 				findViewById(com.example.budgetmanager.R.id.password);
 		loginButton = (Button) solo.
 				getView(com.example.budgetmanager.R.id.log_in_button);
+
+		testClient = new TestAsyncHttpClient();
+		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 
 	@MediumTest
@@ -212,7 +226,20 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	}
 
 	@MediumTest
-	public void test_attemptLogin_validEmailAndPasswordNoError() {
+	public void test_attemptLogin_validEmailAndPasswordNoError() throws JSONException {
+		// Use the stubbed HTTP client to set up a result from the server
+		// without ever hitting the network. This result says that there's
+		// no user with matching username/email and password.
+		final String USERNAME_ERROR = VALID_EMAIL + ":";
+		final String PASSWORD_ERROR = "Invalid username or password.";
+
+		// Error JSONObject to be returned to the API
+		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
+				.put("password_digest", new JSONArray().put(PASSWORD_ERROR));
+
+		// Set next "response" from the server.
+		testClient.setNextResponse(obj, false);
+
 		// Set up a completely valid email/password.
 		// Should not cause any errors on the UI elements.
 		getActivity().runOnUiThread(new Runnable() {

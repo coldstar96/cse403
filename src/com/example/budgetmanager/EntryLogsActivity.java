@@ -172,6 +172,7 @@ public class EntryLogsActivity extends Activity {
 		} else {
 			Intent intent = new Intent(EntryLogsActivity.this,
 					AddEntryActivity.class);
+			intent.addCategory("Add");
 			startActivity(intent);
 		}
 	}

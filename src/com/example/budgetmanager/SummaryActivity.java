@@ -4,15 +4,30 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
 
+/**
+ * Activity which displays list of budgets screen to the user,
+ * showing summaries of the budgets.
+ *
+ * @author Chi Ho coldstar96
+ */
+
 public class SummaryActivity extends Activity {
+	private final String TAG = "SummaryActivity";
+
+	// UI reference
+	private ListView listView;
+
+	private BudgetSummaryAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +39,19 @@ public class SummaryActivity extends Activity {
 
 		// inflate view
 		setContentView(R.layout.activity_summary);
+
+		// set adapter
+		adapter = new BudgetSummaryAdapter(this, R.layout.list_budget_layout,
+				Budget.getBudgets());
+		Log.d(TAG, "Made the adapter!");
+
+		// set up Entry Logs screen
+		listView = (ListView) findViewById(R.id.budget_list);
+		listView.setAdapter(adapter);
+		Log.d(TAG, "added the adapter!");
+
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
 
 		// trick to prevent infinite looping when onResume() is called
 		getIntent().setAction("Already created");
