@@ -1,6 +1,5 @@
 package com.example.budgetmanager;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +24,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 
 import org.joda.time.LocalDate;
 
+import java.text.MessageFormat;
 import java.util.Locale;
+
 /**
  *
  * @author Andrew theclinger
@@ -53,7 +54,9 @@ public class AddBudgetActivity extends Activity {
 	private CheckBox mRecurringView;
 
 	// Create button
-	private Button createButtonView;
+	private Button mAddButtonView;
+
+	private boolean addMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class AddBudgetActivity extends Activity {
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
-		createButtonView = (Button) findViewById(R.id.create_budget_button);
+		mAddButtonView = (Button) findViewById(R.id.create_budget_button);
 
 		// Sets up the duration dropdown
 		mBudgetDurationView = (Spinner) findViewById(R.id.budget_duration);
@@ -82,6 +85,46 @@ public class AddBudgetActivity extends Activity {
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
 
+		Bundle bundle = getIntent().getExtras();
+		addMode = bundle == null ? true : bundle.getBoolean("Add", true);
+
+		// Set the title and add button
+		if (addMode) {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_budget_add)));
+			mAddButtonView.setText(getString(R.string.budget_activity_button_add));
+		} else {
+			setTitle(MessageFormat.format(getTitle().toString(),
+					getString(R.string.title_budget_edit)));
+			mAddButtonView.setText(getString(R.string.budget_activity_button_edit));
+
+			// Populate the fields with the current budget data
+			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
+			mBudgetNameView.setText(b.getName());
+			mBudgetAmountView.setText(b.getBudgetAmount());
+			mRecurringView.setChecked(b.isRecurring());
+			mBudgetDateView.updateDate(b.getStartDate().getYear(),
+					b.getStartDate().getMonthOfYear(), b.getStartDate().getDayOfMonth());
+			switch (b.getDuration()) {
+			case DAY:
+				mBudgetDurationView.setSelection(0);
+				break;
+			case WEEK:
+				mBudgetDurationView.setSelection(1);
+				break;
+			case FORTNIGHT:
+				mBudgetDurationView.setSelection(2);
+				break;
+			case MONTH:
+				mBudgetDurationView.setSelection(3);
+				break;
+			case YEAR:
+				mBudgetDurationView.setSelection(4);
+				break;
+			default:
+				throw new IllegalArgumentException("Invaid duration argument");
+			}
+		}
 		// trick to prevent infinite looping when onResume() is called
 		getIntent().setAction("Already created");
 	}
@@ -206,27 +249,59 @@ public class AddBudgetActivity extends Activity {
 			return;
 		}
 
+
+		// disable button while calling api
+		mAddButtonView.setClickable(false);
+
+		Bundle bundle = getIntent().getExtras();
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
-		// disable button while calling api
-		createButtonView.setClickable(false);
+		if (addMode) {
+			ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
+				@Override
+				public void onSuccess(Long result) {
+					finish();
+				}
 
-		ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
-			@Override
-			public void onSuccess(Long result) {
-				finish();
-			}
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing
+					// (the toast is for testing and debug purposes)
+					Toast.makeText(AddBudgetActivity.this, errorMessage,
+							Toast.LENGTH_LONG).show();
+					mAddButtonView.setClickable(true);
+				}
+			});
+		} else {
+			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
+			// In case the request fails
+			newBudget.setId(actualBudget.getId());
 
-			@Override
-			public void onFailure(String errorMessage) {
-				// if the request fails, do nothing
-				// (the toast is for testing and debug purposes)
-				Toast.makeText(AddBudgetActivity.this, errorMessage,
-						Toast.LENGTH_LONG).show();
-				createButtonView.setClickable(true);
-			}
-		});
+			ApiInterface.getInstance().update(newBudget, new ApiCallback<Object>() {
+				@Override
+				public void onSuccess(Object result) {
+					actualBudget.setId(newBudget.getId());
+					actualBudget.setBudgetAmount(newBudget.getBudgetAmount());
+					actualBudget.setRecurring(newBudget.isRecurring());
+					actualBudget.setDuration(newBudget.getDuration());
+					actualBudget.setStartDate(newBudget.getStartDate());
+					// Remove the temporary budget
+					Budget.removeBudget(newBudget);
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					// if the request fails, do nothing (the toast is for testing purposes)
+					Toast.makeText(AddBudgetActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					// Remove the temporary budget
+					Budget.removeBudget(newBudget);
+					mAddButtonView.setClickable(true);
+				}
+			});
+		}
+
+
 	}
 
 	/**
