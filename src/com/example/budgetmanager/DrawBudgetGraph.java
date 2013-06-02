@@ -69,7 +69,7 @@ public class DrawBudgetGraph extends SurfaceView {
 		averagePaint.setColor(Color.YELLOW);
 		averagePaint.setStyle(Style.STROKE);
 		averagePaint.setStrokeWidth(4);
-		averagePaint.setPathEffect(new DashPathEffect(new float[] {5,5}, 3));
+		averagePaint.setPathEffect(new DashPathEffect(new float[] {5, 5}, 3));
 	}
 
 	/** Helper method to convert from a price to a Y coordinate */
