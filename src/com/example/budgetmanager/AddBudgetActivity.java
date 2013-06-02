@@ -280,7 +280,7 @@ public class AddBudgetActivity extends Activity {
 
 			ApiInterface.getInstance().update(newBudget, new ApiCallback<Object>() {
 				@Override
-				public void onSuccess(Object result){
+				public void onSuccess(Object result) {
 					actualBudget.setId(newBudget.getId());
 					actualBudget.setBudgetAmount(newBudget.getBudgetAmount());
 					actualBudget.setRecurring(newBudget.isRecurring());
