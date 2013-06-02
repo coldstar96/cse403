@@ -23,8 +23,6 @@ import java.util.Comparator;
  * @author Chi Ho coldstar96
  */
 public class EntryLogsTab extends Fragment {
-	private final String TAG = "EntrylogsActivity";
-
 	// UI reference
 	private ListView listView;
 	private Spinner sortSpinner;

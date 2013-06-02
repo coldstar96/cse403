@@ -56,6 +56,8 @@ public class AddBudgetActivity extends Activity {
 	// Create button
 	private Button mAddButtonView;
 
+	private boolean addMode;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -83,10 +85,11 @@ public class AddBudgetActivity extends Activity {
 		// Apply the adapter to the spinner
 		mBudgetDurationView.setAdapter(adapter);
 
-		// Find out if we want to add or edit budgets.
 		Bundle bundle = getIntent().getExtras();
+		addMode = bundle == null ? true : bundle.getBoolean("Add", true);
+
 		// Set the title and add button
-		if (/*bundle.getBoolean("Add")*/true) {
+		if (addMode) {
 			setTitle(MessageFormat.format(getTitle().toString(),
 					getString(R.string.title_budget_add)));
 			mAddButtonView.setText(getString(R.string.budget_activity_button_add));
@@ -254,7 +257,7 @@ public class AddBudgetActivity extends Activity {
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
-		if (bundle.getBoolean("Add")) {
+		if (addMode) {
 			ApiInterface.getInstance().create(newBudget, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
@@ -277,7 +280,7 @@ public class AddBudgetActivity extends Activity {
 
 			ApiInterface.getInstance().update(newBudget, new ApiCallback<Object>() {
 				@Override
-				public void onSuccess(Object result){
+				public void onSuccess(Object result) {
 					actualBudget.setId(newBudget.getId());
 					actualBudget.setBudgetAmount(newBudget.getBudgetAmount());
 					actualBudget.setRecurring(newBudget.isRecurring());
