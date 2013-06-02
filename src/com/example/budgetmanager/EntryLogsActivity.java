@@ -41,7 +41,7 @@ public class EntryLogsActivity extends Activity {
 	private EntryLogAdapter adapter;
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 		adapter.clear();
 

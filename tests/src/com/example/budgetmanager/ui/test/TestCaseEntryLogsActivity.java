@@ -1,16 +1,20 @@
 package com.example.budgetmanager.ui.test;
 
+import java.util.ArrayList;
+
 import org.joda.time.LocalDate;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.EntryLogsActivity;
 import com.jayway.android.robotium.solo.Solo;
 
@@ -27,6 +31,12 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 	private final String TEST_BUDGET_NAME_1 = "Test Budget 1";
 	private final String TEST_BUDGET_NAME_2 = "Test Budget 2";
 	private final String TEST_BUDGET_NAME_3 = "Test Budget 3";
+	private final String TEST_ENTRY_NAME_1 = "Test Entry 1, Budget 1";
+	private final String TEST_ENTRY_NAME_2 = "Test Entry 2, Budget 1";
+	private final String TEST_ENTRY_NAME_3 = "Test Entry 3, Budget 2";
+	private final String TEST_ENTRY_NAME_4 = "Test Entry 4, Budget 2";
+	private final String TEST_ENTRY_NAME_5 = "Test Entry 5, Budget 3";
+	private final String TEST_ENTRY_NAME_6 = "Test Entry 6, Budget 3";
 
 	private Solo solo;
 	private ListView listView;
@@ -53,23 +63,55 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 		// "Sort By Budget" expected order:
 		// 		testBudget1, testBudget2, testBudget3
 
+		// Some dates for the test budgets and test entries
+		LocalDate date1 = new LocalDate(2011, 5, 31);
+		LocalDate date2 = new LocalDate(2012, 3, 20);
+		LocalDate date3 = new LocalDate(2012, 9, 1);
+		LocalDate date4 = new LocalDate(2013, 4, 5);
+		LocalDate date5 = new LocalDate(2013, 5, 31);
+		LocalDate date6 = new LocalDate(2013, 6, 1);
+
 		// Test budget 1
-		LocalDate date1 = new LocalDate(2013, 5, 31);
-		@SuppressWarnings("unused")
 		Budget testBudget1 = new Budget(TEST_BUDGET_NAME_1, 300, false,
 				date1, Duration.WEEK);
 
 		// Test budget 2
-		LocalDate date2 = new LocalDate(2013, 3, 20);
-		@SuppressWarnings("unused")
 		Budget testBudget2 = new Budget(TEST_BUDGET_NAME_2, 200, true,
 				date2, Duration.MONTH);
 
 		// Test budget 3
-		LocalDate date3 = new LocalDate(2012, 9, 1);
-		@SuppressWarnings("unused")
 		Budget testBudget3 = new Budget(TEST_BUDGET_NAME_3, 100, false,
 				date3, Duration.YEAR);
+
+		// Make some test entries
+		Entry testEntry1_budget1 = new Entry(500, testBudget1,
+				TEST_ENTRY_NAME_1, date1);
+		Entry testEntry2_budget1 = new Entry(1000, testBudget1,
+				TEST_ENTRY_NAME_2, date2);
+		Entry testEntry3_budget2 = new Entry(5000, testBudget2,
+				TEST_ENTRY_NAME_3, date3);
+		Entry testEntry4_budget2 = new Entry(3000, testBudget2,
+				TEST_ENTRY_NAME_4, date4);
+		Entry testEntry5_budget3 = new Entry(4000, testBudget3,
+				TEST_ENTRY_NAME_5, date5);
+		Entry testEntry6_budget3 = new Entry(12000, testBudget3,
+				TEST_ENTRY_NAME_6, date6);
+
+		// And put the test entries into the budgets
+		testBudget1.addEntry(testEntry1_budget1);
+		testBudget1.addEntry(testEntry2_budget1);
+		testBudget2.addEntry(testEntry3_budget2);
+		testBudget2.addEntry(testEntry4_budget2);
+		testBudget3.addEntry(testEntry5_budget3);
+		testBudget3.addEntry(testEntry6_budget3);
+
+		// And call onResume(), which will refresh the list of entries
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActivity().onResume();
+			}
+		});
 	}
 
 	@Override
@@ -135,27 +177,130 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 
 	@MediumTest
 	public void test_sortOrderCorrect_sortByDate() {
+		// Tests that entries are displayed in the correct order,
+		// by most recent to least recent entry date
 
+		// Expected order for "Sort By Date":
+		//	TEST_ENTRY_NAME_6 (most recent)
+		//	TEST_ENTRY_NAME_5
+		//	TEST_ENTRY_NAME_4
+		//	TEST_ENTRY_NAME_3
+		//	TEST_ENTRY_NAME_2
+		//	TEST_ENTRY_NAME_1 (least recent)
+
+		// Press the option for "Sort By Date" in the spinner
+		solo.pressSpinnerItem(0, 0);
+		solo.sleep(500);
+
+		// And check the order of entries in the re-sorted ListView
+
+		// For each entry, get its TextViews, and check that there is a TextView
+		// with the expected entry note
+		ArrayList<TextView> textViews = solo.clickInList(1);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_6));
+
+		textViews = solo.clickInList(2);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_5));
+
+		textViews = solo.clickInList(3);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_4));
+
+		textViews = solo.clickInList(4);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_3));
 	}
 
 	@MediumTest
 	public void test_sortOrderCorrect_sortByAmount() {
+		// Tests that entries are displayed in the correct order,
+		// by greatest amount to least amount
 
+		// Expected order for "Sort By Amount":
+		//  TEST_ENTRY_NAME_6 (greatest amount)
+		//  TEST_ENTRY_NAME_3
+		//  TEST_ENTRY_NAME_5
+		//  TEST_ENTRY_NAME_4
+		//  TEST_ENTRY_NAME_2
+		//  TEST_ENTRY_NAME_1 (least amount)
+
+		// Press the option for "Sort By Amount" in the spinner
+		solo.pressSpinnerItem(0, 1);
+		solo.sleep(500);
+
+		// And check the order of entries in the re-sorted ListView
+
+		// For each entry, get its TextViews, and check that there is a TextView
+		// with the expected entry note
+		ArrayList<TextView> textViews = solo.clickInList(1);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_6));
+
+		textViews = solo.clickInList(2);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_3));
+
+		textViews = solo.clickInList(3);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_5));
+
+		textViews = solo.clickInList(4);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_4));
 	}
 
 	@MediumTest
 	public void test_sortOrderCorrect_sortByBudget() {
+		// Test that entries are displayed in the correct order,
+		// by budget name, alphabetically
+
 		// "Sort By Budget" expected order:
-		// 		testBudget1, testBudget2, testBudget3
+		// 		TEST_BUDGET_NAME_1
+		// 		TEST_BUDGET_NAME_1
+		// 		TEST_BUDGET_NAME_2
+		// 		TEST_BUDGET_NAME_2
+		// 		TEST_BUDGET_NAME_3
+		// 		TEST_BUDGET_NAME_3
+
+		// Press the option for "Sort By Budget" in the spinner
+		solo.pressSpinnerItem(0, 2);
+		solo.sleep(500);
+
+		// And check the order of entries in the re-sorted ListView
+
+		// For each entry, get its TextViews, and check that there is a TextView
+		// with the expected budget name
+		ArrayList<TextView> textViews = solo.clickInList(1);
+		assertTrue(textViewHasText(textViews, TEST_BUDGET_NAME_1));
+
+		textViews = solo.clickInList(2);
+		assertTrue(textViewHasText(textViews, TEST_BUDGET_NAME_1));
+
+		textViews = solo.clickInList(3);
+		assertTrue(textViewHasText(textViews, TEST_BUDGET_NAME_2));
+
+		textViews = solo.clickInList(4);
+		assertTrue(textViewHasText(textViews, TEST_BUDGET_NAME_2));
 	}
 
 	@MediumTest
 	public void test_sortOrderCorrect_byCreationTime() {
+		// Test that entries are displayed in the correct order,
+		// by entry creation time, from most recent to least recent // TODO confirm order
 
 	}
 
 	@MediumTest
 	public void test_sortOrderCorrect_byUpdateTime() {
+		// Test that entries are displayed in the correct order,
+		// by entry update time, from most recent to least recent // TODO confirm order
 
+	}
+
+	/**
+	 * Returns whether the ArrayList of TextViews has a TextView whose text
+	 * matches <code>text</code>
+	 */
+	private boolean textViewHasText(ArrayList<TextView> textViews, String text) {
+		for (TextView tv : textViews) {
+			if (tv.getText().toString().equals(text)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
