@@ -274,10 +274,6 @@ public class AddBudgetActivity extends Activity {
 			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
 			// In case the request fails
 			newBudget.setId(actualBudget.getId());
-			newBudget.setBudgetAmount(actualBudget.getBudgetAmount());
-			newBudget.setRecurring(actualBudget.isRecurring());
-			newBudget.setDuration(actualBudget.getDuration());
-			newBudget.setStartDate(actualBudget.getStartDate());
 
 			ApiInterface.getInstance().update(newBudget, new ApiCallback<Object>() {
 				@Override
