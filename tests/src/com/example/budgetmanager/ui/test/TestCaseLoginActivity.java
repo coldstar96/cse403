@@ -7,13 +7,14 @@ import android.widget.EditText;
 
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.LoginActivity;
+import com.example.budgetmanager.MainActivity;
+import com.example.budgetmanager.RegisterActivity;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.api.test.AsyncHttpClientStub;
 import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -79,14 +80,8 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_emptyEmailThrowsError() {
 		// Set up a case with a missing email and a valid password.
 		// Should only have an error on the email field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText("");
-				passwordView.setText(VALID_PASSWORD);
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -104,14 +99,9 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_spaceInEmailThrowsError() {
 		// Set up a case with a badly formatted email and a good password.
 		// Should only have an error on the email field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(INVALID_EMAIL_HAS_SPACE);
-				passwordView.setText(VALID_PASSWORD);
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(emailView, INVALID_EMAIL_HAS_SPACE);
+		solo.typeText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -129,14 +119,9 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_noAtSignInEmailThrowsError() {
 		// Set up a case with a badly formatted email and a good password.
 		// Should only have an error on the email field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(INVALID_EMAIL_NO_AT);
-				passwordView.setText(VALID_PASSWORD);
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(emailView, INVALID_EMAIL_NO_AT);
+		solo.typeText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -154,14 +139,9 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_noPeriodInEmailThrowsError() {
 		// Set up a case with a badly formatted email and a good password.
 		// Should only have an error on the email field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(INVALID_EMAIL_NO_DOT);
-				passwordView.setText(VALID_PASSWORD);
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(emailView, INVALID_EMAIL_NO_DOT);
+		solo.typeText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -179,14 +159,8 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_emptyPasswordThrowsError() {
 		// Set up a case with a missing password but a good email.
 		// Should only throw an error on the password field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(VALID_EMAIL);
-				passwordView.setText("");
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(emailView, VALID_EMAIL);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -204,14 +178,9 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public void test_attemptLogin_passwordTooShortThrowsError() {
 		// Set up a case with too-short of a password but a good email.
 		// Should only have an error on the password field.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(VALID_EMAIL);
-				passwordView.setText(INVALID_PASSWORD_TOO_SHORT);
-				loginButton.performClick();
-			}
-		});
+		solo.typeText(emailView, VALID_EMAIL);
+		solo.typeText(passwordView, INVALID_PASSWORD_TOO_SHORT);
+		solo.clickOnButton(0);
 
 		solo.sleep(500);
 
@@ -226,34 +195,70 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 	}
 
 	@MediumTest
-	public void test_attemptLogin_validEmailAndPasswordNoError() throws JSONException {
+	public void test_attemptLogin_validEmailAndPasswordNoError() {
 		// Use the stubbed HTTP client to set up a result from the server
-		// without ever hitting the network. This result says that there's
-		// no user with matching username/email and password.
-		final String USERNAME_ERROR = VALID_EMAIL + ":";
-		final String PASSWORD_ERROR = "Invalid username or password.";
+		// without ever hitting the network.
 
-		// Error JSONObject to be returned to the API
-		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
-				.put("password_digest", new JSONArray().put(PASSWORD_ERROR));
-
-		// Set next "response" from the server.
-		testClient.setNextResponse(obj, false);
+		// Set next "responses" from the server in order to get to the Main activity
+		testClient.setNextResponse(new JSONObject(), true);
+		// Send back no budgets/entries (we don't need any for this test, but we
+		// need the stubbed request
+		testClient.setNextResponse(new JSONArray(), true);
 
 		// Set up a completely valid email/password.
 		// Should not cause any errors on the UI elements.
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				emailView.setText(VALID_EMAIL);
-				passwordView.setText(VALID_PASSWORD);
-				loginButton.performClick();
-			}
-		});
-
-		solo.sleep(500);
+		solo.typeText(emailView, VALID_EMAIL);
+		solo.typeText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton(0);
 
 		assertNull(emailView.getError());
 		assertNull(passwordView.getError());
+
+		solo.waitForActivity(MainActivity.class);
+
+		solo.assertCurrentActivity("Should have gone to the MainActivity", MainActivity.class);
+		solo.finishOpenedActivities();
+	}
+
+	@MediumTest
+	public void test_clickOnRegister_emptyFields_shouldHaveEmptyFields() {
+		// Click on the Register button
+		solo.clickOnButton("Register");
+		solo.waitForActivity(RegisterActivity.class);
+
+		solo.assertCurrentActivity("Should have gone to the RegisterActivity", RegisterActivity.class);
+
+		EditText registerEmailView = solo.getEditText(0);
+		EditText registerPasswordView = solo.getEditText(1);
+
+		String registerEmailString = registerEmailView.getText().toString();
+		String registerPasswordString = registerPasswordView.getText().toString();
+
+		assertEquals("The email text should have been empty", "", registerEmailString);
+		assertEquals("The password text should have been empty", "", registerPasswordString);
+
+		solo.finishOpenedActivities();
+	}
+
+	@MediumTest
+	public void test_clickOnRegister_filledFields_shouldHaveFilledFields() {
+		// Click on the Register button
+		solo.enterText(emailView, VALID_EMAIL);
+		solo.enterText(passwordView, VALID_PASSWORD);
+		solo.clickOnButton("Register");
+		solo.waitForActivity(RegisterActivity.class);
+
+		solo.assertCurrentActivity("Should have gone to the RegisterActivity", RegisterActivity.class);
+
+		EditText registerEmailView = solo.getEditText(0);
+		EditText registerPasswordView = solo.getEditText(1);
+
+		String registerEmailString = registerEmailView.getText().toString();
+		String registerPasswordString = registerPasswordView.getText().toString();
+
+		assertEquals("The email text should have been empty", VALID_EMAIL, registerEmailString);
+		assertEquals("The password text should have been empty", VALID_PASSWORD, registerPasswordString);
+
+		solo.finishOpenedActivities();
 	}
 }
