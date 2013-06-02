@@ -95,10 +95,11 @@ public class AddEntryActivity extends Activity {
 			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			Entry e = b.getEntryById(bundle.getLong("EntryId"));
 
-			mAmountView.setText(e.getAmount());
+			mAmountView.setText(Utilities.amountToDollarsNoDollarSign(e.getAmount()));
 
 			LocalDate date = e.getDate();
-			mDateView.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+			// subtract 1 from month to adjust to 0-based indexing
+			mDateView.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
 
 			mNotesView.setText(e.getNotes());
 
@@ -277,7 +278,7 @@ public class AddEntryActivity extends Activity {
 			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			final Entry actualEntry = b.getEntryById(bundle.getLong("EntryId"));
 
-			// We need to send a seperate entry, so we don't have to save
+			// We need to send a separate entry, so we don't have to save
 			// old values if the request fails.
 			newEntry.setEntryId(actualEntry.getEntryId());
 			newEntry.setCreatedAt(actualEntry.getCreatedAt());
@@ -291,6 +292,9 @@ public class AddEntryActivity extends Activity {
 					actualEntry.setAmount(newEntry.getAmount());
 					actualEntry.setDate(newEntry.getDate());
 					actualEntry.setNotes(newEntry.getNotes());
+
+					// go back to the Entry log
+					finish();
 				}
 
 				@Override
