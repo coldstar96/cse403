@@ -48,8 +48,7 @@ public class LogoActivity extends Activity {
 									Toast.makeText(LogoActivity.this,
 											errorMessage, Toast.LENGTH_LONG).show();
 								}
-								startActivity(new Intent(LogoActivity.this,
-										EntryLogsTab.class));
+								startActivity(new Intent(LogoActivity.this,	MainActivity.class));
 								finish();
 							}
 						});

@@ -99,7 +99,7 @@ public class EntryLogsTab extends Fragment {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-
+				// do nothing if nothing is selected
 			}
 		});
 		return layout;

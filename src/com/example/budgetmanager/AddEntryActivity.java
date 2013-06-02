@@ -72,12 +72,16 @@ public class AddEntryActivity extends Activity {
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		mAddButtonView = (Button) findViewById(R.id.add_entry_button);
 
+		Log.d(TAG, "After views");
+
 		// populate list items for the budget selector
 		addItemsToBudgetSpinner();
 
+		Log.d(TAG, "After budget spinner");
+
 		// Set all the add/edit specific fields.
 		Bundle bundle = getIntent().getExtras();
-		addMode = true;//bundle.getBoolean("Add", true);
+		addMode = bundle == null ? true : bundle.getBoolean("Add", true);
 		if (addMode) {
 			setTitle(MessageFormat.format(getTitle().toString(),
 					getString(R.string.title_entry_add)));

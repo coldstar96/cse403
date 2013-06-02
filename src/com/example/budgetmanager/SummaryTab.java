@@ -16,6 +16,11 @@ import android.widget.RelativeLayout;
  * @author Chi Ho coldstar96
  */
 
+/**
+ * Activity which displays list of Budgets screen to the user.
+ *
+ * @author Chi Ho coldstar96
+ */
 public class SummaryTab extends Fragment {
 	private final String TAG = "SummaryTab";
 
