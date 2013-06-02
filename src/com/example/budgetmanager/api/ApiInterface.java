@@ -233,7 +233,7 @@ public class ApiInterface {
 		params.put("start_date", startDate);
 		params.put("recurrence_duration", b.getDuration().toString());
 
-		client.put(budgetsUrl, params, new JsonHttpResponseHandler() {
+		client.put(budgetsUrl + "/" + b.getId(), params, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject obj) {
 				callback.onSuccess(null);
@@ -275,7 +275,7 @@ public class ApiInterface {
 		params.put("expenditure_date", e.getDate().toString(DATE_FORMAT));
 		params.put("budget_id", "" + e.getBudget().getId());
 
-		client.put(entriesUrl, params, new JsonHttpResponseHandler() {
+		client.put(entriesUrl + "/" + e.getEntryId(), params, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject obj) {
 				try {

@@ -48,14 +48,7 @@ public class EntryLogsActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		adapter.clear();
-
-		for (Budget b : Budget.getBudgets()) {
-			adapter.addEntriesFromBudget(b);
-		}
-
-		int position = sortSpinner.getSelectedItemPosition();
-		sortBySortSpinnerIndex(position);
+		refreshList();
 	}
 
 	@Override
@@ -112,7 +105,8 @@ public class EntryLogsActivity extends Activity {
 		// Retrieve the item that was clicked on
 		selectedEntry = adapter.getItem(info.position);
 
-		Log.d(TAG, "Amount: " + selectedEntry.getAmount() + ", " + selectedEntry.getBudget().getName());
+		Log.d(TAG, "Amount: " + selectedEntry.getAmount() + ", " + selectedEntry.
+				getBudget().getName());
 
 		// inflate the context menu
 		MenuInflater inflater = getMenuInflater();
@@ -121,39 +115,8 @@ public class EntryLogsActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.menu_edit:
-//			// tell AddEntryActivity to start an edit entry session
-//			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
-//			intent.putExtra("Add", false);
-//			intent.putExtra("EntryId", selectedEntry.getEntryId());
-//			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
-//
-//			startActivity(intent);
-//		case R.id.menu_delete:
-//			Toast.makeText(EntryLogsActivity.this, "DELETED CALLED", Toast.LENGTH_LONG).show();
-//
-//			ApiInterface.getInstance().remove(selectedEntry, new ApiCallback<Object>() {
-//				@Override
-//				public void onSuccess(Object result) {
-//
-//					// for testing purposes
-//					Toast.makeText(EntryLogsActivity.this,
-//							"deleted successfully"
-//							, Toast.LENGTH_LONG).show();
-//
-//					// remove the Entry from the Budget it is included in
-//					selectedEntry.getBudget().removeEntry(selectedEntry);
-//				}
-//
-//				@Override
-//				public void onFailure(String errorMessage) {
-//					// if the request fails, do nothing (the toast is for testing purposes)
-//					Toast.makeText(EntryLogsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-//				}
-//			});
-//		}
-
+		// using an if/else instead of a switch to avoid the bug of calling
+		// both edit and delete at once
 		if (item.getItemId() == R.id.menu_edit) {
 			// tell AddEntryActivity to start an edit entry session
 			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
@@ -176,6 +139,9 @@ public class EntryLogsActivity extends Activity {
 
 					// remove the Entry from the Budget it is included in
 					selectedEntry.getBudget().removeEntry(selectedEntry);
+
+					// refresh the view upon change
+					refreshList();
 				}
 
 				@Override
@@ -228,6 +194,20 @@ public class EntryLogsActivity extends Activity {
 			return false;
 		}
 		return true;
+	}
+
+	/* Helper method to refresh the list of ListView of Entries. */
+	private void refreshList() {
+		adapter.clear();
+
+		for (Budget b : Budget.getBudgets()) {
+			adapter.addEntriesFromBudget(b);
+		}
+
+		int position = sortSpinner.getSelectedItemPosition();
+		sortBySortSpinnerIndex(position);
+
+		adapter.notifyDataSetChanged();
 	}
 
 	public void onAddBudgetClicked(View view) {
