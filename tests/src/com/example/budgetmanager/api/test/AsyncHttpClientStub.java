@@ -14,11 +14,11 @@ import org.json.JSONObject;
  *
  * @author Graham grahamb5
  */
-public class TestAsyncHttpClient extends AsyncHttpClient {
+public class AsyncHttpClientStub extends AsyncHttpClient {
 	private JSONObject jsonObject;
 	private JSONArray jsonArray;
-	boolean object;
-	boolean succeeds;
+	private boolean object;
+	private boolean succeeds;
 
 	/**
 	 * Sets the next response to a handler.
@@ -38,6 +38,8 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 
 		this.succeeds = succeeds;
 	}
+
+
 
 	/**
 	 * Calls the specified handler with the last set JSON response.
@@ -63,7 +65,7 @@ public class TestAsyncHttpClient extends AsyncHttpClient {
 		}
 	}
 
-	// Overwrite AsyncHttpClient methods to use our forwarding method.
+	// Override AsyncHttpClient methods to use our forwarding method.
 
 	/**
 	 * Returns a mock network connection response to the <code>handler</code>.

@@ -10,7 +10,7 @@ import android.widget.EditText;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.RegisterActivity;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.api.test.TestAsyncHttpClient;
+import com.example.budgetmanager.api.test.AsyncHttpClientStub;
 import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
 
@@ -36,7 +36,7 @@ public class TestCaseRegisterActivity
 
 	@SuppressWarnings("unused")
 	private ApiInterface api;
-	private TestAsyncHttpClient testClient;
+	private AsyncHttpClientStub testClient;
 
 	private static final String REQUIRED_FIELD = "This field is required";
 
@@ -70,7 +70,7 @@ public class TestCaseRegisterActivity
 
 
 		// Set up a fake API
-		testClient = new TestAsyncHttpClient();
+		testClient = new AsyncHttpClientStub();
 		api = TestUtilities.getStubbedApiInterface(testClient);
 
 		Budget.clearBudgets();
