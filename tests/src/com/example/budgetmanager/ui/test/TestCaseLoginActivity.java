@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.LoginActivity;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.api.test.TestAsyncHttpClient;
+import com.example.budgetmanager.api.test.AsyncHttpClientStub;
 import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
 
@@ -41,7 +41,7 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 
 	@SuppressWarnings("unused")
 	private ApiInterface api;
-	private TestAsyncHttpClient testClient;
+	private AsyncHttpClientStub testClient;
 
 	public TestCaseLoginActivity() {
 		super(LoginActivity.class);
@@ -63,7 +63,7 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		loginButton = (Button) solo.
 				getView(com.example.budgetmanager.R.id.log_in_button);
 
-		testClient = new TestAsyncHttpClient();
+		testClient = new AsyncHttpClientStub();
 		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 

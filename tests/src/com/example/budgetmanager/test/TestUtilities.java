@@ -1,7 +1,7 @@
 package com.example.budgetmanager.test;
 
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.api.test.TestAsyncHttpClient;
+import com.loopj.android.http.AsyncHttpClient;
 
 import java.lang.reflect.Field;
 
@@ -53,7 +53,7 @@ public class TestUtilities {
      * @param testClient The AsyncHttpClient stub to inject
      * @return an ApiInterface instance with stubbed out HTTP client..
      */
-    public static ApiInterface getStubbedApiInterface(TestAsyncHttpClient testClient) {
+    public static ApiInterface getStubbedApiInterface(AsyncHttpClient testClient) {
     	ApiInterface api = ApiInterface.getInstance();
 
 		try {
