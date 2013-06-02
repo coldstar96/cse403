@@ -91,12 +91,11 @@ public class AddEntryActivity extends Activity {
 			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			Entry e = b.getEntryById(bundle.getLong("EntryId"));
 
-			// TODO need to do this because amountToDollars returns a string with "$".
-			// discuss with the group to figure out what to do
-			mAmountView.setText(Utilities.amountToDollars(e.getAmount()).substring(1));
+			mAmountView.setText(Utilities.amountToDollarsNoDollarSign(e.getAmount()));
 
 			LocalDate date = e.getDate();
-			mDateView.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+			// subtract 1 from month to adjust to 0-based indexing
+			mDateView.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
 
 			mNotesView.setText(e.getNotes());
 

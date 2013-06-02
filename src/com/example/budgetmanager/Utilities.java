@@ -24,12 +24,23 @@ public class Utilities {
 	}
 
 	/**
-	 * Transforms a number of cents into a dollar-formatted string.
+	 * Transforms a number of cents into a dollar-formatted string with the
+	 * dollar sign.
 	 * @param n amount in cents
 	 * @return String in $00.00 format
 	 */
 	public static String amountToDollars(int n) {
-		String s = "$" + (n / DOLLOR_IN_CENTS) + ".";
+		return "$" + amountToDollarsNoDollarSign(n);
+	}
+
+	/**
+	 * Transforms a number of cents into a dollar-formatted string without
+	 * the dollar sign.
+	 * @param n amount in cents
+	 * @return String in 00.00 format
+	 */
+	public static String amountToDollarsNoDollarSign(int n) {
+		String s = (n / DOLLOR_IN_CENTS) + ".";
 		if ((n % DOLLOR_IN_CENTS) < 10) {
 			s += "0";
 		}
