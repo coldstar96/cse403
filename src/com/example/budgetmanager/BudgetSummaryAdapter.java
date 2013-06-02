@@ -57,7 +57,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	public BudgetSummaryAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
-		this.budgetList.clear();
 		this.budgetList.addAll(budgetList);
 		Log.d(TAG, "all budgets added");
 	}

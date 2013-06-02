@@ -6,7 +6,38 @@
     <ListView
         android:id="@+id/budget_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginBottom="64dp" >
     </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_component_height"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/default_edittext_padding"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/add_budget_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button_secondary"
+            android:onClick="onAddBudgetClicked"
+            android:text="@string/action_add_budget"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/add_entry_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button_primary"
+            android:onClick="onAddEntryClicked"
+            android:text="@string/action_add_entry"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </RelativeLayout>
