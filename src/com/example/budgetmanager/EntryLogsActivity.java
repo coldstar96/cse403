@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
@@ -80,39 +81,8 @@ public class EntryLogsActivity extends Activity {
 		listView = (ListView) findViewById(R.id.entry_list);
 		listView.setAdapter(adapter);
 
+		// set up a context menu for the list items
 		registerForContextMenu(listView);
-		//		listView.setOnItemClickListener(new OnItemClickListener() {
-		//
-		//			@Override
-		//			public void onItemClick(AdapterView<?> arg0, View v,
-		//					int pos, long id) {
-		//////				// get the selected Entry object
-		//////				Entry e = (Entry) listView.getItemAtPosition(pos);
-		//////
-		//////				// go to the AddEntryActivity with all the necessary information.
-		//////				// tell AddEntryActivity that it should be an edit entry session
-		//////				Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
-		//////				intent.putExtra("Add", false);
-		//////				intent.putExtra("EntryId", e.getEntryId());
-		//////				intent.putExtra("BudgetId", e.getBudget().getId());
-		//////				startActivity(intent);
-		////
-		//				registerForContextMenu(v);
-		//				openContextMenu(v);
-		//				unregisterForContextMenu(v);
-		//			}
-		//		});
-
-		//		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-		//			@Override
-		//			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-		//					int arg2, long arg3) {
-		//				Toast.makeText(EntryLogsActivity.this,
-		//						"Long click not implemented yet",
-		//						Toast.LENGTH_LONG).show();
-		//				return false;
-		//			}
-		//		});
 
 		sortSpinner = (Spinner) findViewById(R.id.spinner_logs_sort);
 
@@ -142,6 +112,8 @@ public class EntryLogsActivity extends Activity {
 		// Retrieve the item that was clicked on
 		selectedEntry = adapter.getItem(info.position);
 
+		Log.d(TAG, "Amount: " + selectedEntry.getAmount() + ", " + selectedEntry.getBudget().getName());
+
 		// inflate the context menu
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.context_menu, menu);
@@ -149,8 +121,40 @@ public class EntryLogsActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_edit:
+//		switch (item.getItemId()) {
+//		case R.id.menu_edit:
+//			// tell AddEntryActivity to start an edit entry session
+//			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
+//			intent.putExtra("Add", false);
+//			intent.putExtra("EntryId", selectedEntry.getEntryId());
+//			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
+//
+//			startActivity(intent);
+//		case R.id.menu_delete:
+//			Toast.makeText(EntryLogsActivity.this, "DELETED CALLED", Toast.LENGTH_LONG).show();
+//
+//			ApiInterface.getInstance().remove(selectedEntry, new ApiCallback<Object>() {
+//				@Override
+//				public void onSuccess(Object result) {
+//
+//					// for testing purposes
+//					Toast.makeText(EntryLogsActivity.this,
+//							"deleted successfully"
+//							, Toast.LENGTH_LONG).show();
+//
+//					// remove the Entry from the Budget it is included in
+//					selectedEntry.getBudget().removeEntry(selectedEntry);
+//				}
+//
+//				@Override
+//				public void onFailure(String errorMessage) {
+//					// if the request fails, do nothing (the toast is for testing purposes)
+//					Toast.makeText(EntryLogsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//				}
+//			});
+//		}
+
+		if (item.getItemId() == R.id.menu_edit) {
 			// tell AddEntryActivity to start an edit entry session
 			Intent intent = new Intent(EntryLogsActivity.this, AddEntryActivity.class);
 			intent.putExtra("Add", false);
@@ -158,10 +162,29 @@ public class EntryLogsActivity extends Activity {
 			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
 
 			startActivity(intent);
-		case R.id.menu_delete:
-			Toast.makeText(EntryLogsActivity.this,
-					"delete not implemented yet",
-					Toast.LENGTH_LONG).show();
+		}	else if (item.getItemId() == R.id.menu_delete) {
+			Log.d(TAG, "Delete called.");
+
+			ApiInterface.getInstance().remove(selectedEntry, new ApiCallback<Object>() {
+				@Override
+				public void onSuccess(Object result) {
+					Log.d(TAG, "Delete entry onSuccess entered.");
+					// for testing purposes
+					Toast.makeText(EntryLogsActivity.this,
+							R.string.success_delete_entry,
+							Toast.LENGTH_LONG).show();
+
+					// remove the Entry from the Budget it is included in
+					selectedEntry.getBudget().removeEntry(selectedEntry);
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					Log.d(TAG, "Delete entry onFailure entered.");
+					// if the request fails, do nothing (the toast is for testing purposes)
+					Toast.makeText(EntryLogsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+				}
+			});
 		}
 
 		return true;
