@@ -68,6 +68,11 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 
+	@Override
+	protected void tearDown() {
+		solo.finishOpenedActivities();
+	}
+
 	@MediumTest
 	public void test_onCreate_viewsNotNull() {
 		// Ensure all of the views are present
@@ -82,8 +87,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		// Should only have an error on the email field.
 		solo.typeText(passwordView, VALID_PASSWORD);
 		solo.clickOnButton(0);
-
-		solo.sleep(500);
 
 		String expectedError = "This field is required";
 		String foundError = (String) emailView.getError();
@@ -103,8 +106,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.typeText(passwordView, VALID_PASSWORD);
 		solo.clickOnButton(0);
 
-		solo.sleep(500);
-
 		String expectedError = "This email address is invalid";
 		String foundError = (String) emailView.getError();
 
@@ -122,8 +123,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.typeText(emailView, INVALID_EMAIL_NO_AT);
 		solo.typeText(passwordView, VALID_PASSWORD);
 		solo.clickOnButton(0);
-
-		solo.sleep(500);
 
 		String expectedError = "This email address is invalid";
 		String foundError = (String) emailView.getError();
@@ -143,8 +142,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.typeText(passwordView, VALID_PASSWORD);
 		solo.clickOnButton(0);
 
-		solo.sleep(500);
-
 		String expectedError = "This email address is invalid";
 		String foundError = (String) emailView.getError();
 
@@ -161,8 +158,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		// Should only throw an error on the password field.
 		solo.typeText(emailView, VALID_EMAIL);
 		solo.clickOnButton(0);
-
-		solo.sleep(500);
 
 		String expectedError = "This field is required";
 		String foundError = (String) passwordView.getError();
@@ -181,8 +176,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.typeText(emailView, VALID_EMAIL);
 		solo.typeText(passwordView, INVALID_PASSWORD_TOO_SHORT);
 		solo.clickOnButton(0);
-
-		solo.sleep(500);
 
 		String expectedError = "This password is too short";
 		String foundError = (String) passwordView.getError();
@@ -214,19 +207,18 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNull(emailView.getError());
 		assertNull(passwordView.getError());
 
-		solo.waitForActivity(MainActivity.class);
-
-		solo.assertCurrentActivity("Should have gone to the MainActivity", MainActivity.class);
-		solo.finishOpenedActivities();
+		boolean madeItToActivity = solo.waitForActivity(MainActivity.class);
+		assertTrue("Should have gone to the MainActivity", madeItToActivity);
 	}
 
 	@MediumTest
 	public void test_clickOnRegister_emptyFields_shouldHaveEmptyFields() {
 		// Click on the Register button
 		solo.clickOnButton("Register");
-		solo.waitForActivity(RegisterActivity.class);
 
-		solo.assertCurrentActivity("Should have gone to the RegisterActivity", RegisterActivity.class);
+		// Wait to go to the RegisterActivity
+		boolean madeItToActivity = solo.waitForActivity(RegisterActivity.class);
+		assertTrue("Should have gone to the RegisterActivity", madeItToActivity);
 
 		EditText registerEmailView = solo.getEditText(0);
 		EditText registerPasswordView = solo.getEditText(1);
@@ -236,8 +228,6 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 
 		assertEquals("The email text should have been empty", "", registerEmailString);
 		assertEquals("The password text should have been empty", "", registerPasswordString);
-
-		solo.finishOpenedActivities();
 	}
 
 	@MediumTest
@@ -246,9 +236,10 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 		solo.enterText(emailView, VALID_EMAIL);
 		solo.enterText(passwordView, VALID_PASSWORD);
 		solo.clickOnButton("Register");
-		solo.waitForActivity(RegisterActivity.class);
 
-		solo.assertCurrentActivity("Should have gone to the RegisterActivity", RegisterActivity.class);
+		// Wait to go to the RegisterActivity
+		boolean madeItToActivity = solo.waitForActivity(RegisterActivity.class);
+		assertTrue("Should have gone to the RegisterActivity", madeItToActivity);
 
 		EditText registerEmailView = solo.getEditText(0);
 		EditText registerPasswordView = solo.getEditText(1);
@@ -258,7 +249,5 @@ extends ActivityInstrumentationTestCase2<LoginActivity> {
 
 		assertEquals("The email text should have been empty", VALID_EMAIL, registerEmailString);
 		assertEquals("The password text should have been empty", VALID_PASSWORD, registerPasswordString);
-
-		solo.finishOpenedActivities();
 	}
 }

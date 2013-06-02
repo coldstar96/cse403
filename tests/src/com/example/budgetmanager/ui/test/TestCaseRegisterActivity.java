@@ -71,11 +71,15 @@ public class TestCaseRegisterActivity
 		Budget.clearBudgets();
 	}
 
+	@Override
+	protected void tearDown() {
+		solo.finishOpenedActivities();
+	}
+
 	@MediumTest
 	public void test_blankEmailField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// The email field should complain about being blank
 		String emailError = (String) emailField.getError();
@@ -88,7 +92,6 @@ public class TestCaseRegisterActivity
 	public void test_blankPasswordField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// The password field should complain about being blank
 		String passwordError = (String) passwordField.getError();
@@ -101,7 +104,6 @@ public class TestCaseRegisterActivity
 	public void test_blankVerifyPasswordField_shouldNotAllow() {
 		// Just click on the register button without doing anything.
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// The confirmation field should complain about being blank
 		String confirmError = (String) passwordConfirmField.getError();
@@ -116,7 +118,6 @@ public class TestCaseRegisterActivity
 		// Try to register, wait for animations.
 		solo.typeText(emailField, "not an email");
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// The email field should complain about the email being bad
 		String expectedError = "This email address is invalid";
@@ -133,7 +134,6 @@ public class TestCaseRegisterActivity
 		solo.typeText(passwordField, "Password1");
 		solo.typeText(passwordConfirmField, "Password2");
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// There should be an error about passwords not matching
 		// But only on the password field. Confirmation has no errors.
@@ -165,7 +165,6 @@ public class TestCaseRegisterActivity
 		solo.typeText(passwordField, password);
 		solo.typeText(passwordConfirmField, password);
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		// The only error should be on the email field,
 		// complaining about the non-uniqueness of the emails.
@@ -197,7 +196,6 @@ public class TestCaseRegisterActivity
 		solo.typeText(passwordField, password);
 		solo.typeText(passwordConfirmField, password);
 		solo.clickOnButton(0);
-		solo.sleep(500);
 
 		String emailError = (String) emailField.getError();
 		String confirmError = (String) passwordConfirmField.getError();
@@ -208,9 +206,7 @@ public class TestCaseRegisterActivity
 		assertNull(passwordError);
 		assertNull(confirmError);
 
-		solo.waitForActivity(MainActivity.class);
-		solo.assertCurrentActivity("Should have gone to the MainActivity", MainActivity.class);
-
-		solo.finishOpenedActivities();
+		boolean madeItToActivity = solo.waitForActivity(MainActivity.class);
+		assertTrue("Should have gone to the MainActivity", madeItToActivity);
 	}
 }
