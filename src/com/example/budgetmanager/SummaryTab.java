@@ -6,6 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Activity which displays list of Budgets screen to the user.
+ *
+ * @author Chi Ho coldstar96
+ */
 public class SummaryTab extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
