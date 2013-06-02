@@ -77,7 +77,7 @@ public class AddEntryActivity extends Activity {
 
 		// Set all the add/edit specific fields.
 		Bundle bundle = getIntent().getExtras();
-		addMode = bundle.getBoolean("Add", true);
+		addMode = true;//bundle.getBoolean("Add", true);
 		if (addMode) {
 			setTitle(MessageFormat.format(getTitle().toString(),
 					getString(R.string.title_entry_add)));

@@ -83,7 +83,7 @@ public class EntryLogsTab extends Fragment {
 				Toast.makeText(getActivity(),
 						"Long click not implemented yet",
 						Toast.LENGTH_LONG).show();
-				return false;
+				return true;
 			}
 		});
 

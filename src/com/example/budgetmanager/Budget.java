@@ -30,19 +30,19 @@ public class Budget {
 	private long budgetId;
 
 	// Name of the budget
-	private final String name;
+	private String name;
 
 	// Amount allocated for the budget, in cents
-	private final int amount;
+	private int amount;
 
 	// true for recurring Budget
-	private final boolean recur;
+	private boolean recur;
 
 	// The start date of the first cycle
-	private final LocalDate startDate;
+	private LocalDate startDate;
 
 	// Duration type for this Budget
-	private final Duration duration;
+	private Duration duration;
 
 	// Actual period of the budget (length of one cycle)
 	private Period budgetDuration;
@@ -111,15 +111,7 @@ public class Budget {
 		return Collections.unmodifiableList(BUDGET_LIST);
 	}
 
-	/**
-	 * Clears the internal list of Budgets, mainly used for testing.
-	 */
-	public static void clearBudgets() {
-		BUDGET_LIST.clear();
-	}
-
-	/**
-	 * Search through the user's Budgets for the budget who's ID matches
+	/** Search through the user's Budgets for the budget who's ID matches
 	 * <code>id</code>.
 	 *
 	 * @param id The ID of the budget in question.
@@ -133,6 +125,13 @@ public class Budget {
 			}
 		}
 		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
+	}
+
+	/**
+	 * Clears the internal list of Budgets, mainly used for testing.
+	 */
+	public static void clearBudgets() {
+		BUDGET_LIST.clear();
 	}
 
 	/**
@@ -237,6 +236,15 @@ public class Budget {
 	}
 
 	/**
+	 * Sets the name of this budget
+	 *
+	 * @param name The new name of this budget
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * Gets and returns the user-specified total budget amount of this
 	 * <code>Budget</code>. This number is the maximum amount of cents
 	 * the user can spend without going over-budget.
@@ -245,6 +253,15 @@ public class Budget {
 	 */
 	public int getBudgetAmount() {
 		return amount;
+	}
+
+	/**
+	 * Sets the amount of this budget
+	 *
+	 * @param amount The new amount of this budget
+	 */
+	public void setBudgetAmount(int amount){
+		this.amount = amount;
 	}
 
 	/**
@@ -259,11 +276,29 @@ public class Budget {
 	}
 
 	/**
+	 * Sets whether this budget is recurring or not
+	 *
+	 * @param recur if it is recurring or not
+	 */
+	public void setRecurring(boolean recur) {
+		this.recur = recur;
+	}
+
+	/**
 	 * Returns the duration type of this budget
 	 * @return the duration of this budget
 	 */
 	public Duration getDuration() {
 		return duration;
+	}
+
+	/**
+	 * Sets the duration of this budget
+	 *
+	 * @param duration the new duration of this budget
+	 */
+	public void setDuration(Duration duration) {
+		this.duration = duration;
 	}
 
 	/**
@@ -317,6 +352,15 @@ public class Budget {
 	 */
 	public LocalDate getStartDate() {
 		return startDate;
+	}
+
+	/**
+	 * Sets the start date of this budget
+	 *
+	 * @param startDate the new start date of this budget
+	 */
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
 	/**
