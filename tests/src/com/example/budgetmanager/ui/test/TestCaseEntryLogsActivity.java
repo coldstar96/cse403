@@ -59,10 +59,13 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 
 		// Should always tear down budgets
 		Budget.clearBudgets();
+	}
 
-		// "Sort By Budget" expected order:
-		// 		testBudget1, testBudget2, testBudget3
-
+	/**
+	 * Creates some test budgets with some test entries and refreshes the
+	 * ListView of entries
+	 */
+	private void createTestEntriesAndRefresh() {
 		// Some dates for the test budgets and test entries
 		LocalDate date1 = new LocalDate(2011, 5, 31);
 		LocalDate date2 = new LocalDate(2012, 3, 20);
@@ -162,18 +165,26 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 		assertFalse(addEntryActivityStarted);
 	}
 
-	@MediumTest
-	public void test_onAddEntryClicked_startsActivityCorrectly() {
-		// Check that the "Add Entry" button starts the AddEntryActivity
-		// correctly when there is at least one created budget
-		solo.clickOnButton("Add Entry");
-		solo.sleep(500);
-
-		boolean addEntryActivityStarted =
-				solo.waitForActivity(AddEntryActivity.class, 2000);
-		// Activity should be started
-		assertTrue(addEntryActivityStarted);
-	}
+	//	@MediumTest
+	//	public void test_onAddEntryClicked_startsActivityCorrectly() {
+	//		// Check that the "Add Entry" button starts the AddEntryActivity
+	//		// correctly when there is at least one created budget
+	//
+	//		// Create a budget, because AddEntryActivity requires that there is
+	//		// at least one created budget before a user can create an entry
+	//		LocalDate date1 = new LocalDate(2011, 5, 31);
+	//		@SuppressWarnings("unused")
+	//		Budget testBudget1 = new Budget(TEST_BUDGET_NAME_1, 300, false,
+	//				date1, Duration.WEEK);
+	//
+	//		solo.clickOnButton("Add Entry");
+	//		solo.sleep(500);
+	//
+	//		boolean addEntryActivityStarted =
+	//				solo.waitForActivity(AddEntryActivity.class, 2000);
+	//		// Activity should be started
+	//		assertTrue(addEntryActivityStarted);
+	//	}
 
 	@MediumTest
 	public void test_sortOrderCorrect_sortByDate() {
@@ -187,6 +198,8 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 		//	TEST_ENTRY_NAME_3
 		//	TEST_ENTRY_NAME_2
 		//	TEST_ENTRY_NAME_1 (least recent)
+
+		createTestEntriesAndRefresh();
 
 		// Press the option for "Sort By Date" in the spinner
 		solo.pressSpinnerItem(0, 0);
@@ -207,6 +220,11 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 
 		textViews = solo.clickInList(4);
 		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_3));
+
+		// Only checks the first four items in the ListView because Robotium
+		// seems to dislike clicking items past the bottom of the screen,
+		// and scrolling down resets the index of items differently for
+		// different screen sizes
 	}
 
 	@MediumTest
@@ -221,6 +239,8 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 		//  TEST_ENTRY_NAME_4
 		//  TEST_ENTRY_NAME_2
 		//  TEST_ENTRY_NAME_1 (least amount)
+
+		createTestEntriesAndRefresh();
 
 		// Press the option for "Sort By Amount" in the spinner
 		solo.pressSpinnerItem(0, 1);
@@ -256,6 +276,8 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 		// 		TEST_BUDGET_NAME_3
 		// 		TEST_BUDGET_NAME_3
 
+		createTestEntriesAndRefresh();
+
 		// Press the option for "Sort By Budget" in the spinner
 		solo.pressSpinnerItem(0, 2);
 		solo.sleep(500);
@@ -280,15 +302,37 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 	@MediumTest
 	public void test_sortOrderCorrect_byCreationTime() {
 		// Test that entries are displayed in the correct order,
-		// by entry creation time, from most recent to least recent // TODO confirm order
+		// by entry creation time, from most recent to least recent
 
-	}
+		// Expected order for "Sort By Creation time":
+		//  TEST_ENTRY_NAME_6 (most recently created)
+		//  TEST_ENTRY_NAME_5
+		//  TEST_ENTRY_NAME_4
+		//  TEST_ENTRY_NAME_3
+		//  TEST_ENTRY_NAME_2
+		//  TEST_ENTRY_NAME_1 (least recently created)
 
-	@MediumTest
-	public void test_sortOrderCorrect_byUpdateTime() {
-		// Test that entries are displayed in the correct order,
-		// by entry update time, from most recent to least recent // TODO confirm order
+		createTestEntriesAndRefresh();
 
+		// Press the option for "Sort By Creation time" in the spinner
+		solo.pressSpinnerItem(0, 3);
+		solo.sleep(500);
+
+		// And check the order of entries in the re-sorted ListView
+
+		// For each entry, get its TextViews, and check that there is a TextView
+		// with the expected entry name
+		ArrayList<TextView> textViews = solo.clickInList(1);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_6));
+
+		textViews = solo.clickInList(2);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_5));
+
+		textViews = solo.clickInList(3);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_4));
+
+		textViews = solo.clickInList(4);
+		assertTrue(textViewHasText(textViews, TEST_ENTRY_NAME_3));
 	}
 
 	/**
@@ -296,6 +340,8 @@ extends ActivityInstrumentationTestCase2<EntryLogsActivity> {
 	 * matches <code>text</code>
 	 */
 	private boolean textViewHasText(ArrayList<TextView> textViews, String text) {
+		// Used because solo.clickInList(int pos) seems to sometimes return a
+		// list of TextViews in an unexpected order
 		for (TextView tv : textViews) {
 			if (tv.getText().toString().equals(text)) {
 				return true;
