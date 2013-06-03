@@ -40,7 +40,7 @@ public class BudgetSummaryActivity extends Activity {
 		long budgetId = intent.getLongExtra("BUDGET_ID", -1);
 		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
 
-		Budget.getBudgetById(budgetId);
+		myBudget = Budget.getBudgetById(budgetId);
 
 		if (cycle == -1) {
 			if (myBudget.isRecurring()) {
