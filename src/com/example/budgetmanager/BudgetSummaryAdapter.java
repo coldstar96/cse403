@@ -118,14 +118,22 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		Log.d(TAG, "Getting TextViews for row " + position);
 
 		// Views for the row
-		TextView budgetNameView = (TextView) row.findViewById(R.id.budget_name);
-		TextView budgetCycleView = (TextView) row.findViewById(R.id.budget_cycle);
-		TextView periodTextView = (TextView) row.findViewById(R.id.period_text);
-		ProgressBar perProgressView = (ProgressBar) row.findViewById(R.id.period_progress);
-		TextView expenditureTextView = (TextView) row.findViewById(R.id.expenditure_text);
-		ProgressBar expProgressView = (ProgressBar) row.findViewById(R.id.expenditure_progress);
-		TextView actualDailyAvgView = (TextView) row.findViewById(R.id.actual_daily_average);
-		TextView suggestDailyAvgView = (TextView) row.findViewById(R.id.suggested_daily_average);
+		TextView budgetNameView =
+				(TextView) row.findViewById(R.id.budget_name);
+		TextView budgetCycleView =
+				(TextView) row.findViewById(R.id.budget_cycle);
+		TextView periodTextView =
+				(TextView) row.findViewById(R.id.period_text);
+		ProgressBar perProgressView =
+				(ProgressBar) row.findViewById(R.id.period_progress);
+		TextView expenditureTextView =
+				(TextView) row.findViewById(R.id.expenditure_text);
+		ProgressBar expProgressView =
+				(ProgressBar) row.findViewById(R.id.expenditure_progress);
+		TextView actualDailyAvgView =
+				(TextView) row.findViewById(R.id.actual_daily_average);
+		TextView suggestDailyAvgView =
+				(TextView) row.findViewById(R.id.suggested_daily_average);
 
 		Log.d(TAG, "Finished getting Views for row " + position);
 
