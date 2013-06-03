@@ -90,6 +90,11 @@
                 android:text="@string/action_delete_budget"
                 android:textColor="@color/white" />
         </LinearLayout>
+
+        <include
+            android:layout_marginBottom="@dimen/default_layout_spacing"
+	        android:layout_gravity="bottom"
+	        layout="@layout/advertisement_view" />
     </LinearLayout>
 
 </ScrollView>
