@@ -71,7 +71,7 @@ public class SummaryTab extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		RelativeLayout layout =
-				(RelativeLayout) inflater.inflate(R.layout.activity_summary,
+				(RelativeLayout) inflater.inflate(R.layout.fragment_summary,
 						container, false);
 
 		// set adapter

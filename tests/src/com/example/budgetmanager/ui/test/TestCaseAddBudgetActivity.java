@@ -2,7 +2,6 @@ package com.example.budgetmanager.ui.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -28,8 +27,6 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	private Solo solo;
 	private EditText nameField;
 	private EditText amountField;
-	private Button createButton;
-	private Button clearButton;
 	private CheckBox recurCheckBox;
 
 	private AsyncHttpClientStub testClient;
@@ -49,10 +46,6 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 				com.example.budgetmanager.R.id.budget_name);
 		amountField = (EditText) getActivity().findViewById(
 				com.example.budgetmanager.R.id.budget_amount);
-		createButton = (Button) getActivity().findViewById(
-				com.example.budgetmanager.R.id.create_budget_button);
-		clearButton = (Button) getActivity().findViewById(
-				com.example.budgetmanager.R.id.clear_budget_button);
 		recurCheckBox = (CheckBox) getActivity().findViewById(
 				com.example.budgetmanager.R.id.budget_recur);
 
@@ -63,6 +56,11 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		Budget.clearBudgets();
 	}
 
+	@Override
+	protected void tearDown() {
+		solo.finishOpenedActivities();
+	}
+
 	/**
 	 * Ensure that an amount of 0 is question.
 	 *
@@ -71,16 +69,10 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	@MediumTest
 	public void test_zeroAmountDollarsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0 amount should fail
-		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Budget with 0 Amount");
-				amountField.setText("0");
-				createButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		solo.typeText(amountField, "0");
+		solo.typeText(nameField, "Budget with 0 Amount");
+		solo.clickOnButton("Add");
+		solo.sleep(500);
 
 		// We should have an error on amount where you must have a positive
 		// amount
@@ -102,16 +94,10 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	@MediumTest
 	public void test_zeroAmountDollarsAndCentsValidName_shouldNotAllowIt() {
 		// Enter in UI text: 0.00 amount should fail
-		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Budget with 0.00 Amount");
-				amountField.setText("0.00");
-				createButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		solo.typeText(amountField, "0.00");
+		solo.typeText(nameField, "Budget with 0.00 Amount");
+		solo.clickOnButton("Add");
+		solo.sleep(500);
 
 		// We should have an error on amount where you must have a positive
 		// amount
@@ -135,16 +121,9 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	@MediumTest
 	public void test_emptyAmountValidName_shouldNotAllowIt() {
 		// Leave the amount field empty
-
-		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Empty Amount Budget");
-				createButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		solo.typeText(nameField, "Empty Amount Budget");
+		solo.clickOnButton("Add");
+		solo.sleep(500);
 
 		// Amount field should complain about being empty
 		String expectedError = "Please specify amount";
@@ -165,16 +144,9 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	@MediumTest
 	public void test_emptyNameValidAmount_shouldNotAllowIt() {
 		// Neglect to enter in a name
-
-		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				amountField.setText("1.00");
-				createButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		solo.typeText(amountField, "1.00");
+		solo.clickOnButton("Add");
+		solo.sleep(500);
 
 		// Name field should complain about being empty
 		String expectedError = "Please specify name";
@@ -199,21 +171,16 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	public void test_takenNameValidAmount_shouldNotAllowIt() {
 		// Add a budget with this name to the budget list
 		// Enter a name that is the same as the other budget, and valid amount.
-		// Click create and wait a bit for animations to happen
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				String budgetName = "Duplicate Budget Name";
-				@SuppressWarnings("unused")
-				Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
-						Budget.Duration.WEEK);
+		String budgetName = "Duplicate Budget Name";
 
-				nameField.setText(budgetName);
-				amountField.setText("1.00");
-				createButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		@SuppressWarnings("unused")
+		Budget b = new Budget(budgetName, 0, false, LocalDate.now(),
+				Budget.Duration.WEEK);
+
+		solo.typeText(nameField, budgetName);
+		solo.typeText(amountField, "1.00");
+		solo.clickOnButton("Add");
+		solo.sleep(500);
 
 		// We expect the budget field complain about duplicate names
 		String expectedError = "Budget name already in use";
@@ -234,24 +201,14 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	@MediumTest
 	public void test_clear_shouldResetFields() {
 		// Set up some data in the fields
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				nameField.setText("Clearing Budget");
-				amountField.setText("12345.00");
-				recurCheckBox.setChecked(true);
-			}
-		});
-		solo.sleep(1000);
+		solo.typeText(nameField, "Clearing Budget");
+		solo.typeText(amountField, "12345.00");
+		solo.clickOnCheckBox(0);
+		solo.sleep(500);
 
 		// Clear the fields and wait for animations
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				clearButton.performClick();
-			}
-		});
-		solo.sleep(1000);
+		solo.clickOnButton("Clear");
+		solo.sleep(500);
 
 		// The fields should be back to their defaults.
 		String nameText = nameField.getText().toString();
@@ -266,7 +223,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	/**
 	 * Ensure that, on server failure, the newly added budget is
 	 * removed from the budget list.
-	 * 
+	 *
 	 * This is a black-box test of the AddBudgetActivity.
 	 */
 	@MediumTest
@@ -275,12 +232,12 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		solo.enterText(nameField, "Valid Budget");
 		solo.enterText(amountField, "12345.00");
 		solo.clickOnCheckBox(0);
-		solo.sleep(1000);
+		solo.sleep(500);
 
 		testClient.setNextResponse(new JSONObject(), false);
 
 		solo.clickOnButton("Add");
-		solo.sleep(1000);
+		solo.sleep(500);
 
 		// make sure no budget with ID -1 is in budget list
 		// AKA the network failure was acknowledged and actions
@@ -292,19 +249,19 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	/**
 	 * Ensure that, on server success, the newly added budget is
 	 * present in the budget list and has valid fields.
-	 * 
+	 *
 	 * This is a black-box test of the AddBudgetActivity.
 	 */
 	@MediumTest
 	public void test_addValidBudget_newBudgetIsAdded() throws JSONException {
-		String BUDGET_NAME = "Valid Budget";
-		String BUDGET_AMOUNT = "12345.00";
-		long BUDGET_ID = -2;
+		final String BUDGET_NAME = "Valid Budget";
+		final String BUDGET_AMOUNT = "12345.00";
+		final long BUDGET_ID = -2;
 
 		// Set up some data in the fields
 		solo.enterText(nameField, BUDGET_NAME);
 		solo.enterText(amountField, BUDGET_AMOUNT);
-		solo.sleep(1000);
+		solo.sleep(500);
 
 		// Set the server response.
 		JSONObject serverResponse = new JSONObject();
@@ -313,11 +270,11 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		testClient.setNextResponse(serverResponse, true);
 
 		solo.clickOnButton("Add");
-		solo.sleep(1000);
+		solo.sleep(500);
 
-		// Make sure there is a budget with ID -2 in the list
+		// Make sure there is a budget with ID BUDGET_ID in the list
 		// of budgets, as the server returned saying it had been added.
-		Budget b = Budget.getBudgetById(-2);
+		Budget b = Budget.getBudgetById(BUDGET_ID);
 		assertNotNull("There should be a budget with ID -2.", b);
 		assertEquals("The name of the budget was wrong.", BUDGET_NAME, b.getName());
 		assertEquals("The amount of the budget was wrong.",

@@ -11,7 +11,9 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -89,6 +91,14 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		Log.d(TAG, "getView: Finished processing row " + position);
 
 		return row;
+	}
+
+	public List<Entry> getEntryList(){
+		List<Entry> entries = new ArrayList<Entry>();
+		for (int i = 0; i < getCount(); i++) {
+			entries.add(getItem(i));
+		}
+		return entries;
 	}
 
 	/**
