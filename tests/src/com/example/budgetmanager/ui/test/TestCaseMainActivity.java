@@ -27,6 +27,11 @@ import com.jayway.android.robotium.solo.Solo;
  * that the "Add Budget" and "Add Entry" buttons start or do not start
  * AddBudgetActivity and AddEntryActivity as expected.
  * 
+ * Also tests that the Edit and Delete options for entries in the log work
+ * as expected. Checks that Edit takes users to the edit screen with information
+ * correctly autofilled, and that Delete removes entries from the log correctly,
+ * on the client side.
+ * 
  * @author James PushaKi
  */
 public class TestCaseMainActivity
