@@ -4,9 +4,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 /**
+ * Represents a single entry in a {@link Budget}.
  *
  * @author Ji jiwpark90
- *
  */
 public class Entry {
 	/**
