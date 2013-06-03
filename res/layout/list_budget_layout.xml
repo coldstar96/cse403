@@ -11,10 +11,29 @@
         android:orientation="horizontal" >
 
         <TextView
+            android:id="@+id/actual_daily_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/budget_name"
+            android:maxLines="1"
+            android:text="Actual: $0.00 / day" />
+
+        <TextView
+            android:id="@+id/suggested_daily_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/actual_daily_average"
+            android:maxLines="1"
+            android:text="Suggest: $0.00 / day" />
+
+        <TextView
             android:id="@+id/budget_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:ellipsize="end"
             android:maxLines="1"
             android:text="[Budget Name]"
             android:textSize="30sp"
@@ -24,37 +43,36 @@
             android:id="@+id/budget_cycle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/budget_name"
+            android:layout_alignParentLeft="true"
             android:layout_below="@+id/budget_name"
             android:maxLines="1"
             android:text="Recurring" />
 
         <TextView
-            android:id="@+id/budget_period"
+            android:id="@+id/period_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/budget_duration"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/suggested_daily_average"
             android:maxLines="1"
-            android:text="startDate ~ endDate" />
+            android:paddingTop="10dp"
+            android:text="0 / 0 days (startDate ~ endDate)" />
 
-        <TextView
-            android:id="@+id/budget_duration"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/period_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/expenditure_text"
-            android:layout_alignParentRight="true"
-            android:maxLines="1"
-            android:text="0 / 0 days"
-            android:visibility="visible" />
+            android:layout_below="@+id/period_text" />
 
         <TextView
             android:id="@+id/expenditure_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/expenditure_progress"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/period_progress"
             android:maxLines="1"
+            android:paddingTop="10dp"
             android:text="$0.00 / $0.00 ($0.00 left)" />
 
         <ProgressBar
@@ -62,46 +80,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/budget_cycle" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/text_actual_daily_average"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/text_suggested_daily_average"
-            android:maxLines="1"
-            android:text="Average spending: " />
-
-        <TextView
-            android:id="@+id/actual_daily_average"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/text_actual_daily_average"
-            android:maxLines="1"
-            android:text="$0.00 / day" />
-
-        <TextView
-            android:id="@+id/text_suggested_daily_average"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/actual_daily_average"
-            android:maxLines="1"
-            android:text="Suggested spending: " />
-
-        <TextView
-            android:id="@+id/suggested_daily_average"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/actual_daily_average"
-            android:layout_toRightOf="@+id/text_suggested_daily_average"
-            android:maxLines="1"
-            android:text="$0.00 / day" />
+            android:layout_below="@+id/expenditure_text" />
     </RelativeLayout>
 
 </LinearLayout>

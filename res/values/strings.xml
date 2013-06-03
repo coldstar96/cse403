@@ -32,4 +32,7 @@
     <string name="title_settings">Settings</string>
     <string name="title_signout">Sign out</string>
 
+    <!-- Strings for the advertisements -->
+    <string name="ad_string">Your Ad Here!</string>
+
 </resources>

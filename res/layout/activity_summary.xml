@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_component_height"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/summary_ad"
         android:layout_margin="@dimen/default_edittext_padding"
         android:orientation="horizontal" >
 
@@ -38,6 +38,18 @@
             android:onClick="onAddEntryClicked"
             android:text="@string/action_add_entry"
             android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/summary_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true" >
+
+	    <include
+	        layout="@layout/advertisement_view" />
+
     </LinearLayout>
 
 </RelativeLayout>
