@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:paddingBottom="@dimen/default_layout_spacing"
-    android:paddingTop="@dimen/default_layout_spacing" >
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_layout_spacing"
-        android:layout_marginRight="@dimen/default_layout_spacing"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".BudgetSummaryActivity" >
@@ -64,37 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_component_height"
-            android:layout_marginTop="@dimen/default_layout_spacing"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/clear_budget_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_button_secondary"
-                android:text="@string/action_edit_budget"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/create_budget_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_button_primary"
-                android:text="@string/action_delete_budget"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
         <include
             android:layout_marginBottom="@dimen/default_layout_spacing"
-	        android:layout_gravity="bottom"
-	        layout="@layout/advertisement_view" />
+            android:layout_gravity="bottom"
+            layout="@layout/advertisement_view" />
     </LinearLayout>
 
 </ScrollView>

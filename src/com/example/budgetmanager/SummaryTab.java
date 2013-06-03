@@ -18,6 +18,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
@@ -87,8 +88,16 @@ public class SummaryTab extends Fragment {
 				Intent intent = new Intent(getActivity(), BudgetSummaryActivity.class);
 				Budget b = (Budget) adapter.getItemAtPosition(pos);
 
+				// get default current budget
+				int cycle;
+				if (b.isRecurring()) {
+					cycle = b.getCurrentCycle();
+				} else {
+					cycle = 0;
+				}
+
 				intent.putExtra("BudgetId", b.getId());
-				intent.putExtra("BudgetCycle", b.getCurrentCycle());
+				intent.putExtra("BudgetCycle", cycle);
 
 				startActivity(intent);
 			}
