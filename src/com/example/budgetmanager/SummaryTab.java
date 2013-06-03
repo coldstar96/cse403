@@ -35,6 +35,20 @@ public class SummaryTab extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		refreshList();
+	}
+
+	private void refreshList() {
+		adapter.clear();
+		Log.d(TAG, String.format("Budget size: %d", Budget.getBudgets().size()));
+		adapter.addBudgets(Budget.getBudgets());
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		RelativeLayout layout =

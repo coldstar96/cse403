@@ -34,16 +34,16 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	private static final String TAG = "EntryLogAdapter";
 
 	// The list of budgets added to the log
-	private List<Budget> budgetList;
+	private final List<Budget> budgetList;
 
 	// List of entries added by budgets in the budgetList
-	private List<Entry> entryList;
+	private final List<Entry> entryList;
 
 	// Store the activity context for usage when displaying rows
-	private Context context;
+	private final Context context;
 
 	// resource ID for the layout to inflate into each row
-	private int layoutResourceId;
+	private final int layoutResourceId;
 
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);

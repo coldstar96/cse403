@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
 import android.content.Context;
+import android.graphics.PorterDuff.Mode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.budgetmanager.preference.SettingsFragment;
 
 import org.joda.time.LocalDate;
 
@@ -71,6 +75,15 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		budgetList.clear();
 	}
 
+	/**
+	 * Attempts to add the given budget's entries to this EntryLog. If the
+	 * given Budget is already added to this EntryLog, it will not add again.
+	 * Entries will be added at the end of the list.
+	 */
+	public void addBudgets(List<Budget> budgets) {
+		this.budgetList.addAll(budgets);
+	}
+
 	@Override
 	public int getCount() {
 		return budgetList.size();
@@ -106,12 +119,12 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// Views for the row
 		TextView budgetNameView = (TextView) row.findViewById(R.id.budget_name);
 		TextView budgetCycleView = (TextView) row.findViewById(R.id.budget_cycle);
-		TextView budgetDurationView = (TextView) row.findViewById(R.id.budget_duration);
+		TextView periodTextView = (TextView) row.findViewById(R.id.period_text);
+		ProgressBar perProgressView = (ProgressBar) row.findViewById(R.id.period_progress);
 		TextView expenditureTextView = (TextView) row.findViewById(R.id.expenditure_text);
-		ProgressBar progressView = (ProgressBar) row.findViewById(R.id.expenditure_progress);
+		ProgressBar expProgressView = (ProgressBar) row.findViewById(R.id.expenditure_progress);
 		TextView actualDailyAvgView = (TextView) row.findViewById(R.id.actual_daily_average);
 		TextView suggestDailyAvgView = (TextView) row.findViewById(R.id.suggested_daily_average);
-		TextView budgetPeriodView = (TextView) row.findViewById(R.id.budget_period);
 
 
 		Log.d(TAG, "Finished getting Views for row " + position);
@@ -119,20 +132,54 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		Budget budget = budgetList.get(position);
 
 		// set budget name
-		String name = Utilities.shorten(budget.getName(), 16);
-		budgetNameView.setText(name);
+		budgetNameView.setText(budget.getName());
+
+		boolean lightTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).
+				getString(SettingsFragment.KEY_PREF_APP_THEME, "")
+				.equals(SettingsFragment.APP_THEME_LIGHT);
+
+		if (lightTheme) {
+			Log.d(TAG,"Light Theme: "+ budgetNameView.getTextColors().getDefaultColor());
+		} else {
+			Log.d(TAG,"Dark Theme : "+ budgetNameView.getTextColors().getDefaultColor());
+		}
 
 		int currentCycle = 0;
+		int bgColor;
+		int txtColor;
 		if (budget.isActive()) {
 			currentCycle = budget.getCurrentCycle();
+			if (lightTheme) {
+				bgColor = getContext().getResources().getColor(R.color.background_holo_light);
+				txtColor = getContext().getResources().getColor(R.color.dark_gray);
+			} else {
+				bgColor = getContext().getResources().getColor(R.color.background_holo_dark);
+				txtColor = getContext().getResources().getColor(R.color.background_holo_light);
+			}
+		} else {
+			if (lightTheme) {
+				bgColor = getContext().getResources().getColor(R.color.dark_gray);
+				txtColor = getContext().getResources().getColor(R.color.black);
+			} else {
+				bgColor = getContext().getResources().getColor(R.color.background_holo_dark);
+				txtColor = getContext().getResources().getColor(R.color.dark_gray);
+			}
 		}
+
+		row.setBackgroundColor(bgColor);
+
+		budgetNameView.setTextColor(txtColor);
+		budgetCycleView.setTextColor(txtColor);
+		periodTextView.setTextColor(txtColor);
+		expenditureTextView.setTextColor(txtColor);
+		actualDailyAvgView.setTextColor(txtColor);
+		suggestDailyAvgView.setTextColor(txtColor);
+		perProgressView.getProgressDrawable().setColorFilter(txtColor, Mode.SRC_IN);
+
 
 		// start date and end date of cycle
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
-
-		// set period
-		budgetPeriodView.setText(startDate.toString() + " ~ " + endDate.toString());
 
 		if (!budget.isRecurring()) {
 			budgetCycleView.setVisibility(View.INVISIBLE);
@@ -140,63 +187,68 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			budgetCycleView.setVisibility(View.VISIBLE);
 		}
 
-		// set duration
+		// set period
 		int totalDays = Utilities.dateDifference(startDate, endDate);
 		int currentDays = Utilities.dateDifference(startDate, LocalDate.now());
 
-		budgetDurationView.setText(String.format("%d / %d days", currentDays, totalDays));
+		perProgressView.setMax(totalDays);
+		perProgressView.setProgress(Math.max(0, Math.min(totalDays, currentDays)));
+
+
+		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
+				currentDays, totalDays, startDate.toString(), endDate.toString()));
 
 		// set expenditure
 		int amountSpent = budget.getAmountSpent(currentCycle);
 		int budgetAmount = budget.getBudgetAmount();
-		int amountLeft = budgetAmount - amountSpent;
+		int amountLeft = Math.max(0, budgetAmount - amountSpent);
+
+		expProgressView.setMax(budgetAmount);
+		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
 		expenditureTextView.setText(String.format("$%.02f / $%.02f ($%.02f left)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
-
-		progressView.setMax(budgetAmount);
-		progressView.setProgress(Math.min(amountSpent, budgetAmount));
 
 		// set averages
 		if (currentDays > totalDays) {
 			currentDays = totalDays;
 		}
-		int daysLeft =  totalDays - currentDays;
+		int daysLeft =  totalDays - currentDays + 1;
 		double actualAvg = amountSpent / 100.0 / currentDays;
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
 		if (daysLeft > 0) {
-			suggestedAvg = amountLeft / 100.0 / (totalDays - currentDays);
+			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
-		actualDailyAvgView.setText(String.format("$%.02f / day", actualAvg));
-		suggestDailyAvgView.setText(String.format("$%.02f / day", suggestedAvg));
+		actualDailyAvgView.setText(String.format("Actual: $%.02f / day", actualAvg));
+		suggestDailyAvgView.setText(String.format("Suggest: $%.02f / day", suggestedAvg));
 
-		// set expenditure textColor
+		// set progress textColor
 		double spending = actualAvg / expectedAvg;
-		setExpenditureTextColor(budget, spending, budgetDurationView, expenditureTextView);
+		setProgressColor(budget, spending, periodTextView, expProgressView);
 
 		Log.d(TAG, "getView: Finished processing row " + position);
 
 		return row;
 	}
 
-	private void setExpenditureTextColor(Budget budget, double spending,
-			TextView budgetDurationView, TextView expenditureTextView) {
+	private void setProgressColor(Budget budget, double spending,
+			TextView refView, ProgressBar appliedView) {
 		// set color of text
 		int color;
 		if (budget.isActive()) {
 			if (spending <= 1.0) {
 				color = R.color.green;
 			} else if (spending <= WARNING_PROPORTION) {
-				color = R.color.orange;
+				color = R.color.yellow;
 			} else {
 				color = R.color.red;
 			}
 			color = getContext().getResources().getColor(color);
 		} else {
-			color = budgetDurationView.getTextColors().getDefaultColor();
+			color = refView.getTextColors().getDefaultColor();
 		}
-		expenditureTextView.setTextColor(color);
+		appliedView.getProgressDrawable().setColorFilter(color, Mode.SRC_IN);
 	}
 
 
