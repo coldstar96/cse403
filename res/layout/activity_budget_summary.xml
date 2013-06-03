@@ -62,6 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <include
+            android:layout_marginBottom="@dimen/default_layout_spacing"
+            android:layout_gravity="bottom"
+            layout="@layout/advertisement_view" />
     </LinearLayout>
 
 </ScrollView>
