@@ -154,7 +154,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
 			}
 
@@ -257,7 +257,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
 			}
 
@@ -356,7 +356,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
 			}
 
@@ -402,7 +402,7 @@ public class ApiInterface {
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
+			public void onFailure(Throwable t, JSONObject obj) {
 				callback.onFailure(t.getMessage());
 			}
 
