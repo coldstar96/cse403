@@ -50,6 +50,36 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	}
 
 	/**
+	 * Constructs a new EntryLog
+	 * @param context the current Context
+	 * @param layoutResourceId Resource ID for the row view
+	 * @param budgetList List of budgets from which entries are to be grabbed
+	 */
+	public EntryLogAdapter(Context context, int layoutResourceId,
+			List<Budget> budgetList) {
+		this(context, layoutResourceId);
+
+		for (Budget b : budgetList) {
+			addEntriesFromBudget(b);
+		}
+	}
+
+	/**
+	 * Constructs a new EntryLog
+	 * @param context the current Context
+	 * @param layoutResourceId Resource ID for the row view
+	 * @param budget Budget from which entries are to be grabbed
+	 */
+	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
+		this(context, layoutResourceId);
+		addEntriesFromBudget(budget);
+	}
+
+	public void addEntriesFromBudget(Budget budget){
+		addAll(budget.getEntries());
+	}
+
+	/**
 	 * Get a View that represents the <code>position</code>th row in the
 	 * EntryLogs ListView.
 	 *
