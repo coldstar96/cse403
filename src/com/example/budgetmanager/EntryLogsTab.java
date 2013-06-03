@@ -117,6 +117,8 @@ public class EntryLogsTab extends Fragment {
 		// using an if/else instead of a switch to avoid the bug of calling
 		// both edit and delete at once
 		if (item.getItemId() == R.id.menu_edit) {
+			Log.d(TAG, "Edit called.");
+
 			// tell AddEntryActivity to start an edit entry session
 			Intent intent = new Intent(getActivity(), AddEntryActivity.class);
 			intent.putExtra("Add", false);
