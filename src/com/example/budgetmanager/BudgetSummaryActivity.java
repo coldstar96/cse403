@@ -91,14 +91,15 @@ public class BudgetSummaryActivity extends Activity {
 
 		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setProperties(myEntries, myBudget, cycle);
 
-		// draw the graph for the Budget
-		drawGraph();
+		// set the view items
+		setViews();
 
 		// trick to prevent infinite looping when onResume() is called
 		getIntent().setAction("Already created");
 	}
 
-	private void drawGraph() {
+	/* Helper method to set TextViews in the Activity. */
+	private void setViews() {
 		int totalBudget = 0;
 		int balance;
 
