@@ -103,10 +103,13 @@ public class AddEntryActivity extends Activity {
 
 			mNotesView.setText(e.getNotes());
 
-			ArrayAdapter<String> editAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item, new String[]{b.getName()});
-			mBudgetView.setAdapter(editAdapter);
-			mBudgetView.setEnabled(false);
+			final List<Budget> budgetList = Budget.getBudgets();
+			for (int i = 0; i < budgetList.size(); i ++) {
+				if(budgetList.get(i).equals(b)){
+					mBudgetView.setSelection(i);
+					break;
+				}
+			}
 		}
 
 		// trick to prevent infinite looping when onResume() is called
@@ -275,8 +278,9 @@ public class AddEntryActivity extends Activity {
 			});
 		} else {
 			Bundle bundle = getIntent().getExtras();
-			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
-			final Entry actualEntry = b.getEntryById(bundle.getLong("EntryId"));
+			final Budget oldBudget = Budget.getBudgetById(bundle.getLong("BudgetId"));
+			final Entry actualEntry = oldBudget.getEntryById(bundle.getLong("EntryId"));
+			final Budget newBudget = newEntry.getBudget();
 
 			// We need to send a separate entry, so we don't have to save
 			// old values if the request fails.
@@ -288,10 +292,8 @@ public class AddEntryActivity extends Activity {
 				@Override
 				public void onSuccess(Object result) {
 					// Update all the actualEntry's fields.
-					actualEntry.setUpdatedAt(newEntry.getUpdatedAt());
-					actualEntry.setAmount(newEntry.getAmount());
-					actualEntry.setDate(newEntry.getDate());
-					actualEntry.setNotes(newEntry.getNotes());
+					newBudget.addEntry(newEntry);
+					oldBudget.removeEntry(actualEntry);
 
 					// go back to the Entry log
 					finish();
@@ -301,6 +303,8 @@ public class AddEntryActivity extends Activity {
 				public void onFailure(String errorMessage) {
 					// if the request fails, do nothing (the toast is for testing purposes)
 					Toast.makeText(AddEntryActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+					// Remove the temporary entry
+					newBudget.removeEntry(newEntry);
 					mAddButtonView.setClickable(true);
 				}
 			});
@@ -319,13 +323,9 @@ public class AddEntryActivity extends Activity {
 		String notes = mNotesView.getText().toString();
 
 		// retrieve selected budget
-		Budget budget;
-		if (addMode) {
-			final List<Budget> budgetList = Budget.getBudgets();
-			budget = budgetList.get(mBudgetView.getSelectedItemPosition());
-		} else {
-			budget = Budget.getBudgetById(getIntent().getExtras().getLong("BudgetId"));
-		}
+		final List<Budget> budgetList = Budget.getBudgets();
+		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
+
 
 		// Need to add 1 to the month because the DatePicker
 		// has zero-based months.
