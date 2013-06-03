@@ -1,7 +1,6 @@
 package com.example.budgetmanager;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -34,23 +33,13 @@ public class BudgetSummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
+		Bundle bundle = getIntent().getExtras();
 
-		//get the budget id from the intent
-		int budgetId = intent.getIntExtra("BUDGET_ID", -1);
-		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
+		// get the budget id from the intent
+		long budgetId = bundle.getLong("BudgetId", -1);
+		int cycle = bundle.getInt("BudgetCycle", -1);
 
-
-		for (Budget b : Budget.getBudgets()) {
-			if (b.getId() == budgetId) {
-				myBudget = b;
-				break;
-			}
-		}
-
-		if (myBudget == null) {
-			throw new IllegalArgumentException();
-		}
+		myBudget = Budget.getBudgetById(budgetId);
 
 		if (cycle == -1) {
 			if (myBudget.isRecurring()) {
@@ -60,7 +49,6 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
-
 		//Only use entries from current period.
 		//Code should be refactored to be elsewhere
 		myEntries = new ArrayList<Entry>();
@@ -68,7 +56,8 @@ public class BudgetSummaryActivity extends Activity {
 		for (Entry e : myBudget.getEntries()) {
 			if (e.getDate().isAfter(myBudget.getStartDate(cycle))
 					&& e.getDate().isBefore(myBudget.getEndDate(cycle))
-					|| e.getDate().isEqual(myBudget.getEndDate(cycle))) {
+					|| e.getDate().isEqual(myBudget.getEndDate(cycle))
+					|| e.getDate().isEqual(myBudget.getStartDate(cycle))) {
 				myEntries.add(e);
 			}
 		}
@@ -105,8 +94,8 @@ public class BudgetSummaryActivity extends Activity {
 		balance = myBudget.getBudgetAmount() - totalBudget;
 
 		budgetName.setText(myBudget.getName());
-		budgetTotal.setText(Integer.toString(myBudget.getBudgetAmount()));
-		budgetSpent.setText(Integer.toString(totalBudget));
-		budgetBalance.setText(Integer.toString(balance));
+		budgetTotal.setText(Utilities.amountToDollars(myBudget.getBudgetAmount()));
+		budgetSpent.setText(Utilities.amountToDollars(totalBudget));
+		budgetBalance.setText(Utilities.amountToDollars(balance));
 	}
 }

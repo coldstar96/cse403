@@ -99,12 +99,13 @@ public class AddBudgetActivity extends Activity {
 			mAddButtonView.setText(getString(R.string.budget_activity_button_edit));
 
 			// Populate the fields with the current budget data
-			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
+			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			mBudgetNameView.setText(b.getName());
 			mBudgetAmountView.setText(Utilities.amountToDollarsNoDollarSign(b.getBudgetAmount()));
 			mRecurringView.setChecked(b.isRecurring());
+			// subtract 1 from month to adjust to 0-based indexing
 			mBudgetDateView.updateDate(b.getStartDate().getYear(),
-					b.getStartDate().getMonthOfYear(), b.getStartDate().getDayOfMonth());
+					b.getStartDate().getMonthOfYear() - 1, b.getStartDate().getDayOfMonth());
 			switch (b.getDuration()) {
 			case DAY:
 				mBudgetDurationView.setSelection(0);
@@ -276,7 +277,7 @@ public class AddBudgetActivity extends Activity {
 				}
 			});
 		} else {
-			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
+			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			// In case the request fails
 			newBudget.setId(actualBudget.getId());
 
