@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.preference.PreferenceManager;
@@ -39,13 +40,9 @@ public class Utilities {
 	 * @param n amount in cents
 	 * @return String in 00.00 format
 	 */
+	@SuppressLint("DefaultLocale")
 	public static String amountToDollarsNoDollarSign(int n) {
-		String s = (n / DOLLOR_IN_CENTS) + ".";
-		if ((n % DOLLOR_IN_CENTS) < 10) {
-			s += "0";
-		}
-		s += (n % DOLLOR_IN_CENTS);
-		return s;
+		return String.format("%.02f",n / 100.0);
 	}
 
 	/**

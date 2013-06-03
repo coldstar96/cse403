@@ -197,7 +197,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// set expenditure
 		int amountSpent = budget.getAmountSpent(currentCycle);
 		int budgetAmount = budget.getBudgetAmount();
-		int amountLeft = Math.max(0, budgetAmount - amountSpent);
+		int amountLeft = budgetAmount - amountSpent;
 
 		expProgressView.setMax(budgetAmount);
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
