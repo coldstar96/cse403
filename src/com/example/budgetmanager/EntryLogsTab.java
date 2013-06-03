@@ -62,6 +62,7 @@ public class EntryLogsTab extends Fragment {
 				(RelativeLayout) inflater.inflate(R.layout.activity_entry_logs,
 				container, false);
 
+		// set adapter
 		adapter = new EntryLogAdapter(getActivity(),
 				R.layout.list_entry_layout, Budget.getBudgets());
 

@@ -51,6 +51,12 @@ public class SummaryTab extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		refreshList();
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		RelativeLayout layout =
@@ -80,34 +86,15 @@ public class SummaryTab extends Fragment {
 				// move to BudgetSummaryActivity
 				Intent intent = new Intent(getActivity(), BudgetSummaryActivity.class);
 				Budget b = (Budget) adapter.getItemAtPosition(pos);
-				Log.d(TAG, "Budget ID: " + b.getId());
-				Log.d(TAG, "Budget cycle: " + b.getCurrentCycle());
 
-				intent.putExtra("BUDGET_ID", b.getId());
-				intent.putExtra("BUDGET_CYCLE", b.getCurrentCycle());
+				intent.putExtra("BudgetId", b.getId());
+				intent.putExtra("BudgetCycle", b.getCurrentCycle());
 
 				startActivity(intent);
 			}
 		});
 
-		// trick to prevent infinite looping when onResume() is called
-		getActivity().getIntent().setAction("Already created");
-
 		return layout;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		refreshList();
-	}
-
-	private void refreshList() {
-		adapter.clear();
-		Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
-		adapter.addBudgets(Budget.getBudgets());
-		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
-		adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -185,5 +172,14 @@ public class SummaryTab extends Fragment {
 		}
 
 		return true;
+	}
+
+	/* Helper method to refresh the list of ListView of Budgets. */
+	private void refreshList() {
+		adapter.clear();
+		Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
+		adapter.addBudgets(Budget.getBudgets());
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
 	}
 }

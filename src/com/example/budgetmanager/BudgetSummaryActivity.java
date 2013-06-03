@@ -36,8 +36,8 @@ public class BudgetSummaryActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 
 		// get the budget id from the intent
-		long budgetId = bundle.getLong("BUDGET_ID", -1);
-		int cycle = bundle.getInt("BUDGET_CYCLE", -1);
+		long budgetId = bundle.getLong("BudgetId", -1);
+		int cycle = bundle.getInt("BudgetCycle", -1);
 
 		myBudget = Budget.getBudgetById(budgetId);
 
