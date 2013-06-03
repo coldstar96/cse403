@@ -149,4 +149,8 @@
         </RelativeLayout>
     </ScrollView>
 
+    <include
+        android:layout_gravity="bottom"
+        layout="@layout/advertisement_view" />
+
 </merge>

@@ -171,7 +171,7 @@ public class AddEntryActivity extends Activity {
 	}
 
 	// Populates the spinner with the current list of Budgets.
-	private void addItemsToBudgetSpinner() {
+	public void addItemsToBudgetSpinner() {
 		// get the actual Budget objects
 		final List<Budget> budgetList = Budget.getBudgets();
 		// list for the String names for each Budget object
@@ -199,7 +199,7 @@ public class AddEntryActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos,
 					long id) {
 				// handle the case when user selects 'Create New Budget...'
-				if (pos == budgetList.size()) {
+				if (pos == budgetList.size() && !budgetList.isEmpty()) {
 					startActivity(new Intent(AddEntryActivity.this, AddBudgetActivity.class));
 				}
 			}
@@ -245,15 +245,6 @@ public class AddEntryActivity extends Activity {
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
-
-					// for testing purposes
-					Toast.makeText(AddEntryActivity.this, "Added $"
-							+ ((double) newEntry.getAmount() / CENTS) + " to the "
-							+ newEntry.getBudget().getName() + " budget "
-							+ "with the date of: " + newEntry.getDate()
-							+ " with a note of: " + newEntry.getNotes()
-							, Toast.LENGTH_LONG).show();
-
 					// clear the fields if the add was successful.
 					// passes a null since the method doesn't need
 					// a reference to a view object to work.

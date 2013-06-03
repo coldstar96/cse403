@@ -25,9 +25,9 @@ import java.util.List;
  *
  * @author Graham grahamb5
  */
-public class TestApiInterface extends AndroidTestCase {
+public class TestApiInterfaceStub extends AndroidTestCase {
 	private ApiInterface api;
-	private TestAsyncHttpClient testClient;
+	private AsyncHttpClientStub testClient;
 
 	/**
 	 * Sets the API Interface's client field to be our
@@ -43,7 +43,8 @@ public class TestApiInterface extends AndroidTestCase {
 			TestUtilities.setStaticValue("com.example.budgetmanager.UBudgetApp", "context", getContext());
 		} catch (Exception e) { }
 
-		testClient = new TestAsyncHttpClient();
+		// Set up the stubbed test client
+		testClient = new AsyncHttpClientStub();
 		api = TestUtilities.getStubbedApiInterface(testClient);
 	}
 
@@ -80,7 +81,9 @@ public class TestApiInterface extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_create_newBudget_responseHasNoId_shouldReturnFailure() throws JSONException {
-		final Budget b = new Budget("Budget", 5000, false, LocalDate.now(), Duration.WEEK);
+		LocalDate startDate = new LocalDate(2013, 05, 05);
+		final Budget b = new Budget("Budget", 5000, false, startDate, Duration.WEEK);
+
 		// Set next "response" from the server.
 		testClient.setNextResponse(new JSONObject()
 				.put("not-id", "gibberish"), true);

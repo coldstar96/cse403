@@ -62,6 +62,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
 		this.budgetList.addAll(budgetList);
+		this.addAll(budgetList);
 		Log.d(TAG, "all budgets added");
 	}
 
@@ -81,7 +82,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * Entries will be added at the end of the list.
 	 */
 	public void addBudgets(List<Budget> budgets) {
-		this.budgetList.addAll(budgets);
+		this.addAll(budgets);
 	}
 
 	@Override
@@ -125,7 +126,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		ProgressBar expProgressView = (ProgressBar) row.findViewById(R.id.expenditure_progress);
 		TextView actualDailyAvgView = (TextView) row.findViewById(R.id.actual_daily_average);
 		TextView suggestDailyAvgView = (TextView) row.findViewById(R.id.suggested_daily_average);
-
 
 		Log.d(TAG, "Finished getting Views for row " + position);
 
@@ -220,13 +220,15 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		if (currentDays > totalDays) {
 			currentDays = totalDays;
 		}
-		int daysLeft =  totalDays - currentDays + 1;
+		int daysLeft = totalDays - currentDays + 1;
 		double actualAvg = amountSpent / 100.0 / currentDays;
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
+
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
+
 		actualDailyAvgView.setText(
 				String.format("Actual: $%.02f / day", actualAvg));
 		suggestDailyAvgView.setText(
@@ -260,8 +262,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		appliedView.getProgressDrawable().setColorFilter(color, Mode.SRC_IN);
 	}
 
-
-
 	/**
 	 * Sorts this BudgetLogAdapter by the given comparator.
 	 * Does not notify observers of changes.
@@ -271,7 +271,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		super.sort(comp);
 		Collections.sort(budgetList, comp);
 	}
-
 
 	/**
 	 * Comparator for comparing Budgets by their dates.

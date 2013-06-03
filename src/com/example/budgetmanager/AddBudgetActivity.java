@@ -99,12 +99,13 @@ public class AddBudgetActivity extends Activity {
 			mAddButtonView.setText(getString(R.string.budget_activity_button_edit));
 
 			// Populate the fields with the current budget data
-			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
+			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			mBudgetNameView.setText(b.getName());
-			mBudgetAmountView.setText(b.getBudgetAmount());
+			mBudgetAmountView.setText(Utilities.amountToDollarsNoDollarSign(b.getBudgetAmount()));
 			mRecurringView.setChecked(b.isRecurring());
+			// subtract 1 from month to adjust to 0-based indexing
 			mBudgetDateView.updateDate(b.getStartDate().getYear(),
-					b.getStartDate().getMonthOfYear(), b.getStartDate().getDayOfMonth());
+					b.getStartDate().getMonthOfYear() - 1, b.getStartDate().getDayOfMonth());
 			switch (b.getDuration()) {
 			case DAY:
 				mBudgetDurationView.setSelection(0);
@@ -270,11 +271,13 @@ public class AddBudgetActivity extends Activity {
 					// (the toast is for testing and debug purposes)
 					Toast.makeText(AddBudgetActivity.this, errorMessage,
 							Toast.LENGTH_LONG).show();
+					// Remove the budget from the budget list, as it wasn't added.
+					Budget.removeBudget(newBudget);
 					mAddButtonView.setClickable(true);
 				}
 			});
 		} else {
-			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
+			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			// In case the request fails
 			newBudget.setId(actualBudget.getId());
 
@@ -282,6 +285,7 @@ public class AddBudgetActivity extends Activity {
 				@Override
 				public void onSuccess(Object result) {
 					actualBudget.setId(newBudget.getId());
+					actualBudget.setName(newBudget.getName());
 					actualBudget.setBudgetAmount(newBudget.getBudgetAmount());
 					actualBudget.setRecurring(newBudget.isRecurring());
 					actualBudget.setDuration(newBudget.getDuration());
