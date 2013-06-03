@@ -7,6 +7,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -23,6 +24,9 @@ public class DrawBudgetGraph extends SurfaceView {
 	//List of entries from budget from a given cycle.
 	private List<Entry> entryList;
 
+	private final Rect xRect;
+	private final Rect yRect;
+
 	//Budget to draw data from.
 	private Budget budget;
 
@@ -33,7 +37,9 @@ public class DrawBudgetGraph extends SurfaceView {
 	private final Paint entryPaint;
 	private final Paint averagePaint;
 	private final Paint textPaint;
-	private final Paint legendTextPaint;
+	private final Paint yellowLegendTextPaint;
+	private final Paint greenLegendTextPaint;
+
 
 	/**
 	 * Returns the end date of the given cycle.
@@ -63,6 +69,9 @@ public class DrawBudgetGraph extends SurfaceView {
 		super(context, attrs);
 		setWillNotDraw(false);
 
+		xRect = new Rect();
+		yRect = new Rect();
+
 		entryPaint = new Paint();
 		entryPaint.setColor(Color.GREEN);
 		entryPaint.setStrokeWidth(5);
@@ -77,16 +86,18 @@ public class DrawBudgetGraph extends SurfaceView {
 		averagePaint.setPathEffect(new DashPathEffect(new float[] {5, 5}, 3));
 		averagePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-		textPaint = new Paint();
+		yellowLegendTextPaint = new Paint();
+		yellowLegendTextPaint.setColor(Color.YELLOW);
+		yellowLegendTextPaint.setTextSize(20);
+
+		greenLegendTextPaint = new Paint();
+		greenLegendTextPaint.setColor(Color.GREEN);
+		greenLegendTextPaint.setTextSize(20);
+
+		textPaint  = new Paint();
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(20);
 		textPaint.setTextAlign(Align.CENTER);
-		textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
-		legendTextPaint = new Paint();
-		legendTextPaint.setColor(Color.BLACK);
-		legendTextPaint.setTextSize(20);
-		legendTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 	}
 
 	/** Helper method to convert from a price to a Y coordinate */
@@ -156,20 +167,42 @@ public class DrawBudgetGraph extends SurfaceView {
 		canvas.drawLine(0, height - 1, width - 1,
 				priceToY(budgetMax, max, height), averagePaint);
 
-		//Draw the legend.
 		//Draw the labels on the axis
-/*
-		Rect xRect = new Rect();
-		textPaint.getTextBounds("Days", 0, "Days".length(), xRect);
 
-		Rect yRect = new Rect();
-		textPaint.getTextBounds("Dollars Spent", 0, "Dollars Spent".length(), yRect);
+		textPaint.getTextBounds(getResources().getString(R.string.x_graph_label), 0,
+				getResources().getString(R.string.x_graph_label).length(), xRect);
 
-		canvas.drawText("Days", width / 2, height - xRect.height(), textPaint);
+		textPaint.getTextBounds(getResources().getString(R.string.y_graph_label), 0,
+				getResources().getString(R.string.y_graph_label).length(), yRect);
+
+		canvas.drawText(getResources().getString(R.string.x_graph_label),
+				width / 2, height - xRect.height(), textPaint);
+
 		canvas.save();
-		canvas.rotate(90, width/2, height/2);
-		canvas.drawText("Dollars Spent", width / 2, width - yRect.height(), textPaint);
-		canvas.restore();*/
+		canvas.rotate(90, 0, height / 2);
 
+		canvas.drawText(getResources().getString(R.string.y_graph_label),
+				0, (height / 2) - yRect.height(), textPaint);
+
+		canvas.restore();
+
+		//Draw the legend.
+		int pad = 5;
+
+		greenLegendTextPaint.getTextBounds(getResources().getString(R.string.your_spending),
+				0, getResources().getString(R.string.your_spending).length(), xRect);
+
+		yellowLegendTextPaint.getTextBounds(getResources().getString(R.string.target),
+				0, getResources().getString(R.string.target).length(), yRect);
+
+		int maxWidth = Math.max(xRect.width(), yRect.width());
+
+		canvas.drawText(getResources().getString(R.string.your_spending),
+				width - pad - maxWidth, height - pad - xRect.height() - yRect.height(),
+				greenLegendTextPaint);
+
+		canvas.drawText(getResources().getString(R.string.target),
+				width - pad - maxWidth, height - pad - yRect.height(),
+				yellowLegendTextPaint);
 	}
 }

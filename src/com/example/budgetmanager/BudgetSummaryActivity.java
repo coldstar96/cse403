@@ -66,7 +66,8 @@ public class BudgetSummaryActivity extends Activity {
 		for (Entry e : myBudget.getEntries()) {
 			if (e.getDate().isAfter(myBudget.getStartDate(cycle))
 					&& e.getDate().isBefore(myBudget.getEndDate(cycle))
-					|| e.getDate().isEqual(myBudget.getEndDate(cycle))) {
+					|| e.getDate().isEqual(myBudget.getEndDate(cycle))
+					|| e.getDate().isEqual(myBudget.getStartDate(cycle))) {
 				myEntries.add(e);
 			}
 		}
@@ -103,8 +104,8 @@ public class BudgetSummaryActivity extends Activity {
 		balance = myBudget.getBudgetAmount() - totalBudget;
 
 		budgetName.setText(myBudget.getName());
-		budgetTotal.setText(Integer.toString(myBudget.getBudgetAmount()));
-		budgetSpent.setText(Integer.toString(totalBudget));
-		budgetBalance.setText(Integer.toString(balance));
+		budgetTotal.setText(Utilities.amountToDollars(myBudget.getBudgetAmount()));
+		budgetSpent.setText(Utilities.amountToDollars(totalBudget));
+		budgetBalance.setText(Utilities.amountToDollars(balance));
 	}
 }
