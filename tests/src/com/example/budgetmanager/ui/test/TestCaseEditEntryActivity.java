@@ -18,6 +18,14 @@ import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Tests for editing entries. A lot of the tests from
+ * {@link TestCaseAddEntryActivity} are relevant and
+ * identical, because it uses the same activity
+ * underneath.
+ * 
+ * @author Graham grahamb5
+ */
 public class TestCaseEditEntryActivity
 extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 
@@ -80,6 +88,9 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 
 	private static Entry TEST_ENTRY;
 
+	/**
+	 * Sets up the Budget list for this test.
+	 */
 	private void setUpBudgetList() {
 		Budget.clearBudgets();
 		Budget testBudget = new Budget(TEST_BUDGET_NAME, 1234500,

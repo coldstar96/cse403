@@ -29,6 +29,7 @@ public class TestApiInterfaceMock extends AndroidTestCase {
 	 * a long time, having many HTTP requests to a remote
 	 * server.
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -166,6 +167,10 @@ public class TestApiInterfaceMock extends AndroidTestCase {
 		api.createUser(username, password, null);
 	}
 
+	/**
+	 * Tests to make sure logIn creates the correct params
+	 * and passes them to the AsyncHttpClient.
+	 */
 	@SmallTest
 	public void test_logIn_requestParamsAreGood() {
 		String username = "test@gmail.com";
