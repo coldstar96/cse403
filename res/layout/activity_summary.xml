@@ -7,10 +7,11 @@
         android:id="@+id/budget_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="64dp" >
+        android:layout_above="@+id/buttons" >
     </ListView>
 
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_component_height"
         android:layout_above="@+id/summary_ad"
