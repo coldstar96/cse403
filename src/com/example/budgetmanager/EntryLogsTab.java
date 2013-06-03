@@ -62,6 +62,7 @@ public class EntryLogsTab extends Fragment {
 				(RelativeLayout) inflater.inflate(R.layout.activity_entry_logs,
 				container, false);
 
+		// set adapter
 		adapter = new EntryLogAdapter(getActivity(),
 				R.layout.list_entry_layout, Budget.getBudgets());
 
@@ -117,6 +118,8 @@ public class EntryLogsTab extends Fragment {
 		// using an if/else instead of a switch to avoid the bug of calling
 		// both edit and delete at once
 		if (item.getItemId() == R.id.menu_edit) {
+			Log.d(TAG, "Edit called.");
+
 			// tell AddEntryActivity to start an edit entry session
 			Intent intent = new Intent(getActivity(), AddEntryActivity.class);
 			intent.putExtra("Add", false);
@@ -131,10 +134,6 @@ public class EntryLogsTab extends Fragment {
 				@Override
 				public void onSuccess(Object result) {
 					Log.d(TAG, "Delete entry onSuccess entered.");
-					// for testing purposes
-					Toast.makeText(getActivity(),
-							R.string.success_delete_entry,
-							Toast.LENGTH_LONG).show();
 
 					// remove the Entry from the Budget it is included in
 					selectedEntry.getBudget().removeEntry(selectedEntry);

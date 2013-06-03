@@ -1,7 +1,6 @@
 package com.example.budgetmanager;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -34,11 +33,11 @@ public class BudgetSummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
+		Bundle bundle = getIntent().getExtras();
 
-		//get the budget id from the intent
-		long budgetId = intent.getLongExtra("BUDGET_ID", -1);
-		int cycle = intent.getIntExtra("BUDGET_CYCLE", -1);
+		// get the budget id from the intent
+		long budgetId = bundle.getLong("BudgetId", -1);
+		int cycle = bundle.getInt("BudgetCycle", -1);
 
 		myBudget = Budget.getBudgetById(budgetId);
 

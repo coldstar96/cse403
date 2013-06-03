@@ -116,7 +116,6 @@ public class Budget {
 	 *
 	 * @param id The ID of the budget in question.
 	 * @return The budget with <code>id</code>
-	 * @throws IllegalArgumentException if no budget with <code>id</code> exists.
 	 */
 	public static Budget getBudgetById(long id) {
 		for (Budget b : BUDGET_LIST) {
@@ -124,7 +123,7 @@ public class Budget {
 				return b;
 			}
 		}
-		throw new IllegalArgumentException("No budget with id, " + id + ", found.");
+		return null;
 	}
 
 	/**
