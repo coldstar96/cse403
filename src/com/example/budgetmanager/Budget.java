@@ -115,7 +115,8 @@ public class Budget {
 	 * <code>id</code>.
 	 *
 	 * @param id The ID of the budget in question.
-	 * @return The budget with <code>id</code>
+	 * @return The budget with <code>id</code>, of <code>null</code> if no
+	 *         such budget exists.
 	 */
 	public static Budget getBudgetById(long id) {
 		for (Budget b : BUDGET_LIST) {
@@ -213,8 +214,8 @@ public class Budget {
 	 * <code>id</code>.
 	 *
 	 * @param id The ID of the Entry in question.
-	 * @return The entry with <code>id</code>
-	 * @throws IllegalArgumentException if no entry with <code>id</code> exists.
+	 * @return The entry with <code>id</code>, or <code>null</code> if no
+	 *         such entry exists.
 	 */
 	public Entry getEntryById(long id) {
 		for (Entry e : entries) {
@@ -222,7 +223,7 @@ public class Budget {
 				return e;
 			}
 		}
-		throw new IllegalArgumentException("No entry with id, " + id + ", found.");
+		return null;
 	}
 
 	/**

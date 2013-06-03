@@ -317,7 +317,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 
 		// Make sure there is a budget with ID -2 in the list
 		// of budgets, as the server returned saying it had been added.
-		Budget b = Budget.getBudgetById(-2);
+		Budget b = Budget.getBudgetById(BUDGET_ID);
 		assertNotNull("There should be a budget with ID -2.", b);
 		assertEquals("The name of the budget was wrong.", BUDGET_NAME, b.getName());
 		assertEquals("The amount of the budget was wrong.",
