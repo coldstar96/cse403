@@ -105,7 +105,7 @@ public class AddEntryActivity extends Activity {
 
 			final List<Budget> budgetList = Budget.getBudgets();
 			for (int i = 0; i < budgetList.size(); i ++) {
-				if(budgetList.get(i).equals(b)){
+				if(budgetList.get(i).equals(b)) {
 					mBudgetView.setSelection(i);
 					break;
 				}
