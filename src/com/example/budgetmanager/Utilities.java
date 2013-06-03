@@ -42,7 +42,7 @@ public class Utilities {
 	 */
 	@SuppressLint("DefaultLocale")
 	public static String amountToDollarsNoDollarSign(int n) {
-		return String.format("%.02f",n / 100.0);
+		return String.format("%.02f", n / 100.0);
 	}
 
 	/**
