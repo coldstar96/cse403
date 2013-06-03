@@ -133,10 +133,6 @@ public class EntryLogsTab extends Fragment {
 				@Override
 				public void onSuccess(Object result) {
 					Log.d(TAG, "Delete entry onSuccess entered.");
-					// for testing purposes
-					Toast.makeText(getActivity(),
-							R.string.success_delete_entry,
-							Toast.LENGTH_LONG).show();
 
 					// remove the Entry from the Budget it is included in
 					selectedEntry.getBudget().removeEntry(selectedEntry);

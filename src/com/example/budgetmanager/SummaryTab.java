@@ -1,25 +1,25 @@
 package com.example.budgetmanager;
 
-import com.example.budgetmanager.api.ApiCallback;
-import com.example.budgetmanager.api.ApiInterface;
-
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import com.example.budgetmanager.api.ApiCallback;
+import com.example.budgetmanager.api.ApiInterface;
 
 /**
  * Fragment which displays list of budgets screen to the user, offering
@@ -66,23 +66,29 @@ public class SummaryTab extends Fragment {
 		listView.setAdapter(adapter);
 		Log.d(TAG, "added the adapter!");
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int pos,
-					long id) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getActivity(),
-						"short click not implemented yet",
-						Toast.LENGTH_LONG).show();
-			}
-		});
-
 		// set up a context menu for the list items
 		registerForContextMenu(listView);
 
 		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
 		adapter.notifyDataSetChanged();
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int pos,
+					long id) {
+				// move to BudgetSummaryActivity
+				Intent intent = new Intent(getActivity(), BudgetSummaryActivity.class);
+				Budget b = (Budget) adapter.getItemAtPosition(pos);
+				Log.d(TAG, "Budget ID: " + b.getId());
+				Log.d(TAG, "Budget cycle: " + b.getCurrentCycle());
+
+				intent.putExtra("BUDGET_ID", b.getId());
+				intent.putExtra("BUDGET_CYCLE", b.getCurrentCycle());
+
+				startActivity(intent);
+			}
+		});
 
 		// trick to prevent infinite looping when onResume() is called
 		getActivity().getIntent().setAction("Already created");
@@ -90,19 +96,19 @@ public class SummaryTab extends Fragment {
 		return layout;
 	}
 
-		@Override
-		public void onResume() {
-			super.onResume();
-			refreshList();
-		}
+	@Override
+	public void onResume() {
+		super.onResume();
+		refreshList();
+	}
 
-		private void refreshList() {
-			adapter.clear();
-			Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
-			adapter.addBudgets(Budget.getBudgets());
-			adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
-			adapter.notifyDataSetChanged();
-		}
+	private void refreshList() {
+		adapter.clear();
+		Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
+		adapter.addBudgets(Budget.getBudgets());
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
+	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -112,14 +118,8 @@ public class SummaryTab extends Fragment {
 		// Get the info on which item was selected
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
-		Log.d(TAG, "Size: " + adapter.getCount());
-		Log.d(TAG, "Pos: " + info.position);
-
 		// Retrieve the item that was clicked on
 		selectedBudget = adapter.getItem(info.position);
-
-		Log.d(TAG, "Amount: " + selectedBudget.getBudgetAmount() + ", " + selectedBudget.
-				getName());
 
 		// inflate the context menu
 		MenuInflater inflater = getActivity().getMenuInflater();
@@ -141,32 +141,47 @@ public class SummaryTab extends Fragment {
 
 			startActivity(intent);
 		}	else if (item.getItemId() == R.id.menu_delete) {
-			Log.d(TAG, "Delete called.");
 
-			ApiInterface.getInstance().remove(selectedBudget, new ApiCallback<Object>() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle(R.string.alert_title);
+			builder.setMessage(R.string.alert_message);
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				@Override
-				public void onSuccess(Object result) {
-					Log.d(TAG, "Delete Budget onSuccess entered.");
-					// for testing purposes
-					Toast.makeText(getActivity(),
-							R.string.success_delete_budget,
-							Toast.LENGTH_LONG).show();
-
-					// remove selected Budget from the list of Budgets
-					Budget.removeBudget(selectedBudget);
-					selectedBudget = null;
-
-					// refresh the view upon change
-					refreshList();
-				}
-
-				@Override
-				public void onFailure(String errorMessage) {
-					Log.d(TAG, "Delete entry onFailure entered.");
-					// if the request fails, do nothing (the toast is for testing purposes)
-					Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+				public void onClick(DialogInterface dialog, int id) {
+					// back out from delete
+					dialog.cancel();
 				}
 			});
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					Log.d(TAG, "Delete called.");
+
+					ApiInterface.getInstance().remove(selectedBudget, new ApiCallback<Object>() {
+						@Override
+						public void onSuccess(Object result) {
+							Log.d(TAG, "Delete Budget onSuccess entered.");
+
+							// remove selected Budget from the list of Budgets
+							Budget.removeBudget(selectedBudget);
+							selectedBudget = null;
+
+							// refresh the view upon change
+							refreshList();
+						}
+
+						@Override
+						public void onFailure(String errorMessage) {
+							// if the request fails, do nothing
+							Log.d(TAG, "Delete entry onFailure entered.");
+						}
+					});
+				}
+			});
+
+			// show the alert message
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 
 		return true;
