@@ -234,7 +234,7 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	/**
 	 * Ensure that, on server failure, the newly added entry
 	 * 
-	 * This is a black-box test of the AddBudgetActivity.
+	 * This is a black-box test of the AddEntryActivity.
 	 */
 	@MediumTest
 	public void test_addValidEntry_apiError() {
@@ -263,7 +263,7 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	 * Ensure that, on server success, the newly added entry is
 	 * present in the budget's entry list and has valid fields.
 	 * 
-	 * This is a black-box test of the AddBudgetActivity.
+	 * This is a black-box test of the AddEntryActivity.
 	 */
 	@MediumTest
 	public void test_addValidEntry_newEntryIsAdded() throws JSONException {

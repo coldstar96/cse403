@@ -95,9 +95,8 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	}
 
 	/**
-	 * Ensure that, on server failure, the edited budget is
-	 * reverted back to it's original state. Also ensures
-	 * that no extra budget is in the budget list.
+	 * Ensure that, on server failure, the edited entry
+	 * remains unchanged.
 	 * 
 	 * This is a black-box test of the AddEntryActivity.
 	 */
@@ -106,7 +105,7 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		String ENTRY_NAME = "Edited Entry - API Error";
 		String ENTRY_AMOUNT = "125.00";
 
-		// Update one field.
+		// Update some fields.
 		solo.clearEditText(amountView);
 		solo.enterText(amountView, ENTRY_AMOUNT);
 		solo.clearEditText(notesView);
@@ -129,18 +128,18 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	}
 
 	/**
-	 * Ensure that, on server success, the edited budget exhibits
-	 * the changes made and that no extra budget is in the list.
+	 * Ensure that, on server success, the edited entry
+	 * exhibits the changes made.
 	 * 
 	 * This is a black-box test of the AddEntryActivity.
 	 */
 	@MediumTest
-	public void test_editValidEntry_newBudgetIsAdded() throws JSONException {
+	public void test_editValidEntry_newEntryIsAdded() throws JSONException {
 		String ENTRY_NAME = "Edited Entry - API Success";
 		String ENTRY_AMOUNT = "125.00";
 		LocalDateTime ENTRY_UPDATE_TIME = TEST_ENTRY_UPDATE_TIME.plusDays(1);
 
-		// Update one field.
+		// Update some fields.
 		solo.clearEditText(amountView);
 		solo.enterText(amountView, ENTRY_AMOUNT);
 		solo.clearEditText(notesView);
