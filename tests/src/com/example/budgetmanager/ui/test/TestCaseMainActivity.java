@@ -43,6 +43,7 @@ extends ActivityInstrumentationTestCase2<MainActivity> {
 	private ListView listView;
 	private Spinner sortSpinner;
 
+	@SuppressWarnings("unused")
 	private ApiInterface api;
 	private AsyncHttpClientStub testClient;
 
