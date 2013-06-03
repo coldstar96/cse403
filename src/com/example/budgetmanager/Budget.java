@@ -115,7 +115,7 @@ public class Budget {
 	 * <code>id</code>.
 	 *
 	 * @param id The ID of the budget in question.
-	 * @return The budget with <code>id</code>, of <code>null</code> if no
+	 * @return The budget with <code>id</code>, or <code>null</code> if no
 	 *         such budget exists.
 	 */
 	public static Budget getBudgetById(long id) {
