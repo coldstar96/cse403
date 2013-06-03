@@ -15,8 +15,6 @@ import com.example.budgetmanager.preference.SettingsFragment;
 
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,9 +33,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	// actual spending <= (expected spending) * WARNING_PROPORTION warns user
 	private final double WARNING_PROPORTION = 1.20;
 
-	// The list of budgets added to the log
-	private final List<Budget> budgetList;
-
 	// Store the activity context for usage when displaying rows
 	private final Context context;
 
@@ -46,8 +41,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 	public BudgetSummaryAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
-
-		this.budgetList = new ArrayList<Budget>();
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 	}
@@ -61,7 +54,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	public BudgetSummaryAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
-		this.budgetList.addAll(budgetList);
+		this.addBudgets(budgetList);
 		this.addAll(budgetList);
 		Log.d(TAG, "all budgets added");
 	}
@@ -73,7 +66,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	@Override
 	public void clear() {
 		super.clear();
-		budgetList.clear();
 	}
 
 	/**
@@ -82,12 +74,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * Entries will be added at the end of the list.
 	 */
 	public void addBudgets(List<Budget> budgets) {
-		this.budgetList.addAll(budgets);
-	}
-
-	@Override
-	public int getCount() {
-		return budgetList.size();
+		this.addAll(budgets);
 	}
 
 	/**
@@ -137,7 +124,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 		Log.d(TAG, "Finished getting Views for row " + position);
 
-		Budget budget = budgetList.get(position);
+		Budget budget = getItem(position);
 
 		// set budget name
 		budgetNameView.setText(budget.getName());
@@ -272,7 +259,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	@Override
 	public void sort(Comparator<? super Budget> comp) {
 		super.sort(comp);
-		Collections.sort(budgetList, comp);
 	}
 
 	/**
