@@ -145,29 +145,24 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		if (budget.isActive()) {
 			currentCycle = budget.getCurrentCycle();
 			if (lightTheme) {
-				bgColor = getContext().getResources()
-						.getColor(R.color.background_holo_light);
-				txtColor = getContext().getResources()
-						.getColor(R.color.dark_gray);
+				bgColor = R.color.background_holo_light;
+				txtColor = R.color.dark_gray;
 			} else {
-				bgColor = getContext().getResources()
-						.getColor(R.color.background_holo_dark);
-				txtColor = getContext().getResources()
-						.getColor(R.color.background_holo_light);
+				bgColor = R.color.background_holo_dark;
+				txtColor = R.color.background_holo_light;
 			}
 		} else {
 			if (lightTheme) {
-				bgColor = getContext().getResources()
-						.getColor(R.color.dark_gray);
-				txtColor = getContext().getResources()
-						.getColor(R.color.black);
+				bgColor = R.color.dark_gray;
+				txtColor = R.color.black;
 			} else {
-				bgColor = getContext().getResources()
-						.getColor(R.color.background_holo_dark);
-				txtColor = getContext().getResources()
-						.getColor(R.color.dark_gray);
+				bgColor = R.color.background_holo_dark;
+				txtColor = R.color.dark_gray;
 			}
 		}
+
+		bgColor = getContext().getResources().getColor(bgColor);
+		txtColor = getContext().getResources().getColor(txtColor);
 
 		row.setBackgroundColor(bgColor);
 
