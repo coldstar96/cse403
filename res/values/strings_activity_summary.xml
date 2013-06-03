@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string name="message_summary_activity">Summary page has not 
-        yet been implemented. Go to Settings, change the default
-        starting screen to something other than "Summary", then
-        relaunch the app.</string>
+
     <string name="budget_recurring">Recurring</string>
-    
+    <string name="alert_title">Delete Budget</string>
+    <string name="alert_message">This will also delete all the Entries inside this Budget. Continue?</string>
+
 </resources>

@@ -1,5 +1,10 @@
 package com.example.budgetmanager;
 
+import java.text.MessageFormat;
+import java.util.Locale;
+
+import org.joda.time.LocalDate;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,11 +26,6 @@ import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
-
-import org.joda.time.LocalDate;
-
-import java.text.MessageFormat;
-import java.util.Locale;
 
 /**
  *
@@ -99,12 +99,13 @@ public class AddBudgetActivity extends Activity {
 			mAddButtonView.setText(getString(R.string.budget_activity_button_edit));
 
 			// Populate the fields with the current budget data
-			Budget b = Budget.getBudgetById(bundle.getLong("budgetId"));
+			Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			mBudgetNameView.setText(b.getName());
 			mBudgetAmountView.setText(Utilities.amountToDollarsNoDollarSign(b.getBudgetAmount()));
 			mRecurringView.setChecked(b.isRecurring());
+			// subtract 1 from month to adjust to 0-based indexing
 			mBudgetDateView.updateDate(b.getStartDate().getYear(),
-					b.getStartDate().getMonthOfYear(), b.getStartDate().getDayOfMonth());
+					b.getStartDate().getMonthOfYear() - 1, b.getStartDate().getDayOfMonth());
 			switch (b.getDuration()) {
 			case DAY:
 				mBudgetDurationView.setSelection(0);
