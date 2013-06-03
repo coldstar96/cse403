@@ -82,7 +82,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * Entries will be added at the end of the list.
 	 */
 	public void addBudgets(List<Budget> budgets) {
-		this.addAll(budgets);
+		this.budgetList.addAll(budgets);
 	}
 
 	@Override
