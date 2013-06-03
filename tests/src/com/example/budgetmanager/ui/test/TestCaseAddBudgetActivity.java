@@ -1,16 +1,20 @@
 package com.example.budgetmanager.ui.test;
 
-import org.joda.time.LocalDate;
-
-import com.example.budgetmanager.AddBudgetActivity;
-import com.example.budgetmanager.Budget;
-import com.jayway.android.robotium.solo.Solo;
-
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.example.budgetmanager.AddBudgetActivity;
+import com.example.budgetmanager.Budget;
+import com.example.budgetmanager.api.test.AsyncHttpClientStub;
+import com.example.budgetmanager.test.TestUtilities;
+import com.jayway.android.robotium.solo.Solo;
+
+import org.joda.time.LocalDate;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Test the add budget activity.
@@ -19,7 +23,7 @@ import android.widget.EditText;
  *
  */
 public class TestCaseAddBudgetActivity
-	extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
+extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 
 	private Solo solo;
 	private EditText nameField;
@@ -27,6 +31,8 @@ public class TestCaseAddBudgetActivity
 	private Button createButton;
 	private Button clearButton;
 	private CheckBox recurCheckBox;
+
+	private AsyncHttpClientStub testClient;
 
 	public TestCaseAddBudgetActivity() {
 		super(AddBudgetActivity.class);
@@ -49,6 +55,10 @@ public class TestCaseAddBudgetActivity
 				com.example.budgetmanager.R.id.clear_budget_button);
 		recurCheckBox = (CheckBox) getActivity().findViewById(
 				com.example.budgetmanager.R.id.budget_recur);
+
+		// Set up the stubbed test client
+		testClient = new AsyncHttpClientStub();
+		TestUtilities.getStubbedApiInterface(testClient);
 
 		Budget.clearBudgets();
 	}
@@ -251,6 +261,70 @@ public class TestCaseAddBudgetActivity
 		assertEquals("Name field was not empty after clearing", "", nameText);
 		assertEquals("Amount field was not empty after clearing", "", amountText);
 		assertFalse("Recur CheckBox was checked after clearing", recurChecked);
+	}
+
+	/**
+	 * Ensure that, on server failure, the newly added budget is
+	 * removed from the budget list.
+	 * 
+	 * This is a black-box test of the AddBudgetActivity.
+	 */
+	@MediumTest
+	public void test_addValidBudget_apiError() {
+		// Set up some data in the fields
+		solo.enterText(nameField, "Valid Budget");
+		solo.enterText(amountField, "12345.00");
+		solo.clickOnCheckBox(0);
+		solo.sleep(1000);
+
+		testClient.setNextResponse(new JSONObject(), false);
+
+		solo.clickOnButton("Add");
+		solo.sleep(1000);
+
+		// make sure no budget with ID -1 is in budget list
+		// AKA the network failure was acknowledged and actions
+		// were taken to reverse the addition of the budget.
+		boolean noNegativeOneId = (Budget.getBudgetById(-1) == null);
+		assertTrue("No budget should exist with ID -1 after failure.", noNegativeOneId);
+	}
+
+	/**
+	 * Ensure that, on server success, the newly added budget is
+	 * present in the budget list and has valid fields.
+	 * 
+	 * This is a black-box test of the AddBudgetActivity.
+	 */
+	@MediumTest
+	public void test_addValidBudget_newBudgetIsAdded() throws JSONException {
+		String BUDGET_NAME = "Valid Budget";
+		String BUDGET_AMOUNT = "12345.00";
+		long BUDGET_ID = -2;
+
+		// Set up some data in the fields
+		solo.enterText(nameField, BUDGET_NAME);
+		solo.enterText(amountField, BUDGET_AMOUNT);
+		solo.sleep(1000);
+
+		// Set the server response.
+		JSONObject serverResponse = new JSONObject();
+		serverResponse.put("id", BUDGET_ID);
+
+		testClient.setNextResponse(serverResponse, true);
+
+		solo.clickOnButton("Add");
+		solo.sleep(1000);
+
+		// Make sure there is a budget with ID -2 in the list
+		// of budgets, as the server returned saying it had been added.
+		Budget b = Budget.getBudgetById(-2);
+		assertTrue("There should be a budget with ID -2.", b != null);
+		assertEquals("The name of the budget was wrong.", BUDGET_NAME, b.getName());
+		assertEquals("The amount of the budget was wrong.",
+				(int) (Double.parseDouble(BUDGET_AMOUNT) * 100), b.getBudgetAmount());
+
+		// Clean up
+		Budget.clearBudgets();
 	}
 
 }
