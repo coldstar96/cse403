@@ -98,7 +98,7 @@ public class SummaryTab extends Fragment {
 
 		private void refreshList() {
 			adapter.clear();
-			Log.d(TAG, String.format("Budget size: %d", Budget.getBudgets().size()));
+			Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
 			adapter.addBudgets(Budget.getBudgets());
 			adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
 			adapter.notifyDataSetChanged();
@@ -113,6 +113,7 @@ public class SummaryTab extends Fragment {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
 		Log.d(TAG, "Size: " + adapter.getCount());
+		Log.d(TAG, "Pos: " + info.position);
 
 		// Retrieve the item that was clicked on
 		selectedBudget = adapter.getItem(info.position);
@@ -131,6 +132,7 @@ public class SummaryTab extends Fragment {
 		// both edit and delete at once
 		if (item.getItemId() == R.id.menu_edit) {
 			Log.d(TAG, "Edit called.");
+			Log.d(TAG, "Budget ID: " + selectedBudget.getId());
 
 			// tell AddBudgetActivity to start an edit budget session
 			Intent intent = new Intent(getActivity(), AddBudgetActivity.class);
@@ -150,10 +152,12 @@ public class SummaryTab extends Fragment {
 							R.string.success_delete_budget,
 							Toast.LENGTH_LONG).show();
 
+					// remove selected Budget from the list of Budgets
+					Budget.removeBudget(selectedBudget);
 					selectedBudget = null;
 
 					// refresh the view upon change
-					//refreshList();
+					refreshList();
 				}
 
 				@Override

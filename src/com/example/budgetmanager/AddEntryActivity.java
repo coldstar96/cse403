@@ -245,15 +245,6 @@ public class AddEntryActivity extends Activity {
 			ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 				@Override
 				public void onSuccess(Long result) {
-
-					// for testing purposes
-					Toast.makeText(AddEntryActivity.this, "Added $"
-							+ ((double) newEntry.getAmount() / CENTS) + " to the "
-							+ newEntry.getBudget().getName() + " budget "
-							+ "with the date of: " + newEntry.getDate()
-							+ " with a note of: " + newEntry.getNotes()
-							, Toast.LENGTH_LONG).show();
-
 					// clear the fields if the add was successful.
 					// passes a null since the method doesn't need
 					// a reference to a view object to work.
