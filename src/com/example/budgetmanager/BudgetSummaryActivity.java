@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class BudgetSummaryActivity extends Activity {
 	private TextView budgetSpent;
 	private TextView budgetBalance;
 
+	private final String TAG = "budgetsummary";
+
 	/**
 	 * Sets up the budget data for display
 	 */
@@ -49,6 +52,8 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
+		Log.d(TAG, "Found the budget's cycle.");
+
 		//Only use entries from current period.
 		//Code should be refactored to be elsewhere
 		myEntries = new ArrayList<Entry>();
@@ -62,8 +67,12 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
+		Log.d(TAG, "Created the list of entries");
+
 		//Inflate view
 		setContentView(R.layout.activity_budget_summary);
+
+		Log.d(TAG, "Inflated the activity view.");
 
 		budgetName = (TextView) findViewById(R.id.budget_name);
 		budgetTotal = (TextView) findViewById(R.id.budget_total);
@@ -77,11 +86,14 @@ public class BudgetSummaryActivity extends Activity {
 		Collections.reverse(myEntries);
 
 		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setProperties(myEntries, myBudget, cycle);
+
+		Log.d(TAG, "Set the properties of the graph.");
 	}
 
 	/** Called when the activity starts */
 	@Override
 	protected void onResume() {
+		Log.d(TAG, "Resuming the activity.");
 		super.onResume();
 
 		int totalBudget = 0;
