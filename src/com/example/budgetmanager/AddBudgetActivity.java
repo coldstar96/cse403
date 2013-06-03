@@ -1,10 +1,5 @@
 package com.example.budgetmanager;
 
-import java.text.MessageFormat;
-import java.util.Locale;
-
-import org.joda.time.LocalDate;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +21,11 @@ import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import org.joda.time.LocalDate;
+
+import java.text.MessageFormat;
+import java.util.Locale;
 
 /**
  *
@@ -277,7 +277,7 @@ public class AddBudgetActivity extends Activity {
 				}
 			});
 		} else {
-			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("budgetId"));
+			final Budget actualBudget = Budget.getBudgetById(bundle.getLong("BudgetId"));
 			// In case the request fails
 			newBudget.setId(actualBudget.getId());
 
