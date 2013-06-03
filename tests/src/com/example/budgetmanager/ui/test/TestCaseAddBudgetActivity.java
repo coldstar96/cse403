@@ -285,8 +285,8 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		// make sure no budget with ID -1 is in budget list
 		// AKA the network failure was acknowledged and actions
 		// were taken to reverse the addition of the budget.
-		boolean noNegativeOneId = (Budget.getBudgetById(-1) == null);
-		assertTrue("No budget should exist with ID -1 after failure.", noNegativeOneId);
+		Budget budget = Budget.getBudgetById(-1);
+		assertNull("No budget should exist with ID -1 after failure.", budget);
 	}
 
 	/**
@@ -318,13 +318,10 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		// Make sure there is a budget with ID -2 in the list
 		// of budgets, as the server returned saying it had been added.
 		Budget b = Budget.getBudgetById(-2);
-		assertTrue("There should be a budget with ID -2.", b != null);
+		assertNotNull("There should be a budget with ID -2.", b);
 		assertEquals("The name of the budget was wrong.", BUDGET_NAME, b.getName());
 		assertEquals("The amount of the budget was wrong.",
 				(int) (Double.parseDouble(BUDGET_AMOUNT) * 100), b.getBudgetAmount());
-
-		// Clean up
-		Budget.clearBudgets();
 	}
 
 }
