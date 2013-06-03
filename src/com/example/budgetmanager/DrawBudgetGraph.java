@@ -9,6 +9,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class DrawBudgetGraph extends SurfaceView {
 	private final Paint yellowLegendTextPaint;
 	private final Paint greenLegendTextPaint;
 
+	private final String TAG = "graph";
 
 	/**
 	 * Returns the end date of the given cycle.
@@ -121,6 +123,8 @@ public class DrawBudgetGraph extends SurfaceView {
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
+		Log.d(TAG, "Drawing the graph.");
+
 		canvas.drawColor(Color.GRAY);
 
 		int budgetMax = budget.getBudgetAmount();
@@ -148,6 +152,8 @@ public class DrawBudgetGraph extends SurfaceView {
 		long lasty = height;
 
 
+		Log.d(TAG, "Drawing the entry lines.");
+
 		for (int i = 0; i < entryList.size(); i++) {
 			long x = dateToX(entryList.get(i).getDate().toDateTimeAtStartOfDay().getMillis(),
 					budget.getStartDate(cycle).toDateTimeAtStartOfDay().getMillis(),
@@ -161,6 +167,8 @@ public class DrawBudgetGraph extends SurfaceView {
 			lastx = x;
 			lasty = y;
 		}
+
+		Log.d(TAG, "Finished drawing the entry lines.");
 
 		//Draw target line
 		canvas.drawLine(0, height - 1, width - 1,
