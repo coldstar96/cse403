@@ -7,7 +7,7 @@
         android:id="@+id/budget_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="64dp" >
+        android:layout_marginBottom="92dp" >
     </ListView>
 
     <LinearLayout
@@ -43,7 +43,7 @@
     <LinearLayout
         android:id="@+id/summary_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true" >
 

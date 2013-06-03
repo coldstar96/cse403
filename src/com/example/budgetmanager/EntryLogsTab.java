@@ -59,7 +59,7 @@ public class EntryLogsTab extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		RelativeLayout layout =
-				(RelativeLayout) inflater.inflate(R.layout.activity_entry_logs,
+				(RelativeLayout) inflater.inflate(R.layout.fragment_entry_logs,
 				container, false);
 
 		// set adapter

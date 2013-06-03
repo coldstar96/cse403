@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/spinner_logs_sort"
-        android:layout_marginBottom="64dp" >
+        android:layout_marginBottom="92dp" >
     </ListView>
 
     <LinearLayout
@@ -54,7 +54,7 @@
     <LinearLayout
         android:id="@+id/entry_logs_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true" >
 
