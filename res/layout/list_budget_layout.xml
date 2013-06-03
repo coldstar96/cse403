@@ -63,7 +63,6 @@
             android:layout_below="@+id/suggested_daily_average"
             android:layout_centerHorizontal="true"
             android:maxLines="1"
-            android:paddingTop="2dp"
             android:text="0 / 0 days (startDate ~ endDate)" />
 
         <ProgressBar
@@ -81,7 +80,6 @@
             android:layout_below="@+id/period_progress"
             android:layout_centerHorizontal="true"
             android:maxLines="1"
-            android:paddingTop="2dp"
             android:text="$0.00 / $0.00 ($0.00 left)" />
     </RelativeLayout>
 
