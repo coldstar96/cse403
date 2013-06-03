@@ -21,9 +21,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This class handles preparing lists of budgets for display in the summary screen.
- * It aggregates the budgets and allows for them to be displayed in a ListView.
- * Thus, it could be considered a kind of View Model.
+ * This class handles preparing lists of budgets for display in the summary
+ * screen. It aggregates the budgets and allows for them to be displayed in a
+ * ListView. Thus, it could be considered a kind of View Model.
  *
  * @author Chi Ho coldstar96
  *
@@ -134,15 +134,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// set budget name
 		budgetNameView.setText(budget.getName());
 
-		boolean lightTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).
-				getString(SettingsFragment.KEY_PREF_APP_THEME, "")
+		boolean lightTheme = PreferenceManager
+				.getDefaultSharedPreferences(getContext())
+				.getString(SettingsFragment.KEY_PREF_APP_THEME, "")
 				.equals(SettingsFragment.APP_THEME_LIGHT);
-
-		if (lightTheme) {
-			Log.d(TAG,"Light Theme: "+ budgetNameView.getTextColors().getDefaultColor());
-		} else {
-			Log.d(TAG,"Dark Theme : "+ budgetNameView.getTextColors().getDefaultColor());
-		}
 
 		int currentCycle = 0;
 		int bgColor;
@@ -150,19 +145,27 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		if (budget.isActive()) {
 			currentCycle = budget.getCurrentCycle();
 			if (lightTheme) {
-				bgColor = getContext().getResources().getColor(R.color.background_holo_light);
-				txtColor = getContext().getResources().getColor(R.color.dark_gray);
+				bgColor = getContext().getResources()
+						.getColor(R.color.background_holo_light);
+				txtColor = getContext().getResources()
+						.getColor(R.color.dark_gray);
 			} else {
-				bgColor = getContext().getResources().getColor(R.color.background_holo_dark);
-				txtColor = getContext().getResources().getColor(R.color.background_holo_light);
+				bgColor = getContext().getResources()
+						.getColor(R.color.background_holo_dark);
+				txtColor = getContext().getResources()
+						.getColor(R.color.background_holo_light);
 			}
 		} else {
 			if (lightTheme) {
-				bgColor = getContext().getResources().getColor(R.color.dark_gray);
-				txtColor = getContext().getResources().getColor(R.color.black);
+				bgColor = getContext().getResources()
+						.getColor(R.color.dark_gray);
+				txtColor = getContext().getResources()
+						.getColor(R.color.black);
 			} else {
-				bgColor = getContext().getResources().getColor(R.color.background_holo_dark);
-				txtColor = getContext().getResources().getColor(R.color.dark_gray);
+				bgColor = getContext().getResources()
+						.getColor(R.color.background_holo_dark);
+				txtColor = getContext().getResources()
+						.getColor(R.color.dark_gray);
 			}
 		}
 
@@ -174,7 +177,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expenditureTextView.setTextColor(txtColor);
 		actualDailyAvgView.setTextColor(txtColor);
 		suggestDailyAvgView.setTextColor(txtColor);
-		perProgressView.getProgressDrawable().setColorFilter(txtColor, Mode.SRC_IN);
+		perProgressView.getProgressDrawable()
+				.setColorFilter(txtColor, Mode.SRC_IN);
 
 
 		// start date and end date of cycle
@@ -192,11 +196,13 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		int currentDays = Utilities.dateDifference(startDate, LocalDate.now());
 
 		perProgressView.setMax(totalDays);
-		perProgressView.setProgress(Math.max(0, Math.min(totalDays, currentDays)));
+		perProgressView.setProgress(
+				Math.max(0, Math.min(totalDays, currentDays)));
 
 
 		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
-				currentDays, totalDays, startDate.toString(), endDate.toString()));
+				currentDays, totalDays,
+				startDate.toString(), endDate.toString()));
 
 		// set expenditure
 		int amountSpent = budget.getAmountSpent(currentCycle);
@@ -206,7 +212,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expProgressView.setMax(budgetAmount);
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
-		expenditureTextView.setText(String.format("$%.02f / $%.02f ($%.02f left)",
+		expenditureTextView.setText(
+				String.format("$%.02f / $%.02f ($%.02f left)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
 		// set averages
@@ -220,8 +227,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
-		actualDailyAvgView.setText(String.format("Actual: $%.02f / day", actualAvg));
-		suggestDailyAvgView.setText(String.format("Suggest: $%.02f / day", suggestedAvg));
+		actualDailyAvgView.setText(
+				String.format("Actual: $%.02f / day", actualAvg));
+		suggestDailyAvgView.setText(
+				String.format("Suggest: $%.02f / day", suggestedAvg));
 
 		// set progress textColor
 		double spending = actualAvg / expectedAvg;
@@ -279,10 +288,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		 * @param lhs The left hand side of the Comparator
 		 * @param rhs The right hand side of the Comparator
 		 *
-		 * @return negative if only lhs is active, positive if only rhs is active.
-		 * 			If lhs and rhs both does not recur, returns negative if only
-		 * 			lhs is before start, positive if only rhs is before start.
-		 * 			Otherwise, compare by budget names.
+		 * @return negative if only lhs is active, positive if only rhs is
+		 * 			active. If lhs and rhs both does not recur, returns negative
+		 * 			if only lhs is before start, positive if only rhs is before
+		 * 			start. Otherwise, compare by budget names.
 		 */
 		@Override
 		public int compare(Budget lhs, Budget rhs) {

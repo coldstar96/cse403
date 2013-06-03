@@ -260,7 +260,7 @@ public class Budget {
 	 *
 	 * @param amount The new amount of this budget
 	 */
-	public void setBudgetAmount(int amount){
+	public void setBudgetAmount(int amount) {
 		this.amount = amount;
 	}
 
