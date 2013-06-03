@@ -11,8 +11,6 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -33,12 +31,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
 	private static final String TAG = "EntryLogAdapter";
 
-	// The list of budgets added to the log
-	private final List<Budget> budgetList;
-
-	// List of entries added by budgets in the budgetList
-	private final List<Entry> entryList;
-
 	// Store the activity context for usage when displaying rows
 	private final Context context;
 
@@ -47,9 +39,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
-
-		this.budgetList = new ArrayList<Budget>();
-		this.entryList = new ArrayList<Entry>();
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 	}
@@ -87,23 +76,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	 * Entries will be added at the end of the list.
 	 */
 	public void addEntriesFromBudget(Budget budget) {
-		if (!budgetList.contains(budget)) {
-			budgetList.add(budget);
-
-			List<Entry> budgetEntries = budget.getEntries();
-			addAll(budgetEntries);
-			entryList.addAll(budgetEntries);
-			Log.d(TAG, "Now have " + entryList.size() + " Entries");
-		}
-	}
-
-	/**
-	 * Gets a list of Entries that have been added to this EntryLog
-	 *
-	 * @return An unmodifiable list of entries for this EntryLog
-	 */
-	public List<Entry> getEntryList() {
-		return Collections.unmodifiableList(entryList);
+		addAll(budget.getEntries());
 	}
 
 	/**
@@ -113,8 +86,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	@Override
 	public void clear() {
 		super.clear();
-		budgetList.clear();
-		entryList.clear();
 	}
 
 	/**
@@ -149,7 +120,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		TextView notesView = (TextView) row.findViewById(R.id.item_note);
 		Log.d(TAG, "Finished getting TextViews for row " + position);
 
-		Entry entry = entryList.get(position);
+		Entry entry = getItem(position);
 
 		dateView.setText(entry.getDate().toString());
 		amountView.setText(Utilities.amountToDollars(entry.getAmount()));
@@ -168,7 +139,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	@Override
 	public void sort(Comparator<? super Entry> comp) {
 		super.sort(comp);
-		Collections.sort(entryList, comp);
 	}
 
 	/**
