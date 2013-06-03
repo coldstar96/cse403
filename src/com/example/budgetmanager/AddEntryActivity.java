@@ -282,7 +282,7 @@ public class AddEntryActivity extends Activity {
 			ApiInterface.getInstance().update(newEntry, new ApiCallback<Object>() {
 				@Override
 				public void onSuccess(Object result) {
-					// Update all the actualEntry's fields.
+					// Add the entry to the new budget and remove the old one from the old budget
 					newBudget.addEntry(newEntry);
 					oldBudget.removeEntry(actualEntry);
 
@@ -316,7 +316,6 @@ public class AddEntryActivity extends Activity {
 		// retrieve selected budget
 		final List<Budget> budgetList = Budget.getBudgets();
 		Budget budget = budgetList.get(mBudgetView.getSelectedItemPosition());
-
 
 		// Need to add 1 to the month because the DatePicker
 		// has zero-based months.
