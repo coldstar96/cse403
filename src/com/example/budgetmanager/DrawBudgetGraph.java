@@ -149,7 +149,6 @@ public class DrawBudgetGraph extends SurfaceView {
 
 
 		for (int i = 0; i < entryList.size(); i++) {
-
 			long x = dateToX(entryList.get(i).getDate().toDateTimeAtStartOfDay().getMillis(),
 					budget.getStartDate(cycle).toDateTimeAtStartOfDay().getMillis(),
 					budget.getEndDate(cycle).toDateTimeAtStartOfDay().getMillis(),
