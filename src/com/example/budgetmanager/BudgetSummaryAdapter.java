@@ -54,27 +54,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	public BudgetSummaryAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
-		this.addBudgets(budgetList);
 		this.addAll(budgetList);
 		Log.d(TAG, "all budgets added");
-	}
-
-	/**
-	 * Clears this BudgetLogAdapter of all budgets such that it
-	 * no longer holds any budgets.
-	 */
-	@Override
-	public void clear() {
-		super.clear();
-	}
-
-	/**
-	 * Attempts to add the given budget's entries to this EntryLog. If the
-	 * given Budget is already added to this EntryLog, it will not add again.
-	 * Entries will be added at the end of the list.
-	 */
-	public void addBudgets(List<Budget> budgets) {
-		this.addAll(budgets);
 	}
 
 	/**
@@ -250,15 +231,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			color = refView.getTextColors().getDefaultColor();
 		}
 		appliedView.getProgressDrawable().setColorFilter(color, Mode.SRC_IN);
-	}
-
-	/**
-	 * Sorts this BudgetLogAdapter by the given comparator.
-	 * Does not notify observers of changes.
-	 */
-	@Override
-	public void sort(Comparator<? super Budget> comp) {
-		super.sort(comp);
 	}
 
 	/**

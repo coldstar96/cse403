@@ -62,7 +62,7 @@ public class SummaryTab extends Fragment {
 		adapter.clear();
 		Log.d(TAG, String.format("Budget size: %d",
 				Budget.getBudgets().size()));
-		adapter.addBudgets(Budget.getBudgets());
+		adapter.addAll(Budget.getBudgets());
 		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
 		adapter.notifyDataSetChanged();
 	}

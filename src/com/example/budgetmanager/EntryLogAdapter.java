@@ -12,7 +12,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -37,55 +36,15 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	// resource ID for the layout to inflate into each row
 	private final int layoutResourceId;
 
+	/**
+	 * Constructs a new EntryLog
+	 * @param context the current Context
+	 * @param layoutResourceId Resource ID for the row view
+	 */
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
-	}
-
-	/**
-	 * Constructs a new EntryLog
-	 * @param context the current Context
-	 * @param layoutResourceId Resource ID for the row view
-	 * @param budgetList List of budgets from which entries are to be grabbed
-	 */
-	public EntryLogAdapter(Context context, int layoutResourceId,
-			List<Budget> budgetList) {
-		this(context, layoutResourceId);
-
-		for (Budget b : budgetList) {
-			addEntriesFromBudget(b);
-		}
-	}
-
-	/**
-	 * Constructs a new EntryLog
-	 * @param context the current Context
-	 * @param layoutResourceId Resource ID for the row view
-	 * @param budget Budget from which entries are to be grabbed
-	 */
-	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
-		this(context, layoutResourceId);
-
-		addEntriesFromBudget(budget);
-	}
-
-	/**
-	 * Attempts to add the given budget's entries to this EntryLog. If the
-	 * given Budget is already added to this EntryLog, it will not add again.
-	 * Entries will be added at the end of the list.
-	 */
-	public void addEntriesFromBudget(Budget budget) {
-		addAll(budget.getEntries());
-	}
-
-	/**
-	 * Clears this EntryLogAdapter of all Entries such that it
-	 * no longer holds any Entries.
-	 */
-	@Override
-	public void clear() {
-		super.clear();
 	}
 
 	/**
@@ -130,15 +89,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		Log.d(TAG, "getView: Finished processing row " + position);
 
 		return row;
-	}
-
-	/**
-	 * Sorts this EntryLogAdapter by the given comparator.
-	 * Does not notify observers of changes.
-	 */
-	@Override
-	public void sort(Comparator<? super Entry> comp) {
-		super.sort(comp);
 	}
 
 	/**

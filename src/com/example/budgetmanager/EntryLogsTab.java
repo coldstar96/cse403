@@ -1,7 +1,5 @@
 package com.example.budgetmanager;
 
-import java.util.Comparator;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
+
+import java.util.Comparator;
 
 /**
  * Fragment which displays list of entries screen to the user, offering add
@@ -64,7 +64,10 @@ public class EntryLogsTab extends Fragment {
 
 		// set adapter
 		adapter = new EntryLogAdapter(getActivity(),
-				R.layout.list_entry_layout, Budget.getBudgets());
+				R.layout.list_entry_layout);
+		for (Budget b : Budget.getBudgets()) {
+			adapter.addAll(b.getEntries());
+		}
 
 		// The initial sort will be by date.
 		adapter.sort(new EntryLogAdapter.EntryDateComparator());
@@ -160,7 +163,7 @@ public class EntryLogsTab extends Fragment {
 		adapter.clear();
 
 		for (Budget b : Budget.getBudgets()) {
-			adapter.addEntriesFromBudget(b);
+			adapter.addAll(b.getEntries());
 		}
 
 		int position = sortSpinner.getSelectedItemPosition();
