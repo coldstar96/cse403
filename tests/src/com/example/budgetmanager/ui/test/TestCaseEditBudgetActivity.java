@@ -93,8 +93,6 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		assertNotNull("Original budget should still exist.", originalBudget);
 		assertEquals("Budget name should not have changed.",
 				TEST_BUDGET_NAME, originalBudget.getName());
-
-		setUpBudgetList();
 	}
 
 	/**
@@ -129,8 +127,6 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 		assertNotNull("Original budget should still exist.", originalBudget);
 		assertEquals("Budget name should have changed.",
 				BUDGET_NAME, originalBudget.getName());
-
-		setUpBudgetList();
 	}
 
 }
