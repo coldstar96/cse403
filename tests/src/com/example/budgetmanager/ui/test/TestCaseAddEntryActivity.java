@@ -1,7 +1,5 @@
 package com.example.budgetmanager.ui.test;
 
-import org.joda.time.LocalDate;
-
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.text.format.Time;
@@ -9,11 +7,19 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.Entry;
+import com.example.budgetmanager.api.test.AsyncHttpClientStub;
+import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
+
+import org.joda.time.LocalDate;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Tests that AddEntryActivity correctly initializes necessary views, validates
@@ -38,6 +44,8 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	private DatePicker dateView;
 	private EditText notesView;
 	private Button addButtonView;
+
+	private AsyncHttpClientStub testClient;
 
 	public TestCaseAddEntryActivity() {
 		super(AddEntryActivity.class);
@@ -64,8 +72,8 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		// Should always tear down budgets
 		Budget.clearBudgets();
 
-		@SuppressWarnings("unused")
-		Budget testBudget = new Budget(TEST_BUDGET_NAME, 200, false,
+		// Add our test budget.
+		new Budget(TEST_BUDGET_NAME, 200, false,
 				LocalDate.now(), Duration.MONTH);
 
 		// Have to call addItemsToBudgetSpinner() manually to get the spinner
@@ -77,6 +85,10 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 			}
 		});
 		solo.sleep(500);
+
+		// Set up the stubbed test client
+		testClient = new AsyncHttpClientStub();
+		TestUtilities.getStubbedApiInterface(testClient);
 	}
 
 	@Override
@@ -217,5 +229,73 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 				"", amountView.getText().toString());
 		assertEquals("The EditText for the note was not cleared",
 				"", notesView.getText().toString());
+	}
+
+	/**
+	 * Ensure that, on server failure, the newly added entry
+	 * 
+	 * This is a black-box test of the AddEntryActivity.
+	 */
+	@MediumTest
+	public void test_addValidEntry_apiError() {
+		// Set up some data in the fields
+		solo.enterText(amountView, "12345.00");
+		solo.enterText(notesView, "API Error on Add");
+		solo.sleep(1000);
+
+		testClient.setNextResponse(new JSONObject(), false);
+
+		assertEquals("There should only be one budget.",
+				1, Budget.getBudgets().size());
+
+		solo.clickOnButton("Add");
+		solo.sleep(1000);
+
+		// Make sure that the budget still has no entries in it,
+		// as the add failed.
+		Budget budget = Budget.getBudgetById(-1);
+		assertNotNull("The test budget should still exist.", budget);
+		assertEquals("There should be no entries in the test budget.",
+				0, budget.getEntries().size());
+	}
+
+	/**
+	 * Ensure that, on server success, the newly added entry is
+	 * present in the budget's entry list and has valid fields.
+	 * 
+	 * This is a black-box test of the AddEntryActivity.
+	 */
+	@MediumTest
+	public void test_addValidEntry_newEntryIsAdded() throws JSONException {
+		String ENTRY_AMOUNT = "100.00";
+		String ENTRY_NOTES = "Test successful add.";
+		long ENTRY_ID = -2;
+
+		// Set up some data in the fields
+		solo.enterText(amountView, ENTRY_AMOUNT);
+		solo.enterText(notesView, ENTRY_NOTES);
+		solo.sleep(1000);
+
+		// Set the server response.
+		JSONObject serverResponse = new JSONObject();
+		serverResponse.put("id", ENTRY_ID);
+		serverResponse.put("created_at", "1991-11-14 03:00:00");
+		serverResponse.put("updated_at", "2013-11-14 03:00:00");
+
+		testClient.setNextResponse(serverResponse, true);
+
+		solo.clickOnButton("Add");
+		solo.sleep(1000);
+
+		// Make sure there is an entry in the test budget with
+		// the appropriate ID (-2).
+		Budget b = Budget.getBudgetById(-1);
+		assertNotNull("The test budget should exist.", b);
+
+		Entry e = b.getEntryById(ENTRY_ID);
+		assertNotNull("The new entry should exist.", e);
+		assertEquals("The notes of the entry was wrong.", ENTRY_NOTES, e.getNotes());
+		assertEquals("The amount of the entry was wrong.",
+				(int) (Double.parseDouble(ENTRY_AMOUNT) * 100), e.getAmount());
 	}
 }
