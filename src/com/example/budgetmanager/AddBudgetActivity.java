@@ -234,13 +234,13 @@ public class AddBudgetActivity extends Activity {
 			cancel = true;
 		} else {
 			// Check to see if there's a budget with that name already
+			String previousBudgetName = Budget.getBudgetById(bundle.getLong("BudgetId")).getName();
 			for (Budget budget : Budget.getBudgets()) {
 				boolean addNameCheck = addMode && budget.getName().equals(mBudgetName);
 				boolean editNameCheck = false;
 				if (!addMode) {
-					String budgetName = Budget.getBudgetById(bundle.getLong("BudgetId")).getName();
 					// If the budget name is not the one we're editing and exists already, then throw error
-					editNameCheck = !addMode && budget.getName().equals(mBudgetName) && !budgetName.equals(mBudgetName);
+					editNameCheck = budget.getName().equals(mBudgetName) && !previousBudgetName.equals(mBudgetName);
 				}
 				if (addNameCheck || editNameCheck) {
 					mBudgetNameView.setError(getString(
