@@ -201,6 +201,8 @@ public class AddBudgetActivity extends Activity {
 		View focusView = null;
 		double amount = 0.0;
 
+		Bundle bundle = getIntent().getExtras();
+
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
 
@@ -232,11 +234,17 @@ public class AddBudgetActivity extends Activity {
 			cancel = true;
 		} else {
 			// Check to see if there's a budget with that name already
+			String previousBudgetName = Budget.getBudgetById(bundle.getLong("BudgetId")).getName();
 			for (Budget budget : Budget.getBudgets()) {
-				if (budget.getName().equals(mBudgetName)) {
+				boolean addNameCheck = addMode && budget.getName().equals(mBudgetName);
+				boolean editNameCheck = false;
+				if (!addMode) {
+					// If the budget name is not the one we're editing and exists already, then throw error
+					editNameCheck = budget.getName().equals(mBudgetName) && !previousBudgetName.equals(mBudgetName);
+				}
+				if (addNameCheck || editNameCheck) {
 					mBudgetNameView.setError(getString(
 							R.string.error_name_already_exists));
-
 					focusView = mBudgetNameView;
 					cancel = true;
 					break;
@@ -254,7 +262,6 @@ public class AddBudgetActivity extends Activity {
 		// disable button while calling api
 		mAddButtonView.setClickable(false);
 
-		Bundle bundle = getIntent().getExtras();
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
@@ -292,6 +299,8 @@ public class AddBudgetActivity extends Activity {
 					actualBudget.setStartDate(newBudget.getStartDate());
 					// Remove the temporary budget
 					Budget.removeBudget(newBudget);
+
+					finish();
 				}
 
 				@Override
