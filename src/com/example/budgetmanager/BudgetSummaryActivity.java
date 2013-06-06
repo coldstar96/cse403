@@ -4,18 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Activity which allows users to view a summary of a single budget.
@@ -23,6 +24,8 @@ import com.example.budgetmanager.preference.SettingsFragment;
  * @author Andrew clinger
  */
 public class BudgetSummaryActivity extends Activity {
+
+	private final String TAG = "BudgetSummary";
 
 	// Budget being viewed
 	private Budget myBudget;
@@ -42,6 +45,8 @@ public class BudgetSummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "Created Budget Summary Activity.");
+
 		// set theme based on current preferences
 		Utilities.setActivityTheme(this, getApplicationContext());
 
@@ -50,16 +55,18 @@ public class BudgetSummaryActivity extends Activity {
 
 		// get the budget id from the intent
 		long budgetId = bundle.getLong("BudgetId", -1);
-		int cycle = bundle.getInt("BudgetCycle", -1);
+		int cycle = bundle.getInt("BudgetCycle", -2);
 
 		myBudget = Budget.getBudgetById(budgetId);
 
-		if (cycle == -1) {
+		if (cycle == -2) {
 			if (myBudget.isRecurring()) {
 				cycle = myBudget.getCurrentCycle();
 			} else {
 				cycle = 0;
 			}
+		} else if (cycle < 0) {
+			cycle = 0;
 		}
 
 		// Only use entries from current period.

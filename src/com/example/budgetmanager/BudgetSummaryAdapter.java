@@ -143,7 +143,16 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 		// set period
 		int totalDays = Utilities.dateDifference(startDate, endDate);
-		int currentDays = Utilities.dateDifference(startDate, LocalDate.now());
+
+		int currentDays;
+		if(LocalDate.now().isAfter(endDate.plusDays(1))) {
+			currentDays = totalDays;
+		} else if (LocalDate.now().isBefore(startDate)) {
+			currentDays = 0;
+		} else {
+			currentDays = Utilities.dateDifference(startDate, LocalDate.now());
+		}
+
 		perProgressView.setMax(totalDays);
 		perProgressView.setProgress(Math.max(0, Math.min(totalDays, currentDays)));
 		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
@@ -158,17 +167,18 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expenditureTextView.setText(String.format("$%.02f / $%.02f ($%.02f left)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
-		// set averages
-		if (currentDays > totalDays) {
-			currentDays = totalDays;
-		}
-		int daysLeft = totalDays - currentDays + 1;
-		double actualAvg = amountSpent / 100.0 / currentDays;
+		int daysLeft = totalDays - (currentDays + 1);
+		double actualAvg = 0;
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
+
+			if (currentDays > 0) {
+				actualAvg = amountSpent / 100.0 / currentDays;
+			}
 		}
+
 		actualDailyAvgView.setText(String.format("Actual: $%.02f / day", actualAvg));
 		suggestDailyAvgView.setText(String.format("Suggest: $%.02f / day", suggestedAvg));
 
