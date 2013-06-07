@@ -203,9 +203,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		if (daysLeft > 0) {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 
-			if (currentDays > 0) {
-				actualAvg = amountSpent / 100.0 / currentDays;
-			}
+		}
+
+		if (currentDays > 0) {
+			actualAvg = amountSpent / 100.0 / currentDays;
 		}
 
 		actualDailyAvgView.setText(
