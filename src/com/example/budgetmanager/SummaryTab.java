@@ -94,6 +94,8 @@ public class SummaryTab extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int pos,
 					long id) {
+				Log.d(TAG, "Clicked on Budget Item.");
+
 				// move to BudgetSummaryActivity
 				Intent intent = new Intent(getActivity(),
 						BudgetSummaryActivity.class);
@@ -107,8 +109,12 @@ public class SummaryTab extends Fragment {
 					cycle = 0;
 				}
 
+				Log.d(TAG, "Calculated current cycle: " + cycle);
+
 				intent.putExtra("BudgetId", b.getId());
 				intent.putExtra("BudgetCycle", cycle);
+
+				Log.d(TAG, "Budget id: " + b.getId());
 
 				startActivity(intent);
 			}
