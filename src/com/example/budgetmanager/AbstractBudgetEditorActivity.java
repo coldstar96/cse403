@@ -58,7 +58,7 @@ public abstract class AbstractBudgetEditorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// inflate view
-		setContentView(R.layout.activity_add_budget);
+		setContentView(R.layout.activity_budget_editor);
 
 		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
