@@ -158,6 +158,11 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
 
+		String startDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(startDate.toDate());
+		String endDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(endDate.toDate());
+
 		if (!budget.isRecurring()) {
 			budgetCycleView.setVisibility(View.INVISIBLE);
 		} else {
@@ -172,10 +177,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		perProgressView.setProgress(
 				Math.max(0, Math.min(totalDays, currentDays)));
 
-
-		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
-				currentDays, totalDays,
-				startDate.toString(), endDate.toString()));
+		String days = getContext().getResources().getString(R.string.days);
+		periodTextView.setText(String.format("%d / %d %s (%s ~ %s)",
+				currentDays, totalDays, days, startDateStr, endDateStr));
 
 		// set expenditure views
 		int amountSpent = budget.getAmountSpent(currentCycle);
@@ -185,9 +189,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expProgressView.setMax(budgetAmount);
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
+		String left = getContext().getResources().getString(R.string.left);
 		expenditureTextView.setText(
-				String.format("$%.02f / $%.02f ($%.02f left)",
-				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
+				String.format("$%.02f / $%.02f ($%.02f %s)",
+				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0, left));
 
 		// set average views
 		if (currentDays > totalDays) {
@@ -202,10 +207,14 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
 
+		String day = getContext().getResources().getString(R.string.day);
+		String actual = getContext().getResources().getString(R.string.actual);
+		String suggest = getContext().getResources().getString(R.string.suggest);
+
 		actualDailyAvgView.setText(
-				String.format("Actual: $%.02f / day", actualAvg));
+				String.format("%s: $%.02f / %s", actual, actualAvg, day));
 		suggestDailyAvgView.setText(
-				String.format("Suggest: $%.02f / day", suggestedAvg));
+				String.format("%s: $%.02f / %s", suggest, suggestedAvg, day));
 
 		// set progress color
 		double spending = actualAvg / expectedAvg;
