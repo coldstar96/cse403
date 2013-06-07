@@ -130,6 +130,7 @@ public class SummaryTab extends Fragment {
 
 		// inflate the context menu
 		MenuInflater inflater = getActivity().getMenuInflater();
+		menu.setHeaderTitle(selectedBudget.getName());
 		inflater.inflate(R.menu.context_menu, menu);
 	}
 

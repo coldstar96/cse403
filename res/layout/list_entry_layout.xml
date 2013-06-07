@@ -41,6 +41,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
         android:maxLines="1"
+        android:textSize="20sp"
         android:text="Amount" />
 
 </RelativeLayout>
