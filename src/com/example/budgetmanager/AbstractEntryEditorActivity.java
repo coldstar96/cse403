@@ -26,6 +26,12 @@ import org.joda.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates a template Activity for the {@link AddEntryActivity} and
+ * {@link EditEntryActivity} activities.
+ * 
+ * @author Graham grahamb5
+ */
 public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 	public final static int CENTS = 100;
 
