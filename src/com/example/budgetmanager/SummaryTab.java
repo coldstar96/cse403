@@ -142,7 +142,7 @@ public class SummaryTab extends Fragment {
 			Log.d(TAG, "Budget ID: " + selectedBudget.getId());
 
 			// tell AddBudgetActivity to start an edit budget session
-			Intent intent = new Intent(getActivity(), AddBudgetActivity.class);
+			Intent intent = new Intent(getActivity(), EditBudgetActivity.class);
 			intent.putExtra("Add", false);
 			intent.putExtra("BudgetId", selectedBudget.getId());
 

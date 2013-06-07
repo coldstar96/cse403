@@ -17,7 +17,8 @@
     <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_register">Register</string>
     <string name="title_activity_signin">Sign in</string>
-    <string name="title_activity_add_budget">{0} Budget</string>
+    <string name="title_activity_add_budget">Add Budget</string>
+    <string name="title_activity_edit_budget">Edit Budget</string>
     <string name="title_activity_add_entry">{0} Entry</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_budget_summary">Budget Summary</string>
