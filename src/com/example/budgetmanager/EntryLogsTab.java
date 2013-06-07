@@ -113,6 +113,7 @@ public class EntryLogsTab extends Fragment {
 
 		// inflate the context menu
 		MenuInflater inflater = getActivity().getMenuInflater();
+		menu.setHeaderTitle("Entry Options");
 		inflater.inflate(R.menu.context_menu, menu);
 	}
 
