@@ -5,9 +5,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.EditText;
 
-import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.EditEntryActivity;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.api.test.AsyncHttpClientStub;
 import com.example.budgetmanager.test.TestUtilities;
@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * @author Graham grahamb5
  */
 public class TestCaseEditEntryActivity
-extends ActivityInstrumentationTestCase2<AddEntryActivity> {
+extends ActivityInstrumentationTestCase2<EditEntryActivity> {
 
 	private Solo solo;
 	private EditText amountView;
@@ -36,7 +36,7 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 	private AsyncHttpClientStub testClient;
 
 	public TestCaseEditEntryActivity() {
-		super(AddEntryActivity.class);
+		super(EditEntryActivity.class);
 	}
 
 	@Override
