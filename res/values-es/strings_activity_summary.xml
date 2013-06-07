@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="budget_recurring">Recurring</string>
-    <string name="alert_title">Delete Budget</string>
-    <string name="alert_message">This will also delete all the Entries inside this Budget. Continue?</string>
+    <string name="budget_recurring">Periódico</string>
+    <string name="alert_title">Borre el Presupuesto</string>
+    <string name="alert_message">Esto también se eliminarán todos los ingresos dentro de este presupuesto. Continuar?</string>
 
 </resources>
