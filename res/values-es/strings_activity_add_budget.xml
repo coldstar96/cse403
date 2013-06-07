@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="header_budget_name">Budget Name</string>
+    <string name="header_budget_amount">Amount</string>
+    <string name="header_budget_start_date">START DATE</string>
+    <string name="header_budget_duration">DURATION</string>
+    <string name="budget_recur">Recur</string>
+    <string name="action_clear_budget">Clear</string>
+	<string name="title_budget_add">Add</string>
+	<string name="title_budget_edit">Edit</string>
+	<string name="budget_activity_button_add">Add</string>
+	<string name="budget_activity_button_edit">Submit</string>
+    
+    <string-array name="duration_array">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Fortnight</item>
+        <item>Month</item>
+        <item>Year</item>
+        <!-- <item>Other</item> -->
+    </string-array>
+
+    <string name="action_create_budget">Create</string>
+    <string name="error_invalid_budget_name">Please specify name</string>
+    <string name="error_name_already_exists">Budget name already in use</string>
+
+</resources>

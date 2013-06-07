@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="x_graph_label">Days</string>
+    <string name="y_graph_label">Dollars Spent</string>
+    <string name="your_spending">Spent</string>
+    <string name="target">Target</string>
+
+</resources>

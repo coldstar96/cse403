@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings related to adding entries -->
+    <string name="header_entry_amount">AMOUNT</string>
+    <string name="header_entry_date">SELECT DATE</string>
+    <string name="header_entry_budget">SELECT BUDGET</string>
+    <string name="header_entry_optional">OPTIONAL</string>
+    <string name="hint_notes">Notes</string>
+    <string name="spinner_title">Select Budget</string>
+    <string name="new_budget">Create New Budget&#8230;</string>
+    <string name="title_entry_add">Add</string>
+    <string name="title_entry_edit">Edit</string>
+    <string name="entry_activity_button_add">Add</string>
+    <string name="entry_activity_button_edit">Submit</string>
+
+</resources>
