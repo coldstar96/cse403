@@ -1,12 +1,7 @@
 package com.example.budgetmanager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,9 +14,6 @@ import android.widget.Toast;
 import com.example.budgetmanager.Budget.Duration;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsActivity;
-import com.example.budgetmanager.preference.SettingsFragment;
-
 import org.joda.time.LocalDate;
 
 import java.text.MessageFormat;
@@ -33,7 +25,7 @@ import java.util.Locale;
  * @author Joseph josephs2
  *
  */
-public class AddBudgetActivity extends Activity {
+public class AddBudgetActivity extends UBudgetActivity {
 	private final int DOLLAR_IN_CENTS = 100;
 
 	// Text field for entering the Budget name
@@ -147,47 +139,6 @@ public class AddBudgetActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// inflate the menu
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.items, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		switch(item.getItemId()) {
-		case R.id.menu_settings:
-			// take the user to the Settings screen
-			Intent settingsIntent = new Intent(AddBudgetActivity.this,
-					SettingsActivity.class);
-
-			// these extras allow SettingsActivity to skip the 'headers'
-			// layer, which is unnecessary since we have very few settings
-			settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-					SettingsFragment.class.getName());
-			settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
-
-			startActivity(settingsIntent);
-
-			return false;
-
-		case R.id.menu_signout:
-			// sign the user out
-			ApiInterface.getInstance().logOut();
-			Intent logOut = new Intent(AddBudgetActivity.this, LoginActivity.class);
-			// Clear the back stack so when you press the back button you will exit the app
-			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			// Goes to the login page
-			startActivity(logOut);
-			return false;
-		}
-
-		return true;
-	}
-
 	/**
 	 * Attempts to push the <code>Budget</code> created by the user to the API.
 	 *
@@ -200,6 +151,8 @@ public class AddBudgetActivity extends Activity {
 		boolean cancel = false;
 		View focusView = null;
 		double amount = 0.0;
+
+		Bundle bundle = getIntent().getExtras();
 
 		mBudgetAmountView.setError(null);
 		mBudgetNameView.setError(null);
@@ -232,11 +185,17 @@ public class AddBudgetActivity extends Activity {
 			cancel = true;
 		} else {
 			// Check to see if there's a budget with that name already
+			String previousBudgetName = Budget.getBudgetById(bundle.getLong("BudgetId")).getName();
 			for (Budget budget : Budget.getBudgets()) {
-				if (budget.getName().equals(mBudgetName)) {
+				boolean addNameCheck = addMode && budget.getName().equals(mBudgetName);
+				boolean editNameCheck = false;
+				if (!addMode) {
+					// If the budget name is not the one we're editing and exists already, then throw error
+					editNameCheck = budget.getName().equals(mBudgetName) && !previousBudgetName.equals(mBudgetName);
+				}
+				if (addNameCheck || editNameCheck) {
 					mBudgetNameView.setError(getString(
 							R.string.error_name_already_exists));
-
 					focusView = mBudgetNameView;
 					cancel = true;
 					break;
@@ -254,7 +213,6 @@ public class AddBudgetActivity extends Activity {
 		// disable button while calling api
 		mAddButtonView.setClickable(false);
 
-		Bundle bundle = getIntent().getExtras();
 		// create the Budget object to add to the list of Budgets
 		final Budget newBudget = createBudget();
 
@@ -292,6 +250,8 @@ public class AddBudgetActivity extends Activity {
 					actualBudget.setStartDate(newBudget.getStartDate());
 					// Remove the temporary budget
 					Budget.removeBudget(newBudget);
+
+					finish();
 				}
 
 				@Override

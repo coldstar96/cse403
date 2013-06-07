@@ -1,6 +1,6 @@
 package com.example.budgetmanager;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -13,15 +13,15 @@ import java.util.List;
  *
  * @author Andrew clinger
  */
-public class BudgetSummaryActivity extends Activity {
+public class BudgetSummaryActivity extends UBudgetActivity {
 
-	//Budget being viewed
+	// Budget being viewed
 	private Budget myBudget;
 
-	//List of entries from budget that are in the current cycle.
+	// List of entries from budget that are in the current cycle.
 	private List<Entry> myEntries;
 
-	//Text views that are set programmatically.
+	// Text views that are set programmatically.
 	private TextView budgetName;
 	private TextView budgetTotal;
 	private TextView budgetSpent;
@@ -33,6 +33,10 @@ public class BudgetSummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// set theme based on current preferences
+		Utilities.setActivityTheme(this, getApplicationContext());
+
+		// for information about the Budget
 		Bundle bundle = getIntent().getExtras();
 
 		// get the budget id from the intent
@@ -49,8 +53,8 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
-		//Only use entries from current period.
-		//Code should be refactored to be elsewhere
+		// Only use entries from current period.
+		// Code should be refactored to be elsewhere
 		myEntries = new ArrayList<Entry>();
 
 		for (Entry e : myBudget.getEntries()) {
@@ -62,7 +66,7 @@ public class BudgetSummaryActivity extends Activity {
 			}
 		}
 
-		//Inflate view
+		// Inflate view
 		setContentView(R.layout.activity_budget_summary);
 
 		budgetName = (TextView) findViewById(R.id.budget_name);
@@ -72,18 +76,21 @@ public class BudgetSummaryActivity extends Activity {
 
 		Collections.sort(myEntries, new EntryLogAdapter.EntryDateComparator());
 
-		//Reversing after sorting, because our comparator has the reverse
-		//behavior from what is desired in this situation.
+		// Reversing after sorting, because our comparator has the reverse
+		// behavior from what is desired in this situation.
 		Collections.reverse(myEntries);
 
 		((DrawBudgetGraph) findViewById(R.id.BudgetGraph)).setProperties(myEntries, myBudget, cycle);
+
+		// set the view items
+		setViews();
+
+		// trick to prevent infinite looping when onResume() is called
+		getIntent().setAction("Already created");
 	}
 
-	/** Called when the activity starts */
-	@Override
-	protected void onResume() {
-		super.onResume();
-
+	/* Helper method to set TextViews in the Activity. */
+	private void setViews() {
 		int totalBudget = 0;
 		int balance;
 
@@ -97,5 +104,24 @@ public class BudgetSummaryActivity extends Activity {
 		budgetTotal.setText(Utilities.amountToDollars(myBudget.getBudgetAmount()));
 		budgetSpent.setText(Utilities.amountToDollars(totalBudget));
 		budgetBalance.setText(Utilities.amountToDollars(balance));
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String action = getIntent().getAction();
+		if (action == null || !action.equals("Already created")) {
+			// don't restart if action is present
+			Intent intent = new Intent(this, BudgetSummaryActivity.class);
+			intent.putExtra("BudgetId", myBudget.getId());
+			intent.putExtra("BudgetCycle", myBudget.getCurrentCycle());
+			startActivity(intent);
+			finish();
+		} else {
+			// remove the unique action so the next time onResume
+			// call will force restart
+			getIntent().setAction(null);
+		}
 	}
 }

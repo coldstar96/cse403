@@ -11,8 +11,6 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -33,23 +31,19 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
 	private static final String TAG = "EntryLogAdapter";
 
-	// The list of budgets added to the log
-	private List<Budget> budgetList;
-
-	// List of entries added by budgets in the budgetList
-	private List<Entry> entryList;
-
 	// Store the activity context for usage when displaying rows
-	private Context context;
+	private final Context context;
 
 	// resource ID for the layout to inflate into each row
-	private int layoutResourceId;
+	private final int layoutResourceId;
 
+	/**
+	 * Constructs a new EntryLog
+	 * @param context the current Context
+	 * @param layoutResourceId Resource ID for the row view
+	 */
 	public EntryLogAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
-
-		this.budgetList = new ArrayList<Budget>();
-		this.entryList = new ArrayList<Entry>();
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 	}
@@ -63,58 +57,9 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	public EntryLogAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
-
 		for (Budget b : budgetList) {
-			addEntriesFromBudget(b);
+			addAll(b.getEntries());
 		}
-	}
-
-	/**
-	 * Constructs a new EntryLog
-	 * @param context the current Context
-	 * @param layoutResourceId Resource ID for the row view
-	 * @param budget Budget from which entries are to be grabbed
-	 */
-	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
-		this(context, layoutResourceId);
-
-		addEntriesFromBudget(budget);
-	}
-
-	/**
-	 * Attempts to add the given budget's entries to this EntryLog. If the
-	 * given Budget is already added to this EntryLog, it will not add again.
-	 * Entries will be added at the end of the list.
-	 */
-	public void addEntriesFromBudget(Budget budget) {
-		if (!budgetList.contains(budget)) {
-			budgetList.add(budget);
-
-			List<Entry> budgetEntries = budget.getEntries();
-			addAll(budgetEntries);
-			entryList.addAll(budgetEntries);
-			Log.d(TAG, "Now have " + entryList.size() + " Entries");
-		}
-	}
-
-	/**
-	 * Gets a list of Entries that have been added to this EntryLog
-	 *
-	 * @return An unmodifiable list of entries for this EntryLog
-	 */
-	public List<Entry> getEntryList() {
-		return Collections.unmodifiableList(entryList);
-	}
-
-	/**
-	 * Clears this EntryLogAdapter of all Entries such that it
-	 * no longer holds any Entries.
-	 */
-	@Override
-	public void clear() {
-		super.clear();
-		budgetList.clear();
-		entryList.clear();
 	}
 
 	/**
@@ -149,9 +94,10 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		TextView notesView = (TextView) row.findViewById(R.id.item_note);
 		Log.d(TAG, "Finished getting TextViews for row " + position);
 
-		Entry entry = entryList.get(position);
+		Entry entry = getItem(position);
 
-		dateView.setText(entry.getDate().toString());
+		dateView.setText(android.text.format.DateFormat
+				.getDateFormat(context).format(entry.getDate().toDate()));
 		amountView.setText(Utilities.amountToDollars(entry.getAmount()));
 		budgetNameView.setText(entry.getBudget().getName());
 		notesView.setText(entry.getNotes());
@@ -159,16 +105,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		Log.d(TAG, "getView: Finished processing row " + position);
 
 		return row;
-	}
-
-	/**
-	 * Sorts this EntryLogAdapter by the given comparator.
-	 * Does not notify observers of changes.
-	 */
-	@Override
-	public void sort(Comparator<? super Entry> comp) {
-		super.sort(comp);
-		Collections.sort(entryList, comp);
 	}
 
 	/**

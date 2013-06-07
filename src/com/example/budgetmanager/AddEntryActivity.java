@@ -41,8 +41,6 @@ public class AddEntryActivity extends AbstractEntryEditorActivity {
 			return;
 		}
 
-		mAddButtonView.setClickable(false);
-
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
@@ -50,10 +48,6 @@ public class AddEntryActivity extends AbstractEntryEditorActivity {
 				// passes a null since the method doesn't need
 				// a reference to a view object to work.
 				AddEntryActivity.this.clearEntry(null);
-
-				// add the entry into the Budget object
-				newEntry.getBudget().addEntry(newEntry);
-
 				// goto logs screen
 				finish();
 			}

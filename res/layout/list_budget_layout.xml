@@ -46,41 +46,41 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/budget_name"
             android:maxLines="1"
-            android:text="Recurring" />
-
-        <TextView
-            android:id="@+id/period_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/suggested_daily_average"
-            android:maxLines="1"
-            android:paddingTop="10dp"
-            android:text="0 / 0 days (startDate ~ endDate)" />
+            android:text="@string/recurring" />
 
         <ProgressBar
             android:id="@+id/period_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/period_text" />
+            android:layout_below="@+id/suggested_daily_average"
+            android:paddingTop="10dp" />
 
         <TextView
-            android:id="@+id/expenditure_text"
+            android:id="@+id/period_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/period_progress"
+            android:layout_below="@+id/suggested_daily_average"
+            android:layout_centerHorizontal="true"
             android:maxLines="1"
-            android:paddingTop="10dp"
-            android:text="$0.00 / $0.00 ($0.00 left)" />
+            android:text="0 / 0 days (startDate ~ endDate)" />
 
         <ProgressBar
             android:id="@+id/expenditure_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/expenditure_text" />
+            android:layout_below="@+id/period_progress"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/expenditure_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/period_progress"
+            android:layout_centerHorizontal="true"
+            android:maxLines="1"
+            android:text="$0.00 / $0.00 ($0.00 left)" />
     </RelativeLayout>
 
 </LinearLayout>

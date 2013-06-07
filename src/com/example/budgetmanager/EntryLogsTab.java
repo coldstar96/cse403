@@ -64,7 +64,10 @@ public class EntryLogsTab extends Fragment {
 
 		// set adapter
 		adapter = new EntryLogAdapter(getActivity(),
-				R.layout.list_entry_layout, Budget.getBudgets());
+				R.layout.list_entry_layout);
+		for (Budget b : Budget.getBudgets()) {
+			adapter.addAll(b.getEntries());
+		}
 
 		// The initial sort will be by date.
 		adapter.sort(new EntryLogAdapter.EntryDateComparator());
@@ -160,7 +163,7 @@ public class EntryLogsTab extends Fragment {
 		adapter.clear();
 
 		for (Budget b : Budget.getBudgets()) {
-			adapter.addEntriesFromBudget(b);
+			adapter.addAll(b.getEntries());
 		}
 
 		int position = sortSpinner.getSelectedItemPosition();
