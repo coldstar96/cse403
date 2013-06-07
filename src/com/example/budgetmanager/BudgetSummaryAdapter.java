@@ -110,6 +110,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// set budget name
 		budgetNameView.setText(budget.getName());
 
+
+		//set background, text colors
 		boolean lightTheme = PreferenceManager
 				.getDefaultSharedPreferences(getContext())
 				.getString(SettingsFragment.KEY_PREF_APP_THEME, "")
@@ -152,7 +154,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				.setColorFilter(txtColor, Mode.SRC_IN);
 
 
-		// start date and end date of cycle
+		// set period views
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
 
@@ -175,7 +177,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				currentDays, totalDays,
 				startDate.toString(), endDate.toString()));
 
-		// set expenditure
+		// set expenditure views
 		int amountSpent = budget.getAmountSpent(currentCycle);
 		int budgetAmount = budget.getBudgetAmount();
 		int amountLeft = budgetAmount - amountSpent;
@@ -187,7 +189,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				String.format("$%.02f / $%.02f ($%.02f left)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
-		// set averages
+		// set average views
 		if (currentDays > totalDays) {
 			currentDays = totalDays;
 		}
@@ -205,7 +207,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		suggestDailyAvgView.setText(
 				String.format("Suggest: $%.02f / day", suggestedAvg));
 
-		// set progress textColor
+		// set progress color
 		double spending = actualAvg / expectedAvg;
 		setProgressColor(budget, spending, periodTextView, expProgressView);
 
