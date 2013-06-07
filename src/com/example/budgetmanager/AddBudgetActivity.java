@@ -25,7 +25,6 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.LocalDate;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 
 /**
  *
@@ -333,15 +332,30 @@ public class AddBudgetActivity extends Activity {
 		LocalDate startDate = new LocalDate(mBudgetDateView.getYear(),
 				mBudgetDateView.getMonth() + 1, mBudgetDateView.getDayOfMonth());
 
-		// Convert the selected entry in the duration spinner into a string
-		// that can be converted into a Duration enum member.
-		// Also, explicitly use the default locale to avoid warnings.
-		String duration = mBudgetDurationView.getSelectedItem()
-				.toString()
-				.toUpperCase(Locale.getDefault());
+		Duration duration;
+		int index = mBudgetDurationView.getSelectedItemPosition();
+		switch(index) {
+		case 0:
+			duration = Duration.DAY;
+			break;
+		case 1:
+			duration = Duration.WEEK;
+			break;
+		case 2:
+			duration = Duration.FORTNIGHT;
+			break;
+		case 3:
+			duration = Duration.MONTH;
+			break;
+		case 4:
+			duration = Duration.YEAR;
+			break;
+		default:
+			throw new IllegalArgumentException("Invaid duration argument");
+		}
 
 		return new Budget(name, amount, recur,
-				startDate, Duration.valueOf(duration));
+				startDate, duration);
 	}
 
 	/**

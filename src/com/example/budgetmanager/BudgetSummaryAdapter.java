@@ -16,7 +16,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.LocalDate;
 
 import java.util.Comparator;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class handles preparing lists of budgets for display in the summary
@@ -39,10 +41,15 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	// resource ID for the layout to inflate into each row
 	private final int layoutResourceId;
 
+	// Stores the currency sign for this locale
+	private final String CURRENCY_SIGN;
+
 	public BudgetSummaryAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
+		Currency cur = Currency.getInstance(Locale.US);
+		CURRENCY_SIGN = cur.getSymbol();
 	}
 
 	/**
@@ -149,7 +156,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		actualDailyAvgView.setTextColor(txtColor);
 		suggestDailyAvgView.setTextColor(txtColor);
 		perProgressView.getProgressDrawable()
-				.setColorFilter(txtColor, Mode.SRC_IN);
+		.setColorFilter(txtColor, Mode.SRC_IN);
 
 
 		// start date and end date of cycle
@@ -171,7 +178,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				Math.max(0, Math.min(totalDays, currentDays)));
 
 
-		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
+		periodTextView.setText(String.format("%d / %d " + R.string.days + "(%s ~ %s)",
 				currentDays, totalDays,
 				startDate.toString(), endDate.toString()));
 
@@ -184,8 +191,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
 		expenditureTextView.setText(
-				String.format("$%.02f / $%.02f ($%.02f left)",
-				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
+				String.format(CURRENCY_SIGN + "%.02f / "+ CURRENCY_SIGN + "%.02f (" +
+						CURRENCY_SIGN + "%.02f +" + R.string.left + ")",
+						amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
 		// set averages
 		if (currentDays > totalDays) {
@@ -201,9 +209,11 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		}
 
 		actualDailyAvgView.setText(
-				String.format("Actual: $%.02f / day", actualAvg));
+				String.format(R.string.action_actual_spending + ": " +
+						CURRENCY_SIGN + "%.02f / "+ R.string.day, actualAvg));
 		suggestDailyAvgView.setText(
-				String.format("Suggest: $%.02f / day", suggestedAvg));
+				String.format(R.string.action_suggest_spending + ": " +
+						CURRENCY_SIGN + "%.02f / "+ R.string.day, suggestedAvg));
 
 		// set progress textColor
 		double spending = actualAvg / expectedAvg;
