@@ -57,6 +57,16 @@ public class SummaryTab extends Fragment {
 		refreshList();
 	}
 
+	/* Helper method to refresh the list of ListView of Budgets. */
+	private void refreshList() {
+		adapter.clear();
+		Log.d(TAG, String.format("Budget size: %d",
+				Budget.getBudgets().size()));
+		adapter.addAll(Budget.getBudgets());
+		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
+		adapter.notifyDataSetChanged();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -87,7 +97,8 @@ public class SummaryTab extends Fragment {
 				Log.d(TAG, "Clicked on Budget Item.");
 
 				// move to BudgetSummaryActivity
-				Intent intent = new Intent(getActivity(), BudgetSummaryActivity.class);
+				Intent intent = new Intent(getActivity(),
+						BudgetSummaryActivity.class);
 				Budget b = (Budget) adapter.getItemAtPosition(pos);
 
 				// get default current budget
@@ -144,22 +155,26 @@ public class SummaryTab extends Fragment {
 			startActivity(intent);
 		}	else if (item.getItemId() == R.id.menu_delete) {
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			AlertDialog.Builder builder =
+					new AlertDialog.Builder(getActivity());
 			builder.setTitle(R.string.alert_title);
 			builder.setMessage(R.string.alert_message);
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					// back out from delete
 					dialog.cancel();
 				}
 			});
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			builder.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					Log.d(TAG, "Delete called.");
 
-					ApiInterface.getInstance().remove(selectedBudget, new ApiCallback<Object>() {
+					ApiInterface.getInstance().remove(selectedBudget,
+							new ApiCallback<Object>() {
 						@Override
 						public void onSuccess(Object result) {
 							Log.d(TAG, "Delete Budget onSuccess entered.");
@@ -187,14 +202,5 @@ public class SummaryTab extends Fragment {
 		}
 
 		return true;
-	}
-
-	/* Helper method to refresh the list of ListView of Budgets. */
-	private void refreshList() {
-		adapter.clear();
-		Log.d(TAG, String.format("Budget size: %d", adapter.getCount()));
-		adapter.addBudgets(Budget.getBudgets());
-		adapter.sort(new BudgetSummaryAdapter.BudgetActiveComparator());
-		adapter.notifyDataSetChanged();
 	}
 }
