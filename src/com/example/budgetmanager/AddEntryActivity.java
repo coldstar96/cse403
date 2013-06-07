@@ -6,16 +6,11 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,15 +23,13 @@ import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.preference.SettingsActivity;
-import com.example.budgetmanager.preference.SettingsFragment;
 
 /**
  * Activity which allows users to add entries.
  *
  * @author Ji jiwpark90
  */
-public class AddEntryActivity extends Activity {
+public class AddEntryActivity extends UBudgetActivity {
 	public final static int CENTS = 100;
 
 	// tag for logging
@@ -117,46 +110,6 @@ public class AddEntryActivity extends Activity {
 
 		// trick to prevent infinite looping when onResume() is called
 		getIntent().setAction("Already created");
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// inflate the menu
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.items, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		switch(item.getItemId()) {
-		case R.id.menu_settings:
-			// take the user to the Settings screen
-			Intent settingsIntent = new Intent(AddEntryActivity.this,
-					SettingsActivity.class);
-
-			// these extras allow SettingsActivity to skip the 'headers'
-			// layer, which is unnecessary since we have very few settings
-			settingsIntent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-					SettingsFragment.class.getName());
-			settingsIntent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
-
-			startActivity(settingsIntent);
-
-			return false;
-
-		case R.id.menu_signout:
-			// sign the user out
-			ApiInterface.getInstance().logOut();
-			Intent logOut = new Intent(AddEntryActivity.this, LoginActivity.class);
-			// Clear the back stack so when you press the back button you will exit the app
-			logOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			// Goes to the login page
-			startActivity(logOut);
-			return false;
-		}
-		return true;
 	}
 
 	@Override
