@@ -17,6 +17,12 @@ import org.joda.time.LocalDate;
 
 import java.util.Locale;
 
+/**
+ * Creates a template activity for the {@link AddBudgetActivity} and
+ * {@link EditBudgetActivity} activities
+ *
+ * @author Chris brucec5
+ */
 public abstract class AbstractBudgetEditorActivity extends UBudgetActivity {
 	private static final String TAG = "AbstractBudgetEditorActivity";
 
