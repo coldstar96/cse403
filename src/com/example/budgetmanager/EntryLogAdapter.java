@@ -11,7 +11,6 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -58,25 +57,9 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 	public EntryLogAdapter(Context context, int layoutResourceId,
 			List<Budget> budgetList) {
 		this(context, layoutResourceId);
-
 		for (Budget b : budgetList) {
-			addEntriesFromBudget(b);
+			addAll(b.getEntries());
 		}
-	}
-
-	/**
-	 * Constructs a new EntryLog
-	 * @param context the current Context
-	 * @param layoutResourceId Resource ID for the row view
-	 * @param budget Budget from which entries are to be grabbed
-	 */
-	public EntryLogAdapter(Context context, int layoutResourceId, Budget budget) {
-		this(context, layoutResourceId);
-		addEntriesFromBudget(budget);
-	}
-
-	public void addEntriesFromBudget(Budget budget){
-		addAll(budget.getEntries());
 	}
 
 	/**
@@ -113,7 +96,8 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
 		Entry entry = getItem(position);
 
-		dateView.setText(entry.getDate().toString());
+		dateView.setText(android.text.format.DateFormat
+				.getDateFormat(context).format(entry.getDate().toDate()));
 		amountView.setText(Utilities.amountToDollars(entry.getAmount()));
 		budgetNameView.setText(entry.getBudget().getName());
 		notesView.setText(entry.getNotes());
@@ -121,14 +105,6 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 		Log.d(TAG, "getView: Finished processing row " + position);
 
 		return row;
-	}
-
-	public List<Entry> getEntryList(){
-		List<Entry> entries = new ArrayList<Entry>();
-		for (int i = 0; i < getCount(); i++) {
-			entries.add(getItem(i));
-		}
-		return entries;
 	}
 
 	/**
