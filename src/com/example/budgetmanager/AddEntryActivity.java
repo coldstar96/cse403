@@ -1,9 +1,16 @@
 package com.example.budgetmanager;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joda.time.LocalDate;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -23,12 +30,6 @@ import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 import com.example.budgetmanager.preference.SettingsActivity;
 import com.example.budgetmanager.preference.SettingsFragment;
-
-import org.joda.time.LocalDate;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity which allows users to add entries.
@@ -71,6 +72,8 @@ public class AddEntryActivity extends Activity {
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		mAddButtonView = (Button) findViewById(R.id.add_entry_button);
+
+		mAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 
 		Log.d(TAG, "After views");
 
