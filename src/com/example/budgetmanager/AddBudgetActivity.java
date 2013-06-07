@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,6 +72,8 @@ public class AddBudgetActivity extends Activity {
 
 		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
+		// set currency filter
+		mBudgetAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
 		mAddButtonView = (Button) findViewById(R.id.create_budget_button);

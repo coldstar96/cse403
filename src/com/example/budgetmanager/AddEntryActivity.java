@@ -68,12 +68,12 @@ public class AddEntryActivity extends Activity {
 		setContentView(R.layout.activity_add_entry);
 
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
+		// set currency filter
+		mAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		mAddButtonView = (Button) findViewById(R.id.add_entry_button);
-
-		mAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 
 		Log.d(TAG, "After views");
 
