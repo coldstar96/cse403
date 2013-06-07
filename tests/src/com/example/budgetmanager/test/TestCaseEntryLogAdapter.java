@@ -21,6 +21,7 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 * Perform preliminary set-up of the tests.
 	 * Namely, clears out all cached budgets.
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		Budget.clearBudgets();
@@ -50,15 +51,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_singleBudgetConstructor_hasEntries_shouldListEntries() {
-		Budget budget = Factory.budgetFactory(0, 2);
+	  Budget budget = Factory.budgetFactory(0, 2);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budget);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budget);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 2 entries
-		assertEquals(2, logEntryList.size());
+	  // Should have a total of 2 entries
+	  assertEquals(2, logEntryList.size());
 	}
 
 	/**
@@ -69,15 +70,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_singleBudgetConstructor_hasNoEntries_shouldListNoEntries() {
-		Budget budgets = Factory.budgetFactory(0, 0);
+	  Budget budgets = Factory.budgetFactory(0, 0);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have no entries
-		assertTrue(logEntryList.isEmpty());
+	  // Should have no entries
+	  assertTrue(logEntryList.isEmpty());
 	}
 
 	/**
@@ -88,15 +89,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_listBudgetConstructor_hasEntries_shouldListAllEntries() {
-		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
+	  List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 6 entries
-		assertEquals(6, logEntryList.size());
+	  // Should have a total of 6 entries
+	  assertEquals(6, logEntryList.size());
 	}
 
 	/**
@@ -107,15 +108,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_listBudgetConstructor_hasNoEntries_shouldListNoEntries() {
-		List<Budget> budgets = Factory.budgetListFactory(0, 0, 0);
+	  List<Budget> budgets = Factory.budgetListFactory(0, 0, 0);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have no entries
-		assertTrue(logEntryList.isEmpty());
+	  // Should have no entries
+	  assertTrue(logEntryList.isEmpty());
 	}
 
 	/**
@@ -127,15 +128,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_listBudgetConstructor_hasMixedEntries_shouldListAllEntries() {
-		List<Budget> budgets = Factory.budgetListFactory(1, 0, 3);
+	  List<Budget> budgets = Factory.budgetListFactory(1, 0, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 4 entries
-		assertEquals(4, logEntryList.size());
+	  // Should have a total of 4 entries
+	  assertEquals(4, logEntryList.size());
 	}
 
 	/**
@@ -146,15 +147,15 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_listBudgetConstructor_emptyList_shouldListNoEntries() {
-		List<Budget> budgets = new ArrayList<Budget>();
+	  List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have no entries
-		assertTrue(logEntryList.isEmpty());
+	  // Should have no entries
+	  assertTrue(logEntryList.isEmpty());
 	}
 
 	/**
@@ -165,17 +166,17 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_addEntriesFromBudget_hasEntriesNoPriorBudgets_shouldListAllEntries() {
-		List<Budget> budgets = new ArrayList<Budget>();
+	  List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		log.addEntriesFromBudget(Factory.budgetFactory(0, 3));
+	  log.addEntriesFromBudget(Factory.budgetFactory(0, 3));
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 3 entries
-		assertEquals(3, logEntryList.size());
+	  // Should have a total of 3 entries
+	  assertEquals(3, logEntryList.size());
 	}
 
 	/**
@@ -187,17 +188,17 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_addEntriesFromBudget_hasEntriesPriorBudgets_shouldListAllEntries() {
-		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
+	  List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		log.addEntriesFromBudget(Factory.budgetFactory(0, 4));
+	  log.addEntriesFromBudget(Factory.budgetFactory(0, 4));
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 10 entries
-		assertEquals(10, logEntryList.size());
+	  // Should have a total of 10 entries
+	  assertEquals(10, logEntryList.size());
 	}
 
 	/**
@@ -209,17 +210,17 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_addEntriesFromBudget_hasNoEntriesNoPriorBudgets_shouldListNoEntries() {
-		List<Budget> budgets = new ArrayList<Budget>();
+	  List<Budget> budgets = new ArrayList<Budget>();
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
+	  log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have no entries
-		assertTrue(logEntryList.isEmpty());
+	  // Should have no entries
+	  assertTrue(logEntryList.isEmpty());
 	}
 
 	/**
@@ -231,17 +232,17 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 	 */
 	@SmallTest
 	public void test_addEntriesFromBudget_hasNoEntriesPriorBudgets_shouldListAllEntries() {
-		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
+	  List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	      R.layout.entry_log_adapter_test_layout, budgets);
 
-		log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
+	  log.addEntriesFromBudget(Factory.budgetFactory(0, 0));
 
-		List<Entry> logEntryList = log.getEntryList();
+	  List<Entry> logEntryList = log.getEntryList();
 
-		// Should have a total of 6 entries
-		assertEquals(6, logEntryList.size());
+	  // Should have a total of 6 entries
+	  assertEquals(6, logEntryList.size());
 	}
 
 	/**
@@ -263,25 +264,26 @@ public class TestCaseEntryLogAdapter extends AndroidTestCase {
 		assertTrue(logEntryList.isEmpty());
 	}
 
-	/**
-	 * Ensure that an EntryLogAdaptor created with a list of three Budgets
-	 * with a total of six Entries returns an empty list of Entries after
-	 * calling clear() on it.
-	 *
-	 * This is a blackbox test.
-	 */
-	@SmallTest
-	public void test_clear_wasNotEmpty_shouldBeEmpty() {
-		List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		EntryLogAdapter log = new EntryLogAdapter(getContext(),
-				R.layout.entry_log_adapter_test_layout, budgets);
+	  /**
+	   * Ensure that an EntryLogAdaptor created with a list of three Budgets
+	   * with a total of six Entries returns an empty list of Entries after
+	   * calling clear() on it.
+	   *
+	   * This is a blackbox test.
+	   */
+	  @SmallTest
+	  public void test_clear_wasNotEmpty_shouldBeEmpty() {
+	    List<Budget> budgets = Factory.budgetListFactory(1, 2, 3);
 
-		log.clear();
+	    EntryLogAdapter log = new EntryLogAdapter(getContext(),
+	        R.layout.entry_log_adapter_test_layout, budgets);
 
-		List<Entry> logEntryList = log.getEntryList();
+	    log.clear();
 
-		// Should have no entries after clearing
-		assertTrue(logEntryList.isEmpty());
-	}
+	    List<Entry> logEntryList = log.getEntryList();
+
+	    // Should have no entries after clearing
+	    assertTrue(logEntryList.isEmpty());
+	  }
 }
