@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.preference.PreferenceManager;
@@ -41,15 +42,10 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	// resource ID for the layout to inflate into each row
 	private final int layoutResourceId;
 
-	// Stores the currency sign for this locale
-	private final String CURRENCY_SIGN;
-
 	public BudgetSummaryAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
-		Currency cur = Currency.getInstance(Locale.US);
-		CURRENCY_SIGN = cur.getSymbol();
 	}
 
 	/**
@@ -117,6 +113,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// set budget name
 		budgetNameView.setText(budget.getName());
 
+
+		//set background, text colors
 		boolean lightTheme = PreferenceManager
 				.getDefaultSharedPreferences(getContext())
 				.getString(SettingsFragment.KEY_PREF_APP_THEME, "")
@@ -159,15 +157,22 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		.setColorFilter(txtColor, Mode.SRC_IN);
 
 
-		// start date and end date of cycle
+		// set period views
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
+
+		String startDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(startDate.toDate());
+		String endDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(endDate.toDate());
 
 		if (!budget.isRecurring()) {
 			budgetCycleView.setVisibility(View.INVISIBLE);
 		} else {
 			budgetCycleView.setVisibility(View.VISIBLE);
 		}
+
+		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
 
 		// set period
 		int totalDays = Utilities.dateDifference(startDate, endDate);
@@ -177,13 +182,11 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		perProgressView.setProgress(
 				Math.max(0, Math.min(totalDays, currentDays)));
 
+		String days = getContext().getResources().getString(R.string.days);
+		periodTextView.setText(String.format("%d / %d %s (%s ~ %s)",
+				currentDays, totalDays, days, startDateStr, endDateStr));
 
-		periodTextView.setText(String.format("%d / %d " +
-				getContext().getResources().getString(R.string.days) + "(%s ~ %s)",
-				currentDays, totalDays,
-				startDate.toString(), endDate.toString()));
-
-		// set expenditure
+		// set expenditure views
 		int amountSpent = budget.getAmountSpent(currentCycle);
 		int budgetAmount = budget.getBudgetAmount();
 		int amountLeft = budgetAmount - amountSpent;
@@ -191,13 +194,14 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expProgressView.setMax(budgetAmount);
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
+		String left = getContext().getResources().getString(R.string.left);
 		expenditureTextView.setText(
-				String.format(CURRENCY_SIGN + "%.02f / "+ CURRENCY_SIGN + "%.02f (" +
-						CURRENCY_SIGN + "%.02f +" +
-						getContext().getResources().getString(R.string.left) + ")",
+				String.format(currency + "%.02f / "+ currency + "%.02f (" +
+						currency + "%.02f +" +
+						left + ")",
 						amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
-		// set averages
+		// set average views
 		if (currentDays > totalDays) {
 			currentDays = totalDays;
 		}
@@ -210,16 +214,16 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
 
-		actualDailyAvgView.setText(
-				String.format(getContext().getResources().getString(R.string.action_actual_spending) +
-						": " + CURRENCY_SIGN + "%.02f / "+
-						getContext().getResources().getString(R.string.day), actualAvg));
-		suggestDailyAvgView.setText(
-				String.format(getContext().getResources().getString(R.string.action_suggest_spending) +
-						": " + CURRENCY_SIGN + "%.02f / "+
-						getContext().getResources().getString(R.string.day), suggestedAvg));
+		String day = getContext().getResources().getString(R.string.day);
+		String actual = getContext().getResources().getString(R.string.actual);
+		String suggest = getContext().getResources().getString(R.string.suggest);
 
-		// set progress textColor
+		actualDailyAvgView.setText(
+				String.format("%s: %s%.02f / %s", actual, currency, actualAvg, day));
+		suggestDailyAvgView.setText(
+				String.format("%s: %s%.02f / %s", suggest, currency, suggestedAvg, day));
+
+		// set progress color
 		double spending = actualAvg / expectedAvg;
 		setProgressColor(budget, spending, periodTextView, expProgressView);
 
@@ -253,6 +257,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * @author Chi Ho coldstar96
 	 *
 	 */
+	@SuppressLint("DefaultLocale")
 	public static class BudgetActiveComparator implements Comparator<Budget> {
 
 		/**
@@ -286,7 +291,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 					return 1;
 				}
 			}
-			return lhs.getName().compareTo(rhs.getName());
+			String lhsName = lhs.getName().toLowerCase();
+			String rhsName = rhs.getName().toLowerCase();
+			return lhsName.compareTo(rhsName);
 		}
 	}
 }
