@@ -10,6 +10,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import java.util.Currency;
+import java.util.Locale;
+
 /**
  * Miscellaneous methods that we use in routine
  *
@@ -31,7 +34,8 @@ public class Utilities {
 	 * @return String in $00.00 format
 	 */
 	public static String amountToDollars(int n) {
-		return "$" + amountToDollarsNoDollarSign(n);
+		return Currency.getInstance(Locale.getDefault()).getSymbol()
+				+ amountToDollarsNoDollarSign(n);
 	}
 
 	/**

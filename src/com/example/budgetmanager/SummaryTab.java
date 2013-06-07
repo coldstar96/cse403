@@ -153,7 +153,7 @@ public class SummaryTab extends Fragment {
 					new AlertDialog.Builder(getActivity());
 			builder.setTitle(R.string.alert_title);
 			builder.setMessage(R.string.alert_message);
-			builder.setNegativeButton("Cancel",
+			builder.setNegativeButton(R.string.alert_cancel,
 					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
@@ -161,7 +161,7 @@ public class SummaryTab extends Fragment {
 					dialog.cancel();
 				}
 			});
-			builder.setPositiveButton("OK",
+			builder.setPositiveButton(R.string.alert_ok,
 					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
