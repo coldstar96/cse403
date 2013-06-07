@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.preference.PreferenceManager;
@@ -16,7 +17,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.LocalDate;
 
 import java.util.Comparator;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class handles preparing lists of budgets for display in the summary
@@ -110,6 +113,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		// set budget name
 		budgetNameView.setText(budget.getName());
 
+
+		//set background, text colors
 		boolean lightTheme = PreferenceManager
 				.getDefaultSharedPreferences(getContext())
 				.getString(SettingsFragment.KEY_PREF_APP_THEME, "")
@@ -152,9 +157,14 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				.setColorFilter(txtColor, Mode.SRC_IN);
 
 
-		// start date and end date of cycle
+		// set period views
 		LocalDate startDate = budget.getStartDate(currentCycle);
 		LocalDate endDate = budget.getEndDate(currentCycle);
+
+		String startDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(startDate.toDate());
+		String endDateStr = android.text.format.DateFormat
+				.getDateFormat(context).format(endDate.toDate());
 
 		if (!budget.isRecurring()) {
 			budgetCycleView.setVisibility(View.INVISIBLE);
@@ -178,12 +188,11 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		perProgressView.setProgress(
 				Math.max(0, Math.min(totalDays, currentDays)));
 
+		String days = getContext().getResources().getString(R.string.days);
+		periodTextView.setText(String.format("%d / %d %s (%s ~ %s)",
+				currentDays, totalDays, days, startDateStr, endDateStr));
 
-		periodTextView.setText(String.format("%d / %d days (%s ~ %s)",
-				currentDays, totalDays,
-				startDate.toString(), endDate.toString()));
-
-		// set expenditure
+		// set expenditure views
 		int amountSpent = budget.getAmountSpent(currentCycle);
 		int budgetAmount = budget.getBudgetAmount();
 		int amountLeft = budgetAmount - amountSpent;
@@ -191,12 +200,14 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		expProgressView.setMax(budgetAmount);
 		expProgressView.setProgress(Math.min(amountSpent, budgetAmount));
 
+		String left = getContext().getResources().getString(R.string.left);
 		expenditureTextView.setText(
-				String.format("$%.02f / $%.02f ($%.02f left)",
-				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
+				String.format("$%.02f / $%.02f ($%.02f %s)",
+				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0, left));
 
 		int daysLeft = totalDays - (currentDays + 1);
 		double actualAvg = 0;
+
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
 
@@ -208,12 +219,18 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			actualAvg = amountSpent / 100.0 / currentDays;
 		}
 
-		actualDailyAvgView.setText(
-				String.format("Actual: $%.02f / day", actualAvg));
-		suggestDailyAvgView.setText(
-				String.format("Suggest: $%.02f / day", suggestedAvg));
+		String day = getContext().getResources().getString(R.string.day);
+		String actual = getContext().getResources().getString(R.string.actual);
+		String suggest = getContext().getResources().getString(R.string.suggest);
 
-		// set progress textColor
+		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
+
+		actualDailyAvgView.setText(
+				String.format("%s: %s%.02f / %s", actual, currency, actualAvg, day));
+		suggestDailyAvgView.setText(
+				String.format("%s: %s%.02f / %s", suggest, currency, suggestedAvg, day));
+
+		// set progress color
 		double spending = actualAvg / expectedAvg;
 		setProgressColor(budget, spending, periodTextView, expProgressView);
 
@@ -247,6 +264,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * @author Chi Ho coldstar96
 	 *
 	 */
+	@SuppressLint("DefaultLocale")
 	public static class BudgetActiveComparator implements Comparator<Budget> {
 
 		/**
@@ -280,7 +298,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 					return 1;
 				}
 			}
-			return lhs.getName().compareTo(rhs.getName());
+			String lhsName = lhs.getName().toLowerCase();
+			String rhsName = rhs.getName().toLowerCase();
+			return lhsName.compareTo(rhsName);
 		}
 	}
 }

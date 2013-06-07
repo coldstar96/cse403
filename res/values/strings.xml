@@ -6,7 +6,6 @@
     <string name="action_add">Add</string>
     <string name="action_clear">Clear</string>
     <string name="title_activity_logo">uBudget</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_section1">Entry Logs</string>
     <string name="title_section2">Summary</string>
     <string name="checkbox_remember_me">Remember me</string>
