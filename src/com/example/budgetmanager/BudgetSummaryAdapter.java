@@ -166,7 +166,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		int totalDays = Utilities.dateDifference(startDate, endDate);
 
 		int currentDays;
-		if(LocalDate.now().isAfter(endDate.plusDays(1))) {
+		if(LocalDate.now().isAfter(endDate)) {
 			currentDays = totalDays;
 		} else if (LocalDate.now().isBefore(startDate)) {
 			currentDays = 0;
