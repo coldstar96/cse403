@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.preference.PreferenceManager;
@@ -16,7 +17,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.LocalDate;
 
 import java.util.Comparator;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class handles preparing lists of budgets for display in the summary
@@ -211,10 +214,11 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		String actual = getContext().getResources().getString(R.string.actual);
 		String suggest = getContext().getResources().getString(R.string.suggest);
 
+		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
 		actualDailyAvgView.setText(
-				String.format("%s: $%.02f / %s", actual, actualAvg, day));
+				String.format("%s: %s%.02f / %s", actual, currency, actualAvg, day));
 		suggestDailyAvgView.setText(
-				String.format("%s: $%.02f / %s", suggest, suggestedAvg, day));
+				String.format("%s: %s%.02f / %s", suggest, currency, suggestedAvg, day));
 
 		// set progress color
 		double spending = actualAvg / expectedAvg;
@@ -250,6 +254,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 	 * @author Chi Ho coldstar96
 	 *
 	 */
+	@SuppressLint("DefaultLocale")
 	public static class BudgetActiveComparator implements Comparator<Budget> {
 
 		/**
@@ -283,7 +288,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 					return 1;
 				}
 			}
-			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+			String lhsName = lhs.getName().toLowerCase();
+			String rhsName = rhs.getName().toLowerCase();
+			return lhsName.compareTo(rhsName);
 		}
 	}
 }
