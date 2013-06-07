@@ -283,7 +283,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 					return 1;
 				}
 			}
-			return lhs.getName().compareTo(rhs.getName());
+			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
 		}
 	}
 }
