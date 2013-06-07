@@ -1,8 +1,4 @@
 package com.example.budgetmanager.ui.test;
-import org.joda.time.LocalDate;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.test.ActivityInstrumentationTestCase2;
@@ -14,24 +10,28 @@ import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
-import com.example.budgetmanager.api.ApiInterface;
-import com.example.budgetmanager.api.test.AsyncHttpClientStub;
-import com.example.budgetmanager.test.TestUtilities;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.MainActivity;
 import com.example.budgetmanager.R;
+import com.example.budgetmanager.api.ApiInterface;
+import com.example.budgetmanager.api.test.AsyncHttpClientStub;
+import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
+
+import org.joda.time.LocalDate;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Tests that the MainActivity initializes views used by the EntryLogsTab, and
  * that the "Add Budget" and "Add Entry" buttons start or do not start
  * AddBudgetActivity and AddEntryActivity as expected.
- * 
+ *
  * Also tests that the Edit and Delete options for entries in the log work
  * as expected. Checks that Edit takes users to the edit screen with information
  * correctly autofilled, and that Delete removes entries from the log correctly,
  * on the client side.
- * 
+ *
  * @author James PushaKi
  */
 public class TestCaseMainActivity
@@ -164,7 +164,6 @@ extends ActivityInstrumentationTestCase2<MainActivity> {
 		// Check that the selected entry's information has been autofilled into
 		// the edit window's fields
 		assertTrue(solo.searchText(TEST_ENTRY_NAME_1));
-		assertTrue(solo.searchText(TEST_BUDGET_NAME_1));
 		assertTrue(solo.searchText("May"));
 		assertTrue(solo.searchText("31"));
 		assertTrue(solo.searchText("2011"));
