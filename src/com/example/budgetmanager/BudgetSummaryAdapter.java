@@ -178,7 +178,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				Math.max(0, Math.min(totalDays, currentDays)));
 
 
-		periodTextView.setText(String.format("%d / %d " + R.string.days + "(%s ~ %s)",
+		periodTextView.setText(String.format("%d / %d " +
+				getContext().getResources().getString(R.string.days) + "(%s ~ %s)",
 				currentDays, totalDays,
 				startDate.toString(), endDate.toString()));
 
@@ -192,7 +193,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 		expenditureTextView.setText(
 				String.format(CURRENCY_SIGN + "%.02f / "+ CURRENCY_SIGN + "%.02f (" +
-						CURRENCY_SIGN + "%.02f +" + R.string.left + ")",
+						CURRENCY_SIGN + "%.02f +" +
+						getContext().getResources().getString(R.string.left) + ")",
 						amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
 		// set averages
@@ -209,11 +211,13 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		}
 
 		actualDailyAvgView.setText(
-				String.format(R.string.action_actual_spending + ": " +
-						CURRENCY_SIGN + "%.02f / "+ R.string.day, actualAvg));
+				String.format(getContext().getResources().getString(R.string.action_actual_spending) +
+						": " + CURRENCY_SIGN + "%.02f / "+
+						getContext().getResources().getString(R.string.day), actualAvg));
 		suggestDailyAvgView.setText(
-				String.format(R.string.action_suggest_spending + ": " +
-						CURRENCY_SIGN + "%.02f / "+ R.string.day, suggestedAvg));
+				String.format(getContext().getResources().getString(R.string.action_suggest_spending) +
+						": " + CURRENCY_SIGN + "%.02f / "+
+						getContext().getResources().getString(R.string.day), suggestedAvg));
 
 		// set progress textColor
 		double spending = actualAvg / expectedAvg;
