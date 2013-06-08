@@ -63,6 +63,10 @@
             android:name="com.example.budgetmanager.preference.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity 
+            android:name="EditEntryActivity"
+            android:label="@string/title_activity_add_entry" >
+        </activity>
     </application>
 
 </manifest>

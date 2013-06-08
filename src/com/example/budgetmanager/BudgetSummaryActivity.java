@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
  * @author Andrew clinger
  */
 public class BudgetSummaryActivity extends UBudgetActivity {
+
+	private final String TAG = "BudgetSummary";
 
 	// Budget being viewed
 	private Budget myBudget;
@@ -33,6 +36,8 @@ public class BudgetSummaryActivity extends UBudgetActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "Created Budget Summary Activity.");
+
 		// set theme based on current preferences
 		Utilities.setActivityTheme(this, getApplicationContext());
 
@@ -41,16 +46,18 @@ public class BudgetSummaryActivity extends UBudgetActivity {
 
 		// get the budget id from the intent
 		long budgetId = bundle.getLong("BudgetId", -1);
-		int cycle = bundle.getInt("BudgetCycle", -1);
+		int cycle = bundle.getInt("BudgetCycle", -2);
 
 		myBudget = Budget.getBudgetById(budgetId);
 
-		if (cycle == -1) {
+		if (cycle == -2) {
 			if (myBudget.isRecurring()) {
 				cycle = myBudget.getCurrentCycle();
 			} else {
 				cycle = 0;
 			}
+		} else if (cycle < 0) {
+			cycle = 0;
 		}
 
 		// Only use entries from current period.
