@@ -60,7 +60,7 @@ public class EntryLogsTab extends Fragment {
 			Bundle savedInstanceState) {
 		RelativeLayout layout =
 				(RelativeLayout) inflater.inflate(R.layout.fragment_entry_logs,
-				container, false);
+						container, false);
 
 		// set adapter
 		adapter = new EntryLogAdapter(getActivity(),
@@ -125,7 +125,7 @@ public class EntryLogsTab extends Fragment {
 			Log.d(TAG, "Edit called.");
 
 			// tell AddEntryActivity to start an edit entry session
-			Intent intent = new Intent(getActivity(), AddEntryActivity.class);
+			Intent intent = new Intent(getActivity(), EditEntryActivity.class);
 			intent.putExtra("Add", false);
 			intent.putExtra("EntryId", selectedEntry.getEntryId());
 			intent.putExtra("BudgetId", selectedEntry.getBudget().getId());
