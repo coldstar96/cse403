@@ -10,6 +10,7 @@ import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.AddEntryActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.EditEntryActivity;
 import com.example.budgetmanager.Entry;
 import com.example.budgetmanager.MainActivity;
 import com.example.budgetmanager.R;
@@ -154,7 +155,7 @@ extends ActivityInstrumentationTestCase2<MainActivity> {
 
 		// Check that the AddEntryActivity was started
 		solo.assertCurrentActivity("AddEntryActivity was not started",
-				AddEntryActivity.class);
+				EditEntryActivity.class);
 
 		// Make sure that the activity was started in "Edit" mode, and not in
 		// "Add" mode

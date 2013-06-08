@@ -44,6 +44,8 @@ public class AddEntryActivity extends AbstractEntryEditorActivity {
 		ApiInterface.getInstance().create(newEntry, new ApiCallback<Long>() {
 			@Override
 			public void onSuccess(Long result) {
+				Budget b = newEntry.getBudget();
+				b.addEntry(newEntry);
 				// clear the fields if the add was successful.
 				// passes a null since the method doesn't need
 				// a reference to a view object to work.

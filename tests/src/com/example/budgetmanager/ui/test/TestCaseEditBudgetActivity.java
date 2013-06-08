@@ -5,9 +5,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.EditText;
 
-import com.example.budgetmanager.AddBudgetActivity;
 import com.example.budgetmanager.Budget;
 import com.example.budgetmanager.Budget.Duration;
+import com.example.budgetmanager.EditBudgetActivity;
 import com.example.budgetmanager.api.test.AsyncHttpClientStub;
 import com.example.budgetmanager.test.TestUtilities;
 import com.jayway.android.robotium.solo.Solo;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * @author Graham grahamb5
  */
 public class TestCaseEditBudgetActivity
-extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
+extends ActivityInstrumentationTestCase2<EditBudgetActivity> {
 
 	private Solo solo;
 	private EditText nameField;
@@ -33,7 +33,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	private AsyncHttpClientStub testClient;
 
 	public TestCaseEditBudgetActivity() {
-		super(AddBudgetActivity.class);
+		super(EditBudgetActivity.class);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	 * Ensure that, on server failure, the edited budget is
 	 * reverted back to it's original state. Also ensures
 	 * that no extra budget is in the budget list.
-	 * 
+	 *
 	 * This is a black-box test of the AddBudgetActivity.
 	 */
 	@MediumTest
@@ -112,7 +112,7 @@ extends ActivityInstrumentationTestCase2<AddBudgetActivity> {
 	/**
 	 * Ensure that, on server success, the edited budget exhibits
 	 * the changes made and that no extra budget is in the list.
-	 * 
+	 *
 	 * This is a black-box test of the AddBudgetActivity.
 	 */
 	@MediumTest
