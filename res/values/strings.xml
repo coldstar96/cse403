@@ -18,7 +18,8 @@
     <string name="title_activity_signin">Sign in</string>
     <string name="title_activity_add_budget">Add Budget</string>
     <string name="title_activity_edit_budget">Edit Budget</string>
-    <string name="title_activity_add_entry">{0} Entry</string>
+    <string name="title_activity_add_entry">Add Entry</string>
+    <string name="title_activity_edit_entry">Edit Entry</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_budget_summary">Budget Summary</string>
     <string name="title_fragment_summary">Summary</string>

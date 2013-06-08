@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -21,8 +20,7 @@ public class AddEntryActivity extends AbstractEntryEditorActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setTitle(MessageFormat.format(getTitle().toString(),
-				getString(R.string.title_entry_add)));
+		setTitle(getString(R.string.title_activity_add_entry));
 		mAddButtonView.setText(getString(R.string.entry_activity_button_add));
 	}
 
