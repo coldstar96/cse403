@@ -672,6 +672,7 @@ public class ApiInterface {
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
 		if (failOnNoInternet(callback)) {
+			callback.onFailure("Active internet connection required");
 			return;
 		}
 
@@ -692,6 +693,7 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
+				String message = "Invalid email/password combination.";
 				if (callback != null) {
 					try {
 						String nameErr = obj.getJSONArray("username").getString(0);
@@ -700,10 +702,10 @@ public class ApiInterface {
 						final String errMessage = nameErr + " " + passErr;
 
 						Log.d(TAG, "errors: " + errMessage);
-						callback.onFailure(errMessage);
+						callback.onFailure(message);
 					} catch (JSONException ej) {
 						Log.d(TAG, "JSON problems on log in: " + t.getMessage());
-						callback.onFailure(t.getMessage());
+						callback.onFailure(message);
 					}
 				}
 			}
