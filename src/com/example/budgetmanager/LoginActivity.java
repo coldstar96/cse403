@@ -150,7 +150,6 @@ public class LoginActivity extends Activity {
 					showProgress(false);
 					Toast.makeText(LoginActivity.this,
 							errorMessage, Toast.LENGTH_LONG).show();
-
 				}
 
 				// Move to entry logs activity
