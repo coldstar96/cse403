@@ -10,8 +10,6 @@ import com.example.budgetmanager.api.ApiInterface;
 
 import org.joda.time.LocalDate;
 
-import java.text.MessageFormat;
-
 /**
  * Activity which allows users to edit entries.
  *
@@ -23,8 +21,7 @@ public class EditEntryActivity extends AbstractEntryEditorActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setTitle(MessageFormat.format(getTitle().toString(),
-				getString(R.string.title_entry_edit)));
+		setTitle(getString(R.string.title_activity_edit_entry));
 		mAddButtonView.setText(getString(R.string.entry_activity_button_edit));
 
 		// Set fields to saved entry's fields.
