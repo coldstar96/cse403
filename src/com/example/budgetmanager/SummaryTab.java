@@ -152,8 +152,8 @@ public class SummaryTab extends Fragment {
 
 			AlertDialog.Builder builder =
 					new AlertDialog.Builder(getActivity());
-			builder.setTitle(R.string.alert_title);
-			builder.setMessage(R.string.alert_message);
+			builder.setTitle(R.string.alert_delete_budget_title);
+			builder.setMessage(R.string.alert_delete_budget_message);
 			builder.setNegativeButton(R.string.alert_cancel,
 					new DialogInterface.OnClickListener() {
 				@Override

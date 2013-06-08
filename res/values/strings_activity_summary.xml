@@ -2,8 +2,8 @@
 <resources>
 
     <string name="budget_recurring">Recurring</string>
-    <string name="alert_title">Delete Budget</string>
-    <string name="alert_message">This will also delete all the Entries inside this Budget. Continue?</string>
+    <string name="alert_delete_budget_title">Delete Budget</string>
+    <string name="alert_delete_budget_message">This will also delete all the Entries inside this Budget. Continue?</string>
     <string name="alert_cancel">Cancel</string>
     <string name="alert_ok">OK</string>	
     <string name="days">days</string>
