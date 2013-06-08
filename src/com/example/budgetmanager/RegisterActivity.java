@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
@@ -174,9 +175,8 @@ public class RegisterActivity extends Activity {
 				@Override
 				public void onFailure(String errorMessage) {
 					showProgress(false);
-
-					mEmailView.setError(getString(R.string.error_email_already_exists));
-					mEmailView.requestFocus();
+					Toast.makeText(RegisterActivity.this,
+							errorMessage, Toast.LENGTH_LONG).show();
 				}
 
 				// Move to entry log activity

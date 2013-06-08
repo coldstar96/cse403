@@ -155,13 +155,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -212,13 +213,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -258,13 +260,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -310,13 +313,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -345,7 +349,8 @@ public class ApiInterface {
 					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
 						callback.onSuccess(null);
 					} else {
-						callback.onFailure("Error deleting budget.");
+						callback.onFailure(UBudgetApp.getAppContext()
+								.getString(R.string.delete_budget_error));
 					}
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send a destruction
@@ -357,13 +362,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -391,7 +397,8 @@ public class ApiInterface {
 					if (obj.has("destroyed") && obj.getBoolean("destroyed")) {
 						callback.onSuccess(null);
 					} else {
-						callback.onFailure("Error deleting entry.");
+						callback.onFailure(UBudgetApp.getAppContext()
+								.getString(R.string.delete_entry_error));
 					}
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send a destruction
@@ -403,13 +410,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				callback.onFailure(t.getMessage());
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -471,14 +479,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				String status = obj.optString("status", "Service Error");
-				callback.onFailure(status);
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -545,14 +553,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				String status = obj.optString("status", "Service Error");
-				callback.onFailure(status);
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -645,14 +653,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				String status = obj.optString("status", "Service Error");
-				callback.onFailure(status);
+				onFailure(t, t.getMessage());
 			}
 
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -672,7 +680,6 @@ public class ApiInterface {
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
 		if (failOnNoInternet(callback)) {
-			callback.onFailure("Active internet connection.");
 			return;
 		}
 
@@ -693,19 +700,14 @@ public class ApiInterface {
 
 			@Override
 			public void onFailure(Throwable t, JSONObject obj) {
-				String message = "Invalid email/password combination.";
 				if (callback != null) {
 					try {
-						String nameErr = obj.getJSONArray("username").getString(0);
-						String passErr = obj.getJSONArray("password_digest").getString(0);
-
-						final String errMessage = nameErr + " " + passErr;
-
-						Log.d(TAG, "errors: " + errMessage);
+						String message = obj.getString("login");
+						Log.d(TAG, "Login Error: " + message);
 						callback.onFailure(message);
 					} catch (JSONException ej) {
 						Log.d(TAG, "JSON problems on log in: " + t.getMessage());
-						callback.onFailure(message);
+						onFailure(t, t.getMessage());
 					}
 				}
 			}
@@ -713,7 +715,8 @@ public class ApiInterface {
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -756,11 +759,11 @@ public class ApiInterface {
 				if (callback != null) {
 					try {
 						final String errMessage = obj.getJSONArray("username").getString(0);
-						Log.d(TAG, "errors: " + errMessage);
+						Log.d(TAG, "Register Errors: " + errMessage);
 						callback.onFailure(errMessage);
 					} catch (JSONException ej) {
 						Log.d(TAG, "JSON problems on user creation: " + t.getMessage());
-						callback.onFailure(t.getMessage());
+						onFailure(t, t.getMessage());
 					}
 				}
 			}
@@ -768,7 +771,8 @@ public class ApiInterface {
 			@Override
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
-					callback.onFailure("Network Timeout");
+					callback.onFailure(UBudgetApp.getAppContext()
+							.getString(R.string.network_error));
 				} else {
 					callback.onFailure(message);
 				}
@@ -826,7 +830,8 @@ public class ApiInterface {
 		}
 
 		Log.d(TAG, "No internet connection found.");
-		callback.onFailure("Active internet connection required.");
+		callback.onFailure(UBudgetApp.getAppContext()
+				.getString(R.string.network_error));
 		return true;
 	}
 }
