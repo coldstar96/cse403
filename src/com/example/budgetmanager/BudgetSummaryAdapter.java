@@ -174,7 +174,15 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 		// set period
 		int totalDays = Utilities.dateDifference(startDate, endDate);
-		int currentDays = Utilities.dateDifference(startDate, LocalDate.now());
+
+		int currentDays;
+		if(LocalDate.now().isAfter(endDate)) {
+			currentDays = totalDays;
+		} else if (LocalDate.now().isBefore(startDate)) {
+			currentDays = 0;
+		} else {
+			currentDays = Utilities.dateDifference(startDate, LocalDate.now());
+		}
 
 		perProgressView.setMax(totalDays);
 		perProgressView.setProgress(
@@ -200,12 +208,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 				String.format("$%.02f / $%.02f ($%.02f %s)",
 				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0, left));
 
-		// set average views
-		if (currentDays > totalDays) {
-			currentDays = totalDays;
-		}
-		int daysLeft = totalDays - currentDays + 1;
-		double actualAvg = amountSpent / 100.0 / currentDays;
+		int daysLeft = totalDays - (currentDays + 1);
+		double actualAvg = 0;
+
 		double expectedAvg = budgetAmount / 100.0 / totalDays;
 		double suggestedAvg = expectedAvg;
 
@@ -213,11 +218,16 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			suggestedAvg = amountLeft / 100.0 / daysLeft;
 		}
 
+		if (currentDays > 0) {
+			actualAvg = amountSpent / 100.0 / currentDays;
+		}
+
 		String day = getContext().getResources().getString(R.string.day);
 		String actual = getContext().getResources().getString(R.string.actual);
 		String suggest = getContext().getResources().getString(R.string.suggest);
 
 		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
+
 		actualDailyAvgView.setText(
 				String.format("%s: %s%.02f / %s", actual, currency, actualAvg, day));
 		suggestDailyAvgView.setText(
