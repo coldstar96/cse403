@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Creates a template Activity for the {@link AddEntryActivity} and
  * {@link EditEntryActivity} activities.
- * 
+ *
  * @author Graham grahamb5
  */
 public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
@@ -54,6 +55,8 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 		setContentView(R.layout.activity_add_entry);
 
 		mAmountView = (EditText) findViewById(R.id.entry_amount);
+		// set currency filter
+		mAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
