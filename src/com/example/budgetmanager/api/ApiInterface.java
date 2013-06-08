@@ -162,7 +162,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -220,7 +220,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -267,7 +267,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -320,7 +320,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -350,7 +350,7 @@ public class ApiInterface {
 						callback.onSuccess(null);
 					} else {
 						callback.onFailure(UBudgetApp.getAppContext()
-								.getString(R.string.delete_budget_error));
+								.getString(R.string.error_delete_budget));
 					}
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send a destruction
@@ -369,7 +369,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -398,7 +398,7 @@ public class ApiInterface {
 						callback.onSuccess(null);
 					} else {
 						callback.onFailure(UBudgetApp.getAppContext()
-								.getString(R.string.delete_entry_error));
+								.getString(R.string.error_delete_entry));
 					}
 				} catch (JSONException e) {
 					// This will catch if the server doesn't send a destruction
@@ -417,7 +417,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -486,7 +486,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -560,7 +560,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -660,7 +660,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -716,7 +716,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -772,7 +772,7 @@ public class ApiInterface {
 			public void onFailure(Throwable t, String message) {
 				if (t instanceof SocketTimeoutException) {
 					callback.onFailure(UBudgetApp.getAppContext()
-							.getString(R.string.network_error));
+							.getString(R.string.error_network));
 				} else {
 					callback.onFailure(message);
 				}
@@ -831,7 +831,7 @@ public class ApiInterface {
 
 		Log.d(TAG, "No internet connection found.");
 		callback.onFailure(UBudgetApp.getAppContext()
-				.getString(R.string.network_error));
+				.getString(R.string.error_network));
 		return true;
 	}
 }

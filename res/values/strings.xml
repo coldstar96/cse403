@@ -11,6 +11,9 @@
     <string name="checkbox_remember_me">Remember me</string>
     <string name="error_zero_amount">Amount must be greater than $0</string>
     <string name="error_invalid_amount">Please specify amount</string>
+    <string name="error_network">There was a problem connecting to the server. Please try again.</string>
+    <string name="error_delete_budget">Error deleting budget.</string>
+    <string name="error_delete_entry">Error deleting entry.</string>
 
     <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_register">Register</string>
@@ -32,9 +35,5 @@
 
     <!-- Strings for the advertisements -->
     <string name="ad_string">Your Ad Here!</string>
-    <string name="invalid_email_password">Invalid email/password combination.</string>
-    <string name="network_error">There was a problem connecting to the server. Please try again.</string>
-    <string name="delete_budget_error">Error deleting budget.</string>
-    <string name="delete_entry_error">Error deleting entry.</string>
-
+    
 </resources>
