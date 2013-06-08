@@ -96,6 +96,11 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		solo.finishOpenedActivities();
 	}
 
+	/**
+	 * Tests that the views exist.
+	 * 
+	 * White-box test.
+	 */
 	@MediumTest
 	public void test_onCreate_viewsNotNull() {
 		// Ensure all of the views are present
@@ -106,6 +111,12 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertNotNull(addButtonView);
 	}
 
+	/**
+	 * Tests that the spinner has a listener and an
+	 * adapter.
+	 * 
+	 * White-box test.
+	 */
 	@MediumTest
 	public void test_addItemsToBudgetSpinner_checkSpinnerListenerAndAdapter() {
 		// Checks that the spinner containing budget selections has a listener,
@@ -114,6 +125,12 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertNotNull(budgetView.getAdapter());
 	}
 
+	/**
+	 * Tests that the spinner has the first budget
+	 * selected.
+	 * 
+	 * Black-box test.
+	 */
 	@MediumTest
 	public void test_addItemsToBudgetSpinner_addsBudgetToSpinner() {
 		// Checks that addItemsToBudgetSpinner() correctly adds budgets to the
@@ -123,6 +140,12 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertTrue(solo.isSpinnerTextSelected(TEST_BUDGET_NAME));
 	}
 
+	/**
+	 * Checks to see if the "Add new Budget..." selection
+	 * starts the AddBudgetActivity.
+	 * 
+	 * Black-box test.
+	 */
 	@MediumTest
 	public void test_addItemsToBudgetSpinner_addNewBudgetOptionStartsActivityCorrectly() {
 		// Tests that when a user clicks the spinner option to create a new
@@ -136,6 +159,11 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertTrue(addBudgetActivityStarted);
 	}
 
+	/**
+	 * Ensures that an empty amount comes back as invalid.
+	 * 
+	 * Black-box test.
+	 */
 	@MediumTest
 	public void test_emptyAmount_shouldNotAllowIt() {
 		// An empty amount in the amount EditText should cause an error to be
@@ -161,6 +189,11 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertEquals(EXPECTED_ERROR_MESSAGE_INVALID_AMOUNT, foundError);
 	}
 
+	/**
+	 * Ensure that a zero amount comes back as invalid.
+	 * 
+	 * Black-box test.
+	 */
 	@MediumTest
 	public void test_zeroAmount_shouldNotAllowIt() {
 		// A zero amount in the amount EditText should cause an error to be
@@ -187,6 +220,12 @@ extends ActivityInstrumentationTestCase2<AddEntryActivity> {
 		assertEquals(EXPECTED_ERROR_MESSAGE_ZERO_AMOUNT, foundError);
 	}
 
+	/**
+	 * Ensures that the "clear" button clears all
+	 * the necessary views.
+	 * 
+	 * Black-box test.
+	 */
 	@MediumTest
 	public void test_clearEntry_clearsFieldsCorrectly() {
 		// Tests that when the user clicks the "Clear" button, that there is
