@@ -4,9 +4,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 /**
+ * Represents a single entry in a {@link Budget}.
  *
  * @author Ji jiwpark90
- *
  */
 public class Entry {
 	/**
@@ -18,7 +18,7 @@ public class Entry {
 	private long entryId;
 
 	// the Budget object this entry belongs to
-	private final Budget budget;
+	private Budget budget;
 
 	// in cents
 	private int amount;
@@ -90,6 +90,10 @@ public class Entry {
 	 */
 	public Budget getBudget() {
 		return budget;
+	}
+
+	public void setBudget(Budget budget) {
+		this.budget = budget;
 	}
 
 	/**

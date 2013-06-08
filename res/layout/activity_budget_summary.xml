@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/budget_summary_ad"
+        android:fillViewport="true"
+        android:padding="@dimen/default_layout_spacing" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            tools:context=".BudgetSummaryActivity" >
+
+            <TextView
+                android:id="@+id/budget_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold" />
+
+            <com.example.budgetmanager.DrawBudgetGraph
+                android:id="@+id/BudgetGraph"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_marginBottom="@dimen/default_layout_spacing"
+                android:layout_weight="0.95" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/header_budget_total"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/budget_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_edittext_padding"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/header_budget_spent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/budget_spent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_edittext_padding"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/header_budget_balance"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/budget_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/budget_summary_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        tools:context=".BudgetSummaryActivity" >
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom" >
 
-        <TextView
-            android:id="@+id/budget_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold" />
-
-        <com.example.budgetmanager.DrawBudgetGraph
-            android:id="@+id/BudgetGraph"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="0.95" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/header_budget_total"
-            android:textStyle="bold" />
-
-        <TextView
-            android:textIsSelectable="true"
-            android:id="@+id/budget_total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/header_budget_spent"
-            android:textStyle="bold" />
-
-        <TextView
-            android:textIsSelectable="true"
-            android:id="@+id/budget_spent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/header_budget_balance"
-            android:textStyle="bold" />
-
-        <TextView
-            android:textIsSelectable="true"
-            android:id="@+id/budget_balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:layout_marginBottom="@dimen/default_layout_spacing"
-            android:layout_gravity="bottom"
-            layout="@layout/advertisement_view" />
+        <include layout="@layout/advertisement_view" />
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
