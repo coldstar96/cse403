@@ -208,8 +208,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		String left = getContext().getResources().getString(R.string.left);
 		expenditureTextView.setText(
 				String.format(currency + "%.02f / "+ currency + "%.02f (" +
-						currency + "%.02f +" +
-						left + ")",
+						currency + "%.02f " + left + ")",
 						amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
 		int daysLeft = totalDays - (currentDays + 1);
