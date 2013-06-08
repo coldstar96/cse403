@@ -672,7 +672,7 @@ public class ApiInterface {
 	public void logIn(final String email, final String password,
 			final ApiCallback<Object> callback) {
 		if (failOnNoInternet(callback)) {
-			callback.onFailure("Active internet connection .");
+			callback.onFailure("Active internet connection.");
 			return;
 		}
 
