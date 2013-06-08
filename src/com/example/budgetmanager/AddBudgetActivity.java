@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
-
 /**
  *
  * @author Andrew theclinger
