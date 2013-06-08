@@ -6,5 +6,8 @@
     <string name="header_budget_balance">Resto</string>
     <string name="action_edit_budget">Edite</string>
     <string name="action_delete_budget">Borre</string>
+    <string name="recurring">Recurring</string>
+    <string name="actual">Actual</string>
+    <string name="suggest">Suggest</string>
 
 </resources>
