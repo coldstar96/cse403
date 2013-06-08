@@ -20,12 +20,8 @@ import java.util.Locale;
  *
  */
 
-public class Utilities {
+public abstract class Utilities {
 	public static final int DOLLOR_IN_CENTS = 100;
-
-	private Utilities() {
-		// not called
-	}
 
 	/**
 	 * Transforms a number of cents into a dollar-formatted string with the
