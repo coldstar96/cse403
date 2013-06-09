@@ -3,7 +3,7 @@
     <string name="action_add_entry">Add Entry</string>
     <string name="action_add_budget">Add Budget</string>
     <string name="dialog_add_budget_first">You need to create a budget before you add an entry</string>
-    <string name="logs_sort_prompt">Search By&#8230;</string>
+    <string name="logs_sort_prompt">Sort By&#8230;</string>
     <string name="title_edit">Edit</string>
     <string name="title_delete">Delete</string>
     <string name="alert_delete_entry_title">Delete Entry</string>

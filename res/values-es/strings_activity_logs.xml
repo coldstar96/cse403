@@ -3,9 +3,12 @@
     <string name="action_add_entry">Ponga apunte</string>
     <string name="action_add_budget">Ponga presupuesto</string>
     <string name="dialog_add_budget_first">Necesita que crear un presupuesto antes de pone un apunte</string>
-    <string name="logs_sort_prompt">Busca Por&#8230;</string>
+    <string name="logs_sort_prompt">Ordena Por&#8230;</string>
     <string name="title_edit">Edite</string>
     <string name="title_delete">Borre</string>
+    <string name="alert_delete_entry_title">Borre el Apunte</string>
+    <string name="alert_delete_entry_message">Esto se eliminarán este apunte. ¿Continuar?</string>
+    <string name="title_entry_options">Opciones</string>
     <string-array name="sort_types">
         <item>Ordenar Por Fecha</item>
         <item>Ordenar Por Cantidad</item>

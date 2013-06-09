@@ -17,8 +17,10 @@
     <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_register">Registrarse un nuevo usuario</string>
     <string name="title_activity_signin">Registrarse</string>
-    <string name="title_activity_add_budget">{0} Presupuesto</string>
-    <string name="title_activity_add_entry">{0} Apunte</string>
+    <string name="title_activity_add_budget">Ponga Presupuesto</string>
+    <string name="title_activity_edit_budget">Edite Presupuesto</string>
+    <string name="title_activity_add_entry">Ponga Apunte</string>
+    <string name="title_activity_edit_entry">Edite Apunte</string>
     <string name="title_activity_settings">Ajuntes</string>
     <string name="title_activity_budget_summary">Sumario del Presupuestos</string>
     <string name="title_fragment_summary">Sumario</string>
