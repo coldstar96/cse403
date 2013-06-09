@@ -21,7 +21,7 @@ import java.util.Locale;
  */
 
 public abstract class Utilities {
-	public static final int DOLLOR_IN_CENTS = 100;
+	public static final int US_DOLLAR_IN_CENTS = 100;
 
 	/**
 	 * Transforms a number of cents into a dollar-formatted string with the
@@ -29,7 +29,7 @@ public abstract class Utilities {
 	 * @param n amount in cents
 	 * @return String in $00.00 format
 	 */
-	public static String amountToDollars(int n) {
+	public static String amountToCurrency(int n) {
 		return Currency.getInstance(Locale.getDefault()).getSymbol()
 				+ amountToDollarsNoDollarSign(n);
 	}
@@ -42,7 +42,7 @@ public abstract class Utilities {
 	 */
 	@SuppressLint("DefaultLocale")
 	public static String amountToDollarsNoDollarSign(int n) {
-		return String.format("%.02f", n / 100.0);
+		return String.format("%.02f", n / (double) US_DOLLAR_IN_CENTS);
 	}
 
 	/**
