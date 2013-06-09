@@ -149,7 +149,7 @@ public class LoginActivity extends Activity {
 				public void onFailure(String errorMessage) {
 					showProgress(false);
 					Toast.makeText(LoginActivity.this,
-							R.string.dialog_fail_log_in, Toast.LENGTH_LONG).show();
+							errorMessage, Toast.LENGTH_LONG).show();
 				}
 
 				// Move to entry logs activity

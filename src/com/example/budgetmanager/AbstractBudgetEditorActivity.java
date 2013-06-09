@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -58,6 +59,8 @@ public abstract class AbstractBudgetEditorActivity extends UBudgetActivity {
 
 		mBudgetNameView = (EditText) findViewById(R.id.budget_name);
 		mBudgetAmountView = (EditText) findViewById(R.id.budget_amount);
+		// set currency filter
+		mBudgetAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 		mBudgetDateView = (DatePicker) findViewById(R.id.budget_date);
 		mRecurringView = (CheckBox) findViewById(R.id.budget_recur);
 		mAddButtonView = (Button) findViewById(R.id.create_budget_button);

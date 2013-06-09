@@ -8,6 +8,7 @@
     <string name="title_delete">Delete</string>
     <string name="alert_delete_entry_title">Delete Entry</string>
     <string name="alert_delete_entry_message">This will delete this entry. Continue?</string>
+    <string name="title_entry_options">Options</string>
     <string-array name="sort_types">
         <item>Sort By Date</item>
         <item>Sort By Amount</item>

@@ -9,16 +9,19 @@
     <string name="title_section1">Entry Logs</string>
     <string name="title_section2">Summary</string>
     <string name="checkbox_remember_me">Remember me</string>
-    <string name="error_network_connection">Check network connection and try again.</string>
     <string name="error_zero_amount">Amount must be greater than $0</string>
     <string name="error_invalid_amount">Please specify amount</string>
+    <string name="error_network">There was a problem connecting to the server. Please try again.</string>
+    <string name="error_delete_budget">Error deleting budget.</string>
+    <string name="error_delete_entry">Error deleting entry.</string>
 
     <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_register">Register</string>
     <string name="title_activity_signin">Sign in</string>
     <string name="title_activity_add_budget">Add Budget</string>
     <string name="title_activity_edit_budget">Edit Budget</string>
-    <string name="title_activity_add_entry">{0} Entry</string>
+    <string name="title_activity_add_entry">Add Entry</string>
+    <string name="title_activity_edit_entry">Edit Entry</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_budget_summary">Budget Summary</string>
     <string name="title_fragment_summary">Summary</string>
@@ -34,5 +37,5 @@
 
     <!-- Strings for the advertisements -->
     <string name="ad_string">Your Ad Here!</string>
-
+    
 </resources>
