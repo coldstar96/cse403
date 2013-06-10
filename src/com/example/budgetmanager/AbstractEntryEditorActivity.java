@@ -219,7 +219,7 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 		mProgressView.setProgress(Math.min(amountSpent,	budgetAmount));
 
 		// display how much of the Budget is left
-		mBudgetLeftView.setText(Utilities.amountToDollars(
+		mBudgetLeftView.setText(Utilities.amountToCurrency(
 				Math.max(budgetAmount - amountSpent, 0)) + " " +
 				getResources().getString(R.string.left));
 	}
