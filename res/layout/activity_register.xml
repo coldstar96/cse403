@@ -40,125 +40,137 @@
 
     <!-- Register form -->
 
-    <ScrollView
-        android:id="@+id/register_form"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/default_layout_spacing"
-        android:layout_marginRight="@dimen/default_layout_spacing"
-        android:fillViewport="true"
-        android:paddingBottom="@dimen/default_layout_spacing" >
+        android:layout_height="match_parent" >
 
-        <RelativeLayout
+        <ScrollView
+            android:id="@+id/register_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent"
+            android:layout_above="@+id/register_ad"
+            android:layout_marginLeft="@dimen/default_layout_spacing"
+            android:layout_marginRight="@dimen/default_layout_spacing"
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/default_layout_spacing" >
 
-            <!-- Header -->
-
-            <LinearLayout
-                android:id="@+id/header"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp" >
+                android:layout_height="wrap_content" >
 
-                <TextView
+                <!-- Header -->
+
+                <LinearLayout
+                    android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_register"
-                    android:textSize="26sp" />
-            </LinearLayout>
-
-            <!-- register Form -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/header"
-                android:layout_marginBottom="@dimen/default_layout_spacing"
-                android:orientation="vertical" >
-
-                <!-- Email Label -->
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/header_email"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:padding="@dimen/default_edittext_padding"
-                    android:singleLine="true" />
+                    android:layout_marginTop="20dp" >
 
-                <!-- Password Label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_register"
+                        android:textSize="26sp" />
+                </LinearLayout>
 
-                <TextView
+                <!-- register Form -->
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/header_password"
-                    android:textStyle="bold" />
+                    android:layout_below="@id/header"
+                    android:layout_marginBottom="@dimen/default_layout_spacing"
+                    android:orientation="vertical" >
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:imeActionId="@+id/register"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="@dimen/default_edittext_padding"
-                    android:singleLine="true" />
+                    <!-- Email Label -->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/header_password2"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/header_email"
+                        android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/password2"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:imeActionId="@+id/register"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="@dimen/default_edittext_padding"
-                    android:singleLine="true" />
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="@dimen/default_edittext_padding"
+                        android:singleLine="true" />
 
-                <!-- register button -->
+                    <!-- Password Label -->
 
-                <Button
-                    android:id="@+id/register_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rounded_button_primary"
-                    android:onClick="registerAttempt"
-                    android:text="@string/action_register"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/header_password"
+                        android:textStyle="bold" />
 
-    <include
-        android:layout_gravity="bottom"
-        layout="@layout/advertisement_view" />
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:imeActionId="@+id/register"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/default_edittext_padding"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/header_password2"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/password2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:imeActionId="@+id/register"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/default_edittext_padding"
+                        android:singleLine="true" />
+
+                    <!-- register button -->
+
+                    <Button
+                        android:id="@+id/register_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_button_primary"
+                        android:onClick="registerAttempt"
+                        android:text="@string/action_register"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/register_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom" >
+
+            <include layout="@layout/advertisement_view" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </merge>
