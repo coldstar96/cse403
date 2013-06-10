@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.joda.time.LocalDate;
 
@@ -156,6 +157,21 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 			return null;
 		}
 
+		// Need to add 1 to the month because the DatePicker
+		// has zero-based months.
+		LocalDate date = new LocalDate(mDateView.getYear(),
+				mDateView.getMonth() + 1, mDateView.getDayOfMonth());
+
+		Budget b = Budget.getBudgets().get(mBudgetView.getSelectedItemPosition());
+
+		// check whether the date is before the budget's start date
+		if (date.isBefore(b.getStartDate())) {
+			Toast.makeText(AbstractEntryEditorActivity.this, getString(R.string.error_start_date),
+					Toast.LENGTH_LONG).show();
+			mDateView.requestFocus();
+			return null;
+		}
+
 		// extract the amount information from its text field
 		double doubleAmount = Double.parseDouble(mAmountView.getText().toString());
 
@@ -164,12 +180,7 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 		Log.d("TAG", "createEntry: amount = " + intAmount);
 
 		String notes = mNotesView.getText().toString();
-
-		// Need to add 1 to the month because the DatePicker
-		// has zero-based months.
-		LocalDate date = new LocalDate(mDateView.getYear(),
-				mDateView.getMonth() + 1, mDateView.getDayOfMonth());
-		return new Entry(intAmount, null, notes, date);
+		return new Entry(intAmount, b, notes, date);
 	}
 
 	/**

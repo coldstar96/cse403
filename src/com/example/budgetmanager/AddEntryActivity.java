@@ -7,8 +7,6 @@ import android.widget.Toast;
 import com.example.budgetmanager.api.ApiCallback;
 import com.example.budgetmanager.api.ApiInterface;
 
-import java.util.List;
-
 /**
  * Activity which allows users to add entries.
  *
@@ -64,14 +62,6 @@ public class AddEntryActivity extends AbstractEntryEditorActivity {
 	// Helper method to create the new <code>Entry</code> object to be added.
 	@Override
 	protected Entry createEntry() {
-		Entry e = super.createEntry();
-
-		if (e == null) {
-			return null;
-		}
-
-		final List<Budget> budgetList = Budget.getBudgets();
-		e.setBudget(budgetList.get(mBudgetView.getSelectedItemPosition()));
-		return e;
+		return super.createEntry();
 	}
 }

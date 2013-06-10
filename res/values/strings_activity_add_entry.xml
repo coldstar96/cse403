@@ -13,5 +13,7 @@
     <string name="title_entry_edit">Edit</string>
     <string name="entry_activity_button_add">Add</string>
     <string name="entry_activity_button_edit">Submit</string>
-
+    <string name="error_zero_amount">Amount must be greater than $0</string>
+    <string name="error_invalid_amount">Please specify amount</string>
+    <string name="error_start_date">Date must be after the budget\'s start date.</string>
 </resources>
