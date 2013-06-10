@@ -24,9 +24,9 @@ public abstract class Utilities {
 	public static final int US_DOLLAR_IN_CENTS = 100;
 
 	/**
-	 * Transforms a number of cents into a dollar-formatted string with the
-	 * dollar sign.
-	 * @param n amount in cents
+	 * Transforms a number of cents into a currency-formatted string with the
+	 * currency sign.
+	 * @param n amount in cents (or cent-like currency)
 	 * @return String in &lt;CURRENCY SYMBOL&gt;00.00 format
 	 */
 	public static String amountToCurrency(int n) {
@@ -35,9 +35,9 @@ public abstract class Utilities {
 	}
 
 	/**
-	 * Transforms a number of cents into a dollar-formatted string without
-	 * the dollar sign.
-	 * @param n amount in cents
+	 * Transforms a number of cents into a currency-formatted string without
+	 * the currency sign.
+	 * @param n amount in cents (or cent-like currency)
 	 * @return String in 00.00 format
 	 */
 	@SuppressLint("DefaultLocale")
