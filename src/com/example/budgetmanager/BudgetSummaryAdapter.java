@@ -154,7 +154,7 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		actualDailyAvgView.setTextColor(txtColor);
 		suggestDailyAvgView.setTextColor(txtColor);
 		perProgressView.getProgressDrawable()
-			.setColorFilter(txtColor, Mode.SRC_IN);
+				.setColorFilter(txtColor, Mode.SRC_IN);
 
 
 		// set period views
