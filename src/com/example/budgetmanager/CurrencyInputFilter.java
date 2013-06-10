@@ -23,6 +23,16 @@ public class CurrencyInputFilter implements InputFilter {
 		String result =	dest.subSequence(0, dstart)	+ source.toString()	+
 				dest.subSequence(dend, dest.length());
 
+		try {
+			// check if the entered amount is beyond what the system can handle
+			if (Double.parseDouble(result) >=
+					Integer.MAX_VALUE / Utilities.US_DOLLAR_IN_CENTS) {
+				return dest.subSequence(dstart, dend);
+			}
+		} catch (NumberFormatException e) {
+			// not yet a number; continue matching it against the pattern
+		}
+
 		Matcher matcher = mPattern.matcher(result);
 
 		if (!matcher.matches()) {
