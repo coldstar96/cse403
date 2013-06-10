@@ -27,11 +27,11 @@ public abstract class Utilities {
 	 * Transforms a number of cents into a dollar-formatted string with the
 	 * dollar sign.
 	 * @param n amount in cents
-	 * @return String in $00.00 format
+	 * @return String in &lt;CURRENCY SYMBOL&gt;00.00 format
 	 */
 	public static String amountToCurrency(int n) {
 		return Currency.getInstance(Locale.getDefault()).getSymbol()
-				+ amountToDollarsNoDollarSign(n);
+				+ amountToCurrencyNoCurrencySign(n);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class Utilities {
 	 * @return String in 00.00 format
 	 */
 	@SuppressLint("DefaultLocale")
-	public static String amountToDollarsNoDollarSign(int n) {
+	public static String amountToCurrencyNoCurrencySign(int n) {
 		return String.format("%.02f", n / (double) US_DOLLAR_IN_CENTS);
 	}
 
