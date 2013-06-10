@@ -37,120 +37,133 @@
                 android:textColor="@color/dark_gray" />
         </LinearLayout>
     </RelativeLayout>
+    
     <!-- Login form -->
 
-    <ScrollView
-        android:id="@+id/login_form"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/default_layout_spacing"
-        android:layout_marginRight="@dimen/default_layout_spacing"
-        android:fillViewport="true"
-        android:paddingBottom="@dimen/default_layout_spacing" >
+        android:layout_height="match_parent" >
 
-        <RelativeLayout
+        <ScrollView
+            android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent"
+            android:layout_above="@+id/login_ad"
+            android:layout_marginLeft="@dimen/default_layout_spacing"
+            android:layout_marginRight="@dimen/default_layout_spacing"
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/default_layout_spacing" >
 
-            <!-- Header -->
-
-            <LinearLayout
-                android:id="@+id/header"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp" >
+                android:layout_height="wrap_content" >
 
-                <TextView
+                <!-- Header -->
+
+                <LinearLayout
+                    android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_sign_in"
-                    android:textSize="26sp" />
-            </LinearLayout>
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" >
 
-            <!-- Login Form -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_sign_in"
+                        android:textSize="26sp" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/header"
-                android:layout_marginBottom="@dimen/default_layout_spacing"
-                android:orientation="vertical" >
+                <!-- Login Form -->
 
-                <!-- Email Label -->
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/header_email"
-                    android:textStyle="bold" />
+                    android:layout_below="@id/header"
+                    android:layout_marginBottom="@dimen/default_layout_spacing"
+                    android:orientation="vertical" >
 
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:padding="@dimen/default_edittext_padding"
-                    android:singleLine="true" />
-                <!-- Password Label -->
+                    <!-- Email Label -->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/header_password"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/header_email"
+                        android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="@dimen/default_edittext_padding"
-                    android:singleLine="true" />
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="@dimen/default_edittext_padding"
+                        android:singleLine="true" />
+                    <!-- Password Label -->
 
-                <!-- Login button -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/header_password"
+                        android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/log_in_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rounded_button_primary"
-                    android:onClick="attemptLogin"
-                    android:text="@string/action_sign_in"
-                    android:textColor="@color/white" />
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:imeActionId="@+id/login"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/default_edittext_padding"
+                        android:singleLine="true" />
 
-                <View style="@style/FieldHeaderDivider" />
+                    <!-- Login button -->
 
-                <!-- Link to Registration Screen -->
+                    <Button
+                        android:id="@+id/log_in_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_button_primary"
+                        android:onClick="attemptLogin"
+                        android:text="@string/action_sign_in"
+                        android:textColor="@color/white" />
 
-                <Button
-                    android:id="@+id/register_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_component_height"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/rounded_button_secondary"
-                    android:onClick="moveToRegisterActivity"
-                    android:text="@string/action_register"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+                    <View style="@style/FieldHeaderDivider" />
 
-    <include
-        android:layout_gravity="bottom"
-        layout="@layout/advertisement_view" />
+                    <!-- Link to Registration Screen -->
+
+                    <Button
+                        android:id="@+id/register_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_component_height"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_button_secondary"
+                        android:onClick="moveToRegisterActivity"
+                        android:text="@string/action_register"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/login_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom" >
+
+            <include layout="@layout/advertisement_view" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </merge>
