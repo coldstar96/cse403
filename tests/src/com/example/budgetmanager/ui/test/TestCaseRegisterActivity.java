@@ -166,15 +166,12 @@ public class TestCaseRegisterActivity
 		solo.typeText(passwordConfirmField, password);
 		solo.clickOnButton(0);
 
-		// The only error should be on the email field,
-		// complaining about the non-uniqueness of the emails.
-		String expectedError = "This email address is already in use";
-		String emailError = (String) emailField.getError();
 		String confirmError = (String) passwordConfirmField.getError();
 		String passwordError = (String) passwordField.getError();
 
-		assertNotNull(emailError);
-		assertEquals(expectedError, emailError);
+		// We should have stayed on the RegisterActivity.
+		solo.assertCurrentActivity("Should have stayed on register activity",
+				RegisterActivity.class);
 
 		// There shouldn't be errors for the other fields
 		assertNull(passwordError);
