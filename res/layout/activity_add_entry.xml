@@ -47,8 +47,28 @@
                 android:id="@+id/spinner_budget"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/default_component_height"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="8dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_component_height"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp" >
+
+                <ProgressBar
+                    android:id="@+id/budget_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/budget_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
