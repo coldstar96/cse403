@@ -11,8 +11,6 @@
     <string name="title_section2">Sumario</string>
     <string name="checkbox_remember_me">Recuerde</string>
     <string name="error_network_connection">Compruebe la conexión de red y vuelva a probar.</string>
-    <string name="error_zero_amount">Suma debe ser mayor que €0</string>
-    <string name="error_invalid_amount">Por favor, especifique la suma</string>
 
     <!-- Strings for the titles of the activities/fragments -->
     <string name="title_activity_register">Registrarse un nuevo usuario</string>

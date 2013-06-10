@@ -13,5 +13,7 @@
     <string name="title_entry_edit">Edite</string>
     <string name="entry_activity_button_add">Ponga</string>
     <string name="entry_activity_button_edit">Presente</string>
-
+    <string name="error_zero_amount">Suma debe ser mayor que €0</string>
+    <string name="error_invalid_amount">Por favor, especifique la suma</string>
+    <string name="error_start_date">La fecha debe ser posterior a la fecha de inicio del presupuesto.</string>
 </resources>
