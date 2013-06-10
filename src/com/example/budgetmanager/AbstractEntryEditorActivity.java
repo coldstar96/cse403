@@ -12,13 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Creates a template Activity for the {@link AddEntryActivity} and
@@ -34,6 +37,12 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 
 	// List of Budgets to choose from
 	protected Spinner mBudgetView;
+
+	// Progress bar for selected Budget
+	protected ProgressBar mProgressView;
+
+	// Amount left to spend for selected Budget
+	protected TextView mBudgetLeftView;
 
 	// Number field for entering the Entry amount
 	protected EditText mAmountView;
@@ -59,6 +68,8 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 		// set currency filter
 		mAmountView.setFilters(new InputFilter[] { new CurrencyInputFilter() });
 		mBudgetView = (Spinner) findViewById(R.id.spinner_budget);
+		mProgressView = (ProgressBar) findViewById(R.id.budget_progress);
+		mBudgetLeftView = (TextView) findViewById(R.id.budget_left);
 		mDateView = (DatePicker) findViewById(R.id.entry_date_picker);
 		mNotesView = (EditText) findViewById(R.id.entry_notes);
 		mAddButtonView = (Button) findViewById(R.id.add_entry_button);
@@ -122,6 +133,11 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 				// handle the case when user selects 'Create New Budget...'
 				if (pos == budgetList.size() && !budgetList.isEmpty()) {
 					startActivity(new Intent(AbstractEntryEditorActivity.this, AddBudgetActivity.class));
+				}
+
+				// update progress bar if the selected item isn't for adding a new Budget
+				if (pos != budgetList.size()) {
+					updateProgressBar(budgetList.get(pos));
 				}
 			}
 
@@ -203,5 +219,20 @@ public abstract class AbstractEntryEditorActivity extends UBudgetActivity {
 		// clear the EditText fields
 		mAmountView.setText("");
 		mNotesView.setText("");
+	}
+
+	// Helper method to change the progress bar appearance depending on Budget.
+	private void updateProgressBar(Budget budget) {
+		int budgetAmount = budget.getBudgetAmount();
+		int amountSpent = budget.getAmountSpent(budget.getCurrentCycle());
+
+		// draw progress
+		mProgressView.setMax(budgetAmount);
+		mProgressView.setProgress(Math.min(amountSpent,	budgetAmount));
+
+		// display how much of the Budget is left
+		mBudgetLeftView.setText(Utilities.amountToCurrency(
+				Math.max(budgetAmount - amountSpent, 0)) + " " +
+				getResources().getString(R.string.left));
 	}
 }
