@@ -108,9 +108,9 @@ public class BudgetSummaryActivity extends UBudgetActivity {
 		balance = myBudget.getBudgetAmount() - totalBudget;
 
 		budgetName.setText(myBudget.getName());
-		budgetTotal.setText(Utilities.amountToDollars(myBudget.getBudgetAmount()));
-		budgetSpent.setText(Utilities.amountToDollars(totalBudget));
-		budgetBalance.setText(Utilities.amountToDollars(balance));
+		budgetTotal.setText(Utilities.amountToCurrency(myBudget.getBudgetAmount()));
+		budgetSpent.setText(Utilities.amountToCurrency(totalBudget));
+		budgetBalance.setText(Utilities.amountToCurrency(balance));
 	}
 
 	@Override

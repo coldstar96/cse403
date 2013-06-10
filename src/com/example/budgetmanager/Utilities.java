@@ -10,6 +10,9 @@ import com.example.budgetmanager.preference.SettingsFragment;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import java.util.Currency;
+import java.util.Locale;
+
 /**
  * Miscellaneous methods that we use in routine
  *
@@ -17,32 +20,29 @@ import org.joda.time.LocalDate;
  *
  */
 
-public class Utilities {
-	public static final int DOLLOR_IN_CENTS = 100;
-
-	private Utilities() {
-		// not called
-	}
+public abstract class Utilities {
+	public static final int US_DOLLAR_IN_CENTS = 100;
 
 	/**
-	 * Transforms a number of cents into a dollar-formatted string with the
-	 * dollar sign.
-	 * @param n amount in cents
-	 * @return String in $00.00 format
+	 * Transforms a number of cents into a currency-formatted string with the
+	 * currency sign.
+	 * @param n amount in cents (or cent-like currency)
+	 * @return String in &lt;CURRENCY SYMBOL&gt;00.00 format
 	 */
-	public static String amountToDollars(int n) {
-		return "$" + amountToDollarsNoDollarSign(n);
+	public static String amountToCurrency(int n) {
+		return Currency.getInstance(Locale.getDefault()).getSymbol()
+				+ amountToCurrencyNoCurrencySign(n);
 	}
 
 	/**
-	 * Transforms a number of cents into a dollar-formatted string without
-	 * the dollar sign.
-	 * @param n amount in cents
+	 * Transforms a number of cents into a currency-formatted string without
+	 * the currency sign.
+	 * @param n amount in cents (or cent-like currency)
 	 * @return String in 00.00 format
 	 */
 	@SuppressLint("DefaultLocale")
-	public static String amountToDollarsNoDollarSign(int n) {
-		return String.format("%.02f", n / 100.0);
+	public static String amountToCurrencyNoCurrencySign(int n) {
+		return String.format("%.02f", n / (double) US_DOLLAR_IN_CENTS);
 	}
 
 	/**

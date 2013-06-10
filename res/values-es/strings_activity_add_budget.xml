@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="header_budget_name">Nombre del Presupuesto</string>
+    <string name="header_budget_amount">Suma</string>
+    <string name="header_budget_start_date">FECHA DE INICIO</string>
+    <string name="header_budget_duration">DURACIÓN</string>
+    <string name="budget_recur">Repita</string>
+    <string name="action_clear_budget">Limpie</string>
+	<string name="title_budget_add">Ponga</string>
+	<string name="title_budget_edit">Edite</string>
+	<string name="budget_activity_button_add">Ponga</string>
+	<string name="budget_activity_button_edit">Presente</string>
+    
+    <string-array name="duration_array">
+        <item>Día</item>
+        <item>Semana</item>
+        <item>Quincena</item>
+        <item>Mes</item>
+        <item>Año</item>
+        <!-- <item>Other</item> -->
+    </string-array>
+
+    <string name="action_create_budget">Cree</string>
+    <string name="error_invalid_budget_name">Por favor, dé un nombre</string>
+    <string name="error_name_already_exists">Ya se está utilizando el nombre del presupuesto</string>
+
+</resources>

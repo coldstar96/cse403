@@ -172,6 +172,8 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 			budgetCycleView.setVisibility(View.VISIBLE);
 		}
 
+		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
+
 		// set period
 		int totalDays = Utilities.dateDifference(startDate, endDate);
 
@@ -205,8 +207,9 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 
 		String left = getContext().getResources().getString(R.string.left);
 		expenditureTextView.setText(
-				String.format("$%.02f / $%.02f ($%.02f %s)",
-				amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0, left));
+				String.format(currency + "%.02f / "+ currency + "%.02f (" +
+						currency + "%.02f " + left + ")",
+						amountSpent / 100.0, budgetAmount / 100.0, amountLeft / 100.0));
 
 		int daysLeft = totalDays - (currentDays + 1);
 		double actualAvg = 0;
@@ -225,8 +228,6 @@ public class BudgetSummaryAdapter extends ArrayAdapter<Budget> {
 		String day = getContext().getResources().getString(R.string.day);
 		String actual = getContext().getResources().getString(R.string.actual);
 		String suggest = getContext().getResources().getString(R.string.suggest);
-
-		String currency = Currency.getInstance(Locale.getDefault()).getSymbol();
 
 		actualDailyAvgView.setText(
 				String.format("%s: %s%.02f / %s", actual, currency, actualAvg, day));

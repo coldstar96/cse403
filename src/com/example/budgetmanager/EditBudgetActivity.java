@@ -25,7 +25,7 @@ public class EditBudgetActivity extends AbstractBudgetEditorActivity {
 		mPreviousBudgetName = b.getName();
 		mBudgetNameView.setText(mPreviousBudgetName);
 
-		mBudgetAmountView.setText(Utilities.amountToDollarsNoDollarSign(b.getBudgetAmount()));
+		mBudgetAmountView.setText(Utilities.amountToCurrencyNoCurrencySign(b.getBudgetAmount()));
 
 		mRecurringView.setChecked(b.isRecurring());
 
