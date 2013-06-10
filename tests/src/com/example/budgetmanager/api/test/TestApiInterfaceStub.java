@@ -456,12 +456,14 @@ public class TestApiInterfaceStub extends AndroidTestCase {
 		final String PASSWORD = "password";
 		final String USERNAME_ERROR = USERNAME + ":";
 		final String PASSWORD_ERROR = "Invalid username or password.";
+		final String ERROR = USERNAME_ERROR + " " + PASSWORD_ERROR;
 
 		JSONObject obj = new JSONObject().put("username", new JSONArray().put(USERNAME_ERROR))
 				.put("password_digest", new JSONArray().put(PASSWORD_ERROR));
 
 		// Set next "response" from the server.
 		testClient.setNextResponse(obj, false);
+		testClient.setErrorMessage(ERROR);
 
 		api.logIn(USERNAME, PASSWORD, new ApiCallback<Object>() {
 			@Override
@@ -471,7 +473,7 @@ public class TestApiInterfaceStub extends AndroidTestCase {
 
 			@Override
 			public void onFailure(String errorMessage) {
-				assertEquals(USERNAME_ERROR + " " + PASSWORD_ERROR, errorMessage);
+				assertEquals(ERROR, errorMessage);
 			}
 		});
 	}

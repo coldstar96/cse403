@@ -20,6 +20,7 @@ import java.util.Queue;
 public class AsyncHttpClientStub extends AsyncHttpClient {
 	private Queue<Object> responseQueue;
 	private Queue<Boolean> successQueue;
+	private String errorMessage = "Set to fail.";
 
 	public AsyncHttpClientStub() {
 		responseQueue = new LinkedList<Object>();
@@ -42,7 +43,15 @@ public class AsyncHttpClientStub extends AsyncHttpClient {
 		}
 	}
 
-
+	/**
+	 * Enqueues an error message for the next response.
+	 * Defaults to "Set to fail."
+	 *
+	 * @param msg The error message to set
+	 */
+	public void setErrorMessage(String msg) {
+		errorMessage = msg;
+	}
 
 	/**
 	 * Calls the specified handler with the last set JSON response.
@@ -60,7 +69,7 @@ public class AsyncHttpClientStub extends AsyncHttpClient {
 					((JsonHttpResponseHandler) handler).onSuccess(jsonObject);
 				} else {
 					((JsonHttpResponseHandler) handler).onFailure(
-							new Exception("Set to fail."), jsonObject);
+							new Exception(errorMessage), jsonObject);
 				}
 			} else {
 				JSONArray jsonArray = (JSONArray) responseJson;
@@ -68,7 +77,7 @@ public class AsyncHttpClientStub extends AsyncHttpClient {
 					((JsonHttpResponseHandler) handler).onSuccess(jsonArray);
 				} else {
 					((JsonHttpResponseHandler) handler).onFailure(
-							new Exception("Set to fail."), jsonArray);
+							new Exception(errorMessage), jsonArray);
 				}
 			}
 		}

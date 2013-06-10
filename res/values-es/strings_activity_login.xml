@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Strings related to login -->
+    <string name="header_email">Dirección de correo electrónico</string>
+    <string name="header_password">Contraseña</string>
+    <string name="header_password2">Copie la Contraseña</string>
+    <string name="action_sign_in_short">Iniciar</string>
+    <string name="action_forgot_password">Recupere la contraseña perdida</string>
+    <string name="login_progress_signing_in">Me registre&#8230;</string>
+    <string name="error_invalid_email">Esta dirección de correo electrónico no es válida</string>
+    <string name="error_invalid_password">Esta contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
+    <string name="error_field_required">Este parte es obligatorio</string>
+    <string name="error_email_already_exists">Ya se está utilizando el dirección de correo electrónico</string>
+    <string name="prompt_verify_password">Verifique su contraseña</string>
+    <string name="action_register">Regístrese un nuevo usuario</string>
+    <string name="action_sign_in">Iniciar</string>
+    <string name="remember_login_info">Recuerde</string>
+    <string name="dialog_fail_log_in">El combinación del dirección de correo electrónico y la contraseña no es válida.</string>
+    <string name="action_retry_log_in">Vuelva a probar</string>
+    <string name="error_no_match_password">Esta contraseña no coincide con la contraseña anterior.</string>
+    <string name="dialog_fail_log_in_title">Ha fracasado a registrar</string>
+    <string name="dialog_fail_register_title">Ha fracasado a registrar un nuevo usuario</string>
+    <string name="register_progress_signing_in">Me registre un nuevo usuario&#8230;</string>
+
+</resources>

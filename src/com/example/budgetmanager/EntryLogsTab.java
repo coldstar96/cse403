@@ -1,6 +1,8 @@
 package com.example.budgetmanager;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -132,28 +134,50 @@ public class EntryLogsTab extends Fragment {
 
 			startActivity(intent);
 		}	else if (item.getItemId() == R.id.menu_delete) {
-			Log.d(TAG, "Delete called.");
-
-			ApiInterface.getInstance().remove(selectedEntry, new ApiCallback<Object>() {
+			AlertDialog.Builder builder =
+					new AlertDialog.Builder(getActivity());
+			builder.setTitle(R.string.alert_delete_entry_title);
+			builder.setMessage(R.string.alert_delete_entry_message);
+			builder.setNegativeButton(R.string.alert_cancel,
+					new DialogInterface.OnClickListener() {
 				@Override
-				public void onSuccess(Object result) {
-					Log.d(TAG, "Delete entry onSuccess entered.");
-
-					// remove the Entry from the Budget it is included in
-					selectedEntry.getBudget().removeEntry(selectedEntry);
-					selectedEntry = null;
-
-					// refresh the view upon change
-					refreshList();
-				}
-
-				@Override
-				public void onFailure(String errorMessage) {
-					Log.d(TAG, "Delete entry onFailure entered.");
-					// if the request fails, do nothing (the toast is for testing purposes)
-					Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+				public void onClick(DialogInterface dialog, int id) {
+					// back out from delete
+					dialog.cancel();
 				}
 			});
+
+
+			builder.setPositiveButton(R.string.alert_ok,
+					new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					Log.d(TAG, "Delete called.");
+					ApiInterface.getInstance().remove(selectedEntry, new ApiCallback<Object>() {
+						@Override
+						public void onSuccess(Object result) {
+							Log.d(TAG, "Delete entry onSuccess entered.");
+
+							// remove the Entry from the Budget it is included in
+							selectedEntry.getBudget().removeEntry(selectedEntry);
+							selectedEntry = null;
+
+							// refresh the view upon change
+							refreshList();
+						}
+
+						@Override
+						public void onFailure(String errorMessage) {
+							Log.d(TAG, "Delete entry onFailure entered.");
+							// if the request fails, do nothing (the toast is for testing purposes)
+							Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+			});
+			// show the alert message
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 
 		return true;

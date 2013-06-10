@@ -188,6 +188,7 @@ extends ActivityInstrumentationTestCase2<MainActivity> {
 		// Long click on the first test entry and press the first option that
 		// appears, which is the option for "Edit"
 		solo.clickLongOnTextAndPress(TEST_ENTRY_NAME_1, 1);
+		solo.clickOnText("OK");
 
 		// The user should be taken back to the same screen
 		solo.assertCurrentActivity("The activity was changed unexpectedly",
