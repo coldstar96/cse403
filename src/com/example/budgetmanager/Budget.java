@@ -77,26 +77,7 @@ public class Budget {
 		this.entries = new ArrayList<Entry>();
 		this.budgetId = NEW_ID;
 
-		// Set up a period based on the requested duration type
-		switch(this.duration) {
-		case DAY:
-			this.budgetDuration = Period.days(1);
-			break;
-		case WEEK:
-			this.budgetDuration = Period.weeks(1);
-			break;
-		case FORTNIGHT:
-			this.budgetDuration = Period.weeks(2);
-			break;
-		case MONTH:
-			this.budgetDuration = Period.months(1);
-			break;
-		case YEAR:
-			this.budgetDuration = Period.years(1);
-			break;
-		default:
-			throw new IllegalArgumentException("Invaid duration argument");
-		}
+		setPeriod();
 
 		// Throw it into the main Budget list at the beginning of the list.
 		BUDGET_LIST.add(0, this);
@@ -299,6 +280,7 @@ public class Budget {
 	 */
 	public void setDuration(Duration duration) {
 		this.duration = duration;
+		setPeriod();
 	}
 
 	/**
@@ -403,5 +385,32 @@ public class Budget {
 	 */
 	public int getAmountSpent() {
 		return getAmountSpent(getCurrentCycle());
+	}
+
+	/**
+	 * Sets up the internal period of this Budget based on the current
+	 * this.duration.
+	 */
+	private void setPeriod() {
+		// Set up a period based on the requested duration type
+		switch(this.duration) {
+		case DAY:
+			this.budgetDuration = Period.days(1);
+			break;
+		case WEEK:
+			this.budgetDuration = Period.weeks(1);
+			break;
+		case FORTNIGHT:
+			this.budgetDuration = Period.weeks(2);
+			break;
+		case MONTH:
+			this.budgetDuration = Period.months(1);
+			break;
+		case YEAR:
+			this.budgetDuration = Period.years(1);
+			break;
+		default:
+			throw new IllegalArgumentException("Invaid duration argument");
+		}
 	}
 }
