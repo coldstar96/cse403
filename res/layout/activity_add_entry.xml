@@ -109,7 +109,7 @@
     <LinearLayout
         android:id="@+id/add_entry_ad"
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom" >
 
