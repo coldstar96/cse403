@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="dark_gray">#525252</color>
+    <color name="colored_button_blue">#249DE5</color>
+    <color name="colored_button_green">#6BB12F</color>
+    <color name="colored_button_black">#3B3B3B</color>
+    <color name="colored_edittext_gray">#EDEDED</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="green">#009900</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#FF0000</color>
+    
+    
+    <color name="background_holo_dark">#ff000000</color>
+    <color name="background_holo_light">#fff3f3f3</color>
+</resources>

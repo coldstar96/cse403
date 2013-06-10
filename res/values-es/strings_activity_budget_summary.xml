@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="header_budget_total">Presupuesto Total</string>
+    <string name="header_budget_spent">Total Gastado</string>
+    <string name="header_budget_balance">Resto</string>
+    <string name="action_edit_budget">Edite</string>
+    <string name="action_delete_budget">Borre</string>
+    <string name="recurring">Repita</string>
+    <string name="actual">Real</string>
+    <string name="suggest">Recomendado</string>
+
+</resources>

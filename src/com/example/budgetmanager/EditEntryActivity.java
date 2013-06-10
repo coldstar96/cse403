@@ -29,7 +29,7 @@ public class EditEntryActivity extends AbstractEntryEditorActivity {
 		Budget b = Budget.getBudgetById(bundle.getLong("BudgetId"));
 		Entry e = b.getEntryById(bundle.getLong("EntryId"));
 
-		mAmountView.setText(Utilities.amountToDollarsNoDollarSign(e.getAmount()));
+		mAmountView.setText(Utilities.amountToCurrencyNoCurrencySign(e.getAmount()));
 
 		LocalDate date = e.getDate();
 		// subtract 1 from month to adjust to 0-based indexing

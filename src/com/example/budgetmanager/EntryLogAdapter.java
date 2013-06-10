@@ -98,7 +98,7 @@ public class EntryLogAdapter extends ArrayAdapter<Entry> {
 
 		dateView.setText(android.text.format.DateFormat
 				.getDateFormat(context).format(entry.getDate().toDate()));
-		amountView.setText(Utilities.amountToDollars(entry.getAmount()));
+		amountView.setText(Utilities.amountToCurrency(entry.getAmount()));
 		budgetNameView.setText(entry.getBudget().getName());
 		notesView.setText(entry.getNotes());
 

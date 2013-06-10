@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings related to Settings -->
+    <string name="toast_theme_change">Nuevo tema se aplicará la próxima vez que inicie la aplicación</string>
+    <string name="action_settings">Ajustes</string>
+
+    <!-- Summary Strings -->
+    <string name="summary_settings_starting_screen">Starting screen setting summary test</string>
+    <string name="summary_settings_app_theme">Themes setting summary test</string>
+
+    <!-- Title Strings -->
+    <string name="title_settings_starting_screen">Pantalla por Comienzo</string>
+    <string name="title_settings_app_theme">Tema</string>
+
+    <!-- Default Values -->
+    <string name="pref_starting_screen_default">Récord</string>
+    <string name="pref_app_theme_default">Luz</string>
+
+    <!-- Array entries for starting screens -->
+    <string-array name="pref_starting_screen_entrees">
+        <item>Récord</item>
+        <item>Sumario</item>
+    </string-array>
+
+    <!-- Array entries for themes -->
+    <string-array name="pref_app_theme_entrees">
+        <item>Luz</item>
+        <item>Oscuro</item>
+    </string-array>
+
+</resources>

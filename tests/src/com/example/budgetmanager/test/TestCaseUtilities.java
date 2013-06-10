@@ -29,7 +29,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_zeroCents() {
 		int amount = 0;
 		String expected = "$0.00";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 
@@ -41,7 +41,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_lessThanOneDollar() {
 		int amount = 19;
 		String expected = "$0.19";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 
@@ -53,7 +53,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_lessThanTenCents() {
 		int amount = 9;
 		String expected = "$0.09";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 
@@ -65,7 +65,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_moreThanOneNoCents() {
 		int amount = 2000;
 		String expected = "$20.00";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 
@@ -77,7 +77,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_moreThanOneWithCents() {
 		int amount = 2019;
 		String expected = "$20.19";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 
@@ -89,7 +89,7 @@ public class TestCaseUtilities extends TestCase {
 	public void test_amountToDollars_moreThanOneWithLessThanTenCents() {
 		int amount = 2009;
 		String expected = "$20.09";
-		String actual = Utilities.amountToDollars(amount);
+		String actual = Utilities.amountToCurrency(amount);
 		assertEquals(expected, actual);
 	}
 }

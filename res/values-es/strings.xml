@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">uBudget</string>
+    <string name="action_close">Cierre</string>
+    <string name="action_add">Ponga</string>
+    <string name="action_clear">Borre</string>
+    <string name="title_activity_logo">uBudget</string>
+    <string name="hello_world">¡Hola mundo!</string>
+    <string name="title_section1">Récord de Apuntes</string>
+    <string name="title_section2">Sumario</string>
+    <string name="checkbox_remember_me">Recuerde</string>
+    <string name="error_network_connection">Compruebe la conexión de red y vuelva a probar.</string>
+    <string name="error_zero_amount">Suma debe ser mayor que €0</string>
+    <string name="error_invalid_amount">Por favor, especifique la suma</string>
+
+    <!-- Strings for the titles of the activities/fragments -->
+    <string name="title_activity_register">Registrarse un nuevo usuario</string>
+    <string name="title_activity_signin">Registrarse</string>
+    <string name="title_activity_add_budget">Ponga Presupuesto</string>
+    <string name="title_activity_edit_budget">Edite Presupuesto</string>
+    <string name="title_activity_add_entry">Ponga Apunte</string>
+    <string name="title_activity_edit_entry">Edite Apunte</string>
+    <string name="title_activity_settings">Ajuntes</string>
+    <string name="title_activity_budget_summary">Sumario del Presupuestos</string>
+    <string name="title_fragment_summary">Sumario</string>
+    <string name="title_fragment_entry_logs">Récord de Apuntes</string>
+
+    <!-- Date format used when sending dates to/from the server -->
+    <string name="api_date_format">yyyy-MM-dd</string>
+    <string name="api_datetime_format">yyyy-MM-dd HH:mm:ss</string>
+
+    <!-- Strings for the options menu -->
+    <string name="title_settings">Ajuntes</string>
+    <string name="title_signout">Salga</string>
+
+    <!-- Strings for the advertisements -->
+    <string name="ad_string">¡Su anuncio aquí!</string>
+
+</resources>
